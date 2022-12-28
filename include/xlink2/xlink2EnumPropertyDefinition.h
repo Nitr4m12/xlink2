@@ -1,10 +1,11 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
+#include "heap/seadHeap.h"
 
 namespace xlink2 {
 class EnumPropertyDefinition {
     virtual ~EnumPropertyDefinition();
+
 public:
     EnumPropertyDefinition(char const*, int, sead::Heap*);
     EnumPropertyDefinition(char const*, int, bool, sead::Heap*, ...);
@@ -22,6 +23,7 @@ public:
 
     void setEntries(int, char const**);
     void setEntryBuf(s32, Entry*);
+
 private:
 };
-}
+}  // namespace xlink2

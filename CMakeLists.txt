@@ -3,8 +3,11 @@ project(xlink2 CXX ASM)
 add_library(xlink2 OBJECT
   include/xlink2/xlink2.h
   include/xlink2/xlink2ActionTriggerCtrl.h
-  src/dummy.cpp
+  include/xlink2/xlink2AlwaysTriggerCtrl.h
+  include/xlink2/xlink2AssetExecutor.h
   src/xlink2ActionTriggerCtrl.cpp
+  src/xlink2AlwaysTriggerCtrl.cpp
+  src/xlink2AssetExecutor.cpp
 )
 
 target_compile_options(xlink2 PRIVATE -fno-exceptions)

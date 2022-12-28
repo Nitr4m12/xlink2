@@ -1,11 +1,10 @@
 #pragma once
 
 #include "math/seadVectorFwd.h"
-#include "xlink2/xlink2.h"
+#include "xlink2/xlink2OneEmitterInstance.h"
+#include "xlink2/xlink2OneEmitterInstanceHandle.h"
 
 namespace xlink2 {
-class OneEmitterInstance;
-class OneEmitterInstanceHandle;
 class OneEmitterMgr {
 public:
     void* createOneEmitterInstance(char const*, u8);

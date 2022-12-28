@@ -1,12 +1,17 @@
 #pragma once
 
-#include "container/seadPtrArray.h"
-#include "xlink2/xlink2.h"
+#include <container/seadPtrArray.h>
 #include "xlink2/xlink2AssetExecutor.h"
+#include "xlink2/xlink2BoneMtx.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2ResTriggerOverwriteParam.h"
+#include "xlink2/xlink2TriggerType.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
 class Event {
     virtual ~Event();
+
 public:
     Event();
     void initialize(u32);
@@ -16,7 +21,7 @@ public:
     void callEventCreateCallback();
     void callEventDestroyCallback();
 
-    u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
+    // u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
     void destroyAllContainerAndAssetExecutor();
 
     void doFinalize();
@@ -33,6 +38,7 @@ public:
     void reEmit();
 
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
+
 private:
 };
-} // namespace xlink2
+}  // namespace xlink2

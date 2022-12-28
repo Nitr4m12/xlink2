@@ -1,12 +1,13 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
+#include "xlink2/xlink2PtclResourceAccessorELink.h"
+#include "xlink2/xlink2User.h"
+#include "xlink2/xlink2UserResourceParam.h"
 
 namespace xlink2 {
-class UserResourceParam;
 class UserResource {
     virtual ~UserResource();
 
@@ -44,54 +45,6 @@ public:
 
     void solveNeedObserveFlag(UserResourceParam*);
     u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
-private:
-};
-
-class UserResourceParamELink;
-class UserResourceELink {
-    virtual ~UserResourceELink();
-
-public:
-    UserResourceELink(User*, sead::Heap*);
-
-    void allocResourceParam(sead::Heap);
-    void freeResourceParam(UserResourceParam*);
-
-    void* getAccessor() const;
-    void* getAccessorPtr();
-    u64 getSolvedAssetParameterELink(ResAssetCallTable const&);
-    u64 getSystem() const;
-
-    void onSetupResourceParam(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
-
-    void releaseOneEmitterInstance(UserResourceParamELink*, ParamDefineTable const*);
-    void solveAssetParam(UserResourceELink*, ParamDefineTable const*, PtclResourceAccessorELink*);
-    void solveResourceForChangeEset();
-
-private:
-};
-
-class UserResourceSLink {
-    virtual ~UserResourceSLink();
-
-public:
-    UserResourceSLink(User*, sead::Heap*);
-
-    void allocResourceParam(sead::Heap);
-    void freeResourceParam(UserResourceParam*);
-
-    void* getAccessor() const;
-    void* getAccessorPtr();
-    u64 getSystem() const;
-    u64 getUserParam() const;
-
-    // bool isEnableAssetInfoReader(aal::IAssetInfoReadable**) const;
-
-    void onSetupResourceParam(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
-
-    // void solveIsLoop(aal::IAssetInfoReadable*);
-    // void solveIsLoop(UserResourceParam*, ParamDefineTable const*, aal::IAssetInfoReadable*)
-
 private:
 };
 }  // namespace xlink2

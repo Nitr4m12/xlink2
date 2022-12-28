@@ -1,13 +1,17 @@
 #pragma once
 
 #include "math/seadMatrix.h"
-#include "xlink2/xlink2.h"
+#include "xlink2/xlink2DebugLogFlag.h"
+#include "xlink2/xlink2DebugOperationParam.h"
 #include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2Handle.h"
+#include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2Locator.h"
+#include "xlink2/xlink2System.h"
 #include "xlink2/xlink2User.h"
+#include "xlink2/xlink2UserInstanceParam.h"
 
 namespace xlink2 {
-class UserInstanceParam;
 class UserInstance {
     virtual ~UserInstance();
 
@@ -22,11 +26,11 @@ public:
         RebuildArg() = default;
     };
 
-    UserInstance(CreateArg const&, System*, User*, sead::Heap*);
+    // UserInstance(CreateArg const&, System*, User*, sead::Heap*);
 
     void changeAction(char const*, s32, s32);
     void changeAction(s32, s32, s32);
-    void changeInstanceParam(ResMode);
+    // void changeInstanceParam(ResMode);
 
     void checkAndBreakWhenEmit(char const*);
     u64 checkAndErrorCallInCalc(char const*, ...) const;
@@ -34,14 +38,14 @@ public:
 
     void clearAllEvent();
     void destroy();
-    void doEventActivatedCallback(Locator const&, Event*);
+    // void doEventActivatedCallback(Locator const&, Event*);s
     void doEventActivatingCallback(Locator const&);
     void doOtameshiEmit();
 
     void emitImpl(Locator const&, Handle*);
     void fadeOrKillOtameshi(bool);
     void freeEventIfFadeOrKillCalled();
-    void freeInstanceParam(UserInstanceParam*, ResMode);
+    // void freeInstanceParam(UserInstanceParam*, ResMode);
 
     void getContainerTypeName(ResAssetCallTable const&) const;
     void getCurrentResActionIdx(s32) const;
@@ -72,15 +76,15 @@ public:
 
     void onReset();
 
-    ResMode onSetupInstanceParam(ResMode, sead::Heap*);
+    // ResMode onSetupInstanceParam(ResMode, sead::Heap*);
 
     void postCalc();
     void preCalc();
 
-    void printLogContainerSelect(Event const&, char const*, ...) const;
+    // void printLogContainerSelect(Event const&, char const*, ...) const;
     void printLogEmitFailed(char const*, char const*, ...) const;
-    void printLogEmitFailed(Event const&, char const*, ...) const;
-    void printLogFadeOrKill(Event const*, char const*, ...) const;
+    // void printLogEmitFailed(Event const&, char const*, ...) const;
+    // void printLogFadeOrKill(Event const*, char const*, ...) const;
     void* printLogSearchAsset(bool, char const*, ...) const;
 
     void rebuild(RebuildArg const&);
@@ -105,7 +109,7 @@ public:
     void setRootPos(sead::Vector3f const*);
 
     void setupEditorInstanceParam();
-    void setupInstanceParam(ResMode, sead::Heap*);
+    // void setupInstanceParam(ResMode, sead::Heap*);
     void setupResource(sead::Heap*);
 
     void sleep();
@@ -114,108 +118,5 @@ public:
     void* trySearchSwitchContainerRecursive(ResAssetCallTable const**, ResAssetCallTable const&);
 
     void updateSortKey();
-};
-
-class HandleELink;
-class UserInstanceELink {
-    virtual ~UserInstanceELink();
-
-public:
-    UserInstanceELink(UserInstance::CreateArg const&, System*, User*, sead::Heap*);
-
-    void allocInstanceParam(sead::Heap*);
-    void emit(Locator const&);
-    void emit(Locator const&, HandleELink*);
-    void fadeIfLoopEffect();
-    void freeInstanceParam(UserInstanceParam*, ResMode);
-
-    UserInstanceELink getDefaultGroup() const;
-    u64 getResourceAccessor() const;
-    u64 getResourceELink() const;
-
-    void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);
-
-    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const;
-
-    void onDestroy();
-    void onPostCalc();
-    void onReset();
-    void onSetupInstanceParam(ResMode, sead::Heap*);
-
-    void searchAndEmit(char const*);
-    void searchAndEmit(char const*, HandleELink*);
-    void searchAndHold(char const*);
-    void searchAndHold(char const*, HandleELink*);
-
-private:
-};
-
-class ArrangeGroupParam;
-class HandleSLink;
-class ResourceAccessorSLink;
-class UserInstanceSLink {
-    virtual ~UserInstanceSLink();
-
-public:
-    class AssetLimiter {
-        virtual ~AssetLimiter();
-
-    public:
-        AssetLimiter(s32, sead::Heap*);
-        void initialize(s32, char const*, ArrangeGroupParam const&);
-
-        void append(Event const&, ResourceAccessorSLink const&, User*);
-        void clear();
-        void limit();
-
-    private:
-    };
-    class CreateArgSLink {
-    public:
-        CreateArgSLink(char const*, IUser*);
-        explicit CreateArgSLink(UserInstance::CreateArg const&);
-        CreateArgSLink(CreateArgSLink const&);
-
-    private:
-    };
-    UserInstanceSLink(CreateArgSLink const&, System*, User*, sead::Heap*);
-
-    void allocEmitter(sead::Heap*);
-    void allocInstanceParam(sead::Heap*);
-    void doEventActivatedCallback(Locator const&, Event*);
-    void doEventActivatingCallback(Locator const&);
-
-    void emit(Locator const&);
-    void emit(Locator const&, HandleSLink*);
-    void emit(ResAssetCallTable const&);
-    void emit(ResAssetCallTable const&, HandleSLink*);
-
-    void fadeIfLoopSound();
-    // void freeEmitter(aal::Emitter*)
-    void freeInstanceParam(UserInstanceParam*, ResMode);
-
-    u64 getResourceAccessor() const;
-    u64 getResourceSLink() const;
-    s32 getSoundSourceNum() const;
-
-    void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);
-
-    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const;
-
-    void onDestroy();
-    void onPostCalc();
-    void onSetupInstanceParam(ResMode, sead::Heap*);
-
-    void searchAndEmit(char const*);
-    void searchAndEmit(char const*, HandleSLink*);
-    void searchAndHold(char const*);
-    void searchAndHold(char const*, HandleSLink*);
-
-    // void setAssetInfoReader(aal::IAssetInfoReadable*);
-
-    void setupEmitter(ResAssetCallTable const&);
-    void stopAllEvent(s32);
-
-private:
 };
 }  // namespace xlink2

@@ -1,21 +1,15 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
+#include "xlink2/xlink2Error.h"
+#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2User.h"
 
 namespace xlink2 {
-class User;
-class Error {
-public:
-    class Type;
-
-private:
-};
-
 class ErrorMgr {
     virtual ~ErrorMgr();
 
 public:
-    ErrorMgr(System const*);
+    explicit ErrorMgr(System const*);
 
     void add(Error::Type, User const*, char const*);
     void calc();

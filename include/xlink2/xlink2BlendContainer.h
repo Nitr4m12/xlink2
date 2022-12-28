@@ -1,28 +1,10 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
-#include "xlink2/xlink2Event.h"
+#include <xlink2/xlink2Event.h>
+#include "xlink2/xlink2ContainerBase.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
 
 namespace xlink2 {
-class ContainerBase {
-    virtual ~ContainerBase();
-
-public:
-    ContainerBase() = default;
-
-    void* createChildContainer(ResAssetCallTable const&, ContainerBase);
-    void destroy();
-    void fade(int);
-    void fadeBySystem();
-
-    void* initialize(Event*, ResAssetCallTable const&);
-
-    void kill();
-    void* killOneTimeEvent();
-
-private:
-};
-
 class BlendContainer : ContainerBase {
     ~BlendContainer() override;
 

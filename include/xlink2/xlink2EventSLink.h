@@ -2,7 +2,7 @@
 
 #include <container/seadPtrArray.h>
 #include <math/seadVectorFwd.h>
-#include "xlink2/xlink2.h"
+
 #include "xlink2/xlink2AssetExecutorSLink.h"
 
 namespace xlink2 {

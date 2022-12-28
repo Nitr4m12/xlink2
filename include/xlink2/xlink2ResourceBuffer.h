@@ -1,7 +1,7 @@
 #pragma once
 
 #include <heap/seadHeap.h>
-#include "xlink2/xlink2.h"
+#include "xlink2/xlink2System.h"
 
 namespace xlink2 {
 class ResourceBuffer {

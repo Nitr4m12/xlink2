@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
+#include "basis/seadTypes.h"
 
 namespace xlink2 {
 class EventELink {

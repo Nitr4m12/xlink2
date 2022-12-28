@@ -1,8 +1,7 @@
 #pragma once
 
-#include "prim/seadBitFlag.h"
-#include "prim/seadSafeString.h"
-#include "xlink2/xlink2.h"
+#include <prim/seadBitFlag.h>
+#include <prim/seadSafeString.h>
 
 namespace xlink2 {
 class AssetExecutorSLink {

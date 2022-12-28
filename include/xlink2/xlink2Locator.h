@@ -1,6 +1,9 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
+#include "basis/seadTypes.h"
+#include "xlink2/xlink2ResTriggerOverwriteParam.h"
+#include "xlink2/xlink2TriggerType.h"
+#include "xlink2/xlink2BoneMtx.h"
 
 namespace xlink2 {
 class Locator {

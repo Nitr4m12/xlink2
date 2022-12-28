@@ -1,7 +1,14 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
 #include "xlink2/xlink2Locator.h"
+#include "xlink2/xlink2ParamValueType.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2ResContainerParam.h"
+#include "xlink2/xlink2ResCurveCallTable.h"
+#include "xlink2/xlink2ResParam.h"
+#include "xlink2/xlink2ResRandomCallTable.h"
+#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2ValueReferenceType.h"
 
 namespace xlink2 {
 class ResourceAccessor {
@@ -71,145 +78,6 @@ public:
     void searchCallTable(char const*) const;
     void searchCallTable(Locator*, char const*) const;
     void setError(char const*, ...) const;
-
-private:
-};
-
-class ResourceAccessor2 {
-public:
-    f32 getCurveValue(ResParam const&) const;
-    f32 getRandomValue(ResRandomCallTable const&) const;
-    f32 getRandomValue(ResRandomCallTable const&, f32) const;
-    f32 getRandomValueWeightMax(ResRandomCallTable const&, f32) const;
-    f32 getRandomValueWeightMin(ResRandomCallTable const&, f32) const;
-    s64 getResRandomCallTable(ResParam const&) const;
-
-private:
-};
-
-class ResourceAccessorELink {
-    virtual ~ResourceAccessorELink();
-
-public:
-    f64 getAlpha(ResAssetCallTable const&, UserInstance const*) const;
-    f64 getAlphaWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u32 getAssetBitFlag(ResAssetCallTable const&) const;
-    char* getAssetName(ResAssetCallTable const&) const;
-    char* getBoneName(ResAssetCallTable const&) const;
-    char* getBoneNameWithOverwrite(ResAssetCallTable const&, u32) const;
-    u64 getClipType(ResAssetCallTable const&) const;
-    u64 getColorBlue(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getColorBlueWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u64 getColorGreen(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getColorGreenWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u64 getColorRed(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getColorRedWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getDelay(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getDelayWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u64 getDirectionalVel(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getDuration(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getEmissionInterval(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getEmissionRate(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getEmissionRateWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u64 getEmissionScale(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getEsetVal(ResAssetCallTable const&) const;
-    u64 getForceCalc(ResAssetCallTable const&) const;
-    u64 getGroupId(ResAssetCallTable const&) const;
-    char* getGroupName(ResAssetCallTable const&) const;
-    u64 getLifeScale(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getMtxSetType(ResAssetCallTable const&) const;
-    void getOverwriteAlpha(u32, UserInstance const*);
-    char* getOverwriteBoneName(u32) const;
-    void getOverwriteColorBlue(u32, UserInstance const*) const;
-    void getOverwriteColorGreen(u32, UserInstance const*) const;
-    void getOverwriteColorRed(u32, UserInstance const*) const;
-    f32 getOverwriteDelay(u32, UserInstance const*) const;
-    f32 getOverwriteEmissionRate(u32, UserInstance const*) const;
-    f32 getOverwritePositionX(u32, UserInstance const*) const;
-    f32 getOverwritePositionY(u32, UserInstance const*) const;
-    f32 getOverwritePositionZ(u32, UserInstance const*) const;
-    f32 getOverwriteRotationX(u32, UserInstance const*) const;
-    f32 getOverwriteRotationY(u32, UserInstance const*) const;
-    f32 getOverwriteRotationZ(u32, UserInstance const*) const;
-    f32 getOverwriteScale(u32, UserInstance const*) const;
-    f32 getPositionX(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getPositionXWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getPositionY(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getPositionYWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getPositionZ(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getPositionZWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f64 getRotateSourceType(ResAssetCallTable const&) const;
-    f32 getRotationX(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getRotationXWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getRotationY(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getRotationYWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getRotationZ(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getRotationZWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u64 getScale(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getScaleWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u32 getTriggerOverwriteParamId(u32) const;
-    bool isAutoOneTimeFade(ResAssetCallTable const&) const;
-    bool isBlankAsset(ResAssetCallTable const&) const;
-    bool isBoneNameOverwritten(u32) const;
-    bool isFollow(ResAssetCallTable const&) const;
-    bool isForceLoopAsset(ResAssetCallTable const&) const;
-    bool isUseOneEmitter(ResAssetCallTable const&) const;
-
-private:
-};
-
-class ResourceAccessorSLink {
-    virtual ~ResourceAccessorSLink();
-public:
-    u32 getAssetBitFlag(ResAssetCallTable const&) const;
-    char* getAssetName(ResAssetCallTable const&) const;
-    char* getBoneName(ResAssetCallTable const&) const;
-    char* getBoneNameWithOverwrite(ResAssetCallTable const&, u32) const;
-    f32 getDelay(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getDelayWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    char* getDistanceParamSetName(ResAssetCallTable const&) const;
-    u64 getDopplerFactor(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getDuration(ResAssetCallTable const&, UserInstance const*) const;
-    u32 getFadeCurveType(ResAssetCallTable const&);
-    u64 getFadeInTime(ResAssetCallTable const&, UserInstance*) const;
-    u64 getFadeInTimeWithOverwrite(ResAssetCallTable const&, u32, UserInstance*) const;
-    char* getGroupName(ResAssetCallTable const&) const;
-    u64 getLpf(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getLpf(ResAssetCallTable const&, u32, UserInstance const*) const;
-    char* getOverwriteBoneName(u32) const;
-    f32 getOverwriteDelay(u32, UserInstance const*) const;
-    u64 getOverwriteFadeInTime(u32, UserInstance const*) const;
-    u64 getOverwriteLpf(u32, UserInstance const*) const;
-    u64 getOverwritePitch(u32, UserInstance const*) const;
-    u64 getOverwritePriority(u32, UserInstance const*) const;
-    u64 getOverwriteStopFrame(u32, UserInstance const*) const;
-    u64 getOverwriteVolume(u32, UserInstance const*) const;
-    f32 getPitch(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getPitchWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getPriority(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getPriorityWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getStopFrame(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getStopFrameWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u32 getTriggerOverwriteParamId(u32) const;
-    char* getUserDistanceParamSetName() const;
-    u32 getUserDopplerFactor() const;
-    u32 getUserLimitType() const;
-    u32 getUserPlayableLimitNum() const;
-    u32 getUserPriority() const;
-    f32 getVolume(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getVolumeDrc(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getVolumeTv(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getVolumeWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    bool isAutoOneTimeFade(ResAssetCallTable const&) const;
-    bool isBlankAsset(ResAssetCallTable const&) const;
-    bool isBoneNameOverwritten(u32) const;
-    bool isFollow(ResAssetCallTable const&) const;
-    bool isForceLoopAsset(ResAssetCallTable const&) const;
-    bool isNoParamUpdate(ResAssetCallTable const&) const;
-    bool isNoPos(ResAssetCallTable const&) const;
-    bool isStopWhenEmitterDestroying(ResAssetCallTable const&) const;
-    bool isUnified(ResAssetCallTable const&) const;
-    bool isUserNoPos() const;
 
 private:
 };

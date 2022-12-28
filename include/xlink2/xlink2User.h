@@ -1,31 +1,19 @@
 #pragma once
 
+#include "heap/seadHeap.h"
 #include "math/seadMatrix.h"
-#include "xlink2/xlink2.h"
-#include "xlink2/xlink2ResourceParamCreator.h"
+#include "xlink2/xlink2EditorResourceParam.h"
+#include "xlink2/xlink2PropertyDefinition.h"
+#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2ToolConnectionContext.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class IUser {
-public:
-    u32 getActionName(int, int) const;
-    u64 getActionSlotName(int) const;
-    u64 getBoneWorldMtx(char const*, sead::Matrix34f*) const;
-    u64 getDebugDrawCamera() const;
-    u64 getDebugDrawProjection() const;
-    u64 getDebugUserName() const;
-    u64 getMtxCorrectingDrawBone() const;
-    u64 getNumAction(int) const;
-    void getReservedAssetName(ToolConnectionContext*) const;
-    u64 getUserInformation();
-
-private:
-};
-
 class User {
     virtual ~User();
 
 public:
-    User(char const*, sead::Heap*, System*, u32);
+    // User(char const*, sead::Heap*, System*, u32);
 
     void beginOtameshi();
     s32 calcNumActiveInstance() const;
@@ -35,7 +23,7 @@ public:
 
     u64 getLeaderInstance() const;
     f32 getMinSortKey() const;
-    UserInstance* getMinSortKeyInstance();
+    // UserInstance* getMinSortKeyInstance();
     void getSystem() const;
 
     void killAll();

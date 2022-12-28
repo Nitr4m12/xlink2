@@ -1,7 +1,10 @@
 #pragma once
 
 #include "container/seadBuffer.h"
-#include "xlink2/xlink2.h"
+#include "xlink2/xlink2ModelTriggerConnection.h"
+#include "xlink2/xlink2ResMode.h"
+#include "xlink2/xlink2ResProperty.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
 class PropertyTriggerCtrl {

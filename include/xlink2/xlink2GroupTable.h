@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xlink2/xlink2.h"
+#include "heap/seadHeap.h"
 
 namespace xlink2 {
 class GroupTable {

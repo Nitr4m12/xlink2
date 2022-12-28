@@ -1,16 +1,17 @@
 #pragma once
 
 #include "prim/seadSafeString.h"
-#include "xlink2/xlink2.h"
+#include "xlink2/xlink2CommonResourceParam.h"
+#include "xlink2/xlink2EditorHeader.h"
+#include "xlink2/xlink2EditorResourceParam.h"
 #include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2ResUserHeader.h"
+#include "xlink2/xlink2ResourceHeader.h"
+#include "xlink2/xlink2RomResourceParam.h"
+#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2UserBinParam.h"
 
 namespace xlink2 {
-class CommonResourceParam;
-class EditorResourceParam;
-class ResUserHeader;
-class RomResourceParam;
-class UserBinParam;
-
 class ResourceParamCreator {
 public:
     class BinAccessor {

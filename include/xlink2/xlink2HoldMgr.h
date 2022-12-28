@@ -1,7 +1,10 @@
 #pragma once
 
 #include "hostio/seadHostIOReflexible.h"
-#include "xlink2/xlink2.h"
+
+#include "xlink2/xlink2Handle.h"
+#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
 class HoldMgr {

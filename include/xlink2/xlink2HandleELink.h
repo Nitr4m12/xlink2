@@ -1,7 +1,6 @@
 #pragma once
 
-#include "math/seadVectorFwd.h"
-#include "xlink2/xlink2.h"
+#include <math/seadVectorFwd.h>
 
 namespace xlink2 {
 class HandleELink {
