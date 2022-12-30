@@ -3,10 +3,10 @@
 #include "basis/seadTypes.h"
 
 namespace xlink2 {
-class ResProperty {
+struct ResProperty {
     u32 watchPropertyNamePos;
-    u32 isGlobal;
-    u32 triggerStartIdx;
-    u32 triggerEndIdx;
+    s32 isGlobal;
+    s32 triggerStartIdx;
+    s32 triggerEndIdx;
 };
-}
+}  // namespace xlink2
