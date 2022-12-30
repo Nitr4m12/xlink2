@@ -4,9 +4,8 @@
 
 namespace xlink2 {
 struct ResAction {
-    u32 name;
-    u16 triggerStartIdx;
-    u16 triggerEndIdx;
-    u8 padding[4];
+    u32 namePos;
+    s32 triggerStartIdx;
+    s32 triggerEndIdx;
 };
 }  // namespace xlink2
