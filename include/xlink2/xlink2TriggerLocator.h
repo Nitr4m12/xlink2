@@ -15,13 +15,14 @@ public:
 
     void reset();
 
-    void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
+    void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx, u8);
 
 private:
     void* _0;
-    u32 _1;
+    u8 _1;
     TriggerType mTriggerType;
     ResTriggerOverwriteParam* mResTriggerOverwriteParam;
     BoneMtx* mBoneMtx;
+    u8 _2;
 };
 }  // namespace xlink2
