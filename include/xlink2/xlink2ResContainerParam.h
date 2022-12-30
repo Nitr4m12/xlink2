@@ -4,9 +4,13 @@
 #include "xlink2/xlink2ContainerType.h"
 
 namespace xlink2 {
-class ResContainerParam {
+struct ResContainerParam {
     ContainerType type;
-    u32 childrenStartIndex;
-    u32 childrenEndIndex;
+    s32 childrenStartIndex;
+    s32 childrenEndIndex;
+    u32 watchPropertyNamePos;
+    s32 watchPropertyId;
+    s16 localPropertyNameIdx;
+    bool isGlobal;
 };
 }  // namespace xlink2
