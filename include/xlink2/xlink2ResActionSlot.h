@@ -4,8 +4,8 @@
 
 namespace xlink2 {
 struct ResActionSlot {
-    u32 name;
-    u16 actionStartIdx;
-    u16 actionEndIdx;
+    u32 namePos;
+    s16 actionStartIdx;
+    s16 actionEndIdx;
 };
 }  // namespace xlink2
