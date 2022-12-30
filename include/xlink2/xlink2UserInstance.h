@@ -8,10 +8,14 @@
 #include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2System.h"
+#include "xlink2/xlink2TriggerCtrlMgr.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserInstanceParam.h"
 
 namespace xlink2 {
+class User;
+class System;
+
 class UserInstance {
     virtual ~UserInstance();
 
@@ -76,7 +80,7 @@ public:
 
     void onReset();
 
-    // ResMode onSetupInstanceParam(ResMode, sead::Heap*);
+    ResMode onSetupInstanceParam(ResMode, sead::Heap*);
 
     void postCalc();
     void preCalc();

@@ -4,11 +4,17 @@
 #include "math/seadMatrix.h"
 #include "xlink2/xlink2EditorResourceParam.h"
 #include "xlink2/xlink2PropertyDefinition.h"
+#include "xlink2/xlink2ResActionSlot.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2ToolConnectionContext.h"
 #include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
+class System;
+class UserResource;
+class UserInstance;
+
 class User {
     virtual ~User();
 
