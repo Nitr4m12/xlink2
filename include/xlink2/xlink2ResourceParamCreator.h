@@ -20,6 +20,12 @@ public:
         BinAccessor(EditorHeader*, ParamDefineTable const*);
 
     private:
+        ResourceHeader* mResourceHeader;
+        EditorHeader* mEditorHeader;
+        u32 mResourceHeaderPos;
+        u32 mNameTablePos;
+        u32 mNumUser;
+        u32 mNumResAssetParam;
     };
 
     void createCommonResourceParam(CommonResourceParam*, BinAccessor*);
