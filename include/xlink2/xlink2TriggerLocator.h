@@ -7,15 +7,21 @@
 
 namespace xlink2 {
 class TriggerLocator {
+    virtual ~TriggerLocator();
 public:
-    u64 getOverwriteBoneMtx() const;
-    u64 getTriggerOverwriteParam() const;
-    u32 getTriggerTyper() const;
+    BoneMtx* getOverwriteBoneMtx() const;
+    ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
+    TriggerType getTriggerType() const;
 
     void reset();
 
     void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
 
 private:
+    void* _0;
+    u32 _1;
+    TriggerType mTriggerType;
+    ResTriggerOverwriteParam* mResTriggerOverwriteParam;
+    BoneMtx* mBoneMtx;
 };
 }  // namespace xlink2
