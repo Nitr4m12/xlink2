@@ -52,16 +52,19 @@ public:
 
 private:
     // offset 0x20
-    // ResourceAccessor* mResourceAccessor;
+    // UserInstanceELink* mUserInstanceELink;
 
     // offset 0x28
     // ResAssetCallTable mResAssetCallTable;
+
+    // offset 0x38
+    // ResTriggerOverwriteParam* mResTriggerOverwriteParam
 
     // offset 0x50
     // AssetExecutorELink mAssetExecutorELink
 
     // offset 0x60
-    // EmitterSet? mEmitterSet?
+    // nn::vfx::Handle* mHandle
 
     // offset 0x74-0x88
     // u32 mU32[6];
