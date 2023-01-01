@@ -52,34 +52,32 @@ public:
     void updateParam();
 
 private:
-    // offset 0x18
-    // EventELink* mEvent;
-
-    // offset 0x20
-    // UserInstanceELink* mUserInstanceELink;
-
-    // offset 0x28
-    // ResAssetCallTable mResAssetCallTable;
-
-    // offset 0x38
-    // ResTriggerOverwriteParam* mResTriggerOverwriteParam
-
-    // offset 0x50
-    // AssetExecutorELink mAssetExecutorELink;
-
-    // offset 0x60
-    // nn::vfx::Handle* mHandle
-
-    // offset 0x74-0x88
-    // u32 mU32[6];
-
-    // offset 0x8c
-    // DelayEmitParam mDelayEmitParam;
-
-    // offset 0x90
-    // DelayEmitParam mDelayEmitParam2;
-
-    // offset 0x94
-    // DelayEmitParam mDelayEmitParam3;
+    u64 _0;
+    u64 _1;
+    EventELink* mEvent;
+    UserInstanceELink* mUserInstanceELink;
+    ResAssetCallTable* mResAssetCallTable;
+    u32 _2;
+    f32 _3;
+    ResTriggerOverwriteParam* mResTriggerOverwriteParam;
+    BoneMtx* mBoneMtx;
+    u64 _4;
+    u8 _5;
+    u32 _6;
+    u64 _7;
+    HandleELink* mHandle;
+    void* _9;
+    u16 _10;
+    u16 _11;
+    u32 mPositionXWithOverwrite;
+    u32 mPositionYWithOverwrite;
+    u32 mPositionZWithOverwrite;
+    u32 mRotationXWithOverwrite;
+    u32 mRotationYWithOverwrite;
+    u32 mRotationZWithOverwrite;
+    f32 _12;
+    f32 _13;
+    f32 _14;
+    f32 _15;
 };
 }
