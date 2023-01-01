@@ -17,21 +17,5 @@ class FixedEnumPropertyDefinition;
 namespace IEventCallbackELink {};
 namespace IEventCallbackSLink {};
 
-class PtclResourceAccessorELink {
-
-};
-class RandomContainer {
-public:
-    ~RandomContainer();
-    void calc();
-    bool start();
-
-private:
-};
-class RandomContainer2 {
-    ~RandomContainer2();
-    void* start();
-};
-
 class S32PropertyDefinition;
 }  // namespace xlink2
