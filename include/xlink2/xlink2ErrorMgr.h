@@ -5,6 +5,7 @@
 #include "xlink2/xlink2User.h"
 
 namespace xlink2 {
+class User;
 class ErrorMgr {
     virtual ~ErrorMgr();
 

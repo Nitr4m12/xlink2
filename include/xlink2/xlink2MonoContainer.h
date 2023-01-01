@@ -1,10 +1,11 @@
 #pragma once
 
+#include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 
 namespace xlink2 {
-class MonoContainer {
+class MonoContainer : ContainerBase {
     virtual ~MonoContainer();
 public:
     u64 initialize(Event*, ResAssetCallTable);

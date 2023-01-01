@@ -2,6 +2,7 @@
 
 #include "math/seadMatrix.h"
 #include "prim/seadBitFlag.h"
+#include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2ELinkAssetParamId.h"
 #include "xlink2/xlink2ELinkEventParam.h"
@@ -11,8 +12,8 @@
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
-class AssetExecutorELink {
-    virtual ~AssetExecutorELink();
+class AssetExecutorELink : AssetExecutor{
+     ~AssetExecutorELink() override;
 
 public:
     void _applyColorAlpha();
@@ -22,7 +23,7 @@ public:
     void calcMtx(sead::Matrix34f* param_1, ResAssetCallTable* param_2, UserInstanceELink* param_3,
                  ResTriggerOverwriteParam* param_4, BoneMtx param_5);
 
-    void dumpDebugPrint();
+    void dumpDebugPrint() override;
 
     u32 emitEffect();
     void emitParticle(sead::Vector3f*);
@@ -51,6 +52,9 @@ public:
     void updateParam();
 
 private:
+    // offset 0x18
+    // EventELink* mEvent;
+
     // offset 0x20
     // UserInstanceELink* mUserInstanceELink;
 
@@ -61,7 +65,7 @@ private:
     // ResTriggerOverwriteParam* mResTriggerOverwriteParam
 
     // offset 0x50
-    // AssetExecutorELink mAssetExecutorELink
+    // AssetExecutorELink mAssetExecutorELink;
 
     // offset 0x60
     // nn::vfx::Handle* mHandle

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "basis/seadTypes.h"
+#include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 
 namespace xlink2 {
-class SwitchContainer {
+class SwitchContainer : ContainerBase {
     virtual ~SwitchContainer();
 
 public:

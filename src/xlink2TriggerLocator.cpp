@@ -18,11 +18,9 @@ BoneMtx* TriggerLocator::getOverwriteBoneMtx() const
 
 void TriggerLocator::reset()
 {
-    s32 v1 = -1;
-
     _0 = nullptr;
     _1 = 0;
-    mTriggerType = (TriggerType)v1;
+    mTriggerType = (TriggerType)-1;
     mResTriggerOverwriteParam = nullptr;
     mBoneMtx = nullptr;
 }

@@ -13,7 +13,7 @@
 #include "xlink2/xlink2ResourceAccessorSLink.h"
 
 namespace xlink2 {
-class UserInstanceSLink {
+class UserInstanceSLink : UserInstance {
     virtual ~UserInstanceSLink();
 
 public:
@@ -55,7 +55,7 @@ public:
     void freeInstanceParam(UserInstanceParam*, ResMode);
 
     u64 getResourceAccessor() const;
-    u64 getResourceSLink() const;
+    ResourceAccessorSLink* getResourceSLink() const;
     s32 getSoundSourceNum() const;
 
     void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);

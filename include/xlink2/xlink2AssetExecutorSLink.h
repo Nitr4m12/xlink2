@@ -3,9 +3,11 @@
 #include <prim/seadBitFlag.h>
 #include <prim/seadSafeString.h>
 
+#include "xlink2/xlink2AssetExecutor.h"
+
 namespace xlink2 {
-class AssetExecutorSLink {
-    virtual ~AssetExecutorSLink();
+class AssetExecutorSLink : AssetExecutor {
+     ~AssetExecutorSLink() override;
 public:
     void _applyParam(sead::BitFlag32);
     void _updateParam();
@@ -36,8 +38,17 @@ public:
     void updateParam();
     void updateParamFirst();
 private:
+    // offset 0x18
+    // EventSLink* mEventSLink;
+
+    // offset 0x20
+    // UserInstanceSLink* mUserInstance;
+
+    // offset 0x38
+    // ResAssetCallTable* mResAssetCallTable;
+
     // offset 0x68
-    // float mPlayingTime;
+    // aal::Handle* mHandle;
 
 };
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "basis/seadTypes.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2ResRandomCallTable.h"
 
@@ -15,5 +16,6 @@ public:
     s64 getResRandomCallTable(ResParam const&) const;
 
 private:
+    ResAssetCallTable* mResAssetCallTable;
 };
 }

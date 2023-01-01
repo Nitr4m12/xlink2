@@ -1,5 +1,8 @@
 #pragma once
 
+#include "basis/seadTypes.h"
 namespace xlink2 {
-class PropertyDefinition {};
+struct PropertyDefinition {
+    u32 namePos;
+};
 }

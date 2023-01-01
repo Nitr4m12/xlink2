@@ -8,7 +8,7 @@ class AssetExecutor {
     virtual ~AssetExecutor();
 
 public:
-    void dumpDebugPrint();
-    void onDestroy();
+    virtual void dumpDebugPrint();
+    virtual void onDestroy();
 };
 }  // namespace xlink2

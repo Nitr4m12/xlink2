@@ -26,5 +26,18 @@ public:
     u32 searchAndHold(char const*, Handle*, UserInstance*);
 
 private:
+    System* mSystem;
+    sead::CriticalSection* mCriticalSection;
+
+    // 0x30
+    // Event* mEvent1;
+
+    // 0x50
+    // sead::ListNode* mListNode1;
+    // 0x58
+    // sead::ListNode* mListNode2;
+
+    // 0x68
+    // Event* mEvent2;
 };
 }  // namespace xlink2

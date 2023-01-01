@@ -2,11 +2,12 @@
 
 #include "xlink2/xlink2HandleELink.h"
 #include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2User.h"
 
 namespace xlink2 {
-class UserInstanceELink {
+class UserInstanceELink : UserInstance {
     virtual ~UserInstanceELink();
 
 public:
@@ -19,8 +20,8 @@ public:
     void freeInstanceParam(UserInstanceParam*, ResMode);
 
     UserInstanceELink getDefaultGroup() const;
-    u64 getResourceAccessor() const;
-    u64 getResourceELink() const;
+    ResAssetCallTable* getResourceAccessor() const;
+    ResourceAccessorELink* getResourceELink() const;
 
     void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);
 

@@ -2,12 +2,15 @@
 
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2PtclResourceAccessorELink.h"
+#include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 
 namespace xlink2 {
+class System;
+class User;
+
 class UserResource {
     virtual ~UserResource();
 
@@ -40,11 +43,18 @@ public:
 
     void setup(sead::Heap*);
     void setupEditorResourceParam(EditorResourceParam*, sead::Heap*);
-    void setupResourceParam(UserResourceParam*, ResUserHeader*, CommonResourceParam const*, ParamDefineTable const*, sead::Heap*);
+    void setupResourceParam(UserResourceParam*, ResUserHeader*, CommonResourceParam const*,
+                            ParamDefineTable const*, sead::Heap*);
     void setupRomResourceParam(sead::Heap*);
 
     void solveNeedObserveFlag(UserResourceParam*);
     u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
+
+    System* getSystem();
+
 private:
+    User* mUser;
+    // 0x20
+    // System*
 };
 }  // namespace xlink2

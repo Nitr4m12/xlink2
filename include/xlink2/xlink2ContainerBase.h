@@ -20,5 +20,11 @@ public:
     void* killOneTimeEvent();
 
 private:
+    ResAssetCallTable* mResAssetCallTable;
+    Event* mEvent;
+
+    // offset 0x28
+    // Needs to be checked
+    // s32 mDuration;
 };
 }

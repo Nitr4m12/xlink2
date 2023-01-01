@@ -12,6 +12,8 @@
 #include "xlink2/xlink2UserBinParam.h"
 
 namespace xlink2 {
+class System;
+
 class ResourceParamCreator {
 public:
     class BinAccessor {

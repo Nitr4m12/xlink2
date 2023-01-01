@@ -9,6 +9,8 @@
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
+class UserInstance;
+
 class Event {
     virtual ~Event();
 
@@ -21,7 +23,7 @@ public:
     void callEventCreateCallback();
     void callEventDestroyCallback();
 
-    // u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
+    u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
     void destroyAllContainerAndAssetExecutor();
 
     void doFinalize();
@@ -40,5 +42,11 @@ public:
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
 
 private:
+    // 0x28
+    UserInstance* mUserInstance;
+    ResAssetCallTable* mResAssetCallTable;
+    TriggerType mTriggerType;
+    ResTriggerOverwriteParam mResTriggerOverwriteParam;
+    BoneMtx* mBoneMtx;
 };
 }  // namespace xlink2

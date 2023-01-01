@@ -2,11 +2,13 @@
 
 #include "basis/seadTypes.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class ResourceAccessorSLink {
+class ResourceAccessorSLink : ResourceAccessor {
     virtual ~ResourceAccessorSLink();
+
 public:
     u32 getAssetBitFlag(ResAssetCallTable const&) const;
     char* getAssetName(ResAssetCallTable const&) const;
@@ -60,4 +62,4 @@ public:
 
 private:
 };
-}
+}  // namespace xlink2

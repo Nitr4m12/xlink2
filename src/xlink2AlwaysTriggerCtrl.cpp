@@ -5,6 +5,5 @@ AlwaysTriggerCtrl::AlwaysTriggerCtrl(UserInstance* userInstance, sead::Buffer<Mo
 {
     mUserInstance = userInstance;
     mBuffer = buffer;
-    _0 = 1;
 };
 }

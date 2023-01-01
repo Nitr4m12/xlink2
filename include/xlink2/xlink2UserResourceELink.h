@@ -1,7 +1,6 @@
 #pragma once
 
 #include "heap/seadHeap.h"
-#include "xlink2/xlink2.h"
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2User.h"
@@ -9,7 +8,7 @@
 #include "xlink2/xlink2UserResourceParamELink.h"
 
 namespace xlink2 {
-class UserResourceELink {
+class UserResourceELink : UserResource {
     virtual ~UserResourceELink();
 
 public:

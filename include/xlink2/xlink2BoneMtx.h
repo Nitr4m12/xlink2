@@ -1,5 +1,7 @@
 #pragma once
 
+#include "math/seadMatrix.h"
+
 namespace xlink2 {
-class BoneMtx {};
+class BoneMtx : sead::Matrix34f {};
 }

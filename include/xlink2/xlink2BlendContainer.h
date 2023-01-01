@@ -15,9 +15,5 @@ public:
     u8 start();
 
 private:
-    ResAssetCallTable* mResAssetCallTable;
-    Event* mEvent;
 };
-
-void* CreateContainer(Event*, ResAssetCallTable const&);
 }  // namespace xlink2

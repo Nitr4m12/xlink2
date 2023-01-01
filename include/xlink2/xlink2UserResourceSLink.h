@@ -5,7 +5,7 @@
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 namespace xlink2 {
-class UserResourceSLink {
+class UserResourceSLink : UserResource {
     virtual ~UserResourceSLink();
 
 public:
@@ -27,5 +27,7 @@ public:
     // void solveIsLoop(UserResourceParam*, ParamDefineTable const*, aal::IAssetInfoReadable*)
 
 private:
+    // 0x108
+    // IAssetInfoReadable* mIAssetInfoReadable;
 };
 }

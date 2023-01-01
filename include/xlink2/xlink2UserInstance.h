@@ -7,14 +7,16 @@
 #include "xlink2/xlink2Handle.h"
 #include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2Locator.h"
+#include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2TriggerCtrlMgr.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserInstanceParam.h"
 
 namespace xlink2 {
-class User;
+class Event;
 class System;
+class User;
 
 class UserInstance {
     virtual ~UserInstance();
@@ -30,11 +32,11 @@ public:
         RebuildArg() = default;
     };
 
-    // UserInstance(CreateArg const&, System*, User*, sead::Heap*);
+    UserInstance(CreateArg const&, System*, User*, sead::Heap*);
 
     void changeAction(char const*, s32, s32);
     void changeAction(s32, s32, s32);
-    // void changeInstanceParam(ResMode);
+    void changeInstanceParam(ResMode);
 
     void checkAndBreakWhenEmit(char const*);
     u64 checkAndErrorCallInCalc(char const*, ...) const;
@@ -42,14 +44,14 @@ public:
 
     void clearAllEvent();
     void destroy();
-    // void doEventActivatedCallback(Locator const&, Event*);s
+    void doEventActivatedCallback(Locator const&, Event*);
     void doEventActivatingCallback(Locator const&);
     void doOtameshiEmit();
 
     void emitImpl(Locator const&, Handle*);
     void fadeOrKillOtameshi(bool);
     void freeEventIfFadeOrKillCalled();
-    // void freeInstanceParam(UserInstanceParam*, ResMode);
+    void freeInstanceParam(UserInstanceParam*, ResMode);
 
     void getContainerTypeName(ResAssetCallTable const&) const;
     void getCurrentResActionIdx(s32) const;
@@ -85,10 +87,10 @@ public:
     void postCalc();
     void preCalc();
 
-    // void printLogContainerSelect(Event const&, char const*, ...) const;
+    void printLogContainerSelect(Event const&, char const*, ...) const;
     void printLogEmitFailed(char const*, char const*, ...) const;
-    // void printLogEmitFailed(Event const&, char const*, ...) const;
-    // void printLogFadeOrKill(Event const*, char const*, ...) const;
+    void printLogEmitFailed(Event const&, char const*, ...) const;
+    void printLogFadeOrKill(Event const*, char const*, ...) const;
     void* printLogSearchAsset(bool, char const*, ...) const;
 
     void rebuild(RebuildArg const&);
@@ -113,7 +115,7 @@ public:
     void setRootPos(sead::Vector3f const*);
 
     void setupEditorInstanceParam();
-    // void setupInstanceParam(ResMode, sead::Heap*);
+    void setupInstanceParam(ResMode, sead::Heap*);
     void setupResource(sead::Heap*);
 
     void sleep();
@@ -122,5 +124,27 @@ public:
     void* trySearchSwitchContainerRecursive(ResAssetCallTable const**, ResAssetCallTable const&);
 
     void updateSortKey();
+private:
+    u64 _0;
+    u64 _1;
+    u64 _2;
+    u64 _3;
+    u64 _4;
+
+    // 0x30
+    User* mUser;
+
+    u64 _5;
+    u64 _6;
+    u64 _7;
+    u64 _8;
+    u64 _9;
+    u64 _10;
+    u64 _11;
+    u64 _12;
+    // 0x78
+    TriggerCtrlMgr* mTriggerCtrlMgr;
+
+    //
 };
 }  // namespace xlink2

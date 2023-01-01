@@ -16,11 +16,9 @@ class UserResource;
 class UserInstance;
 
 class User {
-    virtual ~User();
-
 public:
-    // User(char const*, sead::Heap*, System*, u32);
-
+    User(char const*, sead::Heap*, System*, u32);
+    ~User();
     void beginOtameshi();
     s32 calcNumActiveInstance() const;
     void changeEditorResource(EditorResourceParam*, sead::Heap*);
@@ -29,8 +27,8 @@ public:
 
     u64 getLeaderInstance() const;
     f32 getMinSortKey() const;
-    // UserInstance* getMinSortKeyInstance();
-    void getSystem() const;
+    UserInstance* getMinSortKeyInstance();
+    System* getSystem() const;
 
     void killAll();
     void loadEventAndTriggerRestart();
@@ -50,5 +48,18 @@ public:
     void updateSortKey();
 
 private:
+    char* mName;
+    void* _1;
+    char* _2;
+    UserResource* mUserResource;
+    User* mUser1;
+    User* mUser2;
+    u32 _6;
+    s32 mUserInstancePos;
+    sead::Heap* mHeap;
+    u32 _8;
+    u16 _9;
+    s16 mResActionSlotNum;
+    ResActionSlot* mResActionSlotTable;
 };
 }  // namespace xlink2

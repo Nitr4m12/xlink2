@@ -80,5 +80,8 @@ public:
     void setError(char const*, ...) const;
 
 private:
+    // 0x10
+    UserResource* mUserResource;
+    System* mSystem;
 };
 }  // namespace xlink2

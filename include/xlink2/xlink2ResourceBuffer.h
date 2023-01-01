@@ -1,6 +1,7 @@
 #pragma once
 
 #include <heap/seadHeap.h>
+#include "xlink2/xlink2RomResourceParam.h"
 #include "xlink2/xlink2System.h"
 
 namespace xlink2 {
@@ -16,5 +17,9 @@ public:
 
     u64 searchResUserHeader(char const*) const;
 private:
+    RomResourceParam* mRomResourceParam;
+
+    // 0xa0
+    // ParamDefineTable* mParamDefineTable;
 };
 }

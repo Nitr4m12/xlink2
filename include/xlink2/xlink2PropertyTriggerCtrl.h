@@ -4,10 +4,11 @@
 #include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2ResProperty.h"
+#include "xlink2/xlink2TriggerCtrl.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class PropertyTriggerCtrl {
+class PropertyTriggerCtrl : TriggerCtrl {
     virtual ~PropertyTriggerCtrl();
 
 public:
@@ -17,5 +18,9 @@ public:
     void reset();
 
 private:
+    UserInstance* mUserInstance;
+    sead::Buffer<ModelTriggerConnection>* mBuffer;
+    ResProperty* mResProperty;
+
 };
 }  // namespace xlink2

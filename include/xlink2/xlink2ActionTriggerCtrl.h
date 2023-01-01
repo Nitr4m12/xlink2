@@ -11,8 +11,8 @@
 #include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
-class ActionTriggerCtrl {
-    virtual ~ActionTriggerCtrl();
+class ActionTriggerCtrl : TriggerCtrl {
+     ~ActionTriggerCtrl() override;
 
 public:
     ActionTriggerCtrl(UserInstance* param_1, sead::Buffer<ModelTriggerConnection>* param_2,
@@ -26,7 +26,7 @@ public:
 
     void emitByTrigger_(int);
 
-    u32 getActionTrigger(ResActionTrigger const&);
+    u32 getActionTriggerType(ResActionTrigger const&);
     int getCurrentResActionIdx();
     void notifyActive();
     void reset();
@@ -35,15 +35,13 @@ public:
     void stopAction();
 
 private:
-    // TriggerCtrl* mTriggerCtrl {nullptr};
-    UserInstance* mUserInstance;
-    sead::Buffer<ModelTriggerConnection>* mBuffer;
     ResActionSlot* mResActionSlot;
     // WARNING: These are temporary variables to denote that
     // something is occupying this space
-    u64 _0;
     u32 _1;
-    u64 _2;
-    u8 _3;
+    u32 _2;
+    u32 _3;
+    ResAction* mResAction;
+    u8 _4;
 };
 }  // namespace xlink2

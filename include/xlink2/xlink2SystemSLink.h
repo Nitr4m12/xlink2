@@ -5,7 +5,7 @@
 #include "xlink2/xlink2UserResourceSLink.h"
 
 namespace xlink2 {
-class SystemSLink {
+class SystemSLink : System{
     virtual ~SystemSLink();
 
 public:

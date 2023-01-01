@@ -2,10 +2,11 @@
 
 #include "basis/seadTypes.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class ResourceAccessorELink {
+class ResourceAccessorELink : ResourceAccessor {
     virtual ~ResourceAccessorELink();
 
 public:
@@ -75,4 +76,4 @@ public:
 
 private:
 };
-}
+}  // namespace xlink2
