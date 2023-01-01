@@ -6,7 +6,7 @@
 
 namespace xlink2 {
 class SequenceContainer : ContainerBase {
-    virtual ~SequenceContainer();
+     ~SequenceContainer() override;
 
 public:
     u32 calc();

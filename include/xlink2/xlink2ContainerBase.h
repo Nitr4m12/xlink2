@@ -22,9 +22,8 @@ public:
 private:
     ResAssetCallTable* mResAssetCallTable;
     Event* mEvent;
-
-    // offset 0x28
-    // Needs to be checked
-    // s32 mDuration;
+    ContainerBase* mChildContainer;
+    void* _0;
+    s32 mResAssetDuration;
 };
 }

@@ -6,7 +6,7 @@
 
 namespace xlink2 {
 class SwitchContainer : ContainerBase {
-    virtual ~SwitchContainer();
+     ~SwitchContainer() override;
 
 public:
     u32 calc();
