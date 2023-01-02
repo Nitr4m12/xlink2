@@ -2,6 +2,8 @@
 
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2AssetExecutor.h"
+
 namespace xlink2 {
 class ContainerBase {
     virtual ~ContainerBase();
@@ -22,7 +24,7 @@ public:
 private:
     ResAssetCallTable* mResAssetCallTable;
     Event* mEvent;
-    ContainerBase* mChildContainer;
+    AssetExecutor* mChildContainer;
     void* _0;
     s32 mResAssetDuration;
 };
