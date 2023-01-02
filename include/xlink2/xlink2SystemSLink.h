@@ -5,6 +5,7 @@
 #include "xlink2/xlink2UserResourceSLink.h"
 
 namespace xlink2 {
+class UserResourceSLink;
 class SystemSLink : System{
     virtual ~SystemSLink();
 
@@ -43,5 +44,22 @@ public:
     void stopAllEvent(s32);
 
 private:
+    // 0x7f4
+    // u16
+
+    // 0x7f8
+    // System* mSystem;
+
+    // 0x800
+    // void*
+
+    // 0x808
+    // void*
+
+    // 0x810
+    // void*
+
+    // 0x818
+    // void*
 };
 }
