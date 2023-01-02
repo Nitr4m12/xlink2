@@ -14,5 +14,8 @@ public:
 
     void* searchKey(int) const;
 private:
+    s32 _0;
+    s32 _1;
+    void* _2;
 };
 }  // namespace xlink2
