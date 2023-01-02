@@ -4,7 +4,11 @@
 
 namespace xlink2 {
 class RandomContainer2 : ContainerBase {
-    ~RandomContainer2();
+    ~RandomContainer2() override;
+
+public:
     void* start();
+
+private:
 };
-}
+}  // namespace xlink2
