@@ -2,9 +2,11 @@
 
 #include "heap/seadHeap.h"
 #include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2SystemSLink.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 namespace xlink2 {
+class SystemSLink;
 class UserResourceSLink : UserResource {
     virtual ~UserResourceSLink();
 
@@ -27,7 +29,12 @@ public:
     // void solveIsLoop(UserResourceParam*, ParamDefineTable const*, aal::IAssetInfoReadable*)
 
 private:
-    // 0x108
-    // IAssetInfoReadable* mIAssetInfoReadable;
+    UserResourceParam* mUserResourceParam;
+    void* _0;
+    u8 _1;
+    ResourceAccessor* mResourceAccessor;
+    void* _2;
+    UserResourceSLink* mUserResourceELink;
+    SystemSLink* mSystem;
 };
 }
