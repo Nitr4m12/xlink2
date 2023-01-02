@@ -15,5 +15,6 @@ public:
     u64 start();
 
 private:
+    s32 _0;
 };
 }  // namespace xlink2
