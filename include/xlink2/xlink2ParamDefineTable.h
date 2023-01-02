@@ -30,5 +30,19 @@ public:
 
     void setup(u8*, u32, bool);
 private:
+    // size = 0x48
+    u32 mSize;
+    u32 mUserParamNum;
+    u32 mAssetParamNum;
+    u32 mTriggerParamNum;
+    void* mUserParam;
+    void* mAssetParam;
+    void* mTriggerParam;
+    void* _7;
+    s32 _8;
+    u32 _9;
+    u32 _10;
+    u32 _11;
+    u8 _12;
 };
 }  // namespace xlink2
