@@ -3,11 +3,13 @@
 #include "heap/seadHeap.h"
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2SystemELink.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 #include "xlink2/xlink2UserResourceParamELink.h"
 
 namespace xlink2 {
+class SystemELink;
 class UserResourceELink : UserResource {
     virtual ~UserResourceELink();
 
@@ -29,5 +31,12 @@ public:
     void solveResourceForChangeEset();
 
 private:
+    UserResourceParam* mUserResourceParam;
+    void* _0;
+    u8 _1;
+    ResourceAccessor* mResourceAccessor;
+    void* _2;
+    UserResourceELink* mUserResourceELink;
+    SystemELink* mSystem;
 };
 }
