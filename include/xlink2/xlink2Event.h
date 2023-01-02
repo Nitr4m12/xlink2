@@ -42,11 +42,27 @@ public:
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
 
 private:
+    u32 _0;
+    void* _1;
+    void* _2;
+    u32 _3;
     // 0x28
     UserInstance* mUserInstance;
     ResAssetCallTable* mResAssetCallTable;
     TriggerType mTriggerType;
-    ResTriggerOverwriteParam mResTriggerOverwriteParam;
+    ResTriggerOverwriteParam* mResTriggerOverwriteParam;
     BoneMtx* mBoneMtx;
+    u8 _4;
+    void* _5;
+    u64 _6;
+    u64 _7;
+    u32 _8;
+    u32 _9;
+    void* _10;
+    void* _11;
+    u32 _12;
+    u32 _13;
+    u32 _14;
+    u8 _15;
 };
 }  // namespace xlink2
