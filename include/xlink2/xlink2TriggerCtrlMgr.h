@@ -8,8 +8,6 @@
 
 namespace xlink2 {
 class TriggerCtrlMgr {
-    virtual ~TriggerCtrlMgr();
-
 public:
     TriggerCtrlMgr();
 
@@ -41,8 +39,12 @@ public:
 
     void updateActionNeedToCalcFlag(s32);
     void updateGlobalPropertyTriggerCtrl();
-    ;
 
 private:
+    u32 _0;
+    TriggerCtrlParam* mParam1;
+    TriggerCtrlParam* mParam2;
+    u32 _1;
+
 };
 }
