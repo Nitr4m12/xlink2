@@ -77,5 +77,6 @@ public:
     void stopAllEvent(s32);
 
 private:
+    // size=0x128
 };
 }

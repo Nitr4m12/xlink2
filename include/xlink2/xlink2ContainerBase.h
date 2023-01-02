@@ -5,6 +5,7 @@
 #include "xlink2/xlink2AssetExecutor.h"
 
 namespace xlink2 {
+class Event;
 class ContainerBase {
     virtual ~ContainerBase();
 

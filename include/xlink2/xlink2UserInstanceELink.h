@@ -38,5 +38,6 @@ public:
     void searchAndHold(char const*, HandleELink*);
 
 private:
+    // size=0x108
 };
 }

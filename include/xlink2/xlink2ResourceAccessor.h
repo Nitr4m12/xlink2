@@ -11,6 +11,10 @@
 #include "xlink2/xlink2ValueReferenceType.h"
 
 namespace xlink2 {
+class UserResource;
+class UserInstance;
+class System;
+
 class ResourceAccessor {
     virtual ~ResourceAccessor();
 
