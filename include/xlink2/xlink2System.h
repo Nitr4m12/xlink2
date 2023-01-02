@@ -7,6 +7,7 @@
 #include "prim/seadSafeString.h"
 
 #include "xlink2/xlink2AssetExecutor.h"
+#include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2ContainerType.h"
 #include "xlink2/xlink2EditorBuffer.h"
 #include "xlink2/xlink2Error.h"
@@ -20,6 +21,7 @@
 #include "xlink2/xlink2User.h"
 
 namespace xlink2 {
+class ContainerBase;
 class Event;
 class EditorBuffer;
 class ErrorMgr;
@@ -123,37 +125,63 @@ public:
 
     // void writeBlinkText(sead::SafeString const&, sead::TextWriter*) const;
     // void writeLines(sead::SafeString const&, sead::TextWriter*) const;
+
 private:
     ResourceBuffer* mResourceBuffer;
     sead::ListNode* mListNode;
-
-    // 0x34
+    void* _0;
+    s32 _1;
+    s32 _2;
+    void* _3;
+    // s32 - 0x2c?
+    s32 _4;
     s32 mEventCreateId;
-
-    // 0x60
+    u8 _5;
+    u32 _6;
+    void* _7;
+    void* _8;
+    void* _9;
+    u8 _10;
     ErrorMgr* mErrorMgr;
     HoldMgr* mHoldMgr;
-
-    // 0x78
+    u32 _11;
+    u8 _12;
     sead::Heap* mHeap1;
-
-    // 0x88
+    u32 _13;
     sead::PtrArrayImpl* mPtrArrayImpl;
-
-    // 0xb8
+    void* _14;
+    sead::Random* mRandom;
+    ContainerBase* xlinkContainer;
+    AssetExecutor* xlinkAssetExecutor;
+    void* _17;
     sead::Heap* mHeap2;
     EditorBuffer* mEditorBuffer;
-
-    // 0xd0
-    sead::ListImpl* mListImpl;
-
-    // 0x100
+    s32 _18;
+    u32 _19;
+    sead::ListNode* mListNode2;
+    f32 _20;
+    void* _21;
+    void* _22;
+    void* _23;
+    u32 _24;
     DebugOperationParam* mDebugOperationParam;
 
     // 0x458
-    DebugOperationParam* mDebugOperationParam2;
+    // DebugOperationParam* mDebugOperationParam2;
 
-    // 0x7c8?
+    // 0x7b0
+    // u8
+
+    // 0x7b8
+    // void*
+
+    // 0x7c0
+    // void*
+
+    // 0x7c8
     // UserInstance* mUserInstance;
+
+    // 0x7d0
+    // u8
 };
 }  // namespace xlink2
