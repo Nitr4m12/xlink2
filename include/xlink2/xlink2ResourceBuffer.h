@@ -7,6 +7,7 @@
 namespace xlink2 {
 class ResourceBuffer {
     virtual ~ResourceBuffer();
+
 public:
     ResourceBuffer();
 
@@ -16,10 +17,34 @@ public:
     u64 load(void*, System*);
 
     u64 searchResUserHeader(char const*) const;
-private:
-    RomResourceParam* mRomResourceParam;
 
-    // 0xa0
-    // ParamDefineTable* mParamDefineTable;
+private:
+    // size = 0xe8
+    RomResourceParam* mRomResourceParam;
+    void* _0;
+    void* _1;
+    void* _2;
+    u32 _3;
+    void* _4;
+    u32 _5;
+    void* _6;
+    void* _7;
+    void* _8;
+    void* _9;
+    void* _10;
+    void* _11;
+    void* _12;
+    u32 _13;
+    void* _14;
+    void* _15;
+    u32 _16;
+    u8 _17;
+    u8 _18[3];
+    s32 _19;
+    u8 _20;
+    ParamDefineTable* mParamDefineTable;
+
+    // 0xe0
+    // u8
 };
-}
+}  // namespace xlink2
