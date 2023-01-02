@@ -2,6 +2,6 @@
 
 namespace xlink2 {
 class ILockProxy {
-    ~ILockProxy();
+    virtual ~ILockProxy();
 };
 }
