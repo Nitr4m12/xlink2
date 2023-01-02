@@ -9,7 +9,7 @@
 
 namespace xlink2 {
 class PropertyTriggerCtrl : TriggerCtrl {
-    virtual ~PropertyTriggerCtrl();
+     ~PropertyTriggerCtrl() override;
 
 public:
     PropertyTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*, s32, bool,
@@ -18,9 +18,11 @@ public:
     void reset();
 
 private:
-    UserInstance* mUserInstance;
-    sead::Buffer<ModelTriggerConnection>* mBuffer;
     ResProperty* mResProperty;
+    s32 _0;
+    u32 _1;
+    u8 _2;
+    bool _3;
 
 };
 }  // namespace xlink2
