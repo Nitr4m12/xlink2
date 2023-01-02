@@ -6,7 +6,7 @@
 
 namespace xlink2 {
 class MonoContainer : ContainerBase {
-    virtual ~MonoContainer();
+     ~MonoContainer() override;
 public:
     u64 initialize(Event*, ResAssetCallTable);
 
@@ -20,5 +20,8 @@ public:
     u64 start();
 
 private:
+    f32 _1;
+    f32 _2;
+    // TODO: possibly more?
 };
 }  // namespace xlink2
