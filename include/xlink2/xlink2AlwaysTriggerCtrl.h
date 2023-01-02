@@ -16,5 +16,6 @@ public:
     void emitByTrigger_(int);
     void notifyActive();
 private:
+    u8 _0;
 };
 }
