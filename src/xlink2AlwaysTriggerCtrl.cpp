@@ -6,4 +6,9 @@ AlwaysTriggerCtrl::AlwaysTriggerCtrl(UserInstance* userInstance, sead::Buffer<Mo
     mUserInstance = userInstance;
     mBuffer = buffer;
 };
+
+void AlwaysTriggerCtrl::notifyActive()
+{
+    _0 = 1;
+}
 }
