@@ -21,17 +21,17 @@ public:
     void calc();
     void changeAction(char const*, int);
     void changeAction(int, int);
-    void changeActionImpl_(ResAction const*, int, UserResource const*);
-    void changeActionImpl_old_(ResAction const*, int, UserResource const*);
+    void changeActionImpl(ResAction const*, int, UserResource const*);
+    void changeActionImpl_old(ResAction const*, int, UserResource const*);
 
-    void emitByTrigger_(int);
+    void emitByTrigger(int);
 
-    u32 getActionTriggerType(ResActionTrigger const&);
+    static u32 getActionTriggerType_(ResActionTrigger const& action_trigger);
     int getCurrentResActionIdx();
     void notifyActive();
     void reset();
     void restartAction(char const*, int);
-    u32 searchResAction_(ResActionSlot const*, char const*, int*);
+    u32 searchResAction(ResActionSlot const*, char const*, int*);
     void stopAction();
 
 private:
