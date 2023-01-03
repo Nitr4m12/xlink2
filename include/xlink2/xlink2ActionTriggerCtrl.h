@@ -38,10 +38,9 @@ private:
     ResActionSlot* mResActionSlot;
     // WARNING: These are temporary variables to denote that
     // something is occupying this space
+    void* _0;
     u32 _1;
-    u32 _2;
-    u32 _3;
     ResAction* mResAction;
-    u8 _4;
+    u8 _2;
 };
 }  // namespace xlink2
