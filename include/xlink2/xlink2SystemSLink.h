@@ -7,10 +7,10 @@
 namespace xlink2 {
 class UserResourceSLink;
 class SystemSLink : System{
-    virtual ~SystemSLink();
+     ~SystemSLink() override;
 
 public:
-    SystemSLink() = default;
+    SystemSLink();
 
     class SingletonDisposer;
 
@@ -29,7 +29,7 @@ public:
     //                             sead::Viewport const&) const;
     // void drawInformationEvent(sead::TextWriter*) const;
     // void drawInformationSystemDetail(sead::TextWriter*) const;
-    void genMessage(sead::hostio::Context*);
+    void genMessage(sead::hostio::Context* /*unused*/){};
 
     u64 getEventFromPool(u32) const;
     u64 getModuleLockObj() const;
@@ -40,7 +40,7 @@ public:
 
     bool isEnableUserAssetInfoReadable();
 
-    void listenPropertyEvent(sead::hostio::PropertyEvent const*);
+    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/){};
     void stopAllEvent(s32);
 
 private:

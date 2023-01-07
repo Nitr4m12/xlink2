@@ -29,20 +29,20 @@ public:
     void emitParticle(sead::Vector3f*);
     void fade();
     void fadeBySystem();
-    void getResourceAccessor_() const;
+    ResourceAccessor* getResourceAccessor_() const;
     bool isAssetValid() const;
     u32 isLoopEvent() const;
     u8 isRequestReEmit() const;
 
     void kill();
-    void onFinalize();
+    void onFinalize_();
     void onResetOverwriteParam();
     void requestReEmit(bool);
     void restartCalcDraw();
 
     void setDelayParam(EventELink::DelayEmitParam*, sead::BitFlag32);
-    void setInnerParam();
-    void setInnerParamBit(ELinkAssetParamId, ELinkEventParam);
+    void setInnerParam_();
+    u32 setInnerParamBit(ELinkAssetParamId, ELinkEventParam);
     void setManualParticleEmission(bool);
     void setManualParticleEmissionWithParticleCount(int);
     void setMtx(sead::Matrix34f const&, sead::Vector3f const&);
@@ -52,19 +52,19 @@ public:
     void updateParam();
 
 private:
-    u64 _0;
-    u64 _1;
+    void* _0;
+    void* _1;
     EventELink* mEvent;
-    UserInstanceELink* mUserInstanceELink;
+    UserInstanceELink* mUserInstance;
     ResAssetCallTable* mResAssetCallTable;
     u32 _2;
     f32 _3;
     ResTriggerOverwriteParam* mResTriggerOverwriteParam;
     BoneMtx* mBoneMtx;
-    u64 _4;
+    void* _4;
     u8 _5;
     u32 _6;
-    u64 _7;
+    void* _7;
     HandleELink* mHandle;
     void* _9;
     u16 _10;

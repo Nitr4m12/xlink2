@@ -17,20 +17,20 @@ class Event {
 public:
     Event();
     void initialize(u32);
-    void initializeImpl();
+    virtual void initializeImpl_(){};
 
     u8 calc();
-    void callEventCreateCallback();
-    void callEventDestroyCallback();
+    virtual void callEventCreateCallback_(){};
+    virtual void callEventDestroyCallback_(){};
 
     u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
     void destroyAllContainerAndAssetExecutor();
 
-    void doFinalize();
+    virtual void doFinalize_(){};
     void fade(int);
     void fadeBySystem();
     void finalize();
-    void fixDelayParam();
+    void fixDelayParam_(){};
 
     s32 getAliveAssetNum();
     s32 getFadeBySystemListAssetNum();
@@ -46,7 +46,6 @@ private:
     void* _1;
     void* _2;
     u32 _3;
-    // 0x28
     UserInstance* mUserInstance;
     ResAssetCallTable* mResAssetCallTable;
     TriggerType mTriggerType;

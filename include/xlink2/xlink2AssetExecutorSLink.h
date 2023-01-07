@@ -35,7 +35,7 @@ public:
     u8 isRequestReEmit() const;
 
     void kill();
-    void onFinalize();
+    void onFinalize_();
     void onResetOverwriteParam();
 
     void requestReEmit(bool);
@@ -45,7 +45,7 @@ public:
 private:
     u64 _0;
     u64 _1;
-    EventSLink* mEventSLink; // 0x18
+    EventSLink* mEvent; // 0x18
     UserInstanceSLink* mUserInstance; // 0x20
     ResAssetCallTable* mResAssetCallTable; // 0x28
     f32 _2; // 0x30

@@ -1,8 +1,9 @@
 #pragma once
 
-#include <xlink2/xlink2Event.h>
+#include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2ResourceUtil.h"
 
 namespace xlink2 {
 class BlendContainer : ContainerBase {
@@ -11,7 +12,7 @@ class BlendContainer : ContainerBase {
 public:
     u32 calc();
     u8 callAllChildContainer();
-    void* initialize(Event*, ResAssetCallTable const&);
+    void initialize(Event*, ResAssetCallTable const&);
     u8 start();
 
 private:

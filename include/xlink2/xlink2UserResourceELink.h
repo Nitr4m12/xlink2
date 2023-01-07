@@ -11,7 +11,7 @@
 namespace xlink2 {
 class SystemELink;
 class UserResourceELink : UserResource {
-    virtual ~UserResourceELink();
+    ~UserResourceELink() override;
 
 public:
     UserResourceELink(User*, sead::Heap*);
@@ -31,12 +31,12 @@ public:
     void solveResourceForChangeEset();
 
 private:
-    UserResourceParam* mUserResourceParam;
+    UserResourceParamELink* mUserResourceParam;
     void* _0;
     u8 _1;
-    ResourceAccessor* mResourceAccessor;
+    ResourceAccessorELink* mResourceAccessor;
     void* _2;
-    UserResourceELink* mUserResourceELink;
+    UserResourceELink* mUserResource;
     SystemELink* mSystem;
 };
 }

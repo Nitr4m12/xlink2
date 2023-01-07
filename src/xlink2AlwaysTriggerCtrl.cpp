@@ -1,10 +1,11 @@
 #include "xlink2/xlink2AlwaysTriggerCtrl.h"
 
 namespace xlink2 {
-AlwaysTriggerCtrl::AlwaysTriggerCtrl(UserInstance* userInstance, sead::Buffer<ModelTriggerConnection>* buffer)
+AlwaysTriggerCtrl::AlwaysTriggerCtrl(UserInstance* user_instance, sead::Buffer<ModelTriggerConnection>* buffer)
 {
-    mUserInstance = userInstance;
     mBuffer = buffer;
+    mUserInstance = user_instance;
+    _0 = 1;
 };
 
 void AlwaysTriggerCtrl::notifyActive()

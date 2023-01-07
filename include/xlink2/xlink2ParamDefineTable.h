@@ -5,7 +5,7 @@
 namespace xlink2 {
 class ParamDefineTable {
 public:
-    void dump();
+    void dump(){};
 
     f32 getAssetParamDefaultValueFloat(u32) const;
     s32 getAssetParamDefaultValueInt(u32) const;
@@ -29,8 +29,8 @@ public:
     u64 searchUserParamIdxFromCustomParamName(char const*) const;
 
     void setup(u8*, u32, bool);
+
 private:
-    // size = 0x48
     u32 mSize;
     u32 mUserParamNum;
     u32 mAssetParamNum;

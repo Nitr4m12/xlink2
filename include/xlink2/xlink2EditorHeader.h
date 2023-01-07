@@ -3,7 +3,6 @@
 #include "basis/seadTypes.h"
 namespace xlink2 {
 struct EditorHeader {
-    // Size = 0x44
     u8 unknown[4];
     u32 numResParam;
     u32 numResAssetParam;

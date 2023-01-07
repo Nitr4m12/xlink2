@@ -48,7 +48,7 @@ public:
     void dumpUserBin(u32, sead::SafeString const&, ResUserHeader*, ParamDefineTable const*,
                      sead::BufferedSafeString*);
 
-    void solveAboutGlobalProperty(RomResourceParam*, ParamDefineTable const*, System*);
+    static void solveAboutGlobalProperty(RomResourceParam*, ParamDefineTable const*, System*);
     void solveAboutGlobalProperty(EditorResourceParam*, ParamDefineTable const*, System*);
     void solveCommonResource(CommonResourceParam*, BinAccessor*);
     void solveCommonResourceAboutGlobalProperty(CommonResourceParam*, System*);

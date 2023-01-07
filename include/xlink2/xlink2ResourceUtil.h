@@ -6,13 +6,10 @@
 #include "xlink2/xlink2ResAssetCallTable.h"
 
 namespace xlink2 {
-class ResourceUtil {
-public:
-    u32 getActionTriggerTyper(ResActionTrigger const&);
-    u32 getResContainerParam(ResAssetCallTable const&);
-    u32 getResSequenceContainerParam(ResAssetCallTable const&);
-    u32 getResSwitchContainerParam(ResAssetCallTable const&);
-
-private:
+namespace ResourceUtil {
+u32 getActionTriggerTyper(ResActionTrigger const&);
+u32 getResContainerParam(ResAssetCallTable*);
+u32 getResSequenceContainerParam(ResAssetCallTable const&);
+u32 getResSwitchContainerParam(ResAssetCallTable const&);
 };
 }  // namespace xlink2

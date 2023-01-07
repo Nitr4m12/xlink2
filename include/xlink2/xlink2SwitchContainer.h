@@ -11,7 +11,7 @@ class SwitchContainer : ContainerBase {
 public:
     u32 calc();
     u64 getConditionMatchChildTable();
-    u64 printChildSelect(ResAssetCallTable const*) const;
+    void printChildSelect(ResAssetCallTable const* /*unused*/) const{};
     bool start();
     bool start(ResAssetCallTable const*);
 

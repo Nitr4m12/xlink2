@@ -8,7 +8,7 @@
 
 namespace xlink2 {
 class UserInstanceELink : UserInstance {
-    virtual ~UserInstanceELink();
+     ~UserInstanceELink() override;
 
 public:
     UserInstanceELink(UserInstance::CreateArg const&, System*, User*, sead::Heap*);
@@ -20,7 +20,7 @@ public:
     void freeInstanceParam(UserInstanceParam*, ResMode);
 
     UserInstanceELink getDefaultGroup() const;
-    ResAssetCallTable* getResourceAccessor() const;
+    ResourceAccessor* getResourceAccessor() const;
     ResourceAccessorELink* getResourceELink() const;
 
     void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);

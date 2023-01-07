@@ -125,26 +125,21 @@ public:
 
     void updateSortKey();
 private:
-    u64 _0;
-    u64 _1;
-    u64 _2;
-    u64 _3;
-    u64 _4;
-
-    // 0x30
+    void* _0;
+    void* _1;
+    void* _2;
+    void* _3;
+    void* _4;
     User* mUser;
-
-    u64 _5;
-    u64 _6;
-    u64 _7;
-    u64 _8;
-    u64 _9;
-    u64 _10;
-    u64 _11;
-    u64 _12;
-    // 0x78
+    void* _5;
+    void* _6;
+    void* _7;
+    void* _8;
+    void* _9;
+    void* _10;
+    void* _11;
+    void* _12;
     TriggerCtrlMgr* mTriggerCtrlMgr;
-
     //
 };
 }  // namespace xlink2

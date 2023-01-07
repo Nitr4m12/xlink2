@@ -7,7 +7,7 @@
 
 namespace xlink2 {
 class ResourceAccessorELink : ResourceAccessor {
-    virtual ~ResourceAccessorELink();
+    ~ResourceAccessorELink() override;
 
 public:
     f64 getAlpha(ResAssetCallTable const&, UserInstance const*) const;
@@ -37,11 +37,11 @@ public:
     char* getGroupName(ResAssetCallTable const&) const;
     u64 getLifeScale(ResAssetCallTable const&, UserInstance const*) const;
     u64 getMtxSetType(ResAssetCallTable const&) const;
-    void getOverwriteAlpha(u32, UserInstance const*);
+    f32 getOverwriteAlpha(u32, UserInstance const*) const;
     char* getOverwriteBoneName(u32) const;
-    void getOverwriteColorBlue(u32, UserInstance const*) const;
-    void getOverwriteColorGreen(u32, UserInstance const*) const;
-    void getOverwriteColorRed(u32, UserInstance const*) const;
+    f32 getOverwriteColorBlue(u32, UserInstance const*) const;
+    f32 getOverwriteColorGreen(u32, UserInstance const*) const;
+    f32 getOverwriteColorRed(u32, UserInstance const*) const;
     f32 getOverwriteDelay(u32, UserInstance const*) const;
     f32 getOverwriteEmissionRate(u32, UserInstance const*) const;
     f32 getOverwritePositionX(u32, UserInstance const*) const;

@@ -9,10 +9,9 @@ namespace xlink2 {
 class UserResourceELink;
 
 class SystemELink : System {
-    virtual ~SystemELink();
-
 public:
     SystemELink() = default;
+    ~SystemELink() override;
 
     class SingletonDisposer;
 
@@ -28,16 +27,16 @@ public:
     void deleteInstance();
     // void drawInformationEvent(sead::TextWriter*) const;
     // void drawInformationSystemDetail(sead::TextWriter*) const;
-    void genMessage(sead::hostio::Context*);
+    void genMessage(sead::hostio::Context* /*unused*/){};
 
     u64 getEventFromPool(u32) const;
-    u64 getModuleLockObj() const;
+    ILockProxy* getModuleLockObj() const;
     void** getModuleName() const;
     void** getORIconString();
     u64 getResourceVersion() const;
     u64 getUserParamNum() const;
 
-    void listenPropertyEvent(sead::hostio::PropertyEvent const*);
+    void listenPropertyEvent(sead::hostio::PropertyEvent const*){};
 
     void makeDebugAssetInformationString(s32, sead::BufferedSafeString*, sead::BufferedSafeString&,
                                          sead::SafeString const&, Event*, AssetExecutorELink*,

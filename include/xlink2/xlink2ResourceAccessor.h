@@ -21,7 +21,7 @@ class ResourceAccessor {
 public:
     void checkAndErrorIsAsset(ResAssetCallTable const&, char const*) const;
 
-    u64 getCallTable(u32 numCallTable) const;
+    ResAssetCallTable* getCallTable(u32 num_call_table) const;
     s32 getCallTableType(ResAssetCallTable const&) const;
     char* getCallTableTypeName(ResAssetCallTable const&) const;
 
@@ -55,7 +55,7 @@ public:
     f32 getRandomValueWeightMax(ResRandomCallTable const&, f32) const;
     f32 getRandomValueWeightMin(ResRandomCallTable const&, f32) const;
 
-    f64 getResOverwriteParamValueFloat(u32, u32, UserInstance const*) const;
+    f32 getResOverwriteParamValueFloat(u32, u32, UserInstance const*) const;
 
     char* getResOverwriteParamValueString(u32, u32) const;
 

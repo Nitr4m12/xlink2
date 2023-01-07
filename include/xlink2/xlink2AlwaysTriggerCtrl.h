@@ -10,7 +10,7 @@ namespace xlink2 {
 class AlwaysTriggerCtrl : TriggerCtrl {
      ~AlwaysTriggerCtrl() override;
 public:
-    AlwaysTriggerCtrl(UserInstance* userInstance, sead::Buffer<ModelTriggerConnection>* buffer);
+    AlwaysTriggerCtrl(UserInstance* user_instance, sead::Buffer<ModelTriggerConnection>* buffer);
 
     void calc();
     void emitByTrigger_(int);

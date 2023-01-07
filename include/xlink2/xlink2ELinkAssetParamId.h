@@ -1,5 +1,12 @@
 #pragma once
 
 namespace xlink2 {
-class ELinkAssetParamId {};
+enum class ELinkAssetParamId {
+    PositionX = 0xd,
+    PositionY,
+    PositionZ,
+    RotationX,
+    RotationY,
+    RotationZ
+};
 }

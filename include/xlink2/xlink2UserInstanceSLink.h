@@ -14,7 +14,7 @@
 
 namespace xlink2 {
 class UserInstanceSLink : UserInstance {
-    virtual ~UserInstanceSLink();
+     ~UserInstanceSLink() override;
 
 public:
     class AssetLimiter {

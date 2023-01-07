@@ -23,6 +23,8 @@ public:
     void* searchEditorResourceParam(sead::SafeString const&);
     void setupParamDefineTable(u8*, u32);
 
+    ParamDefineTable* getParamDefineTable() const { return mParamDefineTable; }
+
 private:
     System* mSystem;
     sead::Heap* mHeap;

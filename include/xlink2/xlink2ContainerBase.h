@@ -10,23 +10,23 @@ class ContainerBase {
     virtual ~ContainerBase();
 
 public:
-    ContainerBase() = default;
+    ContainerBase();
 
     void* createChildContainer(ResAssetCallTable const&, ContainerBase);
     void destroy();
     void fade(int);
     void fadeBySystem();
 
-    void* initialize(Event*, ResAssetCallTable const&);
+    void initialize(Event*, ResAssetCallTable const&);
 
     void kill();
     void* killOneTimeEvent();
 
-private:
+protected:
     ResAssetCallTable* mResAssetCallTable;
     Event* mEvent;
-    AssetExecutor* mChildContainer;
     void* _0;
+    void* _1;
     s32 mResAssetDuration;
 };
 }

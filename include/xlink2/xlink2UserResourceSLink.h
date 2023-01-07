@@ -5,10 +5,11 @@
 #include "xlink2/xlink2SystemSLink.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
+
 namespace xlink2 {
 class SystemSLink;
 class UserResourceSLink : UserResource {
-    virtual ~UserResourceSLink();
+    ~UserResourceSLink() override;
 
 public:
     UserResourceSLink(User*, sead::Heap*);
@@ -32,9 +33,9 @@ private:
     UserResourceParam* mUserResourceParam;
     void* _0;
     u8 _1;
-    ResourceAccessor* mResourceAccessor;
+    ResourceAccessorSLink* mResourceAccessor;
     void* _2;
-    UserResourceSLink* mUserResourceELink;
+    UserResourceSLink* mUserResource;
     SystemSLink* mSystem;
 };
 }

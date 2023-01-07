@@ -1,5 +1,5 @@
 #pragma once
 
 namespace xlink2 {
-class ELinkEventParam {};
+enum class ELinkEventParam {};
 }

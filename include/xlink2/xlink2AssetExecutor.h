@@ -5,10 +5,9 @@
 
 namespace xlink2 {
 class AssetExecutor {
-    virtual ~AssetExecutor();
-
 public:
+    virtual ~AssetExecutor();
     virtual void dumpDebugPrint();
-    virtual void onDestroy();
+    virtual void onDestroy_();
 };
 }  // namespace xlink2

@@ -29,7 +29,7 @@ public:
     bool isCurrentActionNeedToObserve(s32) const;
 
     void notifyActive();
-    void postChangeResource();
+    void postChangeResource(){};
 
     void reset();
     void resetAllModelTriggerConnection();

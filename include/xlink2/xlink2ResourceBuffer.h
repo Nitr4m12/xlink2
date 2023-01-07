@@ -16,7 +16,9 @@ public:
     void getEmptyUserHeader();
     u64 load(void*, System*);
 
-    u64 searchResUserHeader(char const*) const;
+    void* searchResUserHeader(char const*) const;
+
+    ParamDefineTable* getParamDefineTable() const { return mParamDefineTable; }
 
 private:
     // size = 0xe8

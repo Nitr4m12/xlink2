@@ -30,10 +30,9 @@ class ResourceBuffer;
 class UserInstance;
 
 class System {
-    virtual ~System();
-
 public:
     System() = default;
+    virtual ~System();
 
     void initSystem(sead::Heap*, sead::Heap*, u32);
 
@@ -84,13 +83,13 @@ public:
     void freeGlobalProperty();
 
     void* getAnyone();
-    void* getParamDefineTable() const;
-    void* getParamDefineTable(ResMode) const;
+    ParamDefineTable* getParamDefineTable() const;
+    ParamDefineTable* getParamDefineTable(ResMode mode) const;
     void* getResUserHeader(char const*);
 
-    s32 incrementEventCreateId();
+    void incrementEventCreateId_();
 
-    bool isDrawTargetInstance(UserInstance*) const;
+    bool isDrawTargetInstance(UserInstance* draw_target_instance) const;
     bool isServerConnecting() const;
 
     void killAll();
@@ -99,11 +98,11 @@ public:
     u32 loadResource(void*);
 
     void makeDebugStringGlobalProperty(sead::BufferedSafeString*, sead::SafeString const&) const;
-    // void postDrawInformation(sead::TextWriter*) const;
-    // void postDrawInformation(sead::TextWriter*) const;
+    // void postDrawInformation_(sead::TextWriter*) const;
+    // void postDrawInformation_(sead::TextWriter*) const;
     void registUserForGlobalPropertyTrigger(User*);
     void removeUserInstance(UserInstance*);
-    void requestSendPickedUserName(sead::SafeString const&);
+    void requestSendPickedUserName(sead::SafeString const& /*unused*/){};
     void resetOtameshiRequest();
 
     u32 searchGlobalPropertyIndex(char const*) const;
