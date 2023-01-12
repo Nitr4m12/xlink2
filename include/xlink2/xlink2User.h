@@ -50,7 +50,7 @@ public:
 private:
     char* mName;
     void* _1;
-    char* _2;
+    char* mUserName;
     UserResource* mUserResource;
     User* mUser1;
     User* mUser2;
