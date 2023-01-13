@@ -34,9 +34,9 @@ public:
     void** getModuleName() const;
     void** getORIconString();
     u64 getResourceVersion() const;
-    u64 getUserParamNum() const;
+    u32 getUserParamNum() const;
 
-    void listenPropertyEvent(sead::hostio::PropertyEvent const*){};
+    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/){};
 
     void makeDebugAssetInformationString(s32, sead::BufferedSafeString*, sead::BufferedSafeString&,
                                          sead::SafeString const&, Event*, AssetExecutorELink*,
@@ -117,4 +117,4 @@ private:
     // 0x860
     // u32
 };
-}
+}  // namespace xlink2
