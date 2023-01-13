@@ -4,17 +4,17 @@
 #include "heap/seadHeap.h"
 #include "xlink2/xlink2ArrangeGroupParam.h"
 #include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2HandleSLink.h"
 #include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2Locator.h"
-#include "xlink2/xlink2HandleSLink.h"
+#include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResMode.h"
-#include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResourceAccessorSLink.h"
 
 namespace xlink2 {
 class UserInstanceSLink : UserInstance {
-     ~UserInstanceSLink() override;
+    ~UserInstanceSLink() override;
 
 public:
     class AssetLimiter {
@@ -79,4 +79,4 @@ public:
 private:
     // size=0x128
 };
-}
+}  // namespace xlink2

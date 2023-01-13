@@ -13,6 +13,7 @@ public:
     u64 getKeyLength(u32) const;
 
     void* searchKey(int) const;
+
 private:
     s32 _0;
     s32 _1;

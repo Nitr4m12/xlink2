@@ -36,8 +36,10 @@ public:
     bool getCustomParamValueBool(u32 custom_param_idx, ResAssetCallTable const&) const;
     bool getCustomParamValueBool(char const* param_name, ResAssetCallTable const&) const;
 
-    f64 getCustomParamValueFloat(u32 custom_param_idx, ResAssetCallTable const&, UserInstance const*) const;
-    f64 getCustomParamValueFloat(char const* param_name, ResAssetCallTable const&, UserInstance const*) const;
+    f64 getCustomParamValueFloat(u32 custom_param_idx, ResAssetCallTable const&,
+                                 UserInstance const*) const;
+    f64 getCustomParamValueFloat(char const* param_name, ResAssetCallTable const&,
+                                 UserInstance const*) const;
 
     u64 getCustomParamValueInt(u32 custom_param_idx, ResAssetCallTable const&) const;
     u64 getCustomParamValueInt(char const* param_name, ResAssetCallTable const&) const;

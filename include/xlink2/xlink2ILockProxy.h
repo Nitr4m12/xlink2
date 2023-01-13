@@ -5,4 +5,4 @@ class ILockProxy {
 public:
     virtual ~ILockProxy();
 };
-}
+}  // namespace xlink2

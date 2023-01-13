@@ -9,10 +9,10 @@
 namespace xlink2 {
 class AssetExecutorSLink;
 class EventSLink : Event {
-     ~EventSLink() override;
+    ~EventSLink() override;
 
 public:
-    void initializeImpl();
+    void initializeImpl_() override;
 
     u64 getAliveAssetExecutor() const;
     u64 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;

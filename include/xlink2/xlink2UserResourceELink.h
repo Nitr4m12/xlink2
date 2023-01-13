@@ -39,4 +39,4 @@ private:
     UserResourceELink* mUserResource;
     SystemELink* mSystem;
 };
-}
+}  // namespace xlink2

@@ -17,4 +17,4 @@ class ResUserHeader {
     u32 numResAlwaysTrigger;
     u32 triggerTablePos;
 };
-}
+}  // namespace xlink2

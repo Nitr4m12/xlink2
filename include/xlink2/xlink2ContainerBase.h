@@ -1,8 +1,8 @@
 #pragma once
 
+#include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2AssetExecutor.h"
 
 namespace xlink2 {
 class Event;
@@ -29,4 +29,4 @@ protected:
     void* _1;
     s32 mResAssetDuration;
 };
-}
+}  // namespace xlink2

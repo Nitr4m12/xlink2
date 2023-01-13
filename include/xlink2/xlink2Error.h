@@ -5,4 +5,4 @@ class Error {
 public:
     class Type;
 };
-}
+}  // namespace xlink2

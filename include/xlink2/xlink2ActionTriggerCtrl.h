@@ -12,7 +12,7 @@
 
 namespace xlink2 {
 class ActionTriggerCtrl : TriggerCtrl {
-     ~ActionTriggerCtrl() override;
+    ~ActionTriggerCtrl() override;
 
 public:
     ActionTriggerCtrl(UserInstance* param_1, sead::Buffer<ModelTriggerConnection>* param_2,

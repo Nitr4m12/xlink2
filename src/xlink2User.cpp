@@ -2,8 +2,7 @@
 
 namespace xlink2 {
 
-System* User::getSystem() const
-{
+System* User::getSystem() const {
     return mUserResource->getSystem();
 }
-}
+}  // namespace xlink2

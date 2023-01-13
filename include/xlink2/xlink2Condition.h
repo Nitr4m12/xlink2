@@ -17,4 +17,4 @@ struct RandomCondition {
     ContainerType parentContainerType;
     f32 weight;
 };
-}
+}  // namespace xlink2

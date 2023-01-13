@@ -16,4 +16,4 @@ struct ResAssetCallTable {
     u32 paramStartPos;
     u32 conditionPos;
 };
-}
+}  // namespace xlink2

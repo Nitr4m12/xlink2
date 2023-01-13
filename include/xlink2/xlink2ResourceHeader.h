@@ -23,4 +23,4 @@ struct ResourceHeader {
     u32 conditionTablePos;
     u32 nameTablePos;
 };
-}
+}  // namespace xlink2

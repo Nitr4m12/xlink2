@@ -20,4 +20,4 @@ public:
 
 private:
 };
-}
+}  // namespace xlink2

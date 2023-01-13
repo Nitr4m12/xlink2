@@ -3,8 +3,8 @@
 #include <heap/seadHeap.h>
 #include <prim/seadSafeString.h>
 
-#include "xlink2/xlink2System.h"
 #include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2System.h"
 
 namespace xlink2 {
 class System;

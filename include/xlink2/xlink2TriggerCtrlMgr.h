@@ -45,6 +45,5 @@ private:
     TriggerCtrlParam* mParam1;
     TriggerCtrlParam* mParam2;
     u32 _1;
-
 };
-}
+}  // namespace xlink2

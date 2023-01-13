@@ -6,8 +6,8 @@
 
 namespace xlink2 {
 class UserResourceSLink;
-class SystemSLink : System{
-     ~SystemSLink() override;
+class SystemSLink : System {
+    ~SystemSLink() override;
 
 public:
     SystemSLink();
@@ -62,4 +62,4 @@ private:
     // 0x818
     // void*
 };
-}
+}  // namespace xlink2

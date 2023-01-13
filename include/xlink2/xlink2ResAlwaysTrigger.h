@@ -10,4 +10,4 @@ struct ResAlwaysTrigger {
     s16 overwriteHash;
     u32 overwriteParamPos;
 };
-}
+}  // namespace xlink2

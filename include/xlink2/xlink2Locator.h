@@ -8,6 +8,7 @@
 namespace xlink2 {
 class Locator {
     virtual ~Locator();
+
 public:
     s32 getOverwriteBoneMtx() const;
     s32 getSearchedGuid() const;
@@ -19,6 +20,7 @@ public:
 
     TriggerType setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
     void updateDataLoadedCount();
+
 private:
     void* _0;
     u8 _1;

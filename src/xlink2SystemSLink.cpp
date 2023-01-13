@@ -12,4 +12,4 @@ u64 SystemSLink::getUserParamNum() const {
 bool SystemSLink::isEnableUserAssetInfoReadable() {
     return false;
 }
-}
+}  // namespace xlink2

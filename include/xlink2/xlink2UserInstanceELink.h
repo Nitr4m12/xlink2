@@ -8,7 +8,7 @@
 
 namespace xlink2 {
 class UserInstanceELink : UserInstance {
-     ~UserInstanceELink() override;
+    ~UserInstanceELink() override;
 
 public:
     UserInstanceELink(UserInstance::CreateArg const&, System*, User*, sead::Heap*);
@@ -40,4 +40,4 @@ public:
 private:
     // size=0x108
 };
-}
+}  // namespace xlink2

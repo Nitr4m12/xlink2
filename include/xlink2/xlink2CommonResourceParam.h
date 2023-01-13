@@ -10,4 +10,4 @@ struct CommonResourceParam {
     // 0x28
     ResAssetParamTable* resAssetParamTable;
 };
-}
+}  // namespace xlink2

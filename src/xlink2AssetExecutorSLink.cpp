@@ -15,4 +15,4 @@ void AssetExecutorSLink::requestReEmit(bool check) {
     else
         _7 |= 1;
 }
-}
+}  // namespace xlink2

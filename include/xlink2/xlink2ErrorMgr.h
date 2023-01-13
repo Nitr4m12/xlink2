@@ -17,12 +17,13 @@ public:
     void clear(User const*);
     void clearAll();
 
-    //void draw(sead::TextWriter*) const;
+    // void draw(sead::TextWriter*) const;
 
     void* getIsDebugBreakEnablePtr();
 
     bool shouldErrorNoticed(Error const*);
     bool shouldErrorNoticed(Error::Type const*);
+
 private:
     u32 _0;
     // 0x288

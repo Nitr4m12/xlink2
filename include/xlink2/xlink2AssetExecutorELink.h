@@ -6,14 +6,14 @@
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2ELinkAssetParamId.h"
 #include "xlink2/xlink2ELinkEventParam.h"
+#include "xlink2/xlink2EventELink.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResTriggerOverwriteParam.h"
-#include "xlink2/xlink2EventELink.h"
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
-class AssetExecutorELink : AssetExecutor{
-     ~AssetExecutorELink() override;
+class AssetExecutorELink : AssetExecutor {
+    ~AssetExecutorELink() override;
 
 public:
     void _applyColorAlpha();
@@ -80,4 +80,4 @@ private:
     f32 _14;
     f32 _15;
 };
-}
+}  // namespace xlink2

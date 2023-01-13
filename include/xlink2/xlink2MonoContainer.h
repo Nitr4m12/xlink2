@@ -6,7 +6,8 @@
 
 namespace xlink2 {
 class MonoContainer : ContainerBase {
-     ~MonoContainer() override;
+    ~MonoContainer() override;
+
 public:
     u64 initialize(Event*, ResAssetCallTable);
 

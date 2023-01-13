@@ -8,6 +8,7 @@
 namespace xlink2 {
 class TriggerLocator {
     virtual ~TriggerLocator();
+
 public:
     BoneMtx* getOverwriteBoneMtx() const;
     ResTriggerOverwriteParam* getTriggerOverwriteParam() const;

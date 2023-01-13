@@ -124,6 +124,7 @@ public:
     void* trySearchSwitchContainerRecursive(ResAssetCallTable const**, ResAssetCallTable const&);
 
     void updateSortKey();
+
 private:
     void* _0;
     void* _1;

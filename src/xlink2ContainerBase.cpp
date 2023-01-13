@@ -8,4 +8,4 @@ ContainerBase::ContainerBase() {
     mResAssetCallTable = nullptr;
     mEvent = nullptr;
 }
-}
+}  // namespace xlink2

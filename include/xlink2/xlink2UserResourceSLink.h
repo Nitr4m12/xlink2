@@ -38,4 +38,4 @@ private:
     UserResourceSLink* mUserResource;
     SystemSLink* mSystem;
 };
-}
+}  // namespace xlink2

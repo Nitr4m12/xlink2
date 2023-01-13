@@ -6,16 +6,16 @@
 
 namespace xlink2 {
 class EventELink : Event {
-     ~EventELink() override;
+    ~EventELink() override;
 
 public:
     class DelayEmitParam;
-    void initializeImpl();
+    void initializeImpl_() override;
 
-    void callEventCreateCallback();
-    void callEventDestroyCallback();
+    void callEventCreateCallback_() override;
+    void callEventDestroyCallback_() override;
 
-    void doFinalize();
+    void doFinalize_() override;
     void emitParticle();
     void fixDelayParam();
 
@@ -24,6 +24,7 @@ public:
 
     void setManualParticleEmission(bool);
     void setManualParticleEmissionWithParticleCount(int);
+
 private:
     DelayEmitParam* mDelayEmitParam;
 

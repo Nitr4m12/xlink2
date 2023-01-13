@@ -8,14 +8,16 @@
 
 namespace xlink2 {
 class AlwaysTriggerCtrl : TriggerCtrl {
-     ~AlwaysTriggerCtrl() override;
+    ~AlwaysTriggerCtrl() override;
+
 public:
     AlwaysTriggerCtrl(UserInstance* user_instance, sead::Buffer<ModelTriggerConnection>* buffer);
 
     void calc();
     void emitByTrigger_(int);
     void notifyActive();
+
 private:
     u8 _0;
 };
-}
+}  // namespace xlink2
