@@ -10,6 +10,8 @@ class Locator {
     virtual ~Locator();
 
 public:
+    static u32 sDataLoadedCount;
+
     s32 getOverwriteBoneMtx() const;
     s32 getSearchedGuid() const;
     s32 getTriggerOverwriteParam() const;
