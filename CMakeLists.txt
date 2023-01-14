@@ -11,7 +11,9 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2BlendContainer.h
   include/xlink2/xlink2BoneMtx.h
   include/xlink2/xlink2ContainerBase.h
+  include/xlink2/xlink2ErrorMgr.h
   include/xlink2/xlink2Event.h
+  include/xlink2/xlink2LockProxy.h
   include/xlink2/xlink2PropertyTriggerCtrl.h
   include/xlink2/xlink2ResourceAccessor.h
   include/xlink2/xlink2ResourceAccessorELink.h
@@ -34,6 +36,8 @@ add_library(xlink2 OBJECT
   src/xlink2BlendContainer.cpp
   src/xlink2ContainerBase.cpp
   src/xlink2Event.cpp
+  src/xlink2ErrorMgr.cpp
+  src/xlink2LockProxy.cpp
   src/xlink2PropertyTriggerCtrl.cpp
   src/xlink2ResourceAccessor.cpp
   src/xlink2ResourceAccessorELink.cpp

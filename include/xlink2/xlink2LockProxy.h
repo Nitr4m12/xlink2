@@ -9,11 +9,11 @@ class LockProxy : ILockProxy {};
 
 template <>
 class LockProxy<sead::SpinLock> : ILockProxy {
-    ~LockProxy<sead::SpinLock>() override = default;
+    ~LockProxy() override = default;
 
 public:
-    void lock() { mSpinLock->lock(); };
-    void unlock() { mSpinLock->unlock(); };
+    void lock();
+    void unlock();
 
 private:
     sead::SpinLock* mSpinLock;
