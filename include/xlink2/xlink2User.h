@@ -30,6 +30,9 @@ public:
     UserInstance* getMinSortKeyInstance();
     System* getSystem() const;
 
+    char* getUserName() { return mUserName; }
+    UserResource* getUserResource() { return mUserResource; }
+
     void killAll();
     void loadEventAndTriggerRestart();
 

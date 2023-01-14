@@ -9,7 +9,11 @@ u64 SystemSLink::getUserParamNum() const {
     return 8;
 }
 
-bool SystemSLink::isEnableUserAssetInfoReadable() {
+bool SystemSLink::isEnableUserAssetInfoReadable() const {
     return false;
+}
+
+ILockProxy* SystemSLink::getModuleLockObj() const {
+    return sLockProxy;
 }
 }  // namespace xlink2

@@ -14,10 +14,9 @@ class ResourceAccessor;
 class User;
 
 class UserResource {
-    virtual ~UserResource();
-
 public:
     explicit UserResource(User*);
+    virtual ~UserResource();
 
     void checkAndAddErrorMultipleKeyByTrigger(ResAssetCallTable const&, TriggerType);
     void destroy();
@@ -33,9 +32,11 @@ public:
     u64 getPropertyTriggerTableItem(s32) const;
     u64 getUserHeader() const;
 
+    ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
+
     u64 hasGlobalPropertyTrigger() const;
 
-    void onSetupResourceParam(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
+    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     u64 searchAssetAllResource(char const*) const;
     u64 searchAssetCallTableByGuid(Locator*, s32) const;
@@ -54,8 +55,17 @@ public:
 
     System* getSystem();
 
-private:
+protected:
     User* mUser;
     ResMode mResMode;
+    UserResource* mUserResource;
+    void* _1;
+    u8 _2;
+    ResourceAccessor* mResourceAccessor;
+    void* _3;
+    void* _4;
+    System* mSystem;
+
+
 };
 }  // namespace xlink2

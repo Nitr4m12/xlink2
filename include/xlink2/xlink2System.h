@@ -44,7 +44,7 @@ public:
         void setModelMatrix(sead::Matrix34f const&);
     };
 
-    Error::Type addError(Error::Type, User const*, char const*, ...);
+    void addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...);
     Event allocEvent();
     void allocGlobalProperty(u32, sead::Heap*);
     void calc();

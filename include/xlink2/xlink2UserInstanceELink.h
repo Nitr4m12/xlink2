@@ -5,8 +5,11 @@
 #include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2User.h"
+#include "xlink2/xlink2UserResourceELink.h"
 
 namespace xlink2 {
+class UserResourceELink;
+
 class UserInstanceELink : UserInstance {
     ~UserInstanceELink() override;
 
@@ -17,17 +20,17 @@ public:
     void emit(Locator const&);
     void emit(Locator const&, HandleELink*);
     void fadeIfLoopEffect();
-    void freeInstanceParam(UserInstanceParam*, ResMode);
+    void freeInstanceParam_(UserInstanceParam*, ResMode);
 
     UserInstanceELink getDefaultGroup() const;
     ResourceAccessor* getResourceAccessor() const;
-    ResourceAccessorELink* getResourceELink() const;
+    UserResource* getResourceELink() const;
 
     void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);
 
     void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const;
 
-    void onDestroy();
+    void onDestroy_();
     void onPostCalc();
     void onReset();
     void onSetupInstanceParam(ResMode, sead::Heap*);

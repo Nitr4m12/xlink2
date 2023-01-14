@@ -15,6 +15,7 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2Event.h
   include/xlink2/xlink2Locator.h
   include/xlink2/xlink2LockProxy.h
+  include/xlink2/xlink2ModelAssetConnection.h
   include/xlink2/xlink2PropertyTriggerCtrl.h
   include/xlink2/xlink2ResourceAccessor.h
   include/xlink2/xlink2ResourceAccessorELink.h
@@ -29,6 +30,13 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2TriggerCtrlMgr.h
   include/xlink2/xlink2TriggerLocator.h
   include/xlink2/xlink2TriggerType.h
+  include/xlink2/xlink2User.h
+  include/xlink2/xlink2UserInstance.h
+  include/xlink2/xlink2UserInstanceELink.h
+  include/xlink2/xlink2UserInstanceSLink.h
+  include/xlink2/xlink2UserResource.h
+  include/xlink2/xlink2UserResourceELink.h
+  include/xlink2/xlink2UserResourceSLink.h
   src/xlink2ActionTriggerCtrl.cpp
   src/xlink2AlwaysTriggerCtrl.cpp
   src/xlink2AssetExecutor.cpp
@@ -40,6 +48,7 @@ add_library(xlink2 OBJECT
   src/xlink2ErrorMgr.cpp
   src/xlink2Locator.cpp
   src/xlink2LockProxy.cpp
+  src/xlink2ModelAssetConnection.cpp
   src/xlink2PropertyTriggerCtrl.cpp
   src/xlink2ResourceAccessor.cpp
   src/xlink2ResourceAccessorELink.cpp
@@ -52,6 +61,13 @@ add_library(xlink2 OBJECT
   src/xlink2SystemSLink.cpp
   src/xlink2TriggerCtrlMgr.cpp
   src/xlink2TriggerLocator.cpp
+  src/xlink2User.cpp
+  src/xlink2UserInstance.cpp
+  src/xlink2UserInstanceELink.cpp
+  src/xlink2UserInstanceSLink.cpp
+  src/xlink2UserResource.cpp
+  src/xlink2UserResourceELink.cpp
+  src/xlink2UserResourceSLink.cpp
 )
 
 target_compile_options(xlink2 PRIVATE -fno-exceptions)

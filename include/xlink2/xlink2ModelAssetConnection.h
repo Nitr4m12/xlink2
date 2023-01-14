@@ -1,5 +1,8 @@
 #pragma once
 
 namespace xlink2 {
-class ModelAssetConnection;
+class ModelAssetConnection {
+public:
+    ~ModelAssetConnection();
+};
 }

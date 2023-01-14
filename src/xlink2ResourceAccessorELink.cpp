@@ -1,4 +1,5 @@
-#include "xlink2/xlink2ResourceAccessorELink.h"
+#include <xlink2/xlink2ResourceAccessorELink.h>
+#include <xlink2/xlink2ResourceUtil.h>
 
 namespace xlink2 {
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
@@ -19,5 +20,9 @@ f32 ResourceAccessorELink::getOverwriteColorGreen(u32 p1, const UserInstance* p2
 
 f32 ResourceAccessorELink::getOverwriteColorRed(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat(p1, 0x13, p2);
+}
+
+bool ResourceAccessorELink::isBoneNameOverwritten(u32 p1) const {
+    return isParamOverwritten(p1, 0xb);
 }
 }  // namespace xlink2

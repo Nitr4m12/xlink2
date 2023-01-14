@@ -8,6 +8,8 @@ TriggerCtrlMgr::TriggerCtrlMgr() {
     mParam2 = nullptr;
 }
 
+void TriggerCtrlMgr::initialize(s32 /*unused*/, s32 /*unused*/, sead::Heap* /*unused*/) {}
+
 u64 TriggerCtrlMgr::getCurrentActionFrame(s32 p1) const {
     p1 = 0xffffffff;
     return 0xffffffff;

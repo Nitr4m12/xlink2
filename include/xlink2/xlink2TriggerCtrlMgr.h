@@ -11,7 +11,7 @@ class TriggerCtrlMgr {
 public:
     TriggerCtrlMgr();
 
-    s32 initialize(s32, s32, sead::Heap*);
+    void initialize(s32 /*unused*/, s32 /*unused*/, sead::Heap* /*unused*/);
 
     void allocAndSetupCtrlParam(ResMode, sead::Heap*);
     void calc();

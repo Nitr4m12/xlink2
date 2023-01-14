@@ -39,13 +39,13 @@ public:
     void changeInstanceParam(ResMode);
 
     void checkAndBreakWhenEmit(char const*);
-    u64 checkAndErrorCallInCalc(char const*, ...) const;
+    u64 checkAndErrorCallInCalc(char const* /*unused*/, ...) const;
     u64 checkAndErrorCallWithoutSetup(char const*, ...) const;
 
     void clearAllEvent();
     void destroy();
-    void doEventActivatedCallback(Locator const&, Event*);
-    void doEventActivatingCallback(Locator const&);
+    void doEventActivatedCallback_(Locator const& /*unused*/, Event* /*unused*/);
+    u32 doEventActivatingCallback_(Locator const& /*unused*/);
     void doOtameshiEmit();
 
     void emitImpl(Locator const&, Handle*);
@@ -55,7 +55,7 @@ public:
 
     void getContainerTypeName(ResAssetCallTable const&) const;
     void getCurrentResActionIdx(s32) const;
-    void getDefaultGroup() const;
+    u32 getDefaultGroup() const;
     u64 getModelAssetConnection(u32) const;
     u64 getPosForSort() const;
     void getRootMtxForDrawText(sead::Matrix34f*);
@@ -80,9 +80,8 @@ public:
     void makeDebugStringLocalProperty(sead::BufferedSafeString*, sead::SafeString const&) const;
     void makeDebugStringUserInformation(sead::BufferedSafeString*) const;
 
-    void onReset();
-
-    ResMode onSetupInstanceParam(ResMode, sead::Heap*);
+    void onReset_();
+    void onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/);
 
     void postCalc();
     void preCalc();
@@ -91,7 +90,7 @@ public:
     void printLogEmitFailed(char const*, char const*, ...) const;
     void printLogEmitFailed(Event const&, char const*, ...) const;
     void printLogFadeOrKill(Event const*, char const*, ...) const;
-    void* printLogSearchAsset(bool, char const*, ...) const;
+    void printLogSearchAsset_(bool, char const*, ...) const;
 
     void rebuild(RebuildArg const&);
 
@@ -125,7 +124,7 @@ public:
 
     void updateSortKey();
 
-private:
+protected:
     void* _0;
     void* _1;
     void* _2;
@@ -141,6 +140,8 @@ private:
     void* _11;
     void* _12;
     TriggerCtrlMgr* mTriggerCtrlMgr;
-    //
+    void* _13;
+    void* _14;
+    s32 _15;
 };
 }  // namespace xlink2

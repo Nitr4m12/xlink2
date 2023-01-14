@@ -19,7 +19,7 @@ public:
 
     void* getAccessor() const;
     void* getAccessorPtr();
-    u64 getSystem() const;
+    SystemSLink* getSystem() const;
     u64 getUserParam() const;
 
     // bool isEnableAssetInfoReader(aal::IAssetInfoReadable**) const;

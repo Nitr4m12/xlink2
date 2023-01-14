@@ -10,6 +10,9 @@ class SystemSLink : System {
     ~SystemSLink() override;
 
 public:
+    static SystemSLink* sInstance;
+    static ILockProxy* sLockProxy;
+
     SystemSLink();
 
     class SingletonDisposer;
@@ -32,13 +35,13 @@ public:
     void genMessage(sead::hostio::Context* /*unused*/){};
 
     u64 getEventFromPool(u32) const;
-    u64 getModuleLockObj() const;
+    ILockProxy* getModuleLockObj() const;
     void** getModuleName() const;
     void** getORIconString();
     u64 getResourceVersion() const;
     u64 getUserParamNum() const;
 
-    bool isEnableUserAssetInfoReadable();
+    bool isEnableUserAssetInfoReadable() const;
 
     void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/){};
     void stopAllEvent(s32);

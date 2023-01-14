@@ -6,10 +6,9 @@
 
 namespace xlink2 {
 class ResourceBuffer {
-    virtual ~ResourceBuffer();
-
 public:
     ResourceBuffer();
+    virtual ~ResourceBuffer();
 
     void applyGlobalPropertyDefinition(System*);
     void getEmptyRomResourceParam();

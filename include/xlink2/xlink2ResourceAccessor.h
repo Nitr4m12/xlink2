@@ -16,9 +16,8 @@ class UserInstance;
 class System;
 
 class ResourceAccessor {
-    virtual ~ResourceAccessor();
-
 public:
+    virtual ~ResourceAccessor();
     void checkAndErrorIsAsset(ResAssetCallTable const&, char const*) const;
 
     ResAssetCallTable* getCallTable(u32 num_call_table) const;

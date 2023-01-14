@@ -11,32 +11,22 @@
 namespace xlink2 {
 class SystemELink;
 class UserResourceELink : UserResource {
-    ~UserResourceELink() override;
-
 public:
+    ~UserResourceELink() override;
     UserResourceELink(User*, sead::Heap*);
 
     void allocResourceParam(sead::Heap);
     void freeResourceParam(UserResourceParam*);
 
-    void* getAccessor() const;
-    void* getAccessorPtr();
+    ResourceAccessor* getAccessor() const;
+    ResourceAccessor* getAccessorPtr();
     u64 getSolvedAssetParameterELink(ResAssetCallTable const&);
-    u64 getSystem() const;
+    SystemELink* getSystem() const;
 
     void onSetupResourceParam(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     void releaseOneEmitterInstance(UserResourceParamELink*, ParamDefineTable const*);
     void solveAssetParam(UserResourceELink*, ParamDefineTable const*, PtclResourceAccessorELink*);
     void solveResourceForChangeEset();
-
-private:
-    UserResourceParamELink* mUserResourceParam;
-    void* _0;
-    u8 _1;
-    ResourceAccessorELink* mResourceAccessor;
-    void* _2;
-    UserResourceELink* mUserResource;
-    SystemELink* mSystem;
 };
 }  // namespace xlink2

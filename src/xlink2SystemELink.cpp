@@ -9,4 +9,8 @@ u32 SystemELink::getUserParamNum() const {
     return 0;
 }
 
+ILockProxy* SystemELink::getModuleLockObj() const {
+    return sLockProxy;
+}
+
 }  // namespace xlink2

@@ -1,6 +1,9 @@
 #include "xlink2/xlink2System.h"
 
 namespace xlink2 {
+void System::addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...) {
+}
+
 void System::fixGlobalPropertyDefinition() {
     mResourceBuffer->applyGlobalPropertyDefinition(this);
     if (mEditorBuffer != nullptr) {

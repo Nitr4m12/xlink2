@@ -12,6 +12,8 @@
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
+class UserInstanceELink;
+
 class AssetExecutorELink : AssetExecutor {
     ~AssetExecutorELink() override;
 

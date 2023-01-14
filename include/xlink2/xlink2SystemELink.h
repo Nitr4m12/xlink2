@@ -7,9 +7,15 @@
 
 namespace xlink2 {
 class UserResourceELink;
+class UserInstanceELink;
+class AssetExecutorELink;
+
 
 class SystemELink : System {
 public:
+    static SystemELink* sInstance;
+    static ILockProxy* sLockProxy;
+
     SystemELink() = default;
     ~SystemELink() override;
 
