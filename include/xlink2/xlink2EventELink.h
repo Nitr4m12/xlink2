@@ -17,7 +17,7 @@ public:
 
     void doFinalize_() override;
     void emitParticle();
-    void fixDelayParam();
+    void fixDelayParam_() override;
 
     u64 getAliveAssetExecutor() const;
     u64 getMtxSetType();
