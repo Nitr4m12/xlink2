@@ -9,13 +9,12 @@ class LockProxy : ILockProxy {};
 
 template <>
 class LockProxy<sead::SpinLock> : ILockProxy {
-    ~LockProxy() override = default;
-
 public:
+    ~LockProxy() override;
     void lock();
     void unlock();
 
 private:
-    sead::SpinLock* mSpinLock;
+    sead::SpinLock mSpinLock;
 };
 }  // namespace xlink2
