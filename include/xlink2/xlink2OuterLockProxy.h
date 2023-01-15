@@ -9,13 +9,12 @@ class OuterLockProxy : ILockProxy {};
 
 template <>
 class OuterLockProxy<sead::Mutex> : ILockProxy {
-    ~OuterLockProxy() override = default;
-
 public:
-    void lock() { mMutex->lock(); };
-    void unlock() { mMutex->unlock(); };
+    ~OuterLockProxy() override;
+    void lock();
+    void unlock();
 
 private:
-    sead::Mutex* mMutex;
+    sead::Mutex mMutex;
 };
 }  // namespace xlink2
