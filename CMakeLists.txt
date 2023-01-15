@@ -16,6 +16,7 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2Locator.h
   include/xlink2/xlink2LockProxy.h
   include/xlink2/xlink2ModelAssetConnection.h
+  include/xlink2/xlink2OuterLockProxy.h
   include/xlink2/xlink2PropertyTriggerCtrl.h
   include/xlink2/xlink2ResourceAccessor.h
   include/xlink2/xlink2ResourceAccessorELink.h
@@ -49,6 +50,7 @@ add_library(xlink2 OBJECT
   src/xlink2Locator.cpp
   src/xlink2LockProxy.cpp
   src/xlink2ModelAssetConnection.cpp
+  src/xlink2OuterLockProxy.cpp
   src/xlink2PropertyTriggerCtrl.cpp
   src/xlink2ResourceAccessor.cpp
   src/xlink2ResourceAccessorELink.cpp
