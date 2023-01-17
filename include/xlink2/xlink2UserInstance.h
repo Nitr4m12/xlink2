@@ -62,6 +62,8 @@ public:
     u32 getSortKey() const;
     char* getUserName() const;
 
+    User* getUser() const { return mUser; };
+
     bool isCurrentActionNeedToCalc() const;
     bool isCurrentActionNeedToObserve(s32) const;
     bool isDebugLogEnable(DebugLogFlag) const;

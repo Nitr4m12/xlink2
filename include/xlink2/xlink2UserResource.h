@@ -23,14 +23,14 @@ public:
 
     u32 doBinarySearchAsset(char const*, TriggerType) const;
     u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
-    void freeResourceParam(UserResourceParam*);
+    void freeResourceParam_(UserResourceParam*);
 
-    u64 getActionTriggerTableItem(s32) const;
-    u64 getAlwaysTriggerTableItem(s32) const;
-    u64 getAssetCallTableItem(s32) const;
+    void* getActionTriggerTableItem(s32) const;
+    void* getAlwaysTriggerTableItem(s32) const;
+    void* getAssetCallTableItem(s32) const;
     u64 getEditorSetupTime() const;
     u64 getPropertyTriggerTableItem(s32) const;
-    u64 getUserHeader() const;
+    ResUserHeader* getUserHeader() const;
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
 
@@ -58,7 +58,8 @@ public:
 protected:
     User* mUser;
     ResMode mResMode;
-    UserResource* mUserResource;
+    u32 _5;
+    UserResourceParam* mUserResourceParam;
     void* _1;
     u8 _2;
     ResourceAccessor* mResourceAccessor;

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "basis/seadTypes.h"
-
+#include <basis/seadTypes.h>
 #include "xlink2/xlink2ResActionTrigger.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2TriggerType.h"
+#include "xlink2/xlink2TriggerType.h"
 
 namespace xlink2::ResourceUtil {
 TriggerType getActionTriggerType(ResActionTrigger const&);

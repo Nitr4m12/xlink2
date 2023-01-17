@@ -1,9 +1,9 @@
 #pragma once
 
-#include "basis/seadTypes.h"
+#include <basis/seadTypes.h>
 
 namespace xlink2 {
-class ResUserHeader {
+struct ResUserHeader {
     u32 isSetup;
     u32 numLocalProperty;
     u32 numCallTable;

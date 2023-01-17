@@ -1,7 +1,6 @@
 #pragma once
 
-#include <thread/seadMutex.h>
-#include <thread/seadSpinLock.h>
+#include <basis/seadTypes.h>
 
 namespace xlink2 {
 
@@ -11,11 +10,13 @@ struct Handle {
 };
 
 class F32PropertyDefinition;
+class S32PropertyDefinition;
 template <typename T>
 class FixedEnumPropertyDefinition;
 
 namespace IEventCallbackELink {};
 namespace IEventCallbackSLink {};
 
-class S32PropertyDefinition;
+static u64 sMinAddressLow{0xFFFFFFFFFFFFFFFF};
+static u64 sMinAddressHigh{0xFFFFFFFFFFFFFFFF};
 }  // namespace xlink2

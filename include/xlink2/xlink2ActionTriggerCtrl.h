@@ -16,7 +16,7 @@ class ActionTriggerCtrl : TriggerCtrl {
 
 public:
     ActionTriggerCtrl(UserInstance* param_1, sead::Buffer<ModelTriggerConnection>* param_2,
-                      ResActionSlot* param_3);
+                      ResActionSlot const* param_3);
 
     void calc();
     void changeAction(char const*, int);
@@ -35,7 +35,7 @@ public:
     void stopAction();
 
 private:
-    ResActionSlot* mResActionSlot;
+    ResActionSlot const* mResActionSlot;
     // WARNING: These are temporary variables to denote that
     // something is occupying this space
     void* _0;
