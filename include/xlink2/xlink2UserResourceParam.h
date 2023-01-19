@@ -10,6 +10,6 @@ struct UserResourceParam : public CommonResourceParam {
     void* _3;
     void* _4;
     void* _5;
-    u8 _7;
+    bool setup;
 };
 }  // namespace xlink2

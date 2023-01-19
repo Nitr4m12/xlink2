@@ -56,11 +56,14 @@ public:
     System* getSystem();
 
 protected:
+    struct Dummy { u8 bytes[0x18]; };
+    struct Dummy2 { u8 bytes[0x10]; };
+    struct Dummy3 { u8 bytes[0x20]; };
+
     User* mUser;
     ResMode mResMode;
     u32 _5;
-    UserResourceParam* mUserResourceParam;
-    void* _1;
+    sead::SafeArray<UserResourceParam*, 2> mParams;
     u8 _2;
     ResourceAccessor* mResourceAccessor;
     void* _3;

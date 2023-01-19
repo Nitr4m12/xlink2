@@ -11,7 +11,7 @@ struct ResUserHeader {
     u32 numRandomContainer;
     u32 numResActionSlot;
     u32 numResAction;
-    u32 numResActionTrigger;
+    s32 numResActionTrigger;
     u32 numResProperty;
     u32 numResPropertyTrigger;
     u32 numResAlwaysTrigger;

@@ -5,8 +5,8 @@ UserResource::~UserResource() = default;
 UserResource::UserResource(User* user) {
     mUser = user;
     mResMode = (ResMode)0;
-    mUserResourceParam = nullptr;
-    _1 = nullptr;
+    mParams[0] = nullptr;
+    mParams[1] = nullptr;
 }
 
 void UserResource::freeResourceParam_(UserResourceParam* param) {
@@ -29,85 +29,45 @@ void UserResource::freeResourceParam_(UserResourceParam* param) {
     }
 }
 
-// TODO
+// NON_MATCHING: one sub instruction reordered
 void* UserResource::getActionTriggerTableItem(s32 index) const {
-    UserResourceParam*const* param_ptr_ptr;
-    UserResourceParam* param_ptr;
+    auto* param = mParams[int(mResMode)];
 
-    // Adding an enum to a the address of a pointer? Maybe navigating through the class
-    param_ptr_ptr = &mUserResourceParam + (int)mResMode;
-    if (2 > (u32)mResMode) {
-        param_ptr_ptr = &mUserResourceParam;
-    }
-    param_ptr = *param_ptr_ptr;
-    if (param_ptr != nullptr) {
-        if (param_ptr->_7 != 0) {
-            if (-1 < index)
-                if (param_ptr->resUserHeader->numResActionTrigger <= index)
-                    return nullptr;
-            return param_ptr->directValueTable + index*0x18;
-        }
-    }
-    return nullptr;
+    if (!param || !param->setup || index >= param->resUserHeader->numResActionTrigger || index < 0)
+        return nullptr;
+    return &param->directValueTable[index * sizeof(Dummy)];
 }
 
-// TODO
+// NON_MATCHING: one sub instruction reordered
 void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
-    UserResourceParam*const* param_ptr_ptr;
-    UserResourceParam* param_ptr;
+    auto* param = mParams[int(mResMode)];
 
-    param_ptr_ptr = &mUserResourceParam + (int)mResMode;
-    if (2 > (u32)mResMode) {
-        param_ptr_ptr = &mUserResourceParam;
-    }
-    param_ptr = *param_ptr_ptr;
-    if (param_ptr != nullptr) {
-        if (param_ptr->_7 != 0) {
-            if (-1 < index)
-                if (param_ptr->resUserHeader->numResAlwaysTrigger <= index)
-                    return nullptr;
-            return param_ptr->curvePointTable + index*0x10;
-        }
-    }
-    return nullptr;
+    if (!param || !param->setup || index >= param->resUserHeader->numResAlwaysTrigger || index < 0)
+        return nullptr;
+    return &param->curvePointTable[index * sizeof(Dummy2)];
 }
 
-// TODO
+// NON_MATCHING: one sub instruction reordered
 void* UserResource::getAssetCallTableItem(s32 index) const {
-    UserResourceParam*const* param_ptr_ptr;
-    UserResourceParam* param_ptr;
+    auto* param = mParams[int(mResMode)];
 
-    param_ptr_ptr = &mUserResourceParam + (int)mResMode;
-    if (2 > (u32)mResMode) {
-        param_ptr_ptr = &mUserResourceParam;
-    }
-    param_ptr = *param_ptr_ptr;
-    if (param_ptr != nullptr) {
-        if (param_ptr->_7 != 0) {
-            if (-1 < index)
-                if (param_ptr->resUserHeader->numCallTable <= (long)index)
-                    return nullptr;
-            return param_ptr->resAssetParamTable + index*0x20;
-        }
-    }
-    return nullptr;
+    if (!param || !param->setup || index >= param->resUserHeader->numCallTable || index < 0)
+        return nullptr;
+    return &param->resAssetParamTable[index * sizeof(Dummy3)];
 }
 
-// TODO
+// // TODO
 ResUserHeader* UserResource::getUserHeader() const {
-    UserResourceParam*const* param_ptr_ptr;
-    UserResourceParam* param_ptr;
+    auto* param = mParams[int(mResMode)];
 
-    param_ptr_ptr = ResMode::Editor > mResMode ? &mUserResourceParam : &mUserResourceParam + (s32)mResMode;
-    param_ptr = *param_ptr_ptr;
-    if (param_ptr != nullptr) {
-        if (param_ptr->_7 != 0) {
-            return param_ptr->resUserHeader;
-        }
-    }
-    return nullptr;
+    if (!param || !param->setup)
+        return nullptr;
+    return param->resUserHeader;
 }
 
+u64 UserResource::getEditorSetupTime() const {
+    return 0;
+}
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable&, TriggerType) {}
 void UserResource::onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) {
 }

@@ -5,7 +5,14 @@
 
 namespace xlink2 {
 template <typename T>
-class LockProxy : ILockProxy {};
+class LockProxy : ILockProxy {
+    ~LockProxy() override;
+    void lock();
+    void unlock();
+
+private:
+    T mLock;
+};
 
 template <>
 class LockProxy<sead::SpinLock> : ILockProxy {
@@ -15,6 +22,6 @@ public:
     void unlock();
 
 private:
-    sead::SpinLock mSpinLock;
+    sead::SpinLock mLock;
 };
 }  // namespace xlink2
