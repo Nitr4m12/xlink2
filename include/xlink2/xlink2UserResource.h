@@ -21,9 +21,14 @@ public:
     void checkAndAddErrorMultipleKeyByTrigger(ResAssetCallTable const&, TriggerType);
     void destroy();
 
-    u32 doBinarySearchAsset(char const*, TriggerType) const;
+    u32* doBinarySearchAsset_(char const*, TriggerType) const;
     u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
-    void freeResourceParam_(UserResourceParam*);
+
+    virtual void func1();
+    virtual void func2();
+    virtual void func3();
+    virtual void func4();
+    virtual void freeResourceParam_(UserResourceParam*);
 
     void* getActionTriggerTableItem(s32) const;
     void* getAlwaysTriggerTableItem(s32) const;
@@ -36,7 +41,7 @@ public:
 
     u64 hasGlobalPropertyTrigger() const;
 
-    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
+    virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     u64 searchAssetAllResource(char const*) const;
     u64 searchAssetCallTableByGuid(Locator*, s32) const;

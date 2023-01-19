@@ -1,6 +1,15 @@
 #include <xlink2/xlink2UserResource.h>
 
 namespace xlink2 {
+u64 UserResource::getEditorSetupTime() const {
+    return 0;
+}
+void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
+                                                        TriggerType /*unused*/) {}
+void UserResource::onSetupResourceParam_(UserResourceParam* /*unused*/,
+                                         const ParamDefineTable* /*unused*/,
+                                         sead::Heap* /*unused*/) {}
+
 UserResource::~UserResource() = default;
 UserResource::UserResource(User* user) {
     mUser = user;
@@ -65,8 +74,16 @@ ResUserHeader* UserResource::getUserHeader() const {
     return param->resUserHeader;
 }
 
-u64 UserResource::getEditorSetupTime() const {
-    return 0;
+void UserResource::destroy() {
+    if (mParams[0] != nullptr)
+        this->freeResourceParam_(mParams[0]);
+
+    if (mParams[1] != nullptr)
+        this->freeResourceParam_(mParams[1]);
+
+}
+
+}
 }
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable&, TriggerType) {}
 void UserResource::onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) {
