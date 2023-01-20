@@ -1,4 +1,5 @@
 #include <xlink2/xlink2UserResource.h>
+#include "xlink2/xlink2.h"
 
 namespace xlink2 {
 u64 UserResource::getEditorSetupTime() const {
@@ -62,10 +63,9 @@ void* UserResource::getAssetCallTableItem(s32 index) const {
 
     if (!param || !param->setup || index >= param->resUserHeader->numCallTable || index < 0)
         return nullptr;
-    return &param->resAssetParamTable[index * sizeof(Dummy3)];
+    return &param->resAssetCallTable[index * sizeof(Dummy3)];
 }
 
-// // TODO
 ResUserHeader* UserResource::getUserHeader() const {
     auto* param = mParams[int(mResMode)];
 
@@ -83,9 +83,39 @@ void UserResource::destroy() {
 
 }
 
-}
-}
-void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable&, TriggerType) {}
-void UserResource::onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) {
+// TODO
+u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) const {
+    auto* param = mParams[int(mResMode)];
+    u32 num_asset = param->resUserHeader->numCallTable;
+
+    if (!param || !param->setup || num_asset == 0 || num_asset < 0)
+        return nullptr;
+
+    s32 v1 = 0;
+    s64 v2 = param->numCurvePointTable;
+    ResAssetCallTable* res_param_table = param->resAssetCallTable;
+
+    while (v1 <= num_asset - 1) {
+        s32 v3 = v1 + (num_asset - 1);
+        if (v3 < 0)
+            ++v3;
+        v3 >>= 1;
+        u32* asset = &num_asset + (v2 + v3 * 2) * sizeof(Dummy3);
+        if (asset == nullptr)
+            return nullptr;
+
+        char* asset_name = (char*)(sMinAddressHigh | *asset);
+        if (*asset < sMinAddressLow)
+            asset_name += 0x100000000;
+
+        if (strcmp(name, asset_name) == 0)
+            return asset;
+
+        s32 v4 = v3 - 1;
+        if (strcmp(name, asset_name) > 0) {
+            v1 = v3 + 1;
+            v4 = num_asset - 1;
+        }
+    }
 }
 }  // namespace xlink2

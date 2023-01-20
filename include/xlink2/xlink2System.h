@@ -3,6 +3,7 @@
 #include "container/seadOffsetList.h"
 #include "gfx/seadCamera.h"
 #include "gfx/seadProjection.h"
+#include "hostio/seadHostIONode.h"
 #include "hostio/seadHostIOReflexible.h"
 #include "prim/seadSafeString.h"
 
@@ -29,7 +30,7 @@ class HoldMgr;
 class ResourceBuffer;
 class UserInstance;
 
-class System {
+class System : sead::hostio::Node {
 public:
     System() = default;
     virtual ~System();

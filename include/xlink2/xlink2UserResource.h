@@ -24,10 +24,10 @@ public:
     u32* doBinarySearchAsset_(char const*, TriggerType) const;
     u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
 
-    virtual void func1();
-    virtual void func2();
-    virtual void func3();
-    virtual void func4();
+    virtual void getAccessor() = 0;
+    virtual void getAccessorPtr() = 0;
+    virtual System* getSystem() = 0;
+    virtual void allocResourceParam_() = 0;
     virtual void freeResourceParam_(UserResourceParam*);
 
     void* getActionTriggerTableItem(s32) const;
@@ -57,8 +57,6 @@ public:
 
     void solveNeedObserveFlag(UserResourceParam*);
     u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
-
-    System* getSystem();
 
 protected:
     struct Dummy { u8 bytes[0x18]; };

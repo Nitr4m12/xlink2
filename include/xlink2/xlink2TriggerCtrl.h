@@ -14,6 +14,9 @@
 namespace xlink2 {
 class TriggerCtrl {
 public:
+    virtual void calc() = 0;
+    virtual ~TriggerCtrl() = 0;
+
     void emitByTriggerImpl(TriggerType, s32, u32, ResAssetCallTable const*);
     void fadeByTrigger(s32);
     void* getModelTriggerConnection(s32);
@@ -21,8 +24,7 @@ public:
     void setBoneMatrixToConnection(u32, ModelTriggerConnection*);
 
 protected:
-    virtual ~TriggerCtrl();
-    UserInstance* mUserInstance{};
-    sead::Buffer<ModelTriggerConnection>* mBuffer{};
+    UserInstance* mUserInstance;
+    sead::Buffer<ModelTriggerConnection>* mBuffer;
 };
 }  // namespace xlink2

@@ -12,13 +12,13 @@
 
 namespace xlink2 {
 class ActionTriggerCtrl : TriggerCtrl {
-    ~ActionTriggerCtrl() override;
-
 public:
     ActionTriggerCtrl(UserInstance* param_1, sead::Buffer<ModelTriggerConnection>* param_2,
                       ResActionSlot const* param_3);
 
-    void calc();
+    void calc() override;
+    ~ActionTriggerCtrl() override;
+
     void changeAction(char const*, int);
     void changeAction(int, int);
     void changeActionImpl(ResAction const*, int, UserResource const*);

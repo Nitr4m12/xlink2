@@ -1,7 +1,7 @@
 #pragma once
 
 #include <basis/seadTypes.h>
-#include "xlink2/xlink2ResAssetParamTable.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResCurveCallTable.h"
 #include "xlink2/xlink2ResRandomCallTable.h"
 #include "xlink2/xlink2ResTriggerOverwriteParam.h"
@@ -19,7 +19,7 @@ struct CommonResourceParam {
     u32 numRandomCallTable;
     u32 numCurveCallTable;
     u32 numCurvePointTable;
-    ResAssetParamTable* resAssetParamTable;
+    ResAssetCallTable* resAssetCallTable;
     ResTriggerOverwriteParam* resTriggerOverwriteParamTable;
     void* localPropertyNameRefTable;
     void* localPropertyEnumNameRefTable;
