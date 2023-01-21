@@ -14,7 +14,7 @@ class PropertyTriggerCtrl : TriggerCtrl {
 public:
     PropertyTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*, s32, bool,
                         ResProperty const*, ResMode);
-    void calc();
+    void calc() override;
     void reset();
 
 private:

@@ -7,8 +7,8 @@ class RandomContainer : ContainerBase {
     ~RandomContainer() override;
 
 public:
-    void calc();
-    bool start();
+    u32 calc() override;
+    bool start() override;
 
 private:
 };

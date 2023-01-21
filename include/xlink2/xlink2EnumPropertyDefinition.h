@@ -14,6 +14,8 @@ public:
     EnumPropertyDefinition(char const*, int, char const**, bool, sead::Heap*);
     EnumPropertyDefinition(char const*, bool);
 
+    ~EnumPropertyDefinition() override;
+
     void entry(int, char const*);
 
     u64 getEntryKeyLength(u32) const;

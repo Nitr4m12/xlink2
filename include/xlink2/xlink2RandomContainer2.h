@@ -1,14 +1,12 @@
 #pragma once
 
-#include "xlink2/xlink2ContainerBase.h"
 
+#include "xlink2/xlink2RandomContainer.h"
 namespace xlink2 {
-class RandomContainer2 : ContainerBase {
+class RandomContainer2 : RandomContainer {
     ~RandomContainer2() override;
 
 public:
-    void* start();
-
-private:
+    bool start() override;
 };
 }  // namespace xlink2

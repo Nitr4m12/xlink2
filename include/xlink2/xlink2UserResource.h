@@ -24,10 +24,10 @@ public:
     u32* doBinarySearchAsset_(char const*, TriggerType) const;
     u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
 
-    virtual void getAccessor() = 0;
-    virtual void getAccessorPtr() = 0;
+    virtual ResourceAccessor* getAccessor() = 0;
+    virtual ResourceAccessor* getAccessorPtr() = 0;
     virtual System* getSystem() = 0;
-    virtual void allocResourceParam_() = 0;
+    virtual void allocResourceParam_(sead::Heap*) = 0;
     virtual void freeResourceParam_(UserResourceParam*);
 
     void* getActionTriggerTableItem(s32) const;
@@ -39,7 +39,7 @@ public:
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
 
-    u64 hasGlobalPropertyTrigger() const;
+    bool hasGlobalPropertyTrigger() const;
 
     virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 

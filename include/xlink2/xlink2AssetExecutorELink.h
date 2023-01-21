@@ -20,8 +20,8 @@ class AssetExecutorELink : AssetExecutor {
 public:
     void _applyColorAlpha();
     void _callEffectDeletedCallback();
-    void activateImpl();
-    bool calc();
+    void activateImpl_() override;
+    bool calc() override;
     void calcMtx(sead::Matrix34f* param_1, ResAssetCallTable* param_2, UserInstanceELink* param_3,
                  ResTriggerOverwriteParam* param_4, BoneMtx param_5);
 
@@ -29,17 +29,17 @@ public:
 
     u32 emitEffect();
     void emitParticle(sead::Vector3f*);
-    void fade();
-    void fadeBySystem();
+    void fade(s32) override;
+    void fadeBySystem() override;
     ResourceAccessor* getResourceAccessor_() const;
-    bool isAssetValid() const;
-    u32 isLoopEvent() const;
-    u8 isRequestReEmit() const;
+    bool isAssetValid() const override;
+    bool isLoopEvent() const override;
+    bool isRequestReEmit() const override;
 
-    void kill();
-    void onFinalize_();
-    void onResetOverwriteParam();
-    void requestReEmit(bool);
+    void kill() override;
+    void onFinalize_() override;
+    void onResetOverwriteParam_() override;
+    void requestReEmit(bool) override;
     void restartCalcDraw();
 
     void setDelayParam(EventELink::DelayEmitParam*, sead::BitFlag32);
@@ -71,12 +71,12 @@ private:
     void* _9;
     u16 _10;
     u16 _11;
-    u32 mPositionXWithOverwrite;
-    u32 mPositionYWithOverwrite;
-    u32 mPositionZWithOverwrite;
-    u32 mRotationXWithOverwrite;
-    u32 mRotationYWithOverwrite;
-    u32 mRotationZWithOverwrite;
+    u32 mPositionX;
+    u32 mPositionY;
+    u32 mPositionZ;
+    u32 mRotationX;
+    u32 mRotationY;
+    u32 mRotationZ;
     f32 _12;
     f32 _13;
     f32 _14;

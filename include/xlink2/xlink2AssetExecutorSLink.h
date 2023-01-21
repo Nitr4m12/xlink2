@@ -19,34 +19,34 @@ public:
     void _updateParam();
     void _updateParamFirst();
 
-    void activateImpl();
+    void activateImpl_() override;
     void appendAalInfoStr(sead::BufferedSafeString*);
     void applyParam(bool);
-    bool calc();
+    bool calc() override;
     void* emitSound();
-    void fade(int);
-    void fadeBySystem();
+    void fade(s32) override;
+    void fadeBySystem() override;
 
     f32 getPlayingTime() const;
     s32 getPriority() const;
     s32 getPriority_Spatial() const;
 
-    void isAssetValid() const;
-    void* isLoopEvent() const;
-    u8 isRequestReEmit() const;
+    bool isAssetValid() const override;
+    bool isLoopEvent() const override;
+    bool isRequestReEmit() const override;
 
-    void kill();
-    void onFinalize_();
-    void onResetOverwriteParam();
+    void kill() override;
+    void onFinalize_() override;
+    void onResetOverwriteParam_() override;
 
-    void requestReEmit(bool);
+    void requestReEmit(bool) override;
 
     void updateParam();
     void updateParamFirst();
 
 private:
-    u64 _0;
-    u64 _1;
+    void* _0;
+    void* _1;
     EventSLink* mEvent;                                   // 0x18
     UserInstanceSLink* mUserInstance;                     // 0x20
     ResAssetCallTable* mResAssetCallTable;                // 0x28
@@ -55,9 +55,9 @@ private:
     ResTriggerOverwriteParam* mResTriggerOverwriteParam;  // 0x38
     void* _4;                                             // 0x40
     u8 _5;                                                // 0x48
-    u8 _6[7];                                             // 0x49
+    u32 _6;                                             // 0x49
     u8 _7;                                                // 0x50
-    u8 _8[7];                                             // 0x51
+    u32 _8;                                             // 0x51
     void* _9;                                             // 0x58
     void* _10;                                            // 0x60
     HandleSLink* mHandle;                                 // 0x68

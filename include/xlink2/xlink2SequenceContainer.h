@@ -8,10 +8,10 @@ class SequenceContainer : ContainerBase {
     ~SequenceContainer() override;
 
 public:
-    u32 calc();
+    u32 calc() override;
     bool callChildSequence(s32);
     u64 callNextChildSequence();
-    u64 start();
+    bool start() override;
 
 private:
     s32 _0;

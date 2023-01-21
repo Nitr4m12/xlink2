@@ -10,10 +10,10 @@ class BlendContainer : ContainerBase {
     ~BlendContainer() override;
 
 public:
-    u32 calc();
+    u32 calc() override;
     u8 callAllChildContainer();
-    void initialize(Event*, ResAssetCallTable const&);
-    u8 start();
+    void initialize(Event*, ResAssetCallTable const&) override;
+    bool start() override;
 
 private:
 };
