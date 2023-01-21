@@ -6,8 +6,6 @@
 
 namespace xlink2 {
 class EnumPropertyDefinition : PropertyDefinition {
-    virtual ~EnumPropertyDefinition();
-
 public:
     class Entry {};
 
@@ -27,14 +25,10 @@ public:
     void setEntryBuf(s32, Entry*);
 
 private:
-    void* _0;
-    void* _1;
-    u32 _2;
-
-    // 0x64
-    u8 _9;
     u32 _10;
     s32 _11;
     Entry* mEntry;
+
+    // size=0x78
 };
 }  // namespace xlink2
