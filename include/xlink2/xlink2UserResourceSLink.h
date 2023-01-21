@@ -15,16 +15,16 @@ public:
     UserResourceSLink(User*, sead::Heap*);
 
     void allocResourceParam(sead::Heap);
-    void freeResourceParam(UserResourceParam*);
+    void freeResourceParam_(UserResourceParam*) override;
 
-    void* getAccessor() const;
-    void* getAccessorPtr();
+    ResourceAccessor* getAccessor() const;
+    ResourceAccessor* getAccessorPtr() override;
     SystemSLink* getSystem() const;
     u64 getUserParam() const;
 
     // bool isEnableAssetInfoReader(aal::IAssetInfoReadable**) const;
 
-    void onSetupResourceParam(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
+    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
 
     // void solveIsLoop(aal::IAssetInfoReadable*);
     // void solveIsLoop(UserResourceParam*, ParamDefineTable const*, aal::IAssetInfoReadable*)

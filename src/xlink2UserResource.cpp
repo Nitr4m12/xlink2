@@ -43,7 +43,7 @@ void UserResource::freeResourceParam_(UserResourceParam* param) {
 void* UserResource::getActionTriggerTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
 
-    if (!param || !param->setup || index >= param->resUserHeader->numResActionTrigger || index < 0)
+    if (!param || !param->isSetup || index >= param->resUserHeader->numResActionTrigger || index < 0)
         return nullptr;
     return &param->directValueTable[index * sizeof(Dummy)];
 }
@@ -52,7 +52,7 @@ void* UserResource::getActionTriggerTableItem(s32 index) const {
 void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
 
-    if (!param || !param->setup || index >= param->resUserHeader->numResAlwaysTrigger || index < 0)
+    if (!param || !param->isSetup || index >= param->resUserHeader->numResAlwaysTrigger || index < 0)
         return nullptr;
     return &param->curvePointTable[index * sizeof(Dummy2)];
 }
@@ -61,7 +61,7 @@ void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
 void* UserResource::getAssetCallTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
 
-    if (!param || !param->setup || index >= param->resUserHeader->numCallTable || index < 0)
+    if (!param || !param->isSetup || index >= param->resUserHeader->numCallTable || index < 0)
         return nullptr;
     return &param->resAssetCallTable[index * sizeof(Dummy3)];
 }
@@ -69,7 +69,7 @@ void* UserResource::getAssetCallTableItem(s32 index) const {
 ResUserHeader* UserResource::getUserHeader() const {
     auto* param = mParams[int(mResMode)];
 
-    if (!param || !param->setup)
+    if (!param || !param->isSetup)
         return nullptr;
     return param->resUserHeader;
 }
@@ -88,7 +88,7 @@ u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) con
     auto* param = mParams[int(mResMode)];
     u32 num_asset = param->resUserHeader->numCallTable;
 
-    if (!param || !param->setup || num_asset == 0 || num_asset < 0)
+    if (!param || !param->isSetup || num_asset == 0 || num_asset < 0)
         return nullptr;
 
     s32 v1 = 0;
@@ -118,4 +118,22 @@ u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) con
         }
     }
 }
+
+bool UserResource::hasGlobalPropertyTrigger() const {
+    auto* param {mParams[int(mResMode)]};
+
+    if (!param || !param->isSetup || param->resUserHeader->numResProperty == 0)
+        return false;
+
+    ResRandomCallTable* random_table {param->randomCallTable};
+    u32 max_val {random_table->maxValue};
+    for (int i {0};i<param->resUserHeader->numResProperty;++i) {
+        if (max_val != 0)
+            return true;
+
+        max_val += 16;
+    }
+    return false;
+}
+
 }  // namespace xlink2

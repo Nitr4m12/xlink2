@@ -15,15 +15,15 @@ public:
     ~UserResourceELink() override;
     UserResourceELink(User*, sead::Heap*);
 
-    void allocResourceParam(sead::Heap);
-    void freeResourceParam(UserResourceParam*);
+    void allocResourceParam_(sead::Heap*) override;
+    void freeResourceParam_(UserResourceParam*) override;
 
     ResourceAccessor* getAccessor() const;
-    ResourceAccessor* getAccessorPtr();
+    ResourceAccessor* getAccessorPtr() override;
     u64 getSolvedAssetParameterELink(ResAssetCallTable const&);
     SystemELink* getSystem() const;
 
-    void onSetupResourceParam(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
+    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
 
     void releaseOneEmitterInstance(UserResourceParamELink*, ParamDefineTable const*);
     void solveAssetParam(UserResourceELink*, ParamDefineTable const*, PtclResourceAccessorELink*);
