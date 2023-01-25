@@ -39,6 +39,8 @@ public:
     ResUserHeader* getUserHeader() const;
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
+    sead::SafeArray<UserResourceParam*, 2> getParams() const { return mParams; }
+    ResMode getResMode() const { return mResMode; }
 
     bool hasGlobalPropertyTrigger() const;
 

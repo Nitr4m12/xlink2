@@ -14,7 +14,7 @@
 #include "xlink2/xlink2ResourceAccessorSLink.h"
 
 namespace xlink2 {
-class UserInstanceSLink : UserInstance {
+class UserInstanceSLink : public UserInstance {
     ~UserInstanceSLink() override;
 
 public:

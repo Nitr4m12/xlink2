@@ -9,6 +9,15 @@ bool AssetExecutorELink::isRequestReEmit() const {
     return _5 >> 5 & 1;
 }
 
+bool AssetExecutorELink::isLoopEvent() const {
+    if (!mResAssetCallTable)
+        return false;
+
+    auto* res_accessor = getResourceAccessor_();
+    return res_accessor->isLoopAsset(*mResAssetCallTable);
+}
+
+
 void AssetExecutorELink::onFinalize_() {}
 
 void AssetExecutorELink::setInnerParam_() {

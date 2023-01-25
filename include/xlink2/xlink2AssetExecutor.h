@@ -18,9 +18,9 @@ public:
     virtual void fadeBySystem() = 0;
     virtual bool isLoopEvent() const = 0;
 
-    virtual void dumpDebugPrint() = 0;
+    virtual void dumpDebugPrint();
     virtual void activateImpl_() = 0;
-    virtual void onDestroy_() = 0;
+    virtual void onDestroy_();
     virtual void onResetOverwriteParam_() = 0;
     virtual void onFinalize_() = 0;
 };

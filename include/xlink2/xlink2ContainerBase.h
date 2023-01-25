@@ -22,10 +22,10 @@ public:
     virtual void kill();
     virtual void* killOneTimeEvent();
 
-    void* createChildContainer(ResAssetCallTable const&, ContainerBase*);
+    void* createChildContainer_(ResAssetCallTable const&, ContainerBase*);
 
 protected:
-    ResAssetCallTable* mResAssetCallTable;
+    const ResAssetCallTable* mResAssetCallTable;
     Event* mEvent;
     sead::SafeArray<ContainerBase*, 2> mChildContainers;
     s32 mResAssetDuration;

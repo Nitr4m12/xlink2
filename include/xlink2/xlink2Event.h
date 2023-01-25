@@ -37,6 +37,8 @@ public:
     s32 getAliveAssetNum();
     s32 getFadeBySystemListAssetNum();
 
+    UserInstance* getUserInstance() const { return mUserInstance; }
+
     void kill();
     void killOneTimeEvent();
     void reEmit();

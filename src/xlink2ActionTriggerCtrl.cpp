@@ -14,29 +14,6 @@ ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* param_1,
     _2 = 0;
 }
 
-// TODO
-// u32 ActionTriggerCtrl::getActionTriggerType_(ResActionTrigger const& action_trigger)
-// {
-//     u32 v1 {3};
-//     u32 v2 {2};
-//     u16 flag {action_trigger.flag};
-
-//     if ((flag & 0x10) != 0) {
-//         v1 = 0;
-//     }
-
-//     if ((flag & 8) != 0) {
-//         v2 = v1;
-//     }
-
-//     v2 = 1;
-//     if ((flag & 4) != 0) {
-//         v1 = v2;
-//     }
-
-//     return v1;
-// }
-
 void ActionTriggerCtrl::reset() {
     mResAction = nullptr;
     _0 = nullptr;
