@@ -5,6 +5,14 @@ bool AssetExecutorSLink::isRequestReEmit() const {
     return _7 & 1;
 }
 
+bool AssetExecutorSLink::isLoopEvent() const {
+    if (!mResAssetCallTable)
+        return false;
+
+    auto* res_accessor = mUserInstance->getUser()->getUserResource()->getAccessorPtr();
+    return res_accessor->isLoopAsset(*mResAssetCallTable);
+}
+
 void AssetExecutorSLink::onFinalize_() {
     _9 = nullptr;
 }
