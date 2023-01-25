@@ -5,6 +5,7 @@
 #include "xlink2/xlink2ArrangeGroupParam.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2HandleSLink.h"
+#include "xlink2/xlink2IEventCallbackSLink.h"
 #include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
@@ -77,6 +78,11 @@ public:
     void stopAllEvent(s32);
 
 private:
-    // size=0x128
+    sead::Heap* mHeap;
+    void* mEmitter;
+    u8 _6;
+    void* mAssetInfoReader;
+    IEventCallbackSLink* mEventCallback;
+    sead::SafeArray<AssetLimiter*, 2> mAssetLimiters;
 };
 }  // namespace xlink2

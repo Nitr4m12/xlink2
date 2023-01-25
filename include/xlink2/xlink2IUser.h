@@ -17,7 +17,5 @@ public:
     u64 getNumAction(int) const;
     void getReservedAssetName(ToolConnectionContext*) const;
     u64 getUserInformation();
-
-private:
 };
 }  // namespace xlink2

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "basis/seadTypes.h"
-#include "heap/seadHeap.h"
+#include <basis/seadTypes.h>
+#include <heap/seadHeap.h>
+
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2TriggerCtrlParam.h"
 #include "xlink2/xlink2TriggerType.h"
@@ -42,8 +43,7 @@ public:
 
 private:
     u32 _0;
-    TriggerCtrlParam* mParam1;
-    TriggerCtrlParam* mParam2;
+    sead::SafeArray<TriggerCtrlParam*, 2> mParams;
     u32 _1;
 };
 }  // namespace xlink2

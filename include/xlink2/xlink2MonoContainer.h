@@ -11,18 +11,17 @@ class MonoContainer : ContainerBase {
 public:
     u64 initialize(Event*, ResAssetCallTable);
 
-    void* calc();
-    void destroy();
-    void fade(int);
-    void fadeBySystem();
+    u32 calc() override;
+    void destroy() override;
+    void fade(int) override;
+    void fadeBySystem() override;
 
-    void kill();
-    s64 killOneTimeEvent();
-    u64 start();
+    void kill() override;
+    void* killOneTimeEvent() override;
+    bool start() override;
 
 private:
     f32 _1;
     f32 _2;
-    // TODO: possibly more?
 };
 }  // namespace xlink2

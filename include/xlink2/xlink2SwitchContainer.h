@@ -6,15 +6,13 @@
 
 namespace xlink2 {
 class SwitchContainer : ContainerBase {
+public:
     ~SwitchContainer() override;
 
-public:
     u32 calc() override;
     u64 getConditionMatchChildTable();
     void printChildSelect(ResAssetCallTable const* /*unused*/) const {};
     bool start() override;
     bool start(ResAssetCallTable const*);
-
-private:
 };
 }  // namespace xlink2

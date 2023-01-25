@@ -127,23 +127,23 @@ public:
     void updateSortKey();
 
 protected:
-    void* _0;
+    sead::OffsetList<Event> mEventList;
+    sead::SafeArray<UserInstanceParam*, 2> mParamsByResMode;
+    User* mUser;
+    IUser* mIUser;
+    sead::Matrix34f* mRootMtx;
+    u8 _0;
+    sead::Vector3f* mRootPos;
+    sead::Vector3f* mScale;
+    f32 mSortKey;
+    u64 mValueChangedBitfield;
+    f32* mPropertyValueArray;
+    TriggerCtrlMgr mTriggerCtrlMgr;
     void* _1;
-    void* _2;
+    u8 _2[48];
+    bool mIsActive;
     void* _3;
     void* _4;
-    User* mUser;
     void* _5;
-    void* _6;
-    void* _7;
-    void* _8;
-    void* _9;
-    void* _10;
-    void* _11;
-    void* _12;
-    TriggerCtrlMgr* mTriggerCtrlMgr;
-    void* _13;
-    void* _14;
-    s32 _15;
 };
 }  // namespace xlink2

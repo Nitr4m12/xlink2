@@ -12,29 +12,29 @@ void System::fixGlobalPropertyDefinition() {
     _10 = 0;
 }
 
-ParamDefineTable* System::getParamDefineTable() const {
-    return mResourceBuffer->getParamDefineTable();
-}
+// ParamDefineTable* System::getParamDefineTable() const {
+//     return mResourceBuffer->getParamDefineTable();
+// }
 
-ParamDefineTable* System::getParamDefineTable(ResMode mode) const {
-    if (mode != (ResMode)1)
-        return mResourceBuffer->getParamDefineTable();
+// ParamDefineTable* System::getParamDefineTable(ResMode mode) const {
+//     if (mode != (ResMode)1)
+//         return mResourceBuffer->getParamDefineTable();
 
-    if (mEditorBuffer != nullptr)
-        return mEditorBuffer->getParamDefineTable();
+//     if (mEditorBuffer != nullptr)
+//         return mEditorBuffer->getParamDefineTable();
 
-    return nullptr;
-}
+//     return nullptr;
+// }
 
 void* System::getResUserHeader(const char* p1) {
     return mResourceBuffer->searchResUserHeader(p1);
 }
 
 void System::incrementEventCreateId_() {
-    if (mEventCreateId != -1)
-        mEventCreateId += 1;
+    if (mCurrentEventId != -1)
+        mCurrentEventId += 1;
     else
-        mEventCreateId = 1;
+        mCurrentEventId = 1;
 }
 
 // bool System::isDrawTargetInstance(UserInstance* draw_target_instance) const {

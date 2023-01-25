@@ -6,7 +6,7 @@ namespace xlink2 {
 struct ResAssetCallTable {
     u32 keyNamePos;
     s16 assetId;
-    u16 flag;
+    u8 flag;
     s32 duration;
     s32 parentIndex;
     u16 enumIndex;

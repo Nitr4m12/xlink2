@@ -114,8 +114,5 @@ private:
     void* _0;
     UserResource* mUserResource;
     System* mSystem;
-
-    // 0x50
-    // void*
 };
 }  // namespace xlink2

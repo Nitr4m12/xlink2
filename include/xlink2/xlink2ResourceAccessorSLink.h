@@ -11,20 +11,24 @@ class ResourceAccessorSLink : ResourceAccessor {
 
 public:
     u32 getAssetBitFlag(ResAssetCallTable const&) const;
+
     char* getAssetName(ResAssetCallTable const&) const;
     char* getBoneName(ResAssetCallTable const&) const;
     char* getBoneNameWithOverwrite(ResAssetCallTable const&, u32) const;
+
     f32 getDelay(ResAssetCallTable const&, UserInstance const*) const;
     f32 getDelayWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
     char* getDistanceParamSetName(ResAssetCallTable const&) const;
     u64 getDopplerFactor(ResAssetCallTable const&, UserInstance const*) const;
     f32 getDuration(ResAssetCallTable const&, UserInstance const*) const;
+
     u32 getFadeCurveType(ResAssetCallTable const&);
     u64 getFadeInTime(ResAssetCallTable const&, UserInstance*) const;
     u64 getFadeInTimeWithOverwrite(ResAssetCallTable const&, u32, UserInstance*) const;
     char* getGroupName(ResAssetCallTable const&) const;
     u64 getLpf(ResAssetCallTable const&, UserInstance const*) const;
     u64 getLpf(ResAssetCallTable const&, u32, UserInstance const*) const;
+
     char* getOverwriteBoneName(u32) const;
     f32 getOverwriteDelay(u32, UserInstance const*) const;
     u64 getOverwriteFadeInTime(u32, UserInstance const*) const;
@@ -33,6 +37,7 @@ public:
     u64 getOverwritePriority(u32, UserInstance const*) const;
     u64 getOverwriteStopFrame(u32, UserInstance const*) const;
     u64 getOverwriteVolume(u32, UserInstance const*) const;
+
     f32 getPitch(ResAssetCallTable const&, UserInstance const*) const;
     f32 getPitchWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
     f32 getPriority(ResAssetCallTable const&, UserInstance const*) const;
@@ -40,15 +45,18 @@ public:
     f32 getStopFrame(ResAssetCallTable const&, UserInstance const*) const;
     f32 getStopFrameWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
     u32 getTriggerOverwriteParamId(u32) const;
+
     char* getUserDistanceParamSetName() const;
     u32 getUserDopplerFactor() const;
     u32 getUserLimitType() const;
     u32 getUserPlayableLimitNum() const;
     u32 getUserPriority() const;
+
     f32 getVolume(ResAssetCallTable const&, UserInstance const*) const;
     f32 getVolumeDrc(ResAssetCallTable const&, UserInstance const*) const;
     f32 getVolumeTv(ResAssetCallTable const&, UserInstance const*) const;
     f32 getVolumeWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
+
     bool isAutoOneTimeFade(ResAssetCallTable const&) const;
     bool isBlankAsset(ResAssetCallTable const&) const;
     bool isBoneNameOverwritten(u32) const;
@@ -59,7 +67,5 @@ public:
     bool isStopWhenEmitterDestroying(ResAssetCallTable const&) const;
     bool isUnified(ResAssetCallTable const&) const;
     bool isUserNoPos() const;
-
-private:
 };
 }  // namespace xlink2

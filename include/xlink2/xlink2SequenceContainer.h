@@ -5,9 +5,9 @@
 
 namespace xlink2 {
 class SequenceContainer : ContainerBase {
+public:
     ~SequenceContainer() override;
 
-public:
     u32 calc() override;
     bool callChildSequence(s32);
     u64 callNextChildSequence();

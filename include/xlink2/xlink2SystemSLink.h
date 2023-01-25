@@ -7,13 +7,12 @@
 namespace xlink2 {
 class UserResourceSLink;
 class SystemSLink : System {
-    ~SystemSLink() override;
-
+    SEAD_SINGLETON_DISPOSER(SystemSLink);
 public:
-    static SystemSLink* sInstance;
     static ILockProxy* sLockProxy;
 
     SystemSLink();
+    ~SystemSLink() override;
 
     class SingletonDisposer;
 
@@ -22,11 +21,9 @@ public:
     void* allocAssetExecutor(Event*);
     void allocHandle(sead::Heap*);
 
-    void* createInstance(sead::Heap*);
     UserInstanceSLink* createUserInstance(UserInstance::CreateArg const&, sead::Heap*, u32);
     UserResourceSLink* createUserResource(User*, sead::Heap*);
 
-    void deleteInstance();
     // void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
     //                             sead::Camera const&, sead::Projection const&,
     //                             sead::Viewport const&) const;
@@ -47,22 +44,10 @@ public:
     void stopAllEvent(s32);
 
 private:
-    // 0x7f4
-    // u16
-
-    // 0x7f8
-    // System* mSystem;
-
-    // 0x800
-    // void*
-
-    // 0x808
-    // void*
-
-    // 0x810
-    // void*
-
-    // 0x818
-    // void*
+    void* _15;
+    void* _16;
+    void* _17;
+    void* _18;
+    void* _19;
 };
 }  // namespace xlink2

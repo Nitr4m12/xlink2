@@ -13,7 +13,10 @@ public:
 protected:
     void* _0;
     sead::FixedSafeString<64>* mUserName;
-    u8 unknown[70];
+    u32 _2;
+    u32 _3;
+    u32 mUserNamePos;
+    u8 unknown[54];
     PropertyType mType;
     u8 _1;
 };

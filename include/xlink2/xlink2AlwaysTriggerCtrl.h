@@ -13,7 +13,7 @@ class AlwaysTriggerCtrl : TriggerCtrl {
 public:
     AlwaysTriggerCtrl(UserInstance* user_instance, sead::Buffer<ModelTriggerConnection>* buffer);
 
-    void calc();
+    void calc() override;
     void emitByTrigger_(int);
     void notifyActive();
 

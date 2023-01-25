@@ -10,6 +10,5 @@ class ResCurveCallTable {
     u32 propName;
     u32 propIdx;
     s16 localPropertyNameIdx;
-    u8 padding[2];
 };
 }  // namespace xlink2

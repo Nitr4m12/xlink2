@@ -3,8 +3,8 @@
 namespace xlink2 {
 ContainerBase::ContainerBase() {
     mResAssetDuration = 0;
-    _0 = nullptr;
-    _1 = nullptr;
+    mChildContainers[0] = nullptr;
+    mChildContainers[1] = nullptr;
     mResAssetCallTable = nullptr;
     mEvent = nullptr;
 }

@@ -1,11 +1,12 @@
 #pragma once
 
-#include "container/seadOffsetList.h"
-#include "gfx/seadCamera.h"
-#include "gfx/seadProjection.h"
-#include "hostio/seadHostIONode.h"
-#include "hostio/seadHostIOReflexible.h"
-#include "prim/seadSafeString.h"
+#include <container/seadOffsetList.h>
+#include <gfx/seadCamera.h>
+#include <gfx/seadProjection.h>
+#include <hostio/seadHostIONode.h>
+#include <hostio/seadHostIOReflexible.h>
+#include <prim/seadSafeString.h>
+#include <container/seadPtrArray.h>
 
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2ContainerBase.h"
@@ -126,62 +127,43 @@ public:
     // void writeBlinkText(sead::SafeString const&, sead::TextWriter*) const;
     // void writeLines(sead::SafeString const&, sead::TextWriter*) const;
 
-private:
+protected:
     ResourceBuffer* mResourceBuffer;
-    sead::ListNode* mListNode;
-    void* _0;
-    s32 _1;
-    s32 _2;
-    void* _3;
+    sead::OffsetList<User> mUserList;
+    void* _1;
     // s32 - 0x2c?
-    s32 _4;
-    s32 mEventCreateId;
-    u8 _5;
-    u32 _6;
-    void* _7;
-    void* _8;
-    void* _9;
-    u8 _10;
+    s32 _2;
+    s32 mCurrentEventId;
+    u8 _3;
+    u32 mMaxGlobalPropertyValues;
+    const PropertyDefinition** mGlobalPropertyDefinitions;
+    float* mGlobalPropertyValues;
+    u64 mGlobalPropertyValueUsedBitfield;
+    u8 _4;
     ErrorMgr* mErrorMgr;
     HoldMgr* mHoldMgr;
-    u32 _11;
-    u8 _12;
-    sead::Heap* mHeap1;
-    u32 _13;
-    sead::PtrArrayImpl* mPtrArrayImpl;
-    void* _14;
-    sead::Random* mRandom;
-    ContainerBase* xlinkContainer;
-    AssetExecutor* xlinkAssetExecutor;
-    void* _17;
-    sead::Heap* mHeap2;
+    u32 _5;
+    u8 mCallEnable;
+    sead::Heap* mUserHeap;
+    u32 _6;
+    sead::PtrArrayImpl mGlobalPropertyTriggerUserList;
+    sead::Random mRandom;
+    sead::Heap* mXlinkContainerHeap;
+    sead::Heap* mXlinkAssetExecutorHeap;
+    sead::Heap* mPrimaryHeap;
     EditorBuffer* mEditorBuffer;
-    s32 _18;
-    u32 _19;
-    sead::ListNode* mListNode2;
-    f32 _20;
-    void* _21;
-    void* _22;
-    void* _23;
-    u32 _24;
-    DebugOperationParam* mDebugOperationParam;
-
-    // 0x458
-    // DebugOperationParam* mDebugOperationParam2;
-
-    // 0x7b0
-    // u8
-
-    // 0x7b8
-    // void*
-
-    // 0x7c0
-    // void*
-
-    // 0x7c8
-    // UserInstance* mUserInstance;
-
-    // 0x7d0
-    // u8
+    s32 mTick;
+    u32 _7;
+    sead::ListImpl mListImpl;
+    u32 _8;
+    void* _9;
+    void* _10;
+    DebugOperationParam mDebugOperationParam;
+    DebugOperationParam mDebugOperationParam2;
+    u8 _11;
+    void* _12;
+    void* _13;
+    UserInstance* mUserInstance;
+    u8 _14;
 };
 }  // namespace xlink2

@@ -1,7 +1,7 @@
 #include "xlink2/xlink2AssetExecutorSLink.h"
 
 namespace xlink2 {
-u8 AssetExecutorSLink::isRequestReEmit() const {
+bool AssetExecutorSLink::isRequestReEmit() const {
     return _7 & 1;
 }
 

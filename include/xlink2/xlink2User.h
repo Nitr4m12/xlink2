@@ -51,18 +51,19 @@ public:
     void updateSortKey();
 
 private:
-    char* mName;
+    void* _0;
     void* _1;
     char* mUserName;
     UserResource* mUserResource;
-    User* mUser1;
-    User* mUser2;
+    sead::SafeArray<UserInstance*, 2> mUserInstanceArray;
     u32 _6;
-    s32 mUserInstancePos;
+    s32 _7;
     sead::Heap* mHeap;
     u32 _8;
-    u16 _9;
+    u16 mPropertyDefinitionTableNum;
     s16 mResActionSlotNum;
-    ResActionSlot* mResActionSlotTable;
+    PropertyDefinition** mPropertyDefinitionTable;
+    ResActionSlot* mResActionSlot;
+    u8 _11;
 };
 }  // namespace xlink2

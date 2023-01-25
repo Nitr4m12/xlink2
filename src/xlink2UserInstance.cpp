@@ -19,9 +19,9 @@ char* UserInstance::getUserName() const {
     return mUser->getUserName();
 }
 
-bool UserInstance::isCurrentActionNeedToCalc() const {
-    return _15 != 0;
-}
+// bool UserInstance::isCurrentActionNeedToCalc() const {
+//     return _15 != 0;
+// }
 
 bool UserInstance::isDebugLogEnable(DebugLogFlag /*unused*/) const {
     return false;

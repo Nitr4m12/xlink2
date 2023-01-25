@@ -12,8 +12,8 @@ class AssetExecutorELink;
 
 
 class SystemELink : System {
+    SEAD_SINGLETON_DISPOSER(SystemELink);
 public:
-    static SystemELink* sInstance;
     static ILockProxy* sLockProxy;
 
     SystemELink() = default;
@@ -26,11 +26,9 @@ public:
     void* allocAssetExecutor(Event*);
     void allocHandle(sead::Heap*);
 
-    void* createInstance(sead::Heap*);
     UserInstanceELink* createUserInstance(UserInstance::CreateArg const&, sead::Heap*, u32);
     UserResourceELink* createUserResource(User*, sead::Heap*);
 
-    void deleteInstance();
     // void drawInformationEvent(sead::TextWriter*) const;
     // void drawInformationSystemDetail(sead::TextWriter*) const;
     void genMessage(sead::hostio::Context* /*unused*/){};
@@ -54,73 +52,29 @@ public:
     void setPtclSystemState();
 
 private:
-    // 0x7f8
-    // PtclSystem* mPtclSystem;
-
-    // 0x800
-    // void*
-
-    // 0x808
-    // void*
-
-    // 0x810
-    // void*
-
-    // 0x818
-    // u32
-
-    // 0x81c
-    // u32
-
-    // 0x820
-    // u32
-
-    // 0x824
-    // u32
-
-    // 0x828
-    // u32
-
-    // 0x82c
-    // u32
-
-    // 0x830
-    // u32
-
-    // 0x834
-    // u32
-
-    // 0x838
-    // u32
-
-    // 0x83c
-    // u32
-
-    // 0x840
-    // u32
-
-    // 0x844
-    // u32
-
-    // 0x848
-    // u32
-
-    // 0x84c
-    // u32
-
-    // 0x850
-    // u32
-
-    // 0x854
-    // u32
-
-    // 0x858
-    // u32
-
-    // 0x85c
-    // u32
-
-    // 0x860
-    // u32
+    // sead::ptcl::PtclSystem* mPtclSystem;
+    void* mPtclSystem;
+    void* _19;
+    void* _20;
+    void* _21;
+    u32 _22;
+    u32 _23;
+    u32 _24;
+    u32 _25;
+    u32 _26;
+    u32 _27;
+    u32 _28;
+    u32 _29;
+    u32 _30;
+    u32 _31;
+    u32 _32;
+    u32 _33;
+    u32 _34;
+    u32 _35;
+    u32 _36;
+    u32 _37;
+    u32 _38;
+    u32 _39;
+    u32 _40;
 };
 }  // namespace xlink2

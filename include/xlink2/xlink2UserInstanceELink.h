@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xlink2/xlink2HandleELink.h"
+#include "xlink2/xlink2IEventCallbackELink.h"
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2System.h"
@@ -41,6 +42,9 @@ public:
     void searchAndHold(char const*, HandleELink*);
 
 private:
-    // size=0x108
+    IEventCallbackELink* mEventCallback;
+    u16 _6;
+    u8 mDefaultGroup;
+    PtclResourceAccessorELink* mPtclResourceAccessor;
 };
 }  // namespace xlink2

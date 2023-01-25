@@ -12,6 +12,7 @@ namespace xlink2 {
 class System;
 class ResourceAccessor;
 class User;
+class UserResourceParam;
 
 class UserResource {
 public:
@@ -72,7 +73,5 @@ protected:
     void* _3;
     void* _4;
     System* mSystem;
-
-
 };
 }  // namespace xlink2

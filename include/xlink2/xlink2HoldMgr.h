@@ -1,19 +1,24 @@
 #pragma once
 
-#include "hostio/seadHostIOReflexible.h"
+#include <container/seadObjList.h>
+#include <hostio/seadHostIOReflexible.h>
 
 #include "xlink2/xlink2Handle.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class HoldMgr {
-    virtual ~HoldMgr();
-
+class HoldMgr : sead::hostio::Node {
 public:
     HoldMgr(System*, sead::Heap*);
+    virtual ~HoldMgr();
 
-    class HoldAssetInfo;
+    struct HoldAssetInfo {
+        Handle handle;
+        UserInstance* userInstance;
+        s32 _0;
+        sead::ListNode listNode;
+    };
 
     void calc();
     void fade(char const*, UserInstance*, int);
@@ -27,38 +32,9 @@ public:
 
 private:
     System* mSystem;
-    sead::CriticalSection* mCriticalSection;
-
-    // 0x30
-    // Event* mEvent1;
-
-    // 0x50
-    // sead::ListNode* mListNode1;
-    // 0x58
-    // sead::ListNode* mListNode2;
-
-    // 0x60
-    // s32
-
-    // 0x68
-    // Event* mEvent2;
-
-    // 0x70
-    // Event* mEvent3;
-
-    // 0x78
-    // s32
-
-    // 0x7c
-    // Event* mEvent4;
-
-    // 0xdc
-    // void*
-
-    // 0x184c
-    // void*
-
-    // 0x1880
-    // u8
+    sead::CriticalSection mCriticalSection;
+    sead::ObjList<HoldAssetInfo> mHoldAssetInfoList;
+    HoldAssetInfo mHoldAssetInfos[128];
+    u8 _0;
 };
 }  // namespace xlink2

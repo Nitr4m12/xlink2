@@ -29,22 +29,9 @@ private:
     u32 _21;
     u32 _22;
     u32 _23;
-    u32 _24;
-    u32 _25;
-    u32 _26;
-    u32 _27;
-    u32 _28;
-    void* _29;
+    sead::Vector3f mPos;
+    sead::Vector3f mVelocity;
     void* _30;
     u16 _31;
-
-    // 0xbc
-    // sead::Vector3f* _24;
-
-    // 0xc4
-    // u32
-
-    // 0xc8
-    // sead::Vector3f* mVelocity
 };
 }  // namespace xlink2

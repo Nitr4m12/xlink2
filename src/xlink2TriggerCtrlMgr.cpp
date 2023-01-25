@@ -4,8 +4,8 @@ namespace xlink2 {
 TriggerCtrlMgr::TriggerCtrlMgr() {
     _0 = 0;
     _1 = 0;
-    mParam1 = nullptr;
-    mParam2 = nullptr;
+    mParams[0] = nullptr;
+    mParams[1] = nullptr;
 }
 
 void TriggerCtrlMgr::initialize(s32 /*unused*/, s32 /*unused*/, sead::Heap* /*unused*/) {}

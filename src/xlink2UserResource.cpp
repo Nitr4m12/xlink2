@@ -1,5 +1,5 @@
 #include <xlink2/xlink2UserResource.h>
-#include "xlink2/xlink2.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 u64 UserResource::getEditorSetupTime() const {
@@ -26,17 +26,8 @@ void UserResource::freeResourceParam_(UserResourceParam* param) {
         param->nameTableNum = 0;
     }
 
-    if (param->_1 != nullptr) {
-        delete[] param->_1;
-        param->_1 = nullptr;
-        param->_0 = 0;
-    }
-
-    if (param->_3 != nullptr) {
-        delete[] param->_3;
-        param->_3 = nullptr;
-        param->_2 = 0;
-    }
+    param->resCallTableBuffer.freeBuffer();
+    param->actionTriggerBoolBuffer.freeBuffer();
 }
 
 // NON_MATCHING: one sub instruction reordered

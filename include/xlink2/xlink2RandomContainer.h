@@ -4,12 +4,10 @@
 
 namespace xlink2 {
 class RandomContainer : ContainerBase {
+public:
     ~RandomContainer() override;
 
-public:
     u32 calc() override;
     bool start() override;
-
-private:
 };
 }  // namespace xlink2
