@@ -17,49 +17,48 @@ class UserResourceParam;
 class UserResource {
 public:
     explicit UserResource(User*);
-    virtual ~UserResource();
+    void setup(sead::Heap*);
+    void setupRomResourceParam_(sead::Heap*);
+    void setupEditorResourceParam_(EditorResourceParam*, sead::Heap*);
+    void setupResourceParam_(UserResourceParam*, ResUserHeader*, CommonResourceParam const*,
+                        ParamDefineTable const*, sead::Heap*);
 
-    void checkAndAddErrorMultipleKeyByTrigger(ResAssetCallTable const&, TriggerType);
-    void destroy();
-
+    ResUserHeader* getUserHeader() const;
+    u64 searchAssetCallTableByName(Locator*, char const*) const;
+    u64 searchAssetCallTableByName(char const*) const;
     u32* doBinarySearchAsset_(char const*, TriggerType) const;
-    u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
+    u64 searchAssetCallTableByHash(Locator*, u32) const;
+
+    void* getAssetCallTableItem(s32) const;
+    void* getActionTriggerTableItem(s32) const;
+    void* getPropertyTriggerTableItem(s32) const;
+    void* getAlwaysTriggerTableItem(s32) const;
 
     virtual ResourceAccessor* getAccessor() = 0;
     virtual ResourceAccessor* getAccessorPtr() = 0;
     virtual System* getSystem() = 0;
-    virtual void allocResourceParam_(sead::Heap*) = 0;
+    virtual UserResourceParam* allocResourceParam_(sead::Heap*) = 0;
+
+    void destroy();
     virtual void freeResourceParam_(UserResourceParam*);
 
-    void* getActionTriggerTableItem(s32) const;
-    void* getAlwaysTriggerTableItem(s32) const;
-    void* getAssetCallTableItem(s32) const;
+    u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
+
+    void solveNeedObserveFlag(UserResourceParam*);
+    u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
+    u64 searchAssetAllResource(char const*) const;
+    bool hasGlobalPropertyTrigger() const;
+
     u64 getEditorSetupTime() const;
-    u64 getPropertyTriggerTableItem(s32) const;
-    ResUserHeader* getUserHeader() const;
+    void checkAndAddErrorMultipleKeyByTrigger(ResAssetCallTable const&, TriggerType);
+    u64 searchAssetCallTableByGuid(Locator*, s32) const;
+
+    virtual ~UserResource();
+    virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
     sead::SafeArray<UserResourceParam*, 2> getParams() const { return mParams; }
     ResMode getResMode() const { return mResMode; }
-
-    bool hasGlobalPropertyTrigger() const;
-
-    virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
-
-    u64 searchAssetAllResource(char const*) const;
-    u64 searchAssetCallTableByGuid(Locator*, s32) const;
-    u64 searchAssetCallTableByHash(Locator*, u32) const;
-    u64 searchAssetCallTableByName(Locator*, char const*) const;
-    u64 searchAssetCallTableByName(char const*) const;
-
-    void setup(sead::Heap*);
-    void setupEditorResourceParam(EditorResourceParam*, sead::Heap*);
-    void setupResourceParam(UserResourceParam*, ResUserHeader*, CommonResourceParam const*,
-                            ParamDefineTable const*, sead::Heap*);
-    void setupRomResourceParam(sead::Heap*);
-
-    void solveNeedObserveFlag(UserResourceParam*);
-    u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
 
 protected:
     struct Dummy { u8 bytes[0x18]; };

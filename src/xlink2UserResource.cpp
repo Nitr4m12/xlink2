@@ -2,16 +2,6 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-u64 UserResource::getEditorSetupTime() const {
-    return 0;
-}
-void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
-                                                        TriggerType /*unused*/) {}
-void UserResource::onSetupResourceParam_(UserResourceParam* /*unused*/,
-                                         const ParamDefineTable* /*unused*/,
-                                         sead::Heap* /*unused*/) {}
-
-UserResource::~UserResource() = default;
 UserResource::UserResource(User* user) {
     mUser = user;
     mResMode = (ResMode)0;
@@ -19,42 +9,39 @@ UserResource::UserResource(User* user) {
     mParams[1] = nullptr;
 }
 
-void UserResource::freeResourceParam_(UserResourceParam* param) {
-    if (param->nameTable != nullptr) {
-        delete[] param->nameTable;
-        param->nameTable = nullptr;
-        param->nameTableNum = 0;
+void UserResource::setup(sead::Heap* heap) {
+    sead::Heap* user_heap;
+    sead::SafeString user_name;
+
+    if (!mParams[0] || !mParams[0]->isSetup) {
+        System* sys {mUser->getSystem()};
+        user_heap = sys->getUserHeap();
+        if (!user_heap || user_heap->getFreeSize() >> 10 < 5) {
+            user_heap = heap;
+        }
+        setupRomResourceParam_(user_heap);
     }
 
-    param->resCallTableBuffer.freeBuffer();
-    param->actionTriggerBoolBuffer.freeBuffer();
-}
+    System* res_system {getSystem()};
 
-// NON_MATCHING: one sub instruction reordered
-void* UserResource::getActionTriggerTableItem(s32 index) const {
-    auto* param = mParams[int(mResMode)];
+    if (res_system->getEditorBuffer() && res_system->isServerConnecting()) {
+        user_name = mUser->getUserName();
+        EditorResourceParam* editor_res_param {res_system->getEditorBuffer()->searchEditorResourceParam(user_name)};
+        if (editor_res_param) {
+            sead::Heap* primary_heap {res_system->getPrimaryHeap()};
+            if (mParams[1])
+                freeResourceParam_(mParams[1]);
+            UserResourceParam* res_param {allocResourceParam_(primary_heap)};
+            mParams[1] = res_param;
+            ResUserHeader* res_header {editor_res_param->pResUserHeader2};
 
-    if (!param || !param->isSetup || index >= param->resUserHeader->numResActionTrigger || index < 0)
-        return nullptr;
-    return &param->directValueTable[index * sizeof(Dummy)];
-}
+            UserResource* new_user_res;
+            System* new_res_system {new_user_res->getSystem()};
+            setupResourceParam_(res_param, res_header, editor_res_param, new_res_system->getEditorBuffer()->getParamDefineTable(), primary_heap);
 
-// NON_MATCHING: one sub instruction reordered
-void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
-    auto* param = mParams[int(mResMode)];
-
-    if (!param || !param->isSetup || index >= param->resUserHeader->numResAlwaysTrigger || index < 0)
-        return nullptr;
-    return &param->curvePointTable[index * sizeof(Dummy2)];
-}
-
-// NON_MATCHING: one sub instruction reordered
-void* UserResource::getAssetCallTableItem(s32 index) const {
-    auto* param = mParams[int(mResMode)];
-
-    if (!param || !param->isSetup || index >= param->resUserHeader->numCallTable || index < 0)
-        return nullptr;
-    return &param->resAssetCallTable[index * sizeof(Dummy3)];
+            this->mResMode = ResMode::Editor;
+        }
+    }
 }
 
 ResUserHeader* UserResource::getUserHeader() const {
@@ -65,21 +52,12 @@ ResUserHeader* UserResource::getUserHeader() const {
     return param->resUserHeader;
 }
 
-void UserResource::destroy() {
-    if (mParams[0] != nullptr)
-        this->freeResourceParam_(mParams[0]);
-
-    if (mParams[1] != nullptr)
-        this->freeResourceParam_(mParams[1]);
-
-}
-
 // TODO
 u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) const {
     auto* param = mParams[int(mResMode)];
     u32 num_asset = param->resUserHeader->numCallTable;
 
-    if (!param || !param->isSetup || num_asset == 0 || num_asset < 0)
+    if (!param || !param->isSetup)
         return nullptr;
 
     s32 v1 = 0;
@@ -110,6 +88,61 @@ u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) con
     }
 }
 
+// NON_MATCHING: one sub instruction reordered
+void* UserResource::getAssetCallTableItem(s32 index) const {
+    auto* param = mParams[int(mResMode)];
+
+    if (!param || !param->isSetup || index >= param->resUserHeader->numCallTable || index < 0)
+        return nullptr;
+    return &param->resAssetCallTable[index * sizeof(Dummy3)];
+}
+
+// NON_MATCHING: one sub instruction reordered
+void* UserResource::getActionTriggerTableItem(s32 index) const {
+    auto* param = mParams[int(mResMode)];
+
+    if (!param || !param->isSetup || index >= param->resUserHeader->numResActionTrigger || index < 0)
+        return nullptr;
+    return &param->directValueTable[index * sizeof(Dummy)];
+}
+
+// NON_MATCHING: one sub instruction reordered
+void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
+    auto* param = mParams[int(mResMode)];
+
+    if (!param || !param->isSetup || index >= param->resUserHeader->numResAlwaysTrigger || index < 0)
+        return nullptr;
+    return &param->curvePointTable[index * sizeof(Dummy2)];
+}
+
+void UserResource::destroy() {
+    if (mParams[0] != nullptr)
+        this->freeResourceParam_(mParams[0]);
+
+    if (mParams[1] != nullptr)
+        this->freeResourceParam_(mParams[1]);
+
+}
+
+void UserResource::freeResourceParam_(UserResourceParam* param) {
+    if (param->nameTable != nullptr) {
+        delete[] param->nameTable;
+        param->nameTable = nullptr;
+        param->nameTableNum = 0;
+    }
+
+    param->resCallTableBuffer.freeBuffer();
+    param->actionTriggerBoolBuffer.freeBuffer();
+}
+
+void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
+                                                        TriggerType /*unused*/) {}
+
+
+u64 UserResource::getEditorSetupTime() const {
+    return 0;
+}
+
 bool UserResource::hasGlobalPropertyTrigger() const {
     auto* param {mParams[int(mResMode)]};
 
@@ -127,4 +160,9 @@ bool UserResource::hasGlobalPropertyTrigger() const {
     return false;
 }
 
+UserResource::~UserResource() = default;
+
+void UserResource::onSetupResourceParam_(UserResourceParam* /*unused*/,
+                                         const ParamDefineTable* /*unused*/,
+                                         sead::Heap* /*unused*/) {}
 }  // namespace xlink2
