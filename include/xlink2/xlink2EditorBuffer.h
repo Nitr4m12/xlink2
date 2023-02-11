@@ -21,7 +21,7 @@ public:
     void destroy();
     void readFinished();
 
-    void* searchEditorResourceParam(sead::SafeString const&);
+    EditorResourceParam* searchEditorResourceParam(sead::SafeString const&);
     void setupParamDefineTable(u8*, u32);
 
     ParamDefineTable* getParamDefineTable() const { return mParamDefineTable; }

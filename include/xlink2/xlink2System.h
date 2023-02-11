@@ -124,6 +124,10 @@ public:
     void updateDebugDrawUserList() const;
     void updateUserForGlobalPropertyTrigger(User*);
 
+    sead::Heap* getUserHeap() { return mUserHeap; }
+    EditorBuffer* getEditorBuffer() { return mEditorBuffer; }
+    sead::Heap* getPrimaryHeap() { return mPrimaryHeap; }
+
     // void writeBlinkText(sead::SafeString const&, sead::TextWriter*) const;
     // void writeLines(sead::SafeString const&, sead::TextWriter*) const;
 
@@ -155,7 +159,6 @@ protected:
     s32 mTick;
     u32 _7;
     sead::ListImpl mListImpl;
-    u32 _8;
     void* _9;
     void* _10;
     DebugOperationParam mDebugOperationParam;

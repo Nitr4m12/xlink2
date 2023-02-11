@@ -15,7 +15,7 @@ public:
     ~UserResourceELink() override;
     UserResourceELink(User*, sead::Heap*);
 
-    void allocResourceParam_(sead::Heap*) override;
+    UserResourceParam* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;
 
     ResourceAccessor* getAccessor() const;
