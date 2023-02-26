@@ -2,10 +2,6 @@
 
 #include <basis/seadTypes.h>
 #include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResCurveCallTable.h"
-#include "xlink2/xlink2ResRandomCallTable.h"
-#include "xlink2/xlink2ResTriggerOverwriteParam.h"
-#include "xlink2/xlink2ResUserHeader.h"
 
 namespace xlink2 {
 class DirectValue {};
@@ -13,21 +9,24 @@ class CurvePoint {};
 struct CommonResourceParam {
     u32 numResParam;
     u32 numResAssetParam;
-    ResUserHeader* resUserHeader;
+    u32 numResTriggerOverwriteParam;
+    u32 numLocalPropertyNameRefTable;
     u32 numLocalPropertyEnumNameRefTable;
     u32 numDirectValueTable;
-    u32 numRandomCallTable;
-    u32 numCurveCallTable;
+    u32 numRandomTable;
+    u32 numCurveTable;
     u32 numCurvePointTable;
     ResAssetCallTable* resAssetCallTable;
-    ResTriggerOverwriteParam* resTriggerOverwriteParamTable;
+    u32 triggerOverwriteParamTablePos;
+    u32 _0;
     void* localPropertyNameRefTable;
     void* localPropertyEnumNameRefTable;
-    DirectValue* directValueTable;
-    ResRandomCallTable* randomCallTable;
-    ResCurveCallTable* curveCallTable;
-    CurvePoint* curvePointTable;
-    u32 nameTableNum;
-    char* nameTable;
+    u32* directValueTable;
+    u32* randomCallTable;
+    u32* curveCallTable;
+    u32* curvePointTable;
+    u32 conditionTablePos;
+    u32 exRegionPos;
+    u32 nameTablePos;
 };
 }  // namespace xlink2

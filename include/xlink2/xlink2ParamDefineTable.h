@@ -30,10 +30,15 @@ public:
 
     void setup(u8*, u32, bool);
 
+    s32 getNumUserParams() const { return mNumUserParams; }
+    u32 getAssetParamNum() const { return mAssetParamNum; }
+    u32 getUserParamNum() const { return mUserParamNum; }
+    u32 get0() const { return _0; }
+
 private:
     u32 _0;
-    u32 mAssetParamNum;
     u32 mUserParamNum;
+    u32 mAssetParamNum;
     u32 mTriggerParamNum;
     void* mUserParam;
     void* mAssetParam;
