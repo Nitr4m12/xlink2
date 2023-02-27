@@ -22,6 +22,7 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2ResourceAccessorELink.h
   include/xlink2/xlink2ResourceAccessorSLink.h
   include/xlink2/xlink2ResourceBuffer.h
+  include/xlink2/xlink2ResourceParamCreator.h
   include/xlink2/xlink2ResourceUtil.h
   include/xlink2/xlink2ResTriggerOverwriteParam.h
   include/xlink2/xlink2SwitchContainer.h
@@ -56,6 +57,7 @@ add_library(xlink2 OBJECT
   src/xlink2ResourceAccessorELink.cpp
   src/xlink2ResourceAccessorSLink.cpp
   src/xlink2ResourceBuffer.cpp
+  src/xlink2ResourceParamCreator.cpp
   src/xlink2ResourceUtil.cpp
   src/xlink2SwitchContainer.cpp
   src/xlink2System.cpp
