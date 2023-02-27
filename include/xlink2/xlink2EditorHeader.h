@@ -15,7 +15,7 @@ struct EditorHeader {
     u32 numRandomTable;
     u32 numCurveTable;
     u32 numCurvePointTable;
-    u32 exRegionPos;
+    u32 exDataRegionPos;
     u32 userNamePos;
     u32 userBinPos;
     u32 conditionTablePos;

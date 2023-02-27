@@ -11,7 +11,7 @@ struct EditorResourceParam : CommonResourceParam {
     u32 _0;
     ResUserHeader* pResUserHeader;
     sead::SafeString* editorName;
-    ResUserHeader* pResUserHeader2;
+    sead::SafeString* editorName2;
     s32 unknownNum;
 
 };

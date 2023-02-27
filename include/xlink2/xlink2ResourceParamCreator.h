@@ -30,7 +30,7 @@ public:
 
 void createParamAndSolveResource(RomResourceParam*, void*, ParamDefineTable const*, System*);
 void createCommonResourceParam_(CommonResourceParam*, BinAccessor*);
-void dumpRomResource(ResourceHeader*, RomResourceParam*, BinAccessor const*,
+void dumpRomResource_(ResourceHeader*, RomResourceParam*, BinAccessor const*,
                      ParamDefineTable const*, sead::Heap*, bool, sead::BufferedSafeString*);
 
 void solveCommonResource_(CommonResourceParam*, BinAccessor*);
@@ -39,7 +39,7 @@ void solveAboutGlobalProperty(RomResourceParam*, ParamDefineTable const*, System
 
 void createParamAndSolveResource(EditorResourceParam*, sead::SafeString const&, u8*, u32,
                                  ParamDefineTable const*, System*);
-void dumpEditorResource(EditorResourceParam*, BinAccessor const*, ParamDefineTable const*,
+void dumpEditorResource_(EditorResourceParam*, BinAccessor const*, ParamDefineTable const*,
                         sead::Heap*);
 void solveAboutGlobalProperty(EditorResourceParam*, ParamDefineTable const*, System*);
 
@@ -53,7 +53,7 @@ void dumpCommonResourceFront_(CommonResourceParam*, BinAccessor const*, bool,
                               sead::BufferedSafeString*);
 void dumpUserBin_(u32, sead::SafeString const&, ResUserHeader*, ParamDefineTable const*,
                   sead::BufferedSafeString*);
-void dumpCommonResourceRear(CommonResourceParam*, BinAccessor const*, u32, sead::Heap*, bool,
+void dumpCommonResourceRear_(CommonResourceParam*, BinAccessor const*, u32, sead::Heap*, bool,
                             sead::BufferedSafeString*);
 };  // namespace ResourceParamCreator
 }  // namespace xlink2
