@@ -2,9 +2,7 @@
 
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2PtclResourceAccessorELink.h"
 #include "xlink2/xlink2ResourceAccessor.h"
-#include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 
@@ -35,12 +33,13 @@ public:
     void* getAlwaysTriggerTableItem(s32) const;
 
     virtual ResourceAccessor* getAccessor() = 0;
-    virtual ResourceAccessor* getAccessorPtr() = 0;
-    virtual System* getSystem() = 0;
     virtual UserResourceParam* allocResourceParam_(sead::Heap*) = 0;
 
     void destroy();
     virtual void freeResourceParam_(UserResourceParam*);
+
+    virtual ResourceAccessor* getAccessorPtr() = 0;
+    virtual System* getSystem() = 0;
 
     u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
 
