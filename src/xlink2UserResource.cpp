@@ -33,7 +33,7 @@ void UserResource::setup(sead::Heap* heap) {
                 freeResourceParam_(mParams[1]);
             UserResourceParam* res_param {allocResourceParam_(primary_heap)};
             mParams[1] = res_param;
-            ResUserHeader* res_header {editor_res_param->pResUserHeader2};
+            ResUserHeader* res_header {editor_res_param->pResUserHeader};
 
             UserResource* new_user_res;
             System* new_res_system {new_user_res->getSystem()};
@@ -44,25 +44,26 @@ void UserResource::setup(sead::Heap* heap) {
     }
 }
 
-ResUserHeader* UserResource::getUserHeader() const {
+u64 UserResource::getUserHeader() const {
     auto* param = mParams[int(mResMode)];
 
     if (!param || !param->isSetup)
-        return nullptr;
-    return param->resUserHeader;
+        return 0;
+    return param->numResTriggerOverwriteParam;
 }
 
-// TODO
+// NON-MATCHING
 u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) const {
-    auto* param = mParams[int(mResMode)];
-    u32 num_asset = param->resUserHeader->numCallTable;
+    auto* param {mParams[int(mResMode)]};
+    ResUserHeader* usr_head {};
+    u32 num_asset {usr_head->numCallTable};
 
     if (!param || !param->isSetup)
         return nullptr;
 
     s32 v1 = 0;
     s64 v2 = param->numCurvePointTable;
-    ResAssetCallTable* res_param_table = param->resAssetCallTable;
+    ResAssetParam* res_param_table = param->assetParamTable;
 
     while (v1 <= num_asset - 1) {
         s32 v3 = v1 + (num_asset - 1);
@@ -88,20 +89,21 @@ u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) con
     }
 }
 
-// NON_MATCHING: one sub instruction reordered
+// // NON_MATCHING: one sub instruction reordered
 void* UserResource::getAssetCallTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
-
-    if (!param || !param->isSetup || index >= param->resUserHeader->numCallTable || index < 0)
+    ResUserHeader* usr_head;
+    if (!param || !param->isSetup || index >= usr_head->numCallTable || index < 0)
         return nullptr;
-    return &param->resAssetCallTable[index * sizeof(Dummy3)];
+    return &param->assetParamTable[index * sizeof(Dummy3)];
 }
 
 // NON_MATCHING: one sub instruction reordered
 void* UserResource::getActionTriggerTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
+    ResUserHeader* usr_head;
 
-    if (!param || !param->isSetup || index >= param->resUserHeader->numResActionTrigger || index < 0)
+    if (!param || !param->isSetup || index >= usr_head->numResActionTrigger || index < 0)
         return nullptr;
     return &param->directValueTable[index * sizeof(Dummy)];
 }
@@ -109,8 +111,9 @@ void* UserResource::getActionTriggerTableItem(s32 index) const {
 // NON_MATCHING: one sub instruction reordered
 void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
+    ResUserHeader* usr_head;
 
-    if (!param || !param->isSetup || index >= param->resUserHeader->numResAlwaysTrigger || index < 0)
+    if (!param || !param->isSetup || index >= usr_head->numResAlwaysTrigger || index < 0)
         return nullptr;
     return &param->curvePointTable[index * sizeof(Dummy2)];
 }
@@ -124,11 +127,12 @@ void UserResource::destroy() {
 
 }
 
+// NON-MATCHING
 void UserResource::freeResourceParam_(UserResourceParam* param) {
-    if (param->nameTable != nullptr) {
-        delete[] param->nameTable;
-        param->nameTable = nullptr;
-        param->nameTableNum = 0;
+    if (param->nameTablePos != 0) {
+        delete[] param->resourceAccessor;
+        param->resourceAccessor = nullptr;
+        param->conditionTablePos = 0;
     }
 
     param->resCallTableBuffer.freeBuffer();
@@ -145,13 +149,14 @@ u64 UserResource::getEditorSetupTime() const {
 
 bool UserResource::hasGlobalPropertyTrigger() const {
     auto* param {mParams[int(mResMode)]};
+    ResUserHeader* usr_head;
 
-    if (!param || !param->isSetup || param->resUserHeader->numResProperty == 0)
+    if (!param || !param->isSetup || usr_head->numResProperty == 0)
         return false;
 
     ResRandomCallTable* random_table {param->randomCallTable};
-    u32 max_val {random_table->maxValue};
-    for (int i {0};i<param->resUserHeader->numResProperty;++i) {
+    f32 max_val {random_table->maxValue};
+    for (int i {0};i<usr_head->numResProperty;++i) {
         if (max_val != 0)
             return true;
 

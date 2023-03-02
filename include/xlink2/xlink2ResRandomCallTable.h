@@ -4,7 +4,7 @@
 
 namespace xlink2 {
 struct ResRandomCallTable {
-    u32 minValue;
-    u32 maxValue;
+    f32 minValue;
+    f32 maxValue;
 };
 }  // namespace xlink2

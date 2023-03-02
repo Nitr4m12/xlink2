@@ -5,9 +5,6 @@
 namespace xlink2 {
 struct ResAssetParam {
     u64 mask;
-    u32 rawValue;
-};
-struct ResAssetParamTable {
-    ResAssetParam** params;
+    u32* rawValue;
 };
 }

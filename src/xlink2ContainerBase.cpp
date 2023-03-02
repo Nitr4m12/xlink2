@@ -9,6 +9,7 @@ ContainerBase::ContainerBase() {
     mResAssetCallTable = nullptr;
     mEvent = nullptr;
 }
+ContainerBase::~ContainerBase() = default;
 
 void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
                                            ContainerBase* container) {

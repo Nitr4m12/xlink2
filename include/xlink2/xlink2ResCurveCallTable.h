@@ -2,7 +2,7 @@
 
 #include "basis/seadTypes.h"
 namespace xlink2 {
-class ResCurveCallTable {
+struct ResCurveCallTable {
     u16 curvePointStartPos;
     u16 numPoint;
     u16 curveType;

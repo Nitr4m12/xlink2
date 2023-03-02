@@ -14,6 +14,7 @@ class UserResourceParam;
 
 class UserResource {
 public:
+    virtual ~UserResource();
     explicit UserResource(User*);
     void setup(sead::Heap*);
     void setupRomResourceParam_(sead::Heap*);
@@ -21,7 +22,7 @@ public:
     void setupResourceParam_(UserResourceParam*, ResUserHeader*, CommonResourceParam const*,
                         ParamDefineTable const*, sead::Heap*);
 
-    ResUserHeader* getUserHeader() const;
+    u64 getUserHeader() const;
     u64 searchAssetCallTableByName(Locator*, char const*) const;
     u64 searchAssetCallTableByName(char const*) const;
     u32* doBinarySearchAsset_(char const*, TriggerType) const;
@@ -33,13 +34,12 @@ public:
     void* getAlwaysTriggerTableItem(s32) const;
 
     virtual ResourceAccessor* getAccessor() = 0;
+    virtual ResourceAccessor* getAccessorPtr() = 0;
+    virtual System* getSystem() = 0;
+
     virtual UserResourceParam* allocResourceParam_(sead::Heap*) = 0;
 
     void destroy();
-    virtual void freeResourceParam_(UserResourceParam*);
-
-    virtual ResourceAccessor* getAccessorPtr() = 0;
-    virtual System* getSystem() = 0;
 
     u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
 
@@ -52,7 +52,7 @@ public:
     void checkAndAddErrorMultipleKeyByTrigger(ResAssetCallTable const&, TriggerType);
     u64 searchAssetCallTableByGuid(Locator*, s32) const;
 
-    virtual ~UserResource();
+    virtual void freeResourceParam_(UserResourceParam*);
     virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
