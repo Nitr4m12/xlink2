@@ -8,7 +8,7 @@ struct ResUserHeader {
     u32 numLocalProperty;
     u32 numCallTable;
     u32 numAsset;
-    u32 numRandomContainer;
+    u32 numRandomContainer2;
     u32 numResActionSlot;
     u32 numResAction;
     s32 numResActionTrigger;
@@ -16,5 +16,6 @@ struct ResUserHeader {
     u32 numResPropertyTrigger;
     u32 numResAlwaysTrigger;
     u32 triggerTablePos;
+    u32 userParamTablePos;
 };
 }  // namespace xlink2

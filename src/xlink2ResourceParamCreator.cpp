@@ -50,7 +50,7 @@ void createParamAndSolveResource(RomResourceParam* rom_res_param, void* p2,
     rom_res_param->binPos = 0;
 }
 
-// NON-MATCHING
+// WIP
 void createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccessor* bin_accessor) {
     ResourceHeader* res_header{bin_accessor->mResourceHeader};
     EditorHeader* editor_header{bin_accessor->mEditorHeader};
@@ -189,7 +189,7 @@ void createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccess
     common_res_param->nameTablePos = bin_accessor->mBinStart + *ptr_follower;
 }
 
-// NON-MATCHING
+// WIP
 void dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
                       const BinAccessor* bin_accessor, const ParamDefineTable* param_define,
                       sead::Heap* heap, bool p1, sead::BufferedSafeString* buffered_str) {
@@ -248,7 +248,7 @@ void dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
             auto* v2 = (ResUserHeader*)(v1 | sMinAddressHigh);
             sead::SafeString str_v{""};
             if (v1 < sMinAddressLow) {
-                v2 = (ResUserHeader*)&v2[0x5555555].numRandomContainer;
+                v2 = (ResUserHeader*)&v2[0x5555555].numRandomContainer2;
             }
             dumpUserBin_(i, str_v, v2, param_define, buffered_str);
         }
@@ -256,7 +256,7 @@ void dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
     dumpCommonResourceRear_(rom_res, bin_accessor, res_header->dataSize, heap, false, buffered_str);
 }
 
-// NON-MATCHING
+// WIP
 void dumpEditorResource_(EditorResourceParam* editor_resource, const BinAccessor* bin_accessor,
                          const ParamDefineTable* param_define, sead::Heap* heap) {
     sead::BufferedSafeString* buffered_str{nullptr};
@@ -293,6 +293,7 @@ void dumpEditorResource_(EditorResourceParam* editor_resource, const BinAccessor
                             buffered_str);
 }
 
+// WIP
 void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
                               const BinAccessor* bin_accessor, bool p1,
                               sead::BufferedSafeString* buffered_str) {
@@ -309,7 +310,7 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
 
     ResAssetParam* pv1{common_res_param->assetParamTable};
     ResAssetParam* pv2{pv1};
-    u32* pv3;
+    u32* next_raw_value;
     u32* raw_value_ptr;
 
     if (common_res_param->numResAssetParam == 0) {
@@ -319,7 +320,7 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
         not_default_param_num = 0;
         all_asset_param_num = 0;
         for (int i{0}; i < common_res_param->numResAssetParam; ++i) {
-            pv3 = pv2->rawValue;
+            next_raw_value = pv2->rawValue;
             dumpLine_(buffered_str, "  [%d] mask: %lu\n", i, pv2->mask);
             if (bin_accessor->mUserParamNum != 0) {
                 raw_value_ptr = pv2->rawValue;
@@ -335,7 +336,7 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
                             i, j, asset_param_raw_value, asset_param_raw_value >> 0x18,
                             asset_param_raw_value & 0xffffff);
                         not_default_param_num += 1;
-                        pv3 += 4;
+                        next_raw_value += 4;
                         raw_value_ptr += 1;
                     }
                     v3 = j;
@@ -348,12 +349,12 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
         not_default_param_num = 0;
         all_asset_param_num = 0;
         for (int i{0}; i < common_res_param->numResAssetParam; ++i) {
-            pv3 = pv2->rawValue;
+            next_raw_value = pv2->rawValue;
             if (bin_accessor->mUserParamNum != 0) {
                 for (int j{0}; j < bin_accessor->mUserParamNum; ++j) {
                     if (pv2->mask & 1L << j & 0x3f != 0) {
                         not_default_param_num += 1;
-                        pv3 += 1;
+                        next_raw_value += 1;
                     }
                     v3 = j;
                 }
@@ -547,8 +548,236 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
     dumpLine_(buffered_str, s.cstr());
     dumpLine_(buffered_str, "\n");
 };
-void dumpUserBin_(u32, const sead::SafeString&, ResUserHeader*, const ParamDefineTable*,
-                  sead::BufferedSafeString*);
-void dumpCommonResourceRear_(CommonResourceParam*, const BinAccessor*, u32, sead::Heap*, bool,
-                             sead::BufferedSafeString*);
+
+// WIP
+void dumpUserBin_(u32 p1, const sead::SafeString& user_name, ResUserHeader* user_header,
+                  const ParamDefineTable* param_define, sead::BufferedSafeString* buffered_str) {
+    // ------------------------------------- ResUserHeader -----------------------------------------
+    dumpLine_(buffered_str, "<< ResUserHeader[%d] (addr:0x%x, name=%s) >>\n", p1, user_header,
+              user_name.cstr());
+    dumpLine_(buffered_str, "    isSetup: %u\n", user_header->isSetup);
+    dumpLine_(buffered_str, "    numLocalProperty: %u\n", user_header->numLocalProperty);
+    dumpLine_(buffered_str, "    numCallTable: %u\n", user_header->numCallTable);
+    dumpLine_(buffered_str, "    numAsset: %u\n", user_header->numAsset);
+    dumpLine_(buffered_str, "    numRandomContainer2: %u\n", user_header->numRandomContainer2);
+    dumpLine_(buffered_str, "    numResActionSlot: %u\n", user_header->numResActionSlot);
+    dumpLine_(buffered_str, "    numResAction: %u\n", user_header->numResAction);
+    dumpLine_(buffered_str, "    numResActionTrigger: %u\n", user_header->numResActionTrigger);
+    dumpLine_(buffered_str, "    numResProperty: %u\n", user_header->numResProperty);
+    dumpLine_(buffered_str, "    numResPropertyTrigger: %u\n", user_header->numResPropertyTrigger);
+    dumpLine_(buffered_str, "    numResAlwaysTrigger: %u\n", user_header->numResAlwaysTrigger);
+    dumpLine_(buffered_str, "    triggerTablePos: %u\n", user_header->triggerTablePos);
+    dumpLine_(buffered_str, "\n");
+
+    u64 pos{(u64)user_header + 1};
+
+    // ------------------------------- LocalPropertyNameRefTable -----------------------------------
+    dumpLine_(buffered_str, "    << LocalPropertyNameRefTable (addr:0x%x, num=%d) >>\n", pos,
+              user_header->numLocalProperty);
+    if (user_header->numLocalProperty != 0)
+        for (int i{0}; i < user_header->numLocalProperty; ++i)
+            dumpLine_(buffered_str, "        [%d]: namePos=%d\n", pos + i * sizeof(u32));
+    dumpLine_(buffered_str, "\n");
+
+    // --------------------------------------- UserParamTable --------------------------------------
+    u32 num_property{user_header->numLocalProperty};
+    u32 user_param_num{param_define->getUserParamNum()};
+    u64 pos2{pos + num_property * sizeof(u32)};
+    dumpLine_(buffered_str, "    << UserParamTable (addr:0x%x, num=%d) >>\n", pos2, user_param_num);
+
+    if (user_param_num != 0) {
+        for (int i{0}; i < user_param_num; ++i) {
+            // TODO: This looks weird. Take a look later
+            u32* raw_value{&user_header->userParamTablePos};
+            raw_value = &raw_value[num_property + i];
+            dumpLine_(buffered_str, "        [%d] rawValue: %u (type: %d, value: %d)\n",
+                      i & 0xffffffff, *raw_value >> 0x18, *raw_value & 0xffffff);
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+
+    // ------------------------------------- SortedAssetIdTable ------------------------------------
+    pos2 += user_param_num * sizeof(u32);
+    dumpLine_(buffered_str, "    << SortedAssetIdTable (addr:0x%x, num=%d) >>\n", pos2,
+              user_header->numCallTable);
+    if (user_header->numCallTable != 0)
+        for (int i{0}; i < user_header->numCallTable; ++i)
+            dumpLine_(buffered_str, "        [%d]: %hu\n", i, pos2 + i * sizeof(u16));
+    dumpLine_(buffered_str, "\n");
+
+    // --------------------------------------- AssetCallTable --------------------------------------
+    pos2 += user_header->numCallTable * sizeof(u16);
+    if ((user_header->numCallTable & 1) != 0)
+        pos2 += 2;
+    dumpLine_(buffered_str, "    << AssetCallTable (addr:0x%x, num=%d) >>\n", pos2);
+    if (user_header->numCallTable != 0) {
+        for (int i{0}; i < user_header->numCallTable; ++i) {
+            ResAssetCallTable* asset_call_table{
+                (ResAssetCallTable*)(pos2 + i * sizeof(ResAssetCallTable))};
+            dumpLine_(buffered_str, "        [%d].keyNamePos: %u\n", i,
+                      asset_call_table->keyNamePos);
+            dumpLine_(buffered_str, "        [%d].assetId: %hd\n", i, asset_call_table->assetId);
+            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, asset_call_table->flag);
+            dumpLine_(buffered_str, "        [%d].parentIndex: %d\n", i,
+                      asset_call_table->parentIndex);
+            dumpLine_(buffered_str, "        [%d].paramStartPos: %u\n", i,
+                      asset_call_table->paramStartPos);
+            dumpLine_(buffered_str, "        [%d].conditionPos: %u\n", i,
+                      asset_call_table->conditionPos);
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+
+    // --------------------------------------- ContainerTable --------------------------------------
+    ResContainerParam* container_param{
+        (ResContainerParam*)(pos2 + user_header->numCallTable * sizeof(ResAssetCallTable))};
+    u32 num_container{user_header->numCallTable - user_header->numAsset};
+    dumpLine_(buffered_str, "    << ContainerTable (addr:0x%x, num=%d) >>\n", container_param,
+              num_container);
+    if (num_container != 0) {
+        for (int i{0}; i < num_container; ++i) {
+            if (container_param->type == ContainerType::Switch) {
+                dumpLine_(buffered_str, "        [%d].type: %d\n", i, container_param->type);
+                dumpLine_(buffered_str, "        [%d].childrenStartIndex: %d\n", i,
+                          container_param->childrenStartIndex);
+                dumpLine_(buffered_str, "        [%d].childrenEndIndex: %d\n", i,
+                          container_param->childrenEndIndex);
+                dumpLine_(buffered_str, "        [%d].watchPropertyNamePos: %u\n", i,
+                          container_param->watchPropertyNamePos);
+                dumpLine_(buffered_str, "        [%d].watchPropertyId: %d\n", i,
+                          container_param->watchPropertyId);
+                dumpLine_(buffered_str, "        [%d].localPropertyNameIdx: %hd\n", i,
+                          container_param->localPropertyNameIdx);
+                dumpLine_(buffered_str, "        [%d].isGlobal: %d\n", i,
+                          container_param->isGlobal);
+                container_param += 1;
+            } else {
+                dumpLine_(buffered_str, "        [%d].type: %d\n", i, container_param->type);
+                dumpLine_(buffered_str, "        [%d].childrenStartIndex: %d\n", i,
+                          container_param->childrenStartIndex);
+                dumpLine_(buffered_str, "        [%d].childrenEndIndex: %d\n", i,
+                          container_param->childrenEndIndex);
+                container_param = (ResContainerParam*)container_param->watchPropertyNamePos;
+            }
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+
+    // ------------------------------------- ResActionSlotTable ------------------------------------
+    u64 action_slot_table_abs_pos{user_header->triggerTablePos + (u64)user_header};
+    u64 pos3{action_slot_table_abs_pos | sMinAddressHigh};
+    if (action_slot_table_abs_pos < sMinAddressLow)
+        pos3 += 0x100000000;
+
+    dumpLine_(buffered_str, "    << ResActionSlotTable (addr:0x%x, num=%d) >>\n", pos3,
+              user_header->numResActionSlot);
+    if (user_header->numResActionSlot != 0) {
+        ResActionSlot* action_slot;
+        for (int i{0}; i < user_header->numResActionSlot; ++i) {
+            action_slot = (ResActionSlot*)(pos3 + i * sizeof(ResActionSlot));
+            dumpLine_(buffered_str,
+                      "        [%d] namePos: %u, actionStartIdx: %hd, actionEndIdx: %hd\n", i,
+                      action_slot->namePos, action_slot->actionStartIdx, action_slot->actionEndIdx);
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+    pos2 = pos3 + user_header->numResActionSlot * sizeof(ResActionSlot);
+
+    // --------------------------------------- ResActionTable --------------------------------------
+    dumpLine_(buffered_str, "    << ResActionTable (addr:0x%x, num=%d) >>\n", pos2,
+              user_header->numResAction);
+    if (user_header->numResAction != 0) {
+        ResAction* res_action;
+        for (int i{0}; i < user_header->numResAction; ++i) {
+            res_action = (ResAction*)(pos2 + i * sizeof(ResAction));
+            dumpLine_(buffered_str,
+                      "        [%d] namePos: %u, triggerStartIdx: %d, triggerEndIdx: %d\n", i,
+                      res_action->namePos, res_action->triggerStartIdx, res_action->triggerEndIdx);
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+    pos2 += user_header->numResAction * sizeof(ResAction);
+
+    // ----------------------------------- ResActionTriggerTable ----------------------------------
+    dumpLine_(buffered_str, "    << ResActionTriggerTable (addr:0x%x, num=%d) >>\n", pos2,
+              user_header->numResActionTrigger);
+    if (user_header->numResActionTrigger != 0) {
+        ResActionTrigger* res_action_trigger;
+        for (int i{0}; i < user_header->numResActionTrigger; ++i) {
+            res_action_trigger = (ResActionTrigger*)(pos2 + i * sizeof(ResActionTrigger));
+            dumpLine_(buffered_str, "        [%d].guId: %d\n", i, res_action_trigger->guId);
+            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n", i,
+                      res_action_trigger->assetCtbPos);
+            dumpLine_(buffered_str, "        [%d].startFrame: %d\n", i,
+                      res_action_trigger->startFrame);
+            dumpLine_(buffered_str, "        [%d].endFrame: %d\n", i, res_action_trigger->endFrame);
+            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, res_action_trigger->flag);
+            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n", i,
+                      res_action_trigger->overwriteHash);
+            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n", i,
+                      res_action_trigger->overwriteParamPos);
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+    pos2 += user_header->numResActionTrigger * sizeof(ResActionTrigger);
+
+    // -------------------------------------- ResPropertyTable -------------------------------------
+    dumpLine_(buffered_str, "    << ResPropertyTable (addr:0x%x, num=%d) >>\n", pos2,
+              user_header->numResProperty);
+    if (user_header->numResProperty != 0) {
+        ResProperty* res_property;
+        for (int i{0}; i < user_header->numResProperty; ++i) {
+            res_property = (ResProperty*)(pos2 + i * sizeof(ResProperty));
+            dumpLine_(buffered_str,
+                      "        [%d] watchPropertyNamePos: %u, isGlobal: %d, triggerStartIdx: %d, "
+                      "triggerEndIdx: %d\n",
+                      i, res_property->watchPropertyNamePos, res_property->isGlobal,
+                      res_property->triggerStartIdx, res_property->triggerEndIdx);
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+    pos2 += user_header->numResProperty * sizeof(ResProperty);
+
+    // ---------------------------------- ResPropertyTriggerTable ---------------------------------
+    dumpLine_(buffered_str, "    << ResPropertyTriggerTable (addr:0x%x, num=%d) >>\n", pos2,
+              user_header->numResPropertyTrigger);
+    if (user_header->numResPropertyTrigger != 0) {
+        ResPropertyTrigger* res_property_trigger;
+        for (int i{0}; i < user_header->numResPropertyTrigger; ++i) {
+            res_property_trigger = (ResPropertyTrigger*)(pos3 + i * sizeof(ResPropertyTrigger));
+            dumpLine_(buffered_str, "        [%d].guId: %d\n", i, res_property_trigger->guId);
+            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n", i,
+                      res_property_trigger->assetCtbPos);
+            dumpLine_(buffered_str, "        [%d].condition: %u\n", i,
+                      res_property_trigger->condition);
+            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, res_property_trigger->flag);
+            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n", i,
+                      res_property_trigger->overwriteHash);
+            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n", i,
+                      res_property_trigger->overwriteParamPos);
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+    pos2 += user_header->numResPropertyTrigger * sizeof(ResPropertyTrigger);
+
+    // ----------------------------------- ResAlwaysTriggerTable ----------------------------------
+    dumpLine_(buffered_str, "    << ResAlwaysTriggerTable (addr:0x%x, num=%d) >>\n", pos2, user_header->numResAlwaysTrigger);
+    if (user_header->numResAlwaysTrigger != 0) {
+        ResAlwaysTrigger* res_always_trigger;
+        for (int i{0}; i<user_header->numResAlwaysTrigger; ++i) {
+            res_always_trigger = (ResAlwaysTrigger*)(pos2 + i*sizeof(ResAlwaysTrigger));
+            dumpLine_(buffered_str, "        [%d].guId: %d\n", res_always_trigger->guId);
+            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n", res_always_trigger->assetCtbPos);
+            dumpLine_(buffered_str, "        [%d].flag: %hu\n", res_always_trigger->flag);
+            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n", res_always_trigger->overwriteHash);
+            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n", res_always_trigger->overwriteParamPos);
+
+        }
+    }
+    dumpLine_(buffered_str, "\n");
+};
+
+void dumpCommonResourceRear_(CommonResourceParam* common_res_param, const BinAccessor* bin_accessor,
+                             u32 p1, sead::Heap* heap, bool p2,
+                             sead::BufferedSafeString* buffered_str){};
 }  // namespace xlink2::ResourceParamCreator

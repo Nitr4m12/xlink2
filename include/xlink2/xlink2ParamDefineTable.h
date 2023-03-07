@@ -36,8 +36,8 @@ public:
     u32 get0() const { return _0; }
 
 private:
-    u32 _0;
     u32 mUserParamNum;
+    u32 _0;
     u32 mAssetParamNum;
     u32 mTriggerParamNum;
     void* mUserParam;
