@@ -1,5 +1,6 @@
 #include <cstddef>
 
+#include "xlink2/xlink2Condition.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2Util.h"
 
@@ -761,23 +762,110 @@ void dumpUserBin_(u32 p1, const sead::SafeString& user_name, ResUserHeader* user
     pos2 += user_header->numResPropertyTrigger * sizeof(ResPropertyTrigger);
 
     // ----------------------------------- ResAlwaysTriggerTable ----------------------------------
-    dumpLine_(buffered_str, "    << ResAlwaysTriggerTable (addr:0x%x, num=%d) >>\n", pos2, user_header->numResAlwaysTrigger);
+    dumpLine_(buffered_str, "    << ResAlwaysTriggerTable (addr:0x%x, num=%d) >>\n", pos2,
+              user_header->numResAlwaysTrigger);
     if (user_header->numResAlwaysTrigger != 0) {
         ResAlwaysTrigger* res_always_trigger;
-        for (int i{0}; i<user_header->numResAlwaysTrigger; ++i) {
-            res_always_trigger = (ResAlwaysTrigger*)(pos2 + i*sizeof(ResAlwaysTrigger));
+        for (int i{0}; i < user_header->numResAlwaysTrigger; ++i) {
+            res_always_trigger = (ResAlwaysTrigger*)(pos2 + i * sizeof(ResAlwaysTrigger));
             dumpLine_(buffered_str, "        [%d].guId: %d\n", res_always_trigger->guId);
-            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n", res_always_trigger->assetCtbPos);
+            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n",
+                      res_always_trigger->assetCtbPos);
             dumpLine_(buffered_str, "        [%d].flag: %hu\n", res_always_trigger->flag);
-            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n", res_always_trigger->overwriteHash);
-            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n", res_always_trigger->overwriteParamPos);
-
+            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n",
+                      res_always_trigger->overwriteHash);
+            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n",
+                      res_always_trigger->overwriteParamPos);
         }
     }
     dumpLine_(buffered_str, "\n");
 };
 
+// WIP
 void dumpCommonResourceRear_(CommonResourceParam* common_res_param, const BinAccessor* bin_accessor,
                              u32 p1, sead::Heap* heap, bool p2,
-                             sead::BufferedSafeString* buffered_str){};
+                             sead::BufferedSafeString* buffered_str) {
+    // --------------------------------------- ConditionTable --------------------------------------
+    dumpLine_(buffered_str, "<< ConditionTable (addr:0x%x, size:%d) >>\n",
+              common_res_param->conditionTablePos,
+              common_res_param->nameTablePos - common_res_param->conditionTablePos, p2);
+
+    u32 pos1{common_res_param->conditionTablePos};
+    u32 condition_size;
+    ResCondition* condition;
+    for (int i{0}; pos1 < common_res_param->nameTablePos; ++i) {
+        condition = (ResCondition*)(sMinAddressHigh | pos1);
+        if (pos1 < sMinAddressLow)
+            condition += 0x40000000;
+
+        if (condition->parentContainerType < ContainerType::Random2) {
+            RandomCondition* condition = condition;
+            dumpLine_(buffered_str, "  [%d].parentContainerType: %d\n", i,
+                      condition->parentContainerType);
+            dumpLine_(buffered_str, "  [%d].weight: %.4f\n", i, condition->weight);
+            condition_size = sizeof(RandomCondition);
+        } else {
+            condition_size = 0;
+            if (condition->parentContainerType == ContainerType::Switch) {
+                dumpLine_(buffered_str, "  [%d].parentContainerType: %d\n", i,
+                          condition->parentContainerType);
+                dumpLine_(buffered_str, "  [%d].propertyType: %d\n", i, condition->propertyType);
+                dumpLine_(buffered_str, "  [%d].compareType: %d\n", i, condition->compareType);
+                dumpLine_(buffered_str, "  [%d].value: %d\n", i, condition->value);
+                dumpLine_(buffered_str, "  [%d].localPropertyEnumNameIdx: %d\n", i,
+                          condition->localPropertyEnumNameIdx);
+                dumpLine_(buffered_str, "  [%d].isSolved: %d\n", i, condition->isSolved);
+                dumpLine_(buffered_str, "  [%d].isGlobal: %d\n", i, condition->isGlobal);
+                condition_size = sizeof(ResCondition);
+            }
+        }
+        pos1 += condition_size;
+    }
+    dumpLine_(buffered_str, "\n");
+
+    // ----------------------------------------- NameTable -----------------------------------------
+    u32* name_table_pos;
+    if (!bin_accessor->mResourceHeader)
+        name_table_pos = &bin_accessor->mEditorHeader->nameTablePos;
+    else
+        name_table_pos = &bin_accessor->mResourceHeader->nameTablePos;
+
+    u32 name_table_size = p1 - *name_table_pos;
+
+    dumpLine_(buffered_str, "<< NameTable (addr:0x%x, size:%d) >>\n",
+              common_res_param->nameTablePos, name_table_size);
+    if (name_table_size != 0) {
+        char* dest = new (heap, 8) char;
+        char* src = (char*)(sMinAddressHigh | common_res_param->nameTablePos);
+        if (common_res_param->nameTablePos < sMinAddressLow)
+            src += 0x100000000;
+        memcpy(dest, src, name_table_size);
+        pos1 = name_table_size - 1;
+        if (pos1 == 0) {
+            u32 ivar3;
+            dumpLine_(buffered_str, "  {%s}\n", dest);
+            if (!dest) {
+                dumpLine_(buffered_str, "\n");
+                return;
+            }
+            if (p1 - 2 == *name_table_pos)
+                ivar3 = 0;
+            else {
+                do {
+                    if (dest[ivar3] == '\0')
+                        dest[ivar3] = ' ';
+                    if (dest[ivar3 + 1] == '\0')
+                        dest[ivar3 + 1] = ' ';
+                    ivar3 += 2;
+                } while (pos1 - (pos1 & 1) != ivar3);
+                if ((pos1 & 1) != 0 && dest[ivar3] == '\0')
+                    dest[ivar3] = ' ';
+                dumpLine_(buffered_str, "  {%s}\n", dest);
+            }
+
+            delete[] dest;
+            return;
+        }
+    }
+};
 }  // namespace xlink2::ResourceParamCreator

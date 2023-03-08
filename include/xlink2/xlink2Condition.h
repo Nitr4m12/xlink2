@@ -3,12 +3,12 @@
 #include "xlink2/xlink2ContainerType.h"
 
 namespace xlink2 {
-struct Condition {
+struct ResCondition {
     ContainerType parentContainerType;
-    s32 propertyType;
-    s32 compareType;
-    s32 value;
-    s32 localPropertyEnumNameIdx;
+    u32 propertyType;
+    u32 compareType;
+    u32 value;
+    u16 localPropertyEnumNameIdx;
     bool isSolved;
     bool isGlobal;
 };
