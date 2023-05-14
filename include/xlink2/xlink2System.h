@@ -34,7 +34,37 @@ class UserInstance;
 class System : sead::hostio::Node {
 public:
     System() = default;
+
+    virtual void drawInformation();     // virtual void drawInformation(sead::DrawContext*, sead::TextWriter*) const;
+    virtual void drawInformation3D();   // virtual void drawInformation3D(sead::DrawContext*, sead::Camera const&, sead::Projection const&,
+                                        // sead::Viewport const&, f32) const;
+    virtual void createUserResource(User*, sead::Heap*) = 0;
+    virtual void allocHandle(sead::Heap*) = 0;
+    virtual u64 getUserParamNum() const = 0;
+    virtual char* getModuleName() const = 0;
+    virtual void allocAssetExecutor(Event*) = 0;
+    virtual ILockProxy* getModuleLockObj() const = 0;
+    virtual u64 getResourceVersion() const = 0;
     virtual ~System();
+    virtual u64 getEventFromPool_(u32) const = 0;
+    virtual void preDrawInformation_(); // virtual void preDrawInformation_(sead::TextWriter*) const;
+    virtual void postDrawInformation_(); // virtual void postDrawInformation_(sead::TextWriter*) const;
+    virtual void drawInformationSystemDetail_() const = 0; // virtual void drawInformationSystemDetail_(sead::TextWriter*) const = 0;
+    virtual void drawInformationEvent_() const = 0; // virtual void drawInformationEvent_(sead::TextWriter*) const = ;
+    virtual void drawInformationEmitter_() const;   // void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
+                                                    // sead::Camera const&, sead::Projection const&, sead::Viewport const&) const;
+
+    // void drawInformationInstance3D(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
+
+    // void drawInformationInstance3D(UserInstance*, sead::DrawContext*, sead::TextWriter*,
+    // sead::Camera const&, sead::Projection const&, sead::Viewport const&) const;
+
+    // void drawText3D(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
+    // sead::SafeString const&, sead::TextWriter*, IUser*) const;
+
+    // void drawText3D(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
+    // sead::SafeString const&, sead::TextWriter*, sead::Camera const&, sead::Projection const&,
+    // sead::Viewport const&) const;
 
     void initSystem(sead::Heap*, sead::Heap*, u32);
 
@@ -54,26 +84,6 @@ public:
     bool changeDebugOperationType(bool);
     void clearError(User const*);
     void createGlobalPropertyDefinitionTable(u32, PropertyDefinition const**, sead::Heap*);
-
-    // void drawInformation(sead::DrawContext*, sead::TextWriter*) const;
-
-    // void drawInformation3D(sead::DrawContext*, sead::Camera const&, sead::Projection const&,
-    // sead::Viewport const&, f32) const;
-
-    // void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-    // sead::Camera const&, sead::Projection const&, sead::Viewport const&) const;
-
-    // void drawInformationInstance3D(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
-
-    // void drawInformationInstance3D(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-    // sead::Camera const&, sead::Projection const&, sead::Viewport const&) const;
-
-    // void drawText3D(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
-    // sead::SafeString const&, sead::TextWriter*, IUser*) const;
-
-    // void drawText3D(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
-    // sead::SafeString const&, sead::TextWriter*, sead::Camera const&, sead::Projection const&,
-    // sead::Viewport const&) const;
 
     void dumpActiveEvents() const;
     void dumpUsers() const;
@@ -100,8 +110,6 @@ public:
     u32 loadResource(void*);
 
     void makeDebugStringGlobalProperty(sead::BufferedSafeString*, sead::SafeString const&) const;
-    // void postDrawInformation_(sead::TextWriter*) const;
-    // void postDrawInformation_(sead::TextWriter*) const;
     void registUserForGlobalPropertyTrigger(User*);
     void removeUserInstance(UserInstance*);
     void requestSendPickedUserName(sead::SafeString const& /*unused*/){};
@@ -130,6 +138,8 @@ public:
 
     // void writeBlinkText(sead::SafeString const&, sead::TextWriter*) const;
     // void writeLines(sead::SafeString const&, sead::TextWriter*) const;
+
+    bool getCallEnable() { return mCallEnable; }
 
 protected:
     ResourceBuffer* mResourceBuffer;

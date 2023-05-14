@@ -23,22 +23,22 @@ public:
 
     // void initialize(sead::ptcl::PtclSystem*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
 
-    void* allocAssetExecutor(Event*);
-    void allocHandle(sead::Heap*);
+    void allocAssetExecutor(Event*) override;
+    void allocHandle(sead::Heap*) override;
 
     UserInstanceELink* createUserInstance(UserInstance::CreateArg const&, sead::Heap*, u32);
-    UserResourceELink* createUserResource(User*, sead::Heap*);
+    void createUserResource(User*, sead::Heap*) override;
 
     // void drawInformationEvent(sead::TextWriter*) const;
     // void drawInformationSystemDetail(sead::TextWriter*) const;
     void genMessage(sead::hostio::Context* /*unused*/){};
 
-    u64 getEventFromPool(u32) const;
-    ILockProxy* getModuleLockObj() const;
-    void** getModuleName() const;
+    u64 getEventFromPool_(u32) const override;
+    ILockProxy* getModuleLockObj() const override;
+    char* getModuleName() const override;
     void** getORIconString();
-    u64 getResourceVersion() const;
-    u32 getUserParamNum() const;
+    u64 getResourceVersion() const override;
+    u64 getUserParamNum() const override;
 
     void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/){};
 
