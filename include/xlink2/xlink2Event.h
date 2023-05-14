@@ -45,6 +45,9 @@ public:
 
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
 
+    u32& get3() { return _3; }
+    TriggerType& getTriggerType() { return mTriggerType; }
+
 private:
     u32 _0;
     void* _1;

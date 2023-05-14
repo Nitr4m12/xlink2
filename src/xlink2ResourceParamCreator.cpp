@@ -257,7 +257,7 @@ void dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
     dumpCommonResourceRear_(rom_res, bin_accessor, res_header->dataSize, heap, false, buffered_str);
 }
 
-// WIP
+// NON-MATCHING
 void dumpEditorResource_(EditorResourceParam* editor_resource, const BinAccessor* bin_accessor,
                          const ParamDefineTable* param_define, sead::Heap* heap) {
     sead::BufferedSafeString* buffered_str{nullptr};
@@ -298,30 +298,24 @@ void dumpEditorResource_(EditorResourceParam* editor_resource, const BinAccessor
 void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
                               const BinAccessor* bin_accessor, bool p1,
                               sead::BufferedSafeString* buffered_str) {
-    u32 all_asset_param_num;
-    u32 not_default_param_num;
+    u32 not_default_param_num{0};
+    u32 all_asset_param_num{0};
     u32 overwrite_num;
     u32 all_trigger_overwrite_param_num;
     u32 v3;
-    u32 asset_param_raw_value;
 
     // ----------------------------- ResAssetParamTable ---------------------------------
     dumpLine_(buffered_str, "<< ResAssetParamTable (addr:0x%x, size:print later) >>\n",
               common_res_param->assetParamTable);
 
-    ResAssetParam* pv1{common_res_param->assetParamTable};
-    ResAssetParam* pv2{pv1};
-    u32* next_raw_value;
+    ResAssetParam* pv2{common_res_param->assetParamTable};
     u32* raw_value_ptr;
 
     if (common_res_param->numResAssetParam == 0) {
         all_asset_param_num = 0;
         not_default_param_num = 0;
     } else if (p1) {
-        not_default_param_num = 0;
-        all_asset_param_num = 0;
         for (int i{0}; i < common_res_param->numResAssetParam; ++i) {
-            next_raw_value = pv2->rawValue;
             dumpLine_(buffered_str, "  [%d] mask: %lu\n", i, pv2->mask);
             if (bin_accessor->mUserParamNum != 0) {
                 raw_value_ptr = pv2->rawValue;
@@ -330,15 +324,13 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
                         dumpLine_(buffered_str,
                                   "  [%d] param of bit[%d]: not exist(default value)\n", i, j);
                     } else {
-                        asset_param_raw_value = *raw_value_ptr;
                         dumpLine_(
                             buffered_str,
                             "  [%d] param of bit[%d]: rawValue: %u(referenceType: %d, value: %d)\n",
-                            i, j, asset_param_raw_value, asset_param_raw_value >> 0x18,
-                            asset_param_raw_value & 0xffffff);
-                        not_default_param_num += 1;
-                        next_raw_value += 4;
-                        raw_value_ptr += 1;
+                            i, j, *raw_value_ptr, *raw_value_ptr >> 0x18,
+                            *raw_value_ptr & 0xffffff);
+                        ++not_default_param_num;
+                        ++raw_value_ptr;
                     }
                     v3 = j;
                 }
@@ -347,15 +339,11 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
             pv2->rawValue = raw_value_ptr;
         }
     } else {
-        not_default_param_num = 0;
-        all_asset_param_num = 0;
         for (int i{0}; i < common_res_param->numResAssetParam; ++i) {
-            next_raw_value = pv2->rawValue;
             if (bin_accessor->mUserParamNum != 0) {
                 for (int j{0}; j < bin_accessor->mUserParamNum; ++j) {
                     if (pv2->mask & 1L << j & 0x3f != 0) {
                         not_default_param_num += 1;
-                        next_raw_value += 1;
                     }
                     v3 = j;
                 }
@@ -368,20 +356,21 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
         dumpLine_(buffered_str, "  ...no content print.\n");
     dumpLine_(buffered_str,
               "<< ResAssetParamTable finished(size:%d, allParamNum=%d, notDefaultParamNum=%d) >>\n",
-              (u64)pv2 - (u64)pv1, all_asset_param_num, not_default_param_num);
+              (u64)pv2 - (u64)common_res_param->assetParamTable, all_asset_param_num,
+              not_default_param_num);
 
     // ----------------------------- ResTriggerOverwriteParamTable ---------------------------------
-    u32 pos;
+    u32 trigger_pos;
 
     if (!bin_accessor->mResourceHeader)
-        pos = bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
+        trigger_pos = bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
     else
-        pos = bin_accessor->mResourceHeader->triggerOverwriteParamTablePos;
+        trigger_pos = bin_accessor->mResourceHeader->triggerOverwriteParamTablePos;
 
     dumpLine_(buffered_str, "<< ResTriggerOverwriteParamTable (addr:0x%x, size:print later) >>\n",
-              pos);
+              trigger_pos);
 
-    u32 trigger_pos{common_res_param->triggerOverwriteParamTablePos};
+    trigger_pos = common_res_param->triggerOverwriteParamTablePos;
     u32 trigger_end{0};
     if (common_res_param->numResTriggerOverwriteParam == 0) {
         all_trigger_overwrite_param_num = 0;

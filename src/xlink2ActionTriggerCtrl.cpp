@@ -6,11 +6,13 @@ namespace xlink2 {
 ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* param_1,
                                      sead::Buffer<ModelTriggerConnection>* param_2,
                                      ResActionSlot const* param_3)
-    : _0{nullptr}, mResActionSlot{param_3} {
+{
+    _0 = nullptr;
     mBuffer = param_2;
     mUserInstance = param_1;
     _1 = 0;
     mResAction = nullptr;
+    mResActionSlot = param_3;
     _2 = 0;
 }
 
