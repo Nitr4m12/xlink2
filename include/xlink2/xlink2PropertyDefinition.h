@@ -10,6 +10,8 @@ class PropertyDefinition {
 public:
     virtual ~PropertyDefinition();
 
+    PropertyType getType() const { return mType; }
+
 protected:
     void* _0;
     sead::FixedSafeString<64>* mUserName;

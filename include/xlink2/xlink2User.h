@@ -11,7 +11,6 @@
 #include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
-class System;
 class UserResource;
 class UserInstance;
 

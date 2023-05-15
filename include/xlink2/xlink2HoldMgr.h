@@ -8,6 +8,8 @@
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
+class UserInstance;
+
 class HoldMgr : sead::hostio::Node {
 public:
     HoldMgr(System*, sead::Heap*);

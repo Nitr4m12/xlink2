@@ -16,7 +16,7 @@ class UserInstanceELink : UserInstance {
 public:
     UserInstanceELink(UserInstance::CreateArg const&, System*, User*, sead::Heap*);
 
-    void allocInstanceParam_(sead::Heap*) override;
+    UserInstanceParam* allocInstanceParam_(sead::Heap*) override;
     void emit(Locator const&);
     void emit(Locator const&, HandleELink*);
     void fadeIfLoopEffect();

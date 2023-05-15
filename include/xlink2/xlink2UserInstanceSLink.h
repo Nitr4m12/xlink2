@@ -42,9 +42,9 @@ public:
     UserInstanceSLink(CreateArgSLink const&, System*, User*, sead::Heap*);
 
     void allocEmitter(sead::Heap*);
-    void allocInstanceParam_(sead::Heap*) override;
+    UserInstanceParam* allocInstanceParam_(sead::Heap*) override;
     void doEventActivatedCallback_(Locator const&, Event*) override;
-    u32 doEventActivatingCallback_(Locator const&) override;
+    bool doEventActivatingCallback_(Locator const&) override;
 
     void emit(Locator const&);
     void emit(Locator const&, HandleSLink*);

@@ -1,14 +1,15 @@
 #pragma once
 
 #include "math/seadMatrix.h"
+
 #include "xlink2/xlink2DebugLogFlag.h"
 #include "xlink2/xlink2DebugOperationParam.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2Handle.h"
 #include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2Locator.h"
+#include "xlink2/xlink2ModelAssetConnection.h"
 #include "xlink2/xlink2ResMode.h"
-#include "xlink2/xlink2System.h"
 #include "xlink2/xlink2TriggerCtrlMgr.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserInstanceParam.h"
@@ -33,34 +34,42 @@ public:
         RebuildArg() = default;
     };
 
+    enum class ParamType : u8 {
+        Normal,
+        Editor
+    };
+
     UserInstance(const CreateArg&, System*, User*, sead::Heap*);
     void destroy();
 
-    u64 checkAndErrorCallInCalc(char const* /*unused*/, ...) const;
-    void printLogFadeOrKill(Event const*, char const*, ...) const;
+    u64 checkAndErrorCallInCalc(char const* /*unused*/, ...) const; //
+    void printLogFadeOrKill(Event const*, char const*, ...) const; //
     void preCalc();
-    void doOtameshiEmit_();
+    void doOtameshiEmit_(); //
     void postCalc();
-    void reset();
-    void killAll();
+
+    void reset(); //
+    void killAll(); //
     void sleep();
+
     void setIsActive(bool);
     void killAllOneTimeEvent();
-    void clearAllEvent();
+    void clearAllEvent(); //
 
     void setupResource(sead::Heap*);
-    bool isSetupRomInstanceParam() const;
-    void setupInstanceParam(ResMode, sead::Heap*);
+    bool isSetupRomInstanceParam_() const;
 
-    void setupEditorInstanceParam();
-    void changeInstanceParam(ResMode);
+    void setupInstanceParam_(ResMode, sead::Heap*);
+    void setupEditorInstanceParam(); //
+    void changeInstanceParam(ResMode); //
 
     void linkPropertyDefinitionToValueStruct(u32, PropertyDefinition const*);
+
     void saveEvent();
     void loadEventAndTriggerRestart();
-    bool isInstanceParamValid() const;
+    bool isInstanceParamValid() const; //
 
-    u64 getModelAssetConnection(u32) const;
+    ModelAssetConnection* getModelAssetConnection(u32) const;
     void searchAndEmitImpl(char const*, Handle*);
 
     u64 checkAndErrorCallWithoutSetup_(char const*, ...) const;
@@ -127,14 +136,16 @@ public:
     virtual void onPostCalc_() = 0;
     virtual void onReset_();
     virtual void onDestroy_() = 0;
-    virtual void allocInstanceParam_(sead::Heap*) = 0;
+    virtual UserInstanceParam* allocInstanceParam_(sead::Heap*) = 0;
     virtual void freeInstanceParam_(UserInstanceParam*, ResMode);
     virtual void onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/);
     virtual void initModelAssetConnection_(ResMode, ParamDefineTable const*, sead::Heap*) = 0;
-    virtual u32 doEventActivatingCallback_(Locator const& /*unused*/);
+    virtual bool doEventActivatingCallback_(Locator const& /*unused*/);
     virtual void doEventActivatedCallback_(Locator const& /*unused*/, Event* /*unused*/);
 
     User* getUser() const { return mUser; };
+
+    bool unkCheck();
 
 protected:
     sead::OffsetList<Event> mEventList;
@@ -151,7 +162,7 @@ protected:
     TriggerCtrlMgr mTriggerCtrlMgr;
     void* _0x98;
     u8 _0xA0[0x30];
-    u8 _0xD0;
+    u8 mParamType;
     void* _3;
     void* _4;
     void* _5;
