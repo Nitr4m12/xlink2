@@ -10,7 +10,7 @@ BinAccessor::BinAccessor(ResourceHeader* res_header, ParamDefineTable const* par
     mResourceHeader = res_header;
     mEditorHeader = nullptr;
     mBinStart = (long)res_header;
-    mBinEnd = (long)res_header + res_header->numUser * 8 + param_define->getNumUserParams() + 0x48;
+    mBinEnd = (long)res_header + static_cast<long>(res_header->numUser)*8 + param_define->getNumUserParams() + 0x48;
     mUserParamNum = param_define->getUserParamNum();
     mAssetParamNum = param_define->getAssetParamNum();
 }
@@ -33,7 +33,7 @@ void createParamAndSolveResource(RomResourceParam* rom_res_param, void* p2,
     rom_res_param->numLocalPropertyEnumNameRefTable = 0;
     rom_res_param->numRandomTable = 0;
 
-    s64 res_end{(long)p2 + 0x48};
+    // s64 res_end{(long)p2 + 0x48};
 
     rom_res_param->nameTablePos = 0;
     rom_res_param->localPropertyNameRefTable = nullptr;
@@ -53,8 +53,8 @@ void createParamAndSolveResource(RomResourceParam* rom_res_param, void* p2,
 
 // WIP
 void createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccessor* bin_accessor) {
-    ResourceHeader* res_header{bin_accessor->mResourceHeader};
-    EditorHeader* editor_header{bin_accessor->mEditorHeader};
+    // ResourceHeader* res_header{bin_accessor->mResourceHeader};
+    // EditorHeader* editor_header{bin_accessor->mEditorHeader};
     u32* ptr_follower;
 
     if (!bin_accessor->mResourceHeader)
@@ -781,30 +781,30 @@ void dumpCommonResourceRear_(CommonResourceParam* common_res_param, const BinAcc
 
     u32 pos1{common_res_param->conditionTablePos};
     u32 condition_size;
-    ResCondition* condition;
+    ResCondition* res_condition;
     for (int i{0}; pos1 < common_res_param->nameTablePos; ++i) {
-        condition = (ResCondition*)(sMinAddressHigh | pos1);
+        res_condition = (ResCondition*)(sMinAddressHigh | pos1);
         if (pos1 < sMinAddressLow)
-            condition += 0x40000000;
+            res_condition += 0x40000000;
 
-        if (condition->parentContainerType < ContainerType::Random2) {
-            RandomCondition* condition = condition;
+        if (res_condition->parentContainerType < ContainerType::Random2) {
+            RandomCondition* condition{(RandomCondition*) res_condition};
             dumpLine_(buffered_str, "  [%d].parentContainerType: %d\n", i,
                       condition->parentContainerType);
             dumpLine_(buffered_str, "  [%d].weight: %.4f\n", i, condition->weight);
             condition_size = sizeof(RandomCondition);
         } else {
             condition_size = 0;
-            if (condition->parentContainerType == ContainerType::Switch) {
+            if (res_condition->parentContainerType == ContainerType::Switch) {
                 dumpLine_(buffered_str, "  [%d].parentContainerType: %d\n", i,
-                          condition->parentContainerType);
-                dumpLine_(buffered_str, "  [%d].propertyType: %d\n", i, condition->propertyType);
-                dumpLine_(buffered_str, "  [%d].compareType: %d\n", i, condition->compareType);
-                dumpLine_(buffered_str, "  [%d].value: %d\n", i, condition->value);
+                          res_condition->parentContainerType);
+                dumpLine_(buffered_str, "  [%d].propertyType: %d\n", i, res_condition->propertyType);
+                dumpLine_(buffered_str, "  [%d].compareType: %d\n", i, res_condition->compareType);
+                dumpLine_(buffered_str, "  [%d].value: %d\n", i, res_condition->value);
                 dumpLine_(buffered_str, "  [%d].localPropertyEnumNameIdx: %d\n", i,
-                          condition->localPropertyEnumNameIdx);
-                dumpLine_(buffered_str, "  [%d].isSolved: %d\n", i, condition->isSolved);
-                dumpLine_(buffered_str, "  [%d].isGlobal: %d\n", i, condition->isGlobal);
+                          res_condition->localPropertyEnumNameIdx);
+                dumpLine_(buffered_str, "  [%d].isSolved: %d\n", i, res_condition->isSolved);
+                dumpLine_(buffered_str, "  [%d].isGlobal: %d\n", i, res_condition->isGlobal);
                 condition_size = sizeof(ResCondition);
             }
         }
@@ -831,7 +831,7 @@ void dumpCommonResourceRear_(CommonResourceParam* common_res_param, const BinAcc
         memcpy(dest, src, name_table_size);
         pos1 = name_table_size - 1;
         if (pos1 == 0) {
-            u32 ivar3;
+            u32 ivar3{0};
             dumpLine_(buffered_str, "  {%s}\n", dest);
             if (!dest) {
                 dumpLine_(buffered_str, "\n");
@@ -852,7 +852,7 @@ void dumpCommonResourceRear_(CommonResourceParam* common_res_param, const BinAcc
                 dumpLine_(buffered_str, "  {%s}\n", dest);
             }
 
-            delete[] dest;
+            delete dest;
             return;
         }
     }

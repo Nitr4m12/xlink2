@@ -10,7 +10,7 @@ namespace xlink2 {
 class System;
 class ResourceAccessor;
 class User;
-class UserResourceParam;
+struct UserResourceParam;
 
 class UserResource {
 public:
@@ -33,9 +33,9 @@ public:
     void* getPropertyTriggerTableItem(s32) const;
     void* getAlwaysTriggerTableItem(s32) const;
 
-    virtual ResourceAccessor* getAccessor() = 0;
+    virtual ResourceAccessor* getAccessor() const = 0;
     virtual ResourceAccessor* getAccessorPtr() = 0;
-    virtual System* getSystem() = 0;
+    virtual System* getSystem() const = 0;
 
     virtual UserResourceParam* allocResourceParam_(sead::Heap*) = 0;
 

@@ -19,10 +19,10 @@ public:
     UserResourceParam* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;
 
-    ResourceAccessor* getAccessor() const;
+    ResourceAccessor* getAccessor() const override;
     ResourceAccessor* getAccessorPtr() override;
     u64 getSolvedAssetParameterELink(ResAssetCallTable const&);
-    SystemELink* getSystem() const;
+    System* getSystem() const override;
 
     void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
 

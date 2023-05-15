@@ -14,7 +14,7 @@ void UserResource::setup(sead::Heap* heap) {
     sead::SafeString user_name;
 
     if (!mParams[0] || !mParams[0]->isSetup) {
-        System* sys {mUser->getSystem()};
+        System* sys{mUser->getSystem()};
         user_heap = sys->getUserHeap();
         if (!user_heap || user_heap->getFreeSize() >> 10 < 5) {
             user_heap = heap;
@@ -22,22 +22,25 @@ void UserResource::setup(sead::Heap* heap) {
         setupRomResourceParam_(user_heap);
     }
 
-    System* res_system {getSystem()};
+    System* res_system{getSystem()};
 
     if (res_system->getEditorBuffer() && res_system->isServerConnecting()) {
         user_name = mUser->getUserName();
-        EditorResourceParam* editor_res_param {res_system->getEditorBuffer()->searchEditorResourceParam(user_name)};
+        EditorResourceParam* editor_res_param{
+            res_system->getEditorBuffer()->searchEditorResourceParam(user_name)};
         if (editor_res_param) {
-            sead::Heap* primary_heap {res_system->getPrimaryHeap()};
+            sead::Heap* primary_heap{res_system->getPrimaryHeap()};
             if (mParams[1])
                 freeResourceParam_(mParams[1]);
-            UserResourceParam* res_param {allocResourceParam_(primary_heap)};
+            UserResourceParam* res_param{allocResourceParam_(primary_heap)};
             mParams[1] = res_param;
-            ResUserHeader* res_header {editor_res_param->pResUserHeader};
+            ResUserHeader* res_header{editor_res_param->pResUserHeader};
 
-            UserResource* new_user_res;
-            System* new_res_system {new_user_res->getSystem()};
-            setupResourceParam_(res_param, res_header, editor_res_param, new_res_system->getEditorBuffer()->getParamDefineTable(), primary_heap);
+            UserResource* new_user_res{nullptr};
+            System* new_res_system{new_user_res->getSystem()};
+            setupResourceParam_(res_param, res_header, editor_res_param,
+                                new_res_system->getEditorBuffer()->getParamDefineTable(),
+                                primary_heap);
 
             this->mResMode = ResMode::Editor;
         }
@@ -53,17 +56,17 @@ u64 UserResource::getUserHeader() const {
 }
 
 // NON-MATCHING
-u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) const {
-    auto* param {mParams[int(mResMode)]};
-    ResUserHeader* usr_head {};
-    u32 num_asset {usr_head->numCallTable};
+u32* UserResource::doBinarySearchAsset_(const char* name, TriggerType type) const {
+    auto* param{mParams[int(mResMode)]};
+    ResUserHeader* usr_head{};
+    u32 num_asset{usr_head->numCallTable};
 
     if (!param || !param->isSetup)
         return nullptr;
 
     s32 v1 = 0;
     s64 v2 = param->numCurvePointTable;
-    ResAssetParam* res_param_table = param->assetParamTable;
+    // ResAssetParam* res_param_table = param->assetParamTable;
 
     while (v1 <= num_asset - 1) {
         s32 v3 = v1 + (num_asset - 1);
@@ -92,7 +95,7 @@ u32* UserResource::doBinarySearchAsset_(const char * name, TriggerType type) con
 // // NON_MATCHING: one sub instruction reordered
 void* UserResource::getAssetCallTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
-    ResUserHeader* usr_head;
+    ResUserHeader* usr_head {nullptr};
     if (!param || !param->isSetup || index >= usr_head->numCallTable || index < 0)
         return nullptr;
     return &param->assetParamTable[index * sizeof(Dummy3)];
@@ -101,7 +104,7 @@ void* UserResource::getAssetCallTableItem(s32 index) const {
 // NON_MATCHING: one sub instruction reordered
 void* UserResource::getActionTriggerTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
-    ResUserHeader* usr_head;
+    ResUserHeader* usr_head {nullptr};
 
     if (!param || !param->isSetup || index >= usr_head->numResActionTrigger || index < 0)
         return nullptr;
@@ -111,7 +114,7 @@ void* UserResource::getActionTriggerTableItem(s32 index) const {
 // NON_MATCHING: one sub instruction reordered
 void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
-    ResUserHeader* usr_head;
+    ResUserHeader* usr_head{nullptr};
 
     if (!param || !param->isSetup || index >= usr_head->numResAlwaysTrigger || index < 0)
         return nullptr;
@@ -124,7 +127,6 @@ void UserResource::destroy() {
 
     if (mParams[1] != nullptr)
         this->freeResourceParam_(mParams[1]);
-
 }
 
 // NON-MATCHING
@@ -142,21 +144,20 @@ void UserResource::freeResourceParam_(UserResourceParam* param) {
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
                                                         TriggerType /*unused*/) {}
 
-
 u64 UserResource::getEditorSetupTime() const {
     return 0;
 }
 
 bool UserResource::hasGlobalPropertyTrigger() const {
-    auto* param {mParams[int(mResMode)]};
-    ResUserHeader* usr_head;
+    auto* param{mParams[int(mResMode)]};
+    ResUserHeader* usr_head {nullptr};
 
     if (!param || !param->isSetup || usr_head->numResProperty == 0)
         return false;
 
-    ResRandomCallTable* random_table {param->randomCallTable};
-    f32 max_val {random_table->maxValue};
-    for (int i {0};i<usr_head->numResProperty;++i) {
+    ResRandomCallTable* random_table{param->randomCallTable};
+    f32 max_val{random_table->maxValue};
+    for (int i{0}; i < usr_head->numResProperty; ++i) {
         if (max_val != 0)
             return true;
 

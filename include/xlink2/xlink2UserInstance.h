@@ -17,6 +17,7 @@ namespace xlink2 {
 class Event;
 class System;
 class User;
+class ParamDefineTable;
 
 class UserInstance {
 public:

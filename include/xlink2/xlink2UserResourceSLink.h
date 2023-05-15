@@ -17,9 +17,9 @@ public:
     void allocResourceParam(sead::Heap);
     void freeResourceParam_(UserResourceParam*) override;
 
-    ResourceAccessor* getAccessor() const;
+    ResourceAccessor* getAccessor() const override;
     ResourceAccessor* getAccessorPtr() override;
-    SystemSLink* getSystem() const;
+    System* getSystem() const override;
     u64 getUserParam() const;
 
     // bool isEnableAssetInfoReader(aal::IAssetInfoReadable**) const;
