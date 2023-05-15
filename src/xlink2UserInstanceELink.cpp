@@ -4,7 +4,7 @@
 namespace xlink2 {
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     if (param != nullptr) {
-        UserInstance::freeInstanceParam(param, mode);
+        UserInstance::freeInstanceParam_(param, mode);
         delete param;
     }
 }

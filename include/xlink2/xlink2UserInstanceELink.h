@@ -3,7 +3,6 @@
 #include "xlink2/xlink2HandleELink.h"
 #include "xlink2/xlink2IEventCallbackELink.h"
 #include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceELink.h"
@@ -17,24 +16,24 @@ class UserInstanceELink : UserInstance {
 public:
     UserInstanceELink(UserInstance::CreateArg const&, System*, User*, sead::Heap*);
 
-    void allocInstanceParam(sead::Heap*);
+    void allocInstanceParam_(sead::Heap*) override;
     void emit(Locator const&);
     void emit(Locator const&, HandleELink*);
     void fadeIfLoopEffect();
-    void freeInstanceParam_(UserInstanceParam*, ResMode);
+    void freeInstanceParam_(UserInstanceParam*, ResMode) override;
 
-    UserInstanceELink getDefaultGroup() const;
+    u32 getDefaultGroup() const override;
     ResourceAccessor* getResourceAccessor() const;
     UserResource* getResourceELink() const;
 
-    void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);
+    void initModelAssetConnection_(ResMode, ParamDefineTable const*, sead::Heap*) override;
 
-    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const;
+    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const override;
 
-    void onDestroy_();
-    void onPostCalc();
-    void onReset();
-    void onSetupInstanceParam(ResMode, sead::Heap*);
+    void onDestroy_() override;
+    void onPostCalc_() override;
+    void onReset_() override;
+    void onSetupInstanceParam_(ResMode, sead::Heap*) override;
 
     void searchAndEmit(char const*);
     void searchAndEmit(char const*, HandleELink*);

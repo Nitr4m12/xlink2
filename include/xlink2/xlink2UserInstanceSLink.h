@@ -42,9 +42,9 @@ public:
     UserInstanceSLink(CreateArgSLink const&, System*, User*, sead::Heap*);
 
     void allocEmitter(sead::Heap*);
-    void allocInstanceParam(sead::Heap*);
-    void doEventActivatedCallback(Locator const&, Event*);
-    void doEventActivatingCallback(Locator const&);
+    void allocInstanceParam_(sead::Heap*) override;
+    void doEventActivatedCallback_(Locator const&, Event*) override;
+    u32 doEventActivatingCallback_(Locator const&) override;
 
     void emit(Locator const&);
     void emit(Locator const&, HandleSLink*);
@@ -53,19 +53,19 @@ public:
 
     void fadeIfLoopSound();
     // void freeEmitter(aal::Emitter*)
-    void freeInstanceParam(UserInstanceParam*, ResMode);
+    void freeInstanceParam_(UserInstanceParam*, ResMode) override;
 
     u64 getResourceAccessor() const;
     ResourceAccessorSLink* getResourceSLink() const;
     s32 getSoundSourceNum() const;
 
-    void initModelAssetConnection(ResMode, ParamDefineTable const*, sead::Heap*);
+    void initModelAssetConnection_(ResMode, ParamDefineTable const*, sead::Heap*) override;
 
-    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const;
+    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const override;
 
-    void onDestroy();
-    void onPostCalc();
-    void onSetupInstanceParam(ResMode, sead::Heap*);
+    void onDestroy_() override;
+    void onPostCalc_() override;
+    void onSetupInstanceParam_(ResMode, sead::Heap*) override;
 
     void searchAndEmit(char const*);
     void searchAndEmit(char const*, HandleSLink*);
