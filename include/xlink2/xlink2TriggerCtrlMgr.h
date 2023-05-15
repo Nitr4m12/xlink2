@@ -41,8 +41,13 @@ public:
     void updateActionNeedToCalcFlag(s32);
     void updateGlobalPropertyTriggerCtrl();
 
+    ResMode getResMode() { return mResMode; }
+    void setResMode(ResMode mode) { mResMode = mode; }
+
+    u32 get1() const { return _1; };
+
 private:
-    u32 _0;
+    ResMode mResMode;
     sead::SafeArray<TriggerCtrlParam*, 2> mParams;
     u32 _1;
 };

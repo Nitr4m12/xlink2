@@ -2,7 +2,7 @@
 
 namespace xlink2 {
 TriggerCtrlMgr::TriggerCtrlMgr() {
-    _0 = 0;
+    mResMode = ResMode::Editor;
     _1 = 0;
     mParams[0] = nullptr;
     mParams[1] = nullptr;
