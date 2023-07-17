@@ -8,7 +8,7 @@ namespace xlink2 {
 struct UserInstanceParam {
     u32 numModelAssetConnection;
     ModelAssetConnection* modelAssetConnections;
-    u32 _10;
+    u32 numRandomHistory;
     void* _18;
     bool isSetupRom;
 };
