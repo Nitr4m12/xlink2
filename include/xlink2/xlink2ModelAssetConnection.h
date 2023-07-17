@@ -1,8 +1,14 @@
 #pragma once
 
+#include <math/seadMatrix.h>
+
 namespace xlink2 {
 class ModelAssetConnection {
 public:
-    ~ModelAssetConnection();
+    virtual ~ModelAssetConnection();
+
+private:
+    sead::Matrix34f mRootMtx;
+    u8 _10;
 };
 }
