@@ -7,9 +7,10 @@
 
 namespace xlink2 {
 class Locator {
+public:
+    Locator() = default;
     virtual ~Locator();
 
-public:
     static u32 sDataLoadedCount;
 
     s32 getOverwriteBoneMtx() const;
