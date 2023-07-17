@@ -49,6 +49,7 @@ public:
 
     void updateSortKey();
 
+    u16 getPropertyDefinitionTableNum() const { return mPropertyDefinitionTableNum; }
 private:
     void* _0;
     void* _1;
