@@ -27,11 +27,35 @@ public:
         CreateArg(char const*, IUser*);
         CreateArg(const CreateArg& other);
 
+        IUser* getIUser() const { return mIUser; }
+        u8 get18() const { return _18; }
+        sead::Matrix34f* getRootMtx() const { return mRootMtx; }
+        sead::Vector3f* getRootPos() const { return mRootPos; }
+        sead::Vector3f* getScale() const { return mScale; }
+        s32 get30() const { return _30; }
+        s32 get34() const { return _34; }
+        u64 get38() const { return _38; }
+
+    private:
+        char* mName;
+        IUser* mIUser;
+        sead::Matrix34f* mRootMtx;
+        u8 _18;
+        sead::Vector3f* mRootPos;
+        sead::Vector3f* mScale;
+        s32 _30;
+        s32 _34;
+        u64 _38;
     };
 
     class RebuildArg {
     public:
         RebuildArg() = default;
+
+        sead::Matrix34f* _0;
+        u8 _8;
+        sead::Vector3f* _10;
+        sead::Vector3f* _18;
     };
 
     enum class ParamType : u8 {
@@ -42,7 +66,7 @@ public:
     UserInstance(const CreateArg&, System*, User*, sead::Heap*);
     void destroy();
 
-    u64 checkAndErrorCallInCalc(char const* /*unused*/, ...) const; //
+    bool checkAndErrorCallInCalc(char const* /*unused*/, ...) const; //
     void printLogFadeOrKill(Event const*, char const*, ...) const; //
     void preCalc();
     void doOtameshiEmit_(); //
@@ -84,10 +108,10 @@ public:
 
     u64 getCurrentResActionIdx(s32) const;
 
-    void* searchAsset(Locator*, char const*);
-    void* searchAsset(Locator*, u32);
+    ResAssetCallTable* searchAsset(Locator*, char const*);
+    ResAssetCallTable* searchAsset(Locator*, u32);
     bool searchAssetRecursive(Locator*, char const*);
-    void* trySearchSwitchContainerRecursive(ResAssetCallTable const**, const ResAssetCallTable&);
+    void* trySearchSwitchContainerRecursive_(ResAssetCallTable const**, const ResAssetCallTable&);
     u64 searchEmittingEvent(Handle*, char const*) const;
 
     void changeAction(char const*, s32, s32);
@@ -152,10 +176,10 @@ protected:
     sead::SafeArray<UserInstanceParam*, 2> mParamsByResMode;
     User* mUser;
     IUser* mIUser;
-    sead::Matrix34f* mRootMtx;
+    const sead::Matrix34f* mRootMtx;
     u8 _0x48;
-    sead::Vector3f* mRootPos;
-    sead::Vector3f* mScale;
+    const sead::Vector3f* mRootPos;
+    const sead::Vector3f* mScale;
     f32 mSortKey;
     u64 mValueChangedBitfield;
     f32* mPropertyValueArray;
@@ -163,8 +187,8 @@ protected:
     void* _0x98;
     u8 _0xA0[0x30];
     u8 mParamType;
-    void* _3;
-    void* _4;
-    void* _5;
+    void* _0xd8;
+    void* _0xe0;
+    void* _0xe8;
 };
 }  // namespace xlink2
