@@ -23,10 +23,10 @@ public:
                         ParamDefineTable const*, sead::Heap*);
 
     u64 getUserHeader() const;
-    u64 searchAssetCallTableByName(Locator*, char const*) const;
+    ResAssetCallTable* searchAssetCallTableByName(Locator*, char const*) const;
     u64 searchAssetCallTableByName(char const*) const;
     u32* doBinarySearchAsset_(char const*, TriggerType) const;
-    u64 searchAssetCallTableByHash(Locator*, u32) const;
+    ResAssetCallTable* searchAssetCallTableByHash(Locator*, u32) const;
 
     void* getAssetCallTableItem(s32) const;
     void* getActionTriggerTableItem(s32) const;
