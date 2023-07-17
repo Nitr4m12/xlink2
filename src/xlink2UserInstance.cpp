@@ -2,8 +2,66 @@
 #include "xlink2/xlink2System.h"
 
 namespace xlink2 {
-u64 UserInstance::checkAndErrorCallInCalc(const char* /*unused*/, ...) const {
-    return 1;
+// WIP
+UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user, sead::Heap* heap) {
+    mEventList.clear();
+    mUser = user;
+    mIUser = create_arg.getIUser();
+    _0x48 = create_arg.get18();
+    mRootMtx = create_arg.getRootMtx();
+    mRootPos = create_arg.getRootPos();
+    mSortKey = INFINITY;
+    mScale = create_arg.getScale();
+    mValueChangedBitfield = 0;
+    mPropertyValueArray = nullptr;
+    mTriggerCtrlMgr = {};
+    _0x98 = nullptr;
+    mParamType = 0;
+    _0xe0 = nullptr;
+    _0xe8 = nullptr;
+    _0xd8 = nullptr;
+    mEventList.initOffset(10);
+    if (!create_arg.getRootMtx()) {
+        mRootMtx = &sead::Matrix34f::ident;
+        _0x48 = 0;
+    }
+    if (!create_arg.getScale())
+        mScale = &sead::Vector3f::ones;
+
+    u16 prop_define_table_num = mUser->getPropertyDefinitionTableNum();
+    if (prop_define_table_num > 0)
+        mPropertyValueArray = new (heap, 8) f32[prop_define_table_num << 2];
+
+    mTriggerCtrlMgr.initialize(create_arg.get30(), create_arg.get34(), heap);
+
+    mParamsByResMode.fill(nullptr);
+}
+
+void UserInstance::destroy() {
+    {
+        auto lock = sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj());
+        for (auto& event : mEventList)
+            event.kill();
+
+        mUser->getSystem()->freeAllEvent(&mEventList);
+
+        onDestroy_();
+
+        if (mParamsByResMode[0])
+            freeInstanceParam_(mParamsByResMode[0], ResMode::Editor);
+
+        if (mParamsByResMode[1])
+            freeInstanceParam_(mParamsByResMode[1], ResMode::Normal);
+
+        delete [] mPropertyValueArray;
+
+        mUser->getSystem()->removeUserInstance(this);
+        delete this;
+    }
+}
+
+bool UserInstance::checkAndErrorCallInCalc(const char* /*unused*/, ...) const {
+    return true;
 }
 
 void UserInstance::printLogFadeOrKill(Event const* /*unused*/, char const* /*unused*/, ...) const {}
@@ -116,6 +174,17 @@ ModelAssetConnection* UserInstance::getModelAssetConnection(u32 index) const {
 }
 
 // WIP
+void UserInstance::searchAndEmitImpl(const char* name, Handle* handle) {
+    if (name && mUser->getSystem()->isCallEnable() &&
+        checkAndErrorCallWithoutSetup_("searchAndEmit(%s)", name)) {
+        Locator l{};
+        bool b = mUser->getUserResource()->searchAssetCallTableByName(&l, name);
+        if (b)
+            emitImpl(l, handle);
+    }
+}
+
+// WIP
 u64 UserInstance::checkAndErrorCallWithoutSetup_(const char* p1, ...) const {
     if (!mParamsByResMode[mParamType & 1] || !mParamsByResMode[mParamType & 1]) {
         sead::BufferedSafeString d(nullptr, 100);
@@ -140,35 +209,69 @@ u64 UserInstance::getCurrentResActionIdx(s32 index) const {
     return mTriggerCtrlMgr.getCurrentResActionIdx(index);
 }
 
+// WIP: maybe needs Locator::reset() decompiled?
+ResAssetCallTable* UserInstance::searchAsset(Locator* locator, const char* name) {
+    locator->reset();
+    if (mUser->getSystem()->isCallEnable())
+        return mUser->getUserResource()->searchAssetCallTableByName(locator, name);
+    return nullptr;
+}
+
+// WIP: maybe needs Locator::reset() decompiled?
+ResAssetCallTable* UserInstance::searchAsset(Locator* locator, u32 name_hash) {
+    locator->reset();
+    if (mUser->getSystem()->isCallEnable())
+        return mUser->getUserResource()->searchAssetCallTableByHash(locator, name_hash);
+    return nullptr;
+}
+
 void UserInstance::changeAction(char const* name, int p1, int p2) {
     auto* sys = mUser->getSystem();
-    if (sys->getCallEnable())
+    if (sys->isCallEnable())
         mTriggerCtrlMgr.changeAction(name, p1, p2);
 }
 
 void UserInstance::changeAction(int p1, int p2, int p3) {
     auto* sys = mUser->getSystem();
-    if (sys->getCallEnable())
+    if (sys->isCallEnable())
         mTriggerCtrlMgr.changeAction(p1, p2, p3);
+}
+
+void UserInstance::setActionFrame(s32 index, s32 p2) {
+    if (mUser->getSystem()->isCallEnable())
+        mTriggerCtrlMgr.setActionFrame(index, p2);
+}
+
+void UserInstance::stopAction(s32 index) {
+    if (mUser->getSystem()->isCallEnable())
+        mTriggerCtrlMgr.stopAction(index);
+}
+
+bool UserInstance::isCurrentActionNeedToObserve(s32 index) const {
+    if (mUser->getSystem()->isCallEnable())
+        return mTriggerCtrlMgr.isCurrentActionNeedToObserve(index);
+
+    return false;
 }
 
 bool UserInstance::isCurrentActionNeedToCalc() const {
     return mTriggerCtrlMgr.get1() != 0;
 }
 
-bool UserInstance::isCurrentActionNeedToObserve(s32 index) const {
-    if (mUser->getSystem()->getCallEnable())
-        return mTriggerCtrlMgr.isCurrentActionNeedToObserve(index);
-
-    return false;
-}
-
 char* UserInstance::getUserName() const {
     return mUser->getUserName();
 }
 
+void UserInstance::setDebugLogFlag(sead::BitFlag32 /*unused*/) {}
+
+void UserInstance::setRootPos(const sead::Vector3f* root_pos) {
+    mRootPos = root_pos;
+}
+
+void UserInstance::printLogContainerSelect(const Event&, const char*, ...) const {}
 void UserInstance::printLogEmitFailed(Event const& /*unused*/, char const* /*unused*/, ...) const {}
 
+// NON-MATCHING: two instructions in the wrong place
 char* UserInstance::getContainerTypeName(ResAssetCallTable const& asset_call) const {
     return mUser->getUserResource()->getAccessor()->getCallTableTypeName(asset_call);
 }
@@ -178,6 +281,13 @@ u32 UserInstance::getDefaultGroup() const {
 }
 
 void UserInstance::onReset_() {}
+
+// WIP
+void UserInstance::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
+    delete[] (param->modelAssetConnections);
+    delete[] (param->_18);
+}
+
 void UserInstance::onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/) {}
 bool UserInstance::doEventActivatingCallback_(const Locator& /*unused*/) {
     return false;
@@ -185,7 +295,7 @@ bool UserInstance::doEventActivatingCallback_(const Locator& /*unused*/) {
 void UserInstance::doEventActivatedCallback_(const Locator& /*unused*/, Event* /*unused*/) {}
 
 bool UserInstance::unkCheck() {
-    return !((mParamType >> 1) & 1) && mUser->getSystem()->getCallEnable();
+    return !((mParamType >> 1) & 1) && mUser->getSystem()->isCallEnable();
 }
 
 }  // namespace xlink2
