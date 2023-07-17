@@ -37,6 +37,7 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     mParamsByResMode.fill(nullptr);
 }
 
+// WIP
 void UserInstance::destroy() {
     {
         auto lock = sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj());
@@ -284,8 +285,11 @@ void UserInstance::onReset_() {}
 
 // WIP
 void UserInstance::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
-    delete[] (param->modelAssetConnections);
-    delete[] (param->_18);
+    delete (param->modelAssetConnections);
+    if (param->_18) {
+        delete[] (param->_18);
+        param->numRandomHistory = 0;
+    }
 }
 
 void UserInstance::onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/) {}
