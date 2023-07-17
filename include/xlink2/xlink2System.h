@@ -139,7 +139,7 @@ public:
     // void writeBlinkText(sead::SafeString const&, sead::TextWriter*) const;
     // void writeLines(sead::SafeString const&, sead::TextWriter*) const;
 
-    bool getCallEnable() const { return mCallEnable; }
+    bool isCallEnable() const { return mCallEnable; }
 
 protected:
     ResourceBuffer* mResourceBuffer;
