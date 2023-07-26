@@ -11,8 +11,10 @@ ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header, Param
     mResourceHeader = res_header;
     mEditorHeader = nullptr;
     mBinStart = (long)res_header;
-    mBinEnd = (long)res_header + static_cast<long>(res_header->numUser)*8 + param_define->getNumUserParams() + 0x48;
-    mUserParamNum = param_define->getUserParamNum();
+    auto num_user = mResourceHeader->numUser*8;
+    auto num_user_params = param_define->getNumUserParams();
+    mBinEnd = mBinStart + num_user + num_user_params + sizeof(ResourceHeader);
+    mUserParamNum = param_define->get0();
     mAssetParamNum = param_define->getAssetParamNum();
 }
 
@@ -20,8 +22,8 @@ ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header, Para
     mResourceHeader = nullptr;
     mEditorHeader = editor_header;
     mBinStart = (long)editor_header;
-    mBinEnd = (long)editor_header + 0x44;
-    mUserParamNum = param_define->getUserParamNum();
+    mBinEnd = (long)editor_header + sizeof(EditorHeader);
+    mUserParamNum = param_define->get0();
     mAssetParamNum = param_define->getAssetParamNum();
 }
 
@@ -56,139 +58,132 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
 void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccessor* bin_accessor) {
     // ResourceHeader* res_header{bin_accessor->mResourceHeader};
     // EditorHeader* editor_header{bin_accessor->mEditorHeader};
-    u32* ptr_follower;
+    u32* ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numResParam;
+        ptr = &bin_accessor->mEditorHeader->numResParam;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numResParam;
-    common_res_param->numResParam = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numResParam;
+    common_res_param->numResParam = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numResAssetParam;
+        ptr = &bin_accessor->mEditorHeader->numResAssetParam;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numResAssetParam;
-
-    common_res_param->numResAssetParam = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numResAssetParam;
+    common_res_param->numResAssetParam = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numResTriggerOverwriteParam;
+        ptr = &bin_accessor->mEditorHeader->numResTriggerOverwriteParam;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numResTriggerOverwriteParam;
-
-    common_res_param->numResTriggerOverwriteParam = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numResTriggerOverwriteParam;
+    common_res_param->numResTriggerOverwriteParam = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numLocalPropertyNameRefTable;
+        ptr = &bin_accessor->mEditorHeader->numLocalPropertyNameRefTable;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numLocalPropertyNameRefTable;
-
-    common_res_param->numLocalPropertyNameRefTable = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numLocalPropertyNameRefTable;
+    common_res_param->numLocalPropertyNameRefTable = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numLocalPropertyEnumNameRefTable;
+        ptr = &bin_accessor->mEditorHeader->numLocalPropertyEnumNameRefTable;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numLocalPropertyEnumNameRefTable;
-
-    common_res_param->numLocalPropertyEnumNameRefTable = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numLocalPropertyEnumNameRefTable;
+    common_res_param->numLocalPropertyEnumNameRefTable = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numDirectValueTable;
+        ptr = &bin_accessor->mEditorHeader->numDirectValueTable;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numDirectValueTable;
-
-    common_res_param->numDirectValueTable = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numDirectValueTable;
+    common_res_param->numDirectValueTable = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numRandomTable;
+        ptr = &bin_accessor->mEditorHeader->numRandomTable;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numRandomTable;
-
-    common_res_param->numRandomTable = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numRandomTable;
+    common_res_param->numRandomTable = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numCurveTable;
+        ptr = &bin_accessor->mEditorHeader->numCurveTable;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numCurveTable;
-
-    common_res_param->numCurveTable = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numCurveTable;
+    common_res_param->numCurveTable = *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->numCurvePointTable;
+        ptr = &bin_accessor->mEditorHeader->numCurvePointTable;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->numCurvePointTable;
-
-    common_res_param->numCurvePointTable = *ptr_follower;
+        ptr = &bin_accessor->mResourceHeader->numCurvePointTable;
+    common_res_param->numCurvePointTable = *ptr;
 
     if (common_res_param->numResAssetParam != 0) {
-        ResAssetParam* res_asset_table{(ResAssetParam*)(bin_accessor->mBinEnd | sMinAddressHigh)};
-        if (bin_accessor->mBinEnd < sMinAddressLow) {
-            res_asset_table += 0x8000000;
+        if ((bin_accessor->mBinEnd | sMinAddressHigh) < sMinAddressLow) {
+            bin_accessor->mBinEnd += 0x10000000;
         }
-        common_res_param->assetParamTable = res_asset_table;
+        common_res_param->assetParamTable = (ResAssetParam*)bin_accessor->mBinEnd;
     }
 
-    if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
+    ResourceHeader* resource_header = bin_accessor->mResourceHeader;
+    if (!resource_header)
+        ptr = &bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->triggerOverwriteParamTablePos;
+        ptr = &resource_header->triggerOverwriteParamTablePos;
 
-    if (common_res_param->numResTriggerOverwriteParam != 0)
-        common_res_param->triggerOverwriteParamTablePos = *ptr_follower + bin_accessor->mBinStart;
+    if (common_res_param->numResTriggerOverwriteParam != 0) {
+        common_res_param->triggerOverwriteParamTablePos = (long)(ptr + bin_accessor->mBinStart);
+        resource_header = bin_accessor->mResourceHeader;
+    }
 
-    if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->localPropertyNameRefTablePos;
+    if (!resource_header)
+        ptr = &bin_accessor->mEditorHeader->localPropertyNameRefTablePos;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->localPropertyNameRefTablePos;
+        ptr = &resource_header->localPropertyNameRefTablePos;
 
-    u32* localPropertyRefTable{(u32*)(bin_accessor->mBinStart + *ptr_follower | sMinAddressHigh)};
+    u32* localPropertyRefTable{(u32*)(bin_accessor->mBinStart + *ptr | sMinAddressHigh)};
 
-    if (bin_accessor->mBinStart + *ptr_follower < sMinAddressLow)
-        localPropertyRefTable += 0x100000000;
+    if (bin_accessor->mBinStart + *ptr < sMinAddressLow)
+        localPropertyRefTable += 0x40000000;
 
     if (common_res_param->numLocalPropertyNameRefTable != 0)
         common_res_param->localPropertyNameRefTable = localPropertyRefTable;
-    ptr_follower = localPropertyRefTable + common_res_param->numLocalPropertyNameRefTable;
+    ptr = localPropertyRefTable + common_res_param->numLocalPropertyNameRefTable;
 
     if (common_res_param->numLocalPropertyEnumNameRefTable != 0)
-        common_res_param->localPropertyEnumNameRefTable = ptr_follower;
-    ptr_follower += common_res_param->numLocalPropertyEnumNameRefTable;
+        common_res_param->localPropertyEnumNameRefTable = ptr;
+    ptr += common_res_param->numLocalPropertyEnumNameRefTable;
 
     if (common_res_param->numDirectValueTable != 0)
-        common_res_param->directValueTable = ptr_follower;
-    ptr_follower += common_res_param->numDirectValueTable;
+        common_res_param->directValueTable = ptr;
+    ptr += common_res_param->numDirectValueTable;
 
     if (common_res_param->numRandomTable != 0)
-        common_res_param->randomCallTable = (ResRandomCallTable*)ptr_follower;
-    ptr_follower += common_res_param->numRandomTable;
+        common_res_param->randomCallTable = (ResRandomCallTable*)ptr;
 
     if (common_res_param->numCurveTable != 0)
-        common_res_param->curveCallTable = (ResCurveCallTable*)ptr_follower;
-    ptr_follower += common_res_param->numCurveTable;
+        common_res_param->curveCallTable = (ResCurveCallTable*)(ptr + common_res_param->numRandomTable);
+    //ptr += common_res_param->numCurveTable;
 
     if (common_res_param->numCurvePointTable != 0)
-        common_res_param->curvePointTable = (CurvePoint*)ptr_follower;
+        common_res_param->curvePointTable = (CurvePoint*)((ResCurveCallTable*)(ptr + common_res_param->numRandomTable) + common_res_param->numCurveTable);
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->exDataRegionPos;
+        ptr = &bin_accessor->mEditorHeader->exDataRegionPos;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->exRegionPos;
+        ptr = &bin_accessor->mResourceHeader->exRegionPos;
 
-    common_res_param->exRegionPos = bin_accessor->mBinStart + *ptr_follower;
+    common_res_param->exRegionPos = bin_accessor->mBinStart + *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->conditionTablePos;
+        ptr = &bin_accessor->mEditorHeader->conditionTablePos;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->conditionTablePos;
+        ptr = &bin_accessor->mResourceHeader->conditionTablePos;
 
-    common_res_param->conditionTablePos = bin_accessor->mBinStart + *ptr_follower;
+    common_res_param->conditionTablePos = bin_accessor->mBinStart + *ptr;
 
     if (!bin_accessor->mResourceHeader)
-        ptr_follower = &bin_accessor->mEditorHeader->nameTablePos;
+        ptr = &bin_accessor->mEditorHeader->nameTablePos;
     else
-        ptr_follower = &bin_accessor->mResourceHeader->nameTablePos;
+        ptr = &bin_accessor->mResourceHeader->nameTablePos;
 
-    common_res_param->nameTablePos = bin_accessor->mBinStart + *ptr_follower;
+    common_res_param->nameTablePos = bin_accessor->mBinStart + *ptr;
 }
 
 // WIP
