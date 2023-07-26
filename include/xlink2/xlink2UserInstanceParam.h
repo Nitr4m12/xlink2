@@ -6,10 +6,15 @@
 
 namespace xlink2 {
 struct UserInstanceParam {
+    struct RandomEvent {
+        s32 oldIndex;
+        s32 newIndex;
+    };
+
     u32 numModelAssetConnection;
     ModelAssetConnection* modelAssetConnections;
     u32 numRandomHistory;
-    void* _18;
+    RandomEvent* randomHistory;
     bool isSetupRom;
 };
 }  // namespace xlink2

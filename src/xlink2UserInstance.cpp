@@ -32,7 +32,7 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     if (prop_define_table_num > 0)
         mPropertyValueArray = new (heap, 8) f32[prop_define_table_num << 2];
 
-    mTriggerCtrlMgr.initialize(create_arg.get30(), create_arg.get34(), heap);
+    mTriggerCtrlMgr.initialize(create_arg.getActionSlotCount(), create_arg.getLocalPropertyCount(), heap);
 
     mParamsByResMode.fill(nullptr);
 }
@@ -286,8 +286,8 @@ void UserInstance::onReset_() {}
 // WIP
 void UserInstance::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     delete (param->modelAssetConnections);
-    if (param->_18) {
-        delete[] (param->_18);
+    if (param->randomHistory) {
+        delete[] (param->randomHistory);
         param->numRandomHistory = 0;
     }
 }

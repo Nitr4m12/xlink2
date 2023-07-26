@@ -32,9 +32,9 @@ public:
         sead::Matrix34f* getRootMtx() const { return mRootMtx; }
         sead::Vector3f* getRootPos() const { return mRootPos; }
         sead::Vector3f* getScale() const { return mScale; }
-        s32 get30() const { return _30; }
-        s32 get34() const { return _34; }
-        u64 get38() const { return _38; }
+        s32 getActionSlotCount() const { return mActionSlotCount; }
+        s32 getLocalPropertyCount() const { return mLocalPropertyCount; }
+        char* getActionSlotNames() const { return mActionSlotNames; }
 
     private:
         char* mName;
@@ -43,9 +43,9 @@ public:
         u8 _18;
         sead::Vector3f* mRootPos;
         sead::Vector3f* mScale;
-        s32 _30;
-        s32 _34;
-        u64 _38;
+        s32 mActionSlotCount;
+        s32 mLocalPropertyCount;
+        char* mActionSlotNames;
     };
 
     class RebuildArg {
