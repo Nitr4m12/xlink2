@@ -2,11 +2,12 @@
 
 #include "xlink2/xlink2Condition.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
+#include "xlink2/xlink2System.h"
 #include "xlink2/xlink2Util.h"
 
-namespace xlink2::ResourceParamCreator {
+namespace xlink2 {
 // NON-MATCHING
-BinAccessor::BinAccessor(ResourceHeader* res_header, ParamDefineTable const* param_define) {
+ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header, ParamDefineTable const* param_define) {
     mResourceHeader = res_header;
     mEditorHeader = nullptr;
     mBinStart = (long)res_header;
@@ -15,7 +16,7 @@ BinAccessor::BinAccessor(ResourceHeader* res_header, ParamDefineTable const* par
     mAssetParamNum = param_define->getAssetParamNum();
 }
 
-BinAccessor::BinAccessor(EditorHeader* editor_header, ParamDefineTable const* param_define) {
+ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header, ParamDefineTable const* param_define) {
     mResourceHeader = nullptr;
     mEditorHeader = editor_header;
     mBinStart = (long)editor_header;
@@ -25,7 +26,7 @@ BinAccessor::BinAccessor(EditorHeader* editor_header, ParamDefineTable const* pa
 }
 
 // NON-MATCHING
-void createParamAndSolveResource(RomResourceParam* rom_res_param, void* p2,
+void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res_param, void* p2,
                                  ParamDefineTable const* param_define, System* system) {
     rom_res_param->assetParamTable = nullptr;
     rom_res_param->triggerOverwriteParamTablePos = 0;
@@ -52,7 +53,7 @@ void createParamAndSolveResource(RomResourceParam* rom_res_param, void* p2,
 }
 
 // WIP
-void createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccessor* bin_accessor) {
+void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccessor* bin_accessor) {
     // ResourceHeader* res_header{bin_accessor->mResourceHeader};
     // EditorHeader* editor_header{bin_accessor->mEditorHeader};
     u32* ptr_follower;
@@ -191,7 +192,7 @@ void createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccess
 }
 
 // WIP
-void dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
+void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
                       const BinAccessor* bin_accessor, const ParamDefineTable* param_define,
                       sead::Heap* heap, bool p1, sead::BufferedSafeString* buffered_str) {
     // TODO
@@ -258,7 +259,7 @@ void dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
 }
 
 // NON-MATCHING
-void dumpEditorResource_(EditorResourceParam* editor_resource, const BinAccessor* bin_accessor,
+void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_resource, const BinAccessor* bin_accessor,
                          const ParamDefineTable* param_define, sead::Heap* heap) {
     sead::BufferedSafeString* buffered_str{nullptr};
 
@@ -295,7 +296,7 @@ void dumpEditorResource_(EditorResourceParam* editor_resource, const BinAccessor
 }
 
 // WIP
-void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
+void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_res_param,
                               const BinAccessor* bin_accessor, bool p1,
                               sead::BufferedSafeString* buffered_str) {
     u32 not_default_param_num{0};
@@ -540,7 +541,7 @@ void dumpCommonResourceFront_(CommonResourceParam* common_res_param,
 };
 
 // WIP
-void dumpUserBin_(u32 p1, const sead::SafeString& user_name, ResUserHeader* user_header,
+void ResourceParamCreator::dumpUserBin_(u32 p1, const sead::SafeString& user_name, ResUserHeader* user_header,
                   const ParamDefineTable* param_define, sead::BufferedSafeString* buffered_str) {
     // ------------------------------------- ResUserHeader -----------------------------------------
     dumpLine_(buffered_str, "<< ResUserHeader[%d] (addr:0x%x, name=%s) >>\n", p1, user_header,
@@ -771,7 +772,7 @@ void dumpUserBin_(u32 p1, const sead::SafeString& user_name, ResUserHeader* user
 };
 
 // WIP
-void dumpCommonResourceRear_(CommonResourceParam* common_res_param, const BinAccessor* bin_accessor,
+void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_res_param, const BinAccessor* bin_accessor,
                              u32 p1, sead::Heap* heap, bool p2,
                              sead::BufferedSafeString* buffered_str) {
     // --------------------------------------- ConditionTable --------------------------------------
