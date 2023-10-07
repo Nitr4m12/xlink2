@@ -12,7 +12,7 @@ ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header, Param
     mEditorHeader = nullptr;
     mBinStart = (long)res_header;
     auto num_user = mResourceHeader->numUser*8;
-    auto num_user_params = param_define->getNumUserParams();
+    auto num_user_params = param_define->getSize();
     mBinEnd = mBinStart + num_user + num_user_params + sizeof(ResourceHeader);
     mUserParamNum = param_define->get0();
     mAssetParamNum = param_define->getAssetParamNum();
@@ -50,9 +50,15 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
     rom_res_param->curveCallTable = nullptr;
     rom_res_param->localPropertyEnumNameRefTable = nullptr;
     rom_res_param->directValueTable = nullptr;
-    rom_res_param->nameHash = 0;
-    rom_res_param->binPos = 0;
+    rom_res_param->nameHashTable = nullptr;
+    rom_res_param->offsetTable = nullptr;
 }
+
+u64 getFullPointer(u64 pointer, u64 offset = 0x100000000) {
+    if ((pointer | sMinAddressHigh) < sMinAddressLow)
+        return (pointer | sMinAddressHigh) + offset;
+    return pointer;
+};
 
 // WIP
 void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* common_res_param, BinAccessor* bin_accessor) {
@@ -195,24 +201,22 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     // TODO
     // sead::BufferedSafeString dump_str;
 
-    dumpLine_(buffered_str, "[XLink2] ResourceBuffer dump \n");
-    dumpLine_(buffered_str, "<< ResourceHeader (addr:0x%x, size:%@) >>\n", res_header, 0x48);
+    dumpLine_(buffered_str, "[XLink2] ResourceBuffer dump\n");
+    dumpLine_(buffered_str, "<< ResourceHeader (addr:0x%x, size:%@) >>\n", res_header, sizeof(ResourceHeader));
 
-    dumpLine_(buffered_str, "  magic: %s\n" /*, dump_str.mStringTop*/);
+    char buffer[15];
+    sead::BufferedSafeString magic{buffer, 5};
+    magic.format((char*)res_header->magic);
+    dumpLine_(buffered_str, "  magic: %s\n", magic.getBuffer());
     dumpLine_(buffered_str, "  dataSize: %@\n", res_header->dataSize);
     dumpLine_(buffered_str, "  version: %@\n", res_header->version);
     dumpLine_(buffered_str, "  numResParam: %@\n", res_header->numResParam);
     dumpLine_(buffered_str, "  numResAssetParam: %@\n", res_header->numResAssetParam);
-    dumpLine_(buffered_str, "  numResTriggerOverwriteParam: %@\n",
-              res_header->numResTriggerOverwriteParam);
-    dumpLine_(buffered_str, "  triggerOverwriteParamTablePos: %@\n",
-              res_header->triggerOverwriteParamTablePos);
-    dumpLine_(buffered_str, "  localPropertyNameRefTablePos: %@\n",
-              res_header->localPropertyNameRefTablePos);
-    dumpLine_(buffered_str, "  numLocalPropertyNameRefTable: %@\n",
-              res_header->numLocalPropertyNameRefTable);
-    dumpLine_(buffered_str, "  numLocalPropertyEnumNameRefTable: %@\n",
-              res_header->numLocalPropertyEnumNameRefTable);
+    dumpLine_(buffered_str, "  numResTriggerOverwirteParam: %@\n", res_header->numResTriggerOverwriteParam);
+    dumpLine_(buffered_str, "  triggerOverwriteParamTablePos: %@\n", res_header->triggerOverwriteParamTablePos);
+    dumpLine_(buffered_str, "  localPropertyNameRefTablePos: %@\n", res_header->localPropertyNameRefTablePos);
+    dumpLine_(buffered_str, "  numLocalPropertyNameRefTable: %@\n", res_header->numLocalPropertyNameRefTable);
+    dumpLine_(buffered_str, "  numLocalPropertyEnumNameRefTable: %@\n", res_header->numLocalPropertyEnumNameRefTable);
     dumpLine_(buffered_str, "  numDirectValueTable: %@\n", res_header->numDirectValueTable);
     dumpLine_(buffered_str, "  numRandomTable: %@\n", res_header->numRandomTable);
     dumpLine_(buffered_str, "  numCurveTable: %@\n", res_header->numCurveTable);
@@ -220,36 +224,25 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     dumpLine_(buffered_str, "  numUser: %@\n", res_header->numUser);
     dumpLine_(buffered_str, "  conditionTablePos: %@\n", res_header->conditionTablePos);
     dumpLine_(buffered_str, "  nameTablePos: %@\n", res_header->nameTablePos);
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(buffered_str,"\n");
 
-    u32 num_user{res_header->numUser << 2};
-
-    dumpLine_(buffered_str, "<< OffsetTable (addr:0x%x, size:%@*%@=%@) >>\n", rom_res->binPos, 4,
-              res_header->numUser, num_user);
+    u32 offset_table_size = res_header->numUser * sizeof(u32);
+    dumpLine_(buffered_str, "<< OffsetTable (addr:0x%x, size:%@*%@=%@) >>\n", rom_res->offsetTable, sizeof(u32), res_header->numUser, offset_table_size);
     if (res_header->numUser != 0) {
-        for (int i{0}; i < res_header->numUser; ++i) {
-            dumpLine_(buffered_str, "  [%d] binPos=%@, nameHash=%@\n", i,
-                      rom_res->binPos + static_cast<long>(i * 4),
-                      rom_res->nameHash + static_cast<long>(i * 4));
-        }
+        for (u32 i{0}; i < res_header->numUser; ++i)
+            dumpLine_(buffered_str, "  [%d] binPos=%@, nameHash=%@\n", i, rom_res->offsetTable[i], rom_res->nameHashTable[i]);
     }
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(buffered_str,"\n");
 
-    dumpLine_(buffered_str, "<< ParamDefineTable (addr:0x%x, size:%@) >>\n",
-              rom_res->binPos + num_user, param_define->getNumUserParams());
-    dumpLine_(buffered_str, "  ...no content print.\n\n");
+    dumpLine_(buffered_str, "<< ParamDefineTable (addr:0x%x, size:%@) >>\n", rom_res->offsetTable, param_define->getSize());
+    dumpLine_(buffered_str,"  ...no content print.\n\n");
 
-    dumpCommonResourceFront_(rom_res, bin_accessor, p1, buffered_str);
+    dumpCommonResourceFront_(rom_res, bin_accessor, p1,buffered_str);
     if (p1 && res_header->numUser != 0) {
-        for (int i{0}; i < res_header->numUser; ++i) {
-            u32 v1 =
-                (ulong)(bin_accessor->mBinStart + *(int*)(*(long*)&rom_res->binPos + (ulong)i * 4));
-            auto* v2 = (ResUserHeader*)(v1 | sMinAddressHigh);
-            sead::SafeString str_v{""};
-            if (v1 < sMinAddressLow) {
-                v2 = (ResUserHeader*)&v2[0x5555555].numRandomContainer2;
-            }
-            dumpUserBin_(i, str_v, v2, param_define, buffered_str);
+        for (u32 i {0}; i < res_header->numUser; ++i) {
+            u64 user_offset = bin_accessor->mBinStart + rom_res->offsetTable[i];
+            u64 user_header = getFullPointer(user_offset);
+            dumpUserBin_(i, "", (ResUserHeader*)user_header, param_define, buffered_str);
         }
     }
     dumpCommonResourceRear_(rom_res, bin_accessor, res_header->dataSize, heap, false, buffered_str);

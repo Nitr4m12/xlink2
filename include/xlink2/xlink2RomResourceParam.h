@@ -7,8 +7,8 @@
 namespace xlink2 {
 struct RomResourceParam : CommonResourceParam {
     void* _0;
-    u64 nameHash;
-    u64 binPos;
+    u32* nameHashTable;
+    u32* offsetTable;
     u8 _1;
     s32 _2;
 };

@@ -30,7 +30,7 @@ public:
 
     void setup(u8*, u32, bool);
 
-    s32 getNumUserParams() const { return mNumUserParams; }
+    s32 getSize() const { return mSize; }
     u32 getAssetParamNum() const { return mAssetParamNum; }
     u32 getUserParamNum() const { return mUserParamNum; }
     u32 get0() const { return _0; }
@@ -44,10 +44,10 @@ private:
     void* mAssetParam;
     void* mTriggerParam;
     void* mStringTable;
-    s32 mNumUserAssetParams;
-    s32 mNumStandardAssetParams;
-    s32 mNumNonUserParams;
-    s32 mNumUserParams;
+    s32 mUserAssetParamNum;
+    s32 mStandardAssetParamNum;
+    s32 mNonUserParamNum;
+    s32 mSize;
     bool mInitialized;
 };
 }  // namespace xlink2
