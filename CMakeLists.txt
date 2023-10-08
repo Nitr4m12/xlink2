@@ -53,6 +53,7 @@ add_library(xlink2 OBJECT
   src/xlink2LockProxy.cpp
   src/xlink2ModelAssetConnection.cpp
   src/xlink2OuterLockProxy.cpp
+  src/xlink2ParamDefineTable.cpp
   src/xlink2PropertyTriggerCtrl.cpp
   src/xlink2ResourceAccessor.cpp
   src/xlink2ResourceAccessorELink.cpp

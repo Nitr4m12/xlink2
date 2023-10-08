@@ -122,11 +122,9 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
 
     u64 bin_end = bin_accessor->mBinEnd;
     u64 min_address_high = sMinAddressHigh;
-    if (common_res_param->numResAssetParam != 0) {
-        if ((bin_end | sMinAddressHigh) < sMinAddressLow) {
-            bin_end = (bin_end | sMinAddressHigh) + 0x100000000;
-        }
-        common_res_param->assetParamTable = (ResAssetParam*)bin_end;
+    if (common_res_param->numResAssetParam > 0) {
+        u64 bin_end_full = getFullPointer(bin_accessor->mBinEnd);
+        common_res_param->assetParamTable = (ResAssetParam*)bin_end_full;
     }
 
     if (bin_accessor->mResourceHeader)
@@ -134,45 +132,42 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     else
         ptr = &bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
 
-    if (common_res_param->numResTriggerOverwriteParam != 0) {
+    if (common_res_param->numResTriggerOverwriteParam > 0) {
         common_res_param->triggerOverwriteParamTablePos = bin_accessor->mBinStart + *ptr;
         bin_accessor->mResourceHeader = bin_accessor->mResourceHeader;
     }
-
 
     if (bin_accessor->mResourceHeader)
         ptr = &bin_accessor->mResourceHeader->localPropertyNameRefTablePos;
     else
         ptr = &bin_accessor->mEditorHeader->localPropertyNameRefTablePos;
 
-    u32  num_asset_param = *ptr;
-    u32* localPropertyRefTable{(u32*)((bin_accessor->mBinStart + bin_end) | min_address_high)};
+    u64 localPropertyRefTable{bin_end + *ptr};
+    if (common_res_param->numLocalPropertyNameRefTable > 0) {
+        if ((bin_end + *ptr | min_address_high) < sMinAddressLow)
+            localPropertyRefTable = localPropertyRefTable + 0x100000000;
+        common_res_param->localPropertyNameRefTable = (u32*)localPropertyRefTable;
+    }
+    ptr = (u32*)localPropertyRefTable + common_res_param->numLocalPropertyNameRefTable;
 
-    if (bin_accessor->mBinStart + num_asset_param < sMinAddressLow)
-        localPropertyRefTable = localPropertyRefTable + 0x100000000;
-
-    if (common_res_param->numLocalPropertyNameRefTable != 0)
-        common_res_param->localPropertyNameRefTable = localPropertyRefTable;
-    ptr = localPropertyRefTable + common_res_param->numLocalPropertyNameRefTable;
-
-    if (common_res_param->numLocalPropertyEnumNameRefTable != 0)
+    if (common_res_param->numLocalPropertyEnumNameRefTable > 0)
         common_res_param->localPropertyEnumNameRefTable = ptr;
     ptr = ptr + common_res_param->numLocalPropertyEnumNameRefTable;
 
-    if (common_res_param->numDirectValueTable != 0)
+    if (common_res_param->numDirectValueTable > 0)
         common_res_param->directValueTable = ptr;
     ptr = ptr + common_res_param->numDirectValueTable;
 
     auto* rrct_ptr = (ResRandomCallTable*)ptr;
-    if (common_res_param->numRandomTable != 0)
+    if (common_res_param->numRandomTable > 0)
         common_res_param->randomCallTable = rrct_ptr;
 
     auto* rcct_ptr = (ResCurveCallTable*)(rrct_ptr + common_res_param->numRandomTable);
-    if (common_res_param->numCurveTable != 0)
+    if (common_res_param->numCurveTable > 0)
         common_res_param->curveCallTable = rcct_ptr;
 
     auto* cpt_ptr = (CurvePoint*)(rcct_ptr + common_res_param->numCurveTable);
-    if (common_res_param->numCurvePointTable != 0)
+    if (common_res_param->numCurvePointTable > 0)
         common_res_param->curvePointTable = cpt_ptr;
 
     if (bin_accessor->mResourceHeader)
@@ -198,8 +193,6 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
 void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
                       const BinAccessor* bin_accessor, const ParamDefineTable* param_define,
                       sead::Heap* heap, bool p1, sead::BufferedSafeString* buffered_str) {
-    // TODO
-    // sead::BufferedSafeString dump_str;
 
     dumpLine_(buffered_str, "[XLink2] ResourceBuffer dump\n");
     dumpLine_(buffered_str, "<< ResourceHeader (addr:0x%x, size:%@) >>\n", res_header, sizeof(ResourceHeader));
