@@ -29,5 +29,10 @@ public:
     void releaseOneEmitterInstance(UserResourceParamELink*, ParamDefineTable const*);
     void solveAssetParam(UserResourceELink*, ParamDefineTable const*, PtclResourceAccessorELink*);
     void solveResourceForChangeEset();
+
+private:
+    SystemELink* mSystem;
 };
+static_assert(sizeof(UserResourceELink) == 0x50, "Wrong size for xlink2::UserResourceELink");
+
 }  // namespace xlink2

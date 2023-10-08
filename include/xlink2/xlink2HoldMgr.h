@@ -39,4 +39,6 @@ private:
     HoldAssetInfo mHoldAssetInfos[128];
     u8 _0;
 };
+static_assert(sizeof(HoldMgr) == 0x1888, "Wrong size for 'xlink2::HoldMgr'");
+
 }  // namespace xlink2

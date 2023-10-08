@@ -66,4 +66,6 @@ private:
     ResActionSlot* mResActionSlot;
     u8 _11;
 };
+static_assert(sizeof(User) == 0x60, "Wrong size for 'xlink2::User'");
+
 }  // namespace xlink2

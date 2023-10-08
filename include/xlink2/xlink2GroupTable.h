@@ -19,4 +19,6 @@ private:
     s32 _1;
     void* _2;
 };
+static_assert(sizeof(GroupTable) == 0x10, "Wrong size for 'xlink2::GroupTable'");
+
 }  // namespace xlink2

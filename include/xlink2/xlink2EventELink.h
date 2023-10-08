@@ -45,4 +45,6 @@ private:
     void* _16;
     void* _17;
 };
+static_assert(sizeof(EventELink) == 0x198, "Wrong size for 'xlink2::EventELink'");
+
 }  // namespace xlink2

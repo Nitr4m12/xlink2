@@ -20,4 +20,6 @@ public:
 private:
     u8 _0;
 };
+static_assert(sizeof(AlwaysTriggerCtrl) == 0x20, "Wrong size for 'xlink2::AlwaysTriggerCtrl'");
+
 }  // namespace xlink2

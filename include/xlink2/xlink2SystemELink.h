@@ -77,4 +77,6 @@ private:
     u32 _39;
     u32 _40;
 };
+// static_assert(sizeof(SystemELink) == 0x69490, "Wrong size for 'xlink2::SystemELink'");
+
 }  // namespace xlink2

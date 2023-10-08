@@ -72,6 +72,5 @@ protected:
     ResourceAccessor* mResourceAccessor;
     void* _3;
     void* _4;
-    System* mSystem;
 };
 }  // namespace xlink2

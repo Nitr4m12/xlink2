@@ -46,4 +46,6 @@ private:
     u8 mDefaultGroup;
     PtclResourceAccessorELink* mPtclResourceAccessor;
 };
+static_assert(sizeof(UserInstanceELink) == 0x108, "Wrong size for 'xlink2::UserInstance'");
+
 }  // namespace xlink2

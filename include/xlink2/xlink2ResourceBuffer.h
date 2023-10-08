@@ -23,4 +23,6 @@ private:
     RomResourceParam mRomResourceParam;
     ParamDefineTable mParamDefineTable;
 };
+static_assert(sizeof(ResourceBuffer) == 0xe8, "Wrong size for 'xlink2::ResourceBuffer'");
+
 }  // namespace xlink2

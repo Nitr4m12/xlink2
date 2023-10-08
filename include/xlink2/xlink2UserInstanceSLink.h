@@ -85,4 +85,6 @@ private:
     IEventCallbackSLink* mEventCallback;
     sead::SafeArray<AssetLimiter*, 2> mAssetLimiters;
 };
+static_assert(sizeof(UserInstanceSLink) == 0x128, "Wrong size for 'xlink2::UserInstanceSLink'");
+
 }  // namespace xlink2

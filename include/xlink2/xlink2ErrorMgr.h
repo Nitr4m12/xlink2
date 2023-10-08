@@ -26,6 +26,7 @@ public:
 
 private:
     u32 _0;
+    u8 _1[0x5100];
     // 0x288
     // u32 _1;
 
@@ -206,4 +207,6 @@ private:
     // 0x50d0
     // sead::CriticalSection* mCriticalSection
 };
+static_assert(sizeof(ErrorMgr) == 0x5110, "Wrong size for 'xlink2::ErrorMgr'");
+
 }  // namespace xlink2

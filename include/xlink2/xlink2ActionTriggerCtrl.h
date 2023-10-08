@@ -43,4 +43,6 @@ private:
     ResAction* mResAction;
     u8 _2;
 };
+static_assert(sizeof(ActionTriggerCtrl) == 0x40, "Wrong size for 'xlink2::ActionTriggerCtrl'");
+
 }  // namespace xlink2
