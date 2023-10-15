@@ -33,6 +33,7 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2TriggerCtrlMgr.h
   include/xlink2/xlink2TriggerLocator.h
   include/xlink2/xlink2TriggerType.h
+  include/xlink2/xlink2Util.h
   include/xlink2/xlink2User.h
   include/xlink2/xlink2UserInstance.h
   include/xlink2/xlink2UserInstanceELink.h
@@ -68,6 +69,7 @@ add_library(xlink2 OBJECT
   src/xlink2TriggerCtrl.cpp
   src/xlink2TriggerCtrlMgr.cpp
   src/xlink2TriggerLocator.cpp
+  src/xlink2Util.cpp
   src/xlink2User.cpp
   src/xlink2UserInstance.cpp
   src/xlink2UserInstanceELink.cpp

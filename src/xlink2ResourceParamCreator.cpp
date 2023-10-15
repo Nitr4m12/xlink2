@@ -124,7 +124,7 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     u64 min_address_high = sMinAddressHigh;
     if (common_res_param->numResAssetParam > 0) {
         u64 bin_end_full = getFullPointer(bin_accessor->mBinEnd);
-        common_res_param->assetParamTable = (ResAssetParam*)bin_end_full;
+        common_res_param->assetParamTable = (ResParam*)bin_end_full;
     }
 
     if (bin_accessor->mResourceHeader)
@@ -292,7 +292,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     dumpLine_(buffered_str, "<< ResAssetParamTable (addr:0x%x, size:print later) >>\n",
               common_res_param->assetParamTable);
 
-    ResAssetParam* pv2{common_res_param->assetParamTable};
+    ResParam* pv2{common_res_param->assetParamTable};
     u32* raw_value_ptr;
 
     if (common_res_param->numResAssetParam == 0) {

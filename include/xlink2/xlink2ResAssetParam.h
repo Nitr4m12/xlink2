@@ -2,9 +2,16 @@
 
 #include <basis/seadTypes.h>
 
+#include "xlink2/xlink2ParamValueType.h"
+
 namespace xlink2 {
 struct ResAssetParam {
-    u64 mask;
-    u32* rawValue;
+    u32 namePos;
+    ParamValueType type;
+    union {
+        u32 defaultValueInt;
+        f32 defaultValueFloat;
+        u32 defaultValueString;
+    };
 };
 }

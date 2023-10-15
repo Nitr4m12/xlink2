@@ -2,12 +2,9 @@
 
 #include <basis/seadTypes.h>
 
-#include "xlink2/xlink2ParamValueType.h"
-
 namespace xlink2 {
 struct ResParam {
-    u32 namePos;
-    ParamValueType type;
-    u32 defaultValue;
+    u64 mask;
+    u32* rawValue;
 };
 }  // namespace xlink2
