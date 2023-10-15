@@ -22,6 +22,53 @@ void ParamDefineTable::reset() {
 void ParamDefineTable::setup(unsigned char* bin, u32 non_user_param_num, bool /*unused*/) {
     if (!mIsInitialized) {
         mSize = *(u32*)bin;
+        u32 num_user_param = *(u32*)(&bin[4]);
+        mNumUserParam = num_user_param;
+        mNumStandardAssetParam = num_user_param - non_user_param_num;
+        mNumNonUserParam = non_user_param_num;
+        mNumAssetParam = *(u32*)(&bin[8]);
+        _0 = *(u32*)(&bin[0xC]);
+        mNumCustomParam = mNumAssetParam - _0;
+        mNumTriggerParam = *(u32*)(&bin[0x10]);
+
+
+        auto* user_params = (ResAssetParam*)(&bin[0x14]);
+        ResAssetParam* asset_params = &user_params[*(u32*)(&bin[4])];
+        ResAssetParam* trigger_params = &asset_params[*(u32*)(&bin[8])];
+        u64 string_table_pos = (long)(trigger_params + *(u32*)(&bin[0x10]));
+
+        mStringTablePos = string_table_pos;
+
+        if (mNumUserParam != 0) {
+            mUserParams = user_params;
+            for (u32 i {0}; i < mNumUserParam; ++i) {
+                mUserParams[i].namePos = mStringTablePos + mUserParams[i].namePos;
+
+                if (mUserParams[i].type == ParamValueType::String)
+                    mUserParams[i].defaultValueString = mStringTablePos + mUserParams[i].defaultValueString;
+            }
+        }
+
+        if (mNumAssetParam != 0) {
+            mAssetParams = asset_params;
+            for (u32 i {0}; i < mNumAssetParam; ++i) {
+                mAssetParams[i].namePos = mStringTablePos + mAssetParams[i].namePos;
+
+                if (mAssetParams[i].type == ParamValueType::String)
+                    mAssetParams[i].defaultValueString = mStringTablePos + mAssetParams[i].defaultValueString;
+            }
+        }
+
+        if (mNumTriggerParam != 0) {
+            mTriggerParams = trigger_params;
+            for (u32 i {0}; i < mNumTriggerParam; ++i) {
+                mTriggerParams[i].namePos = mStringTablePos + mTriggerParams[i].namePos;
+
+                if (mTriggerParams[i].type == ParamValueType::String)
+                    mTriggerParams[i].defaultValueString = mStringTablePos + mTriggerParams[i].defaultValueString;
+            }
+        }
+        mIsInitialized = true;
     }
 }
 
