@@ -15,8 +15,8 @@ public:
     const char* getAssetParamName(u32) const;
     const char* getTriggerParamName(u32) const;
 
-    s32 searchAssetParamIdxFromCustomParamName(char const*) const;
-    s32 searchUserParamIdxFromCustomParamName(char const*) const;
+    u32 searchAssetParamIdxFromCustomParamName(char const*) const;
+    u32 searchUserParamIdxFromCustomParamName(char const*) const;
 
     ParamValueType getUserParamType(u32) const;
     ParamValueType getAssetParamType(u32) const;

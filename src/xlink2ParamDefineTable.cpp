@@ -45,16 +45,15 @@ const char* ParamDefineTable::getTriggerParamName(u32 idx) const {
     return nullptr;
 }
 
-// NON-MATCHING
-s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_param_name) const {
+u32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_param_name) const {
     if (custom_param_name) {
-        s32 asset_param_idx = mNumCustomParam;
-        if (mNumCustomParam < mNumAssetParam) {
+        u32 asset_param_idx = mNumCustomParam;
+        if (asset_param_idx < mNumAssetParam) {
             while (true) {
-                char* asset_name = solveOffset<char>(mAssetParams[asset_param_idx].namePos);
-                if (asset_name && std::strcmp(custom_param_name, asset_name) == 0)
+                char* asset_param_name = solveOffset<char>(mAssetParams[asset_param_idx].namePos);
+                if (asset_param_name && std::strcmp(custom_param_name, asset_param_name) == 0)
                     break;
-                s32 next_idx = asset_param_idx + 1;
+                u32 next_idx = asset_param_idx + 1;
                 if (next_idx >= mNumAssetParam)
                     return -1;
                 asset_param_idx = next_idx;
@@ -65,8 +64,37 @@ s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_
     return -1;
 }
 
-// NON-MATCHING
-s32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const {}
+// NON-MATCHING / WIP
+u32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const {
+    if (custom_param_name) {
+        u32 user_param_idx = mNumNonUserParam;
+        if (user_param_idx <= mNumUserParam && mNumUserParam - mNumNonUserParam > 0) {
+            if (mUserParams) {
+                while (true) {
+                    char* user_param_name = solveOffset<char>(mUserParams[user_param_idx].namePos);
+                    if (user_param_name && std::strcmp(custom_param_name, user_param_name) == 0)
+                        break;
+                    u32 next_idx = user_param_idx + 1;
+                    if (next_idx >= mNumUserParam)
+                        return -1;
+                    user_param_idx = next_idx;
+                }
+            }
+            return user_param_idx;
+        }
+        u32 i = 0;
+        if (6 < (mNumUserParam - 1) - mNumNonUserParam) {
+            i = mNumUserParam - mNumNonUserParam & 7;
+            for (;i < 0; i += 8) {}
+        }
+        if (i != 0) {
+            i = -i;
+            for (;i < 0; ++i) {}
+        }
+
+    }
+    return -1;
+}
 
 ParamValueType ParamDefineTable::getUserParamType(u32 user_param_idx) const {
     if (mUserParams)
