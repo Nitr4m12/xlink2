@@ -25,8 +25,8 @@ struct CommonResourceParam {
     ResParam* assetParamTable;
     u32 triggerOverwriteParamTablePos;
     u32 _0;
-    void* localPropertyNameRefTable;
-    void* localPropertyEnumNameRefTable;
+    u32* localPropertyNameRefTable;
+    u32* localPropertyEnumNameRefTable;
     u32* directValueTable;
     ResRandomCallTable* randomCallTable;
     ResCurveCallTable* curveCallTable;

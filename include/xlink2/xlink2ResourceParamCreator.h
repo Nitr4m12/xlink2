@@ -23,9 +23,9 @@ class ResourceParamCreator {
         ResourceHeader* mResourceHeader;
         EditorHeader* mEditorHeader;
         u32 mBinStart;
-        u32 mBinEnd;
-        u32 mUserParamNum;
-        u32 mAssetParamNum;
+        u32 mAssetsStart;
+        u32 mNumUserParam;
+        u32 mNumAssetParam;
     };
 
     static void createParamAndSolveResource(RomResourceParam*, void*, ParamDefineTable const*,

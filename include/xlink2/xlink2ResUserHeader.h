@@ -16,6 +16,7 @@ struct ResUserHeader {
     u32 numResPropertyTrigger;
     u32 numResAlwaysTrigger;
     u32 triggerTablePos;
-    u32 userParamTablePos;
 };
+static_assert(sizeof(ResUserHeader) == 0x30, "Wrong size for 'xlink2::ResUserHeader'");
+
 }  // namespace xlink2

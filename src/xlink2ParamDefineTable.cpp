@@ -19,13 +19,13 @@ void ParamDefineTable::reset() {
     mIsInitialized = false;
 }
 
-void ParamDefineTable::setup(unsigned char* bin, u32 non_user_param_num, bool /*unused*/) {
+void ParamDefineTable::setup(unsigned char* bin, u32 num_non_user_param, bool /*unused*/) {
     if (!mIsInitialized) {
         mSize = *(u32*)bin;
         u32 num_user_param = *(u32*)(&bin[4]);
         mNumUserParam = num_user_param;
-        mNumStandardAssetParam = num_user_param - non_user_param_num;
-        mNumNonUserParam = non_user_param_num;
+        mNumStandardAssetParam = num_user_param - num_non_user_param;
+        mNumNonUserParam = num_non_user_param;
         mNumAssetParam = *(u32*)(&bin[8]);
         _0 = *(u32*)(&bin[0xC]);
         mNumCustomParam = mNumAssetParam - _0;

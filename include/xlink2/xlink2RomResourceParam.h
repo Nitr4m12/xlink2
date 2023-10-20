@@ -9,7 +9,9 @@ struct RomResourceParam : CommonResourceParam {
     void* _0;
     u32* nameHashTable;
     u32* offsetTable;
-    u8 _1;
-    s32 _2;
+    u32 numUser;
+    bool isInitialized;
 };
+static_assert(sizeof(RomResourceParam) == 0x98, "Wrong size for 'xlink2::RomResourceParam'");
+
 }  // namespace xlink2
