@@ -15,9 +15,9 @@ class ActionTriggerCtrl : TriggerCtrl {
 public:
     ActionTriggerCtrl(UserInstance* param_1, sead::Buffer<ModelTriggerConnection>* param_2,
                       ResActionSlot const* param_3);
+    ~ActionTriggerCtrl() override;
 
     void calc() override;
-    ~ActionTriggerCtrl() override;
 
     void changeAction(char const*, int);
     void changeAction(int, int);

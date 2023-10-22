@@ -16,13 +16,17 @@ public:
     EditorBuffer(System*, sead::Heap*);
     virtual ~EditorBuffer();
 
-    void allocReceiveBuffer(u32);
-    void applyGlobalPropertyDefinition();
     void destroy();
+
+    void allocReceiveBuffer(u32);
+
     void readFinished();
 
-    EditorResourceParam* searchEditorResourceParam(sead::SafeString const&);
     void setupParamDefineTable(u8*, u32);
+
+    void applyGlobalPropertyDefinition();
+
+    EditorResourceParam* searchEditorResourceParam(sead::SafeString const&);
 
     ParamDefineTable* getParamDefineTable() const { return mParamDefineTable; }
 

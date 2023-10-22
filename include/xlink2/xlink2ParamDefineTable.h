@@ -54,6 +54,6 @@ private:
     u32 mSize;
     bool mIsInitialized;
 };
-
 static_assert(sizeof(ParamDefineTable) == 0x48, "Wrong size for 'xlink2::ParamDefineTable'");
+
 }  // namespace xlink2

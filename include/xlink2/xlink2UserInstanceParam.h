@@ -17,4 +17,6 @@ struct UserInstanceParam {
     RandomEvent* randomHistory;
     bool isSetupRom;
 };
+static_assert(sizeof(UserInstanceParam) == 0x28, "Incorrect size of 'xlink2::UserInstanceParam'");
+
 }  // namespace xlink2

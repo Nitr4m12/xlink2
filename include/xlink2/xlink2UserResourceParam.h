@@ -7,11 +7,12 @@
 namespace xlink2 {
 class ResourceAccessor;
 struct UserResourceParam : public CommonResourceParam {
-    // size=0xb0
     sead::Buffer<ResAssetCallTable> resCallTableBuffer;
     sead::Buffer<bool> actionTriggerBoolBuffer;
     u64 propertyAssignedBitfield;
     ResourceAccessor* resourceAccessor;
     bool isSetup;
 };
+static_assert(sizeof(UserResourceParam) == 0xb0, "Wrong size for 'xlink2::UserResourceParam'");
+
 }  // namespace xlink2

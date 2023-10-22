@@ -2,7 +2,6 @@
 
 #include "heap/seadHeap.h"
 #include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2SystemSLink.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 

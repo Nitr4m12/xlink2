@@ -24,4 +24,6 @@ public:
 private:
     sead::SpinLock mLock;
 };
+static_assert(sizeof(LockProxy<sead::SpinLock>) == 0x18, "Wrong size for 'xlink2::LockProxy<sead::SpinLock>'");
+
 }  // namespace xlink2

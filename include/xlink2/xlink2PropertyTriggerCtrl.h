@@ -25,4 +25,5 @@ private:
     bool _3;
 };
 static_assert(sizeof(PropertyTriggerCtrl) == 0x30, "Wrong size for 'xlink2::PropertyTriggerCtrl'");
+
 }  // namespace xlink2

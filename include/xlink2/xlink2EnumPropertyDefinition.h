@@ -32,7 +32,7 @@ private:
     u32 _10;
     s32 _11;
     Entry* mEntry;
-
-    // size=0x78
 };
+static_assert(sizeof(EnumPropertyDefinition) == 0x78, "Wrong size for 'xlink2::EnumPropertyDefinition'");
+
 }  // namespace xlink2

@@ -8,7 +8,7 @@
 namespace xlink2 {
 class PropertyDefinition {
 public:
-    virtual ~PropertyDefinition();
+    virtual ~PropertyDefinition() = default;
 
     PropertyType getType() const { return mType; }
 
@@ -21,5 +21,8 @@ protected:
     u8 unknown[54];
     PropertyType mType;
     u8 _1;
+    u64 _4;
 };
+static_assert(sizeof(PropertyDefinition) == 0x70, "Wrong size for 'xlink2::PropertyDefinition'");
+
 }  // namespace xlink2

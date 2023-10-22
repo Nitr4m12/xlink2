@@ -11,8 +11,8 @@ template <>
 class OuterLockProxy<sead::Mutex> : ILockProxy {
 public:
     ~OuterLockProxy() override;
-    void lock();
-    void unlock();
+    void lock() override;
+    void unlock() override;
 
 private:
     sead::Mutex mMutex;
