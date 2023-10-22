@@ -15,6 +15,7 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2Event.h
   include/xlink2/xlink2IEventCallbackELink.h
   include/xlink2/xlink2IEventCallbackSLink.h
+  include/xlink2/xlink2ILockProxy.h
   include/xlink2/xlink2Locator.h
   include/xlink2/xlink2LockProxy.h
   include/xlink2/xlink2ModelAssetConnection.h
@@ -55,6 +56,7 @@ add_library(xlink2 OBJECT
   src/xlink2Event.cpp
   src/xlink2IEventCallbackELink.cpp
   src/xlink2IEventCallbackSLink.cpp
+  src/xlink2ILockProxy.cpp
   src/xlink2Locator.cpp
   src/xlink2LockProxy.cpp
   src/xlink2ModelAssetConnection.cpp
