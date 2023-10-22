@@ -6,6 +6,10 @@
 #include "xlink2/xlink2AssetExecutorSLink.h"
 #include "xlink2/xlink2Event.h"
 
+namespace aal {
+class Handle;
+}
+
 namespace xlink2 {
 class AssetExecutorSLink;
 class EventSLink : Event {
@@ -14,12 +18,13 @@ class EventSLink : Event {
 public:
     void initializeImpl_() override;
 
-    u64 getAliveAssetExecutor() const;
-    u64 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
     u64 getPos(sead::Vector3f*) const;
-    // u64 getSourceHandle(sead::PtrArray<aal::Handle>*) const;
     u64 getVelocity() const;
 
+    u64 getAliveAssetExecutor() const;
+    u64 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
+
+    u64 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
 private:
     u32 _16;
     u32 _17;

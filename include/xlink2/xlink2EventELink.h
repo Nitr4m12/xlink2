@@ -21,20 +21,22 @@ public:
         u32 _5;
         f32 _6;
     };
-    void initializeImpl_() override;
 
     void callEventCreateCallback_() override;
     void callEventDestroyCallback_() override;
 
+    void initializeImpl_() override;
     void doFinalize_() override;
-    void emitParticle();
+
     void fixDelayParam_() override;
 
-    u64 getAliveAssetExecutor() const;
     u64 getMtxSetType();
 
     void setManualParticleEmission(bool);
     void setManualParticleEmissionWithParticleCount(int);
+
+    void emitParticle();
+    u64 getAliveAssetExecutor() const;
 
 private:
     DelayEmitParam mDelayEmitParam;

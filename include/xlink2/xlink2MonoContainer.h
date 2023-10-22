@@ -9,15 +9,16 @@ class MonoContainer : ContainerBase {
     ~MonoContainer() override;
 
 public:
-    u64 initialize(Event*, ResAssetCallTable);
-
     u32 calc() override;
-    void destroy() override;
+    void* killOneTimeEvent() override;
+    void kill() override;
+
     void fade(int) override;
+    void destroy() override;
     void fadeBySystem() override;
 
-    void kill() override;
-    void* killOneTimeEvent() override;
+    void initialize(Event*, const ResAssetCallTable&) override;
+
     bool start() override;
 
 private:

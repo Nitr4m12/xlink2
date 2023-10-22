@@ -10,12 +10,14 @@
 namespace xlink2 {
 class ResourceAccessor2 {
 public:
-    f32 getCurveValue(ResParam const&) const;
-    f32 getRandomValue(ResRandomCallTable const&) const;
-    f32 getRandomValue(ResRandomCallTable const&, f32) const;
-    f32 getRandomValueWeightMax(ResRandomCallTable const&, f32) const;
-    f32 getRandomValueWeightMin(ResRandomCallTable const&, f32) const;
-    s64 getResRandomCallTable(ResParam const&) const;
+    s64 getResRandomCallTable_(ResParam const&) const;
+
+    f32 getRandomValue_(ResRandomCallTable const&) const;
+    f32 getRandomValue_(ResRandomCallTable const&, f32) const;
+    f32 getRandomValueWeightMin_(ResRandomCallTable const&, f32) const;
+    f32 getRandomValueWeightMax_(ResRandomCallTable const&, f32) const;
+
+    f32 getCurveValue_(ResParam const&) const;
 
 private:
     UserInstance* mUserInstance;

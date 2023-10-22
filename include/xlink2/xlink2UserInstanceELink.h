@@ -11,35 +11,40 @@ namespace xlink2 {
 class UserResourceELink;
 
 class UserInstanceELink : UserInstance {
-    ~UserInstanceELink() override;
 
 public:
     UserInstanceELink(UserInstance::CreateArg const&, System*, User*, sead::Heap*);
 
-    UserInstanceParam* allocInstanceParam_(sead::Heap*) override;
+    void searchAndEmit(char const*);
+    void searchAndEmit(char const*, HandleELink*);
+
     void emit(Locator const&);
     void emit(Locator const&, HandleELink*);
-    void fadeIfLoopEffect();
-    void freeInstanceParam_(UserInstanceParam*, ResMode) override;
 
-    u32 getDefaultGroup() const override;
+    void searchAndHold(char const*);
+    void searchAndHold(char const*, HandleELink*);
+
+    void fadeIfLoopEffect();
+
     ResourceAccessor* getResourceAccessor() const;
     UserResource* getResourceELink() const;
+
+    void onPostCalc_() override;
+    void onReset_() override;
+    void onDestroy_() override;
+
+    UserInstanceParam* allocInstanceParam_(sead::Heap*) override;
+    void freeInstanceParam_(UserInstanceParam*, ResMode) override;
+
+    void onSetupInstanceParam_(ResMode, sead::Heap*) override;
 
     void initModelAssetConnection_(ResMode, ParamDefineTable const*, sead::Heap*) override;
 
     void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const override;
 
-    void onDestroy_() override;
-    void onPostCalc_() override;
-    void onReset_() override;
-    void onSetupInstanceParam_(ResMode, sead::Heap*) override;
+    ~UserInstanceELink() override;
 
-    void searchAndEmit(char const*);
-    void searchAndEmit(char const*, HandleELink*);
-    void searchAndHold(char const*);
-    void searchAndHold(char const*, HandleELink*);
-
+    u32 getDefaultGroup() const override;
 private:
     IEventCallbackELink* mEventCallback;
     u16 _6;

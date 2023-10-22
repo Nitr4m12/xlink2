@@ -13,25 +13,25 @@ class IAssetInfoReadable;
 namespace xlink2 {
 class SystemSLink;
 class UserResourceSLink : UserResource {
-    ~UserResourceSLink() override;
 
 public:
     UserResourceSLink(User*, sead::Heap*);
+    ~UserResourceSLink() override = default;
+
+    u64 getUserParam() const;
+
+    void solveIsLoop(aal::IAssetInfoReadable*);
+    void solveIsLoop_(UserResourceParam*, ParamDefineTable const*, aal::IAssetInfoReadable*);
+
+    bool isEnableAssetInfoReader_(aal::IAssetInfoReadable**) const;
 
     void allocResourceParam(sead::Heap);
     void freeResourceParam_(UserResourceParam*) override;
+    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
 
     ResourceAccessor* getAccessor() const override;
     ResourceAccessor* getAccessorPtr() override;
     System* getSystem() const override;
-    u64 getUserParam() const;
-
-    bool isEnableAssetInfoReader(aal::IAssetInfoReadable**) const;
-
-    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
-
-    void solveIsLoop(aal::IAssetInfoReadable*);
-    void solveIsLoop(UserResourceParam*, ParamDefineTable const*, aal::IAssetInfoReadable*);
 
 private:
 };

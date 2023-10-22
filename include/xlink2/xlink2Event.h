@@ -14,36 +14,38 @@ class ContainerBase;
 class UserInstance;
 
 class Event {
-    virtual ~Event();
-
 public:
     Event();
+    virtual ~Event();
+
     void initialize(u32);
     virtual void initializeImpl_();
 
-    u8 calc();
+    void finalize();
+    virtual void doFinalize_();
+
+    void destroyAllContainerAndAssetExecutor_();
     virtual void callEventCreateCallback_();
     virtual void callEventDestroyCallback_();
 
-    u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
-    void destroyAllContainerAndAssetExecutor();
+    void reEmit();
+    void kill();
 
-    virtual void doFinalize_();
-    void fade(int);
-    void fadeBySystem();
-    void finalize();
-    virtual void fixDelayParam_();
+    u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
+    u8 calc();
 
     s32 getAliveAssetNum();
     s32 getFadeBySystemListAssetNum();
 
-    UserInstance* getUserInstance() const { return mUserInstance; }
-
-    void kill();
-    void killOneTimeEvent();
-    void reEmit();
-
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
+
+    void fade(int);
+    void killOneTimeEvent();
+    void fadeBySystem();
+
+    virtual void fixDelayParam_();
+
+    UserInstance* getUserInstance() const { return mUserInstance; }
 
     u32& get3() { return _3; }
     TriggerType& getTriggerType() { return mTriggerType; }

@@ -38,7 +38,13 @@ class ResourceBuffer;
 class UserInstance;
 
 class System : sead::hostio::Node {
+    SEAD_SINGLETON_DISPOSER(System)
+
 public:
+    void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
+                                sead::Camera const&, sead::Projection const&,
+                                sead::Viewport const&) const;
+
     System() = default;
 
     virtual void drawInformation(sead::DrawContext*, sead::TextWriter*) const;
@@ -47,7 +53,7 @@ public:
     virtual void createUserResource(User*, sead::Heap*) = 0;
     virtual void allocHandle(sead::Heap*) = 0;
     virtual u64 getUserParamNum() const = 0;
-    virtual char* getModuleName() const = 0;
+    virtual sead::SafeString* getModuleName() const = 0;
     virtual void allocAssetExecutor(Event*) = 0;
     virtual ILockProxy* getModuleLockObj() const = 0;
     virtual u64 getResourceVersion() const = 0;
@@ -57,95 +63,107 @@ public:
     virtual void postDrawInformation_(sead::TextWriter*) const;
     virtual void drawInformationSystemDetail_(sead::TextWriter*) const = 0;
     virtual void drawInformationEvent_(sead::TextWriter*) const = 0;
-    void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-                                sead::Camera const&, sead::Projection const&,
-                                sead::Viewport const&) const;
 
-    void drawInformationInstance3D(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
-
-    void drawInformationInstance3D(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-                                   sead::Camera const&, sead::Projection const&,
-                                   sead::Viewport const&) const;
-
-    void drawText3D(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
-                    sead::SafeString const&, sead::TextWriter*, IUser*) const;
-
-    void drawText3D(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
-                    sead::SafeString const&, sead::TextWriter*, sead::Camera const&,
-                    sead::Projection const&, sead::Viewport const&) const;
-
-    void initSystem(sead::Heap*, sead::Heap*, u32);
-
-    class DrawerModule {
-    public:
-        void begin(sead::Camera const&, sead::Projection const&);
-        void drawAxis(sead::Vector3f const&, f32);
-        void end();
-        void setModelMatrix(sead::Matrix34f const&);
-    };
-
-    void addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...);
-    Event allocEvent();
-    void allocGlobalProperty(u32, sead::Heap*);
+    void initSystem_(sead::Heap*, sead::Heap*, u32);
     void calc();
-    f32 calcDebugDrawSortKeyThreshold() const;
-    bool changeDebugOperationType(bool);
-    void clearError(User const*);
-    void createGlobalPropertyDefinitionTable(u32, PropertyDefinition const**, sead::Heap*);
 
-    void dumpActiveEvents() const;
-    void dumpUsers() const;
+    System* searchUser(char const*, sead::Heap*, u32) const;
+    s32 searchUserIgnoreHeap(char const*, User**, s32) const;
 
-    void fixGlobalPropertyDefinition();
-    void freeAllEvent(sead::OffsetList<Event>*);
-    void freeAssetExecutor(AssetExecutor*);
-    void freeEvent(Event*, sead::OffsetList<Event>);
-    void freeGlobalProperty();
+    void makeDebugStringGlobalProperty(sead::BufferedSafeString*, sead::SafeString const&) const;
 
-    void* getAnyone();
-    ParamDefineTable* getParamDefineTable() const;
-    ParamDefineTable* getParamDefineTable(ResMode mode) const;
+    u32 loadResource(void*);
+
     void* getResUserHeader(char const*);
 
-    void incrementEventCreateId_();
+    void removeUserInstance(UserInstance*);
 
-    bool isDrawTargetInstance(UserInstance* draw_target_instance) const;
-    bool isServerConnecting() const;
+    void unfixDrawInst_(UserInstance*);
+
+    void unregistUserForGlobalPropertyTrigger_(User*);
+
+    void allocGlobalProperty(u32, sead::Heap*);
+    void createGlobalPropertyDefinitionTable(u32, PropertyDefinition const**, sead::Heap*);
+    void setGlobalPropertyDefinition(u32, PropertyDefinition const*);
+    void fixGlobalPropertyDefinition();
+    void freeGlobalProperty();
+
+    void addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...);
+
+    void setGlobalPropertyValue(u32, s32);
+    void setGlobalPropertyValue(u32, f32);
+    u32 searchGlobalPropertyIndex(char const*) const;
+
+    void incrementEventCreateId_();
+    Event allocEvent();
+    void freeEvent(Event*, sead::OffsetList<Event>*);
+    void freeAllEvent(sead::OffsetList<Event>*);
+
+    void registUserForGlobalPropertyTrigger(User*);
+    void updateUserForGlobalPropertyTrigger(User*);
+
+    ParamDefineTable* getParamDefineTable() const;
+    ParamDefineTable* getParamDefineTable(ResMode) const;
+
+    // System* searchUserOrCreate_(UserInstance::CreateArg const&, sead::Heap*, u32);
+
+    void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
+
+    void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*,
+                                   sead::Camera const&, sead::Projection const&,
+                                   sead::Viewport const&) const;
+    void drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
+                    sead::SafeString const&, sead::TextWriter*, IUser*) const;
+
+    void drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
+                    sead::SafeString const&, sead::TextWriter*, sead::Camera const&,
+                    sead::Projection const&, sead::Viewport const&) const;
+    void writeBlinkText_(sead::SafeString const&, sead::TextWriter*) const;
+    void writeLines_(sead::SafeString const&, sead::TextWriter*) const;
+
+    bool isDrawTargetInstance_(UserInstance*) const;
+
+    void updateDebugDrawUserList_() const;
+
+    f32 calcDebugDrawSortKeyThreshold_() const;
+
+    void clearError(User const*);
+
+    void* getAnyone();
+
+    ContainerType updateContainerCount(ContainerType, s32);
+
+    void freeAssetExecutor(AssetExecutor*);
+
+    void setErrorDispFrame(s32);
 
     void killAll();
     void killAllOneTimeEvent();
 
-    u32 loadResource(void*);
+    bool isServerConnecting() const;
 
-    void makeDebugStringGlobalProperty(sead::BufferedSafeString*, sead::SafeString const&) const;
-    void registUserForGlobalPropertyTrigger(User*);
-    void removeUserInstance(UserInstance*);
+    bool changeDebugOperationType(bool);
+
+    void dumpActiveEvents() const;
+    void dumpUsers() const;
+
     void requestSendPickedUserName(sead::SafeString const& /*unused*/){};
+
     void resetOtameshiRequest();
 
-    u32 searchGlobalPropertyIndex(char const*) const;
-    System* searchUser(char const*, sead::Heap*, u32) const;
-    s32 searchUserIgnoreHeap(char const*, User**, s32) const;
-    // System* searchUserOrCreate(UserInstance::CreateArg const&, sead::Heap*, u32);
+    class DrawerModule {
+    public:
+        void begin(sead::Camera const&, sead::Projection const&);
 
-    void setErrorDispFrame(s32);
-    void setGlobalPropertyDefinition(u32, PropertyDefinition const*);
-    void setGlobalPropertyValue(u32, s32);
-    void setGlobalPropertyValue(u32, f32);
+        void setModelMatrix(sead::Matrix34f const&);
+        void drawAxis(sead::Vector3f const&, f32);
 
-    void unfixDrawInst(UserInstance*);
-    void unregistUserForGlobalPropertyTrigger(User*);
-
-    ContainerType updateContainerCount(ContainerType, s32);
-    void updateDebugDrawUserList() const;
-    void updateUserForGlobalPropertyTrigger(User*);
+        void end();
+    };
 
     sead::Heap* getUserHeap() { return mUserHeap; }
     EditorBuffer* getEditorBuffer() { return mEditorBuffer; }
     sead::Heap* getPrimaryHeap() { return mPrimaryHeap; }
-
-    void writeBlinkText(sead::SafeString const&, sead::TextWriter*) const;
-    void writeLines(sead::SafeString const&, sead::TextWriter*) const;
 
     bool isCallEnable() const { return mCallEnable; }
 

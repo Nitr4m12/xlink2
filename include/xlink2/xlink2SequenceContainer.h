@@ -9,9 +9,12 @@ public:
     ~SequenceContainer() override;
 
     u32 calc() override;
-    bool callChildSequence(s32);
-    u64 callNextChildSequence();
+
+    u64 callNextChildSequence_();
+
     bool start() override;
+
+    bool callChildSequence_(s32);
 
 private:
     s32 _0;

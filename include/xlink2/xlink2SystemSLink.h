@@ -16,41 +16,43 @@ class TextWriter;
 namespace xlink2 {
 class UserResourceSLink;
 class SystemSLink : System {
-    SEAD_SINGLETON_DISPOSER(SystemSLink);
 public:
     static ILockProxy* sLockProxy;
 
     SystemSLink();
     ~SystemSLink() override;
 
-    class SingletonDisposer;
-
     void initialize(aal::System*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
-
-    void allocAssetExecutor(Event*) override;
-    void allocHandle(sead::Heap*) override;
 
     UserInstanceSLink* createUserInstance(UserInstance::CreateArg const&, sead::Heap*, u32);
     void createUserResource(User*, sead::Heap*) override;
 
-    void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-                                sead::Camera const&, sead::Projection const&,
-                                sead::Viewport const&) const;
-    void drawInformationEvent_(sead::TextWriter*) const override;
-    void drawInformationSystemDetail_(sead::TextWriter*) const override;
-    void genMessage(sead::hostio::Context* /*unused*/){};
+    void allocHandle(sead::Heap*) override;
+    void allocAssetExecutor(Event*) override;
 
-    u64 getEventFromPool_(u32) const override;
-    ILockProxy* getModuleLockObj() const override;
-    char* getModuleName() const override;
-    void** getORIconString();
     u64 getResourceVersion() const override;
+    sead::SafeString* getModuleName() const override;
     u64 getUserParamNum() const override;
 
     bool isEnableUserAssetInfoReadable() const;
 
-    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/){};
     void stopAllEvent(s32);
+
+    void genMessage(sead::hostio::Context* /*unused*/);
+
+    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/);
+
+    sead::SafeString* getORIconString();
+
+    u64 getEventFromPool_(u32) const override;
+
+    void drawInformationSystemDetail_(sead::TextWriter*) const override;
+    void drawInformationEvent_(sead::TextWriter*) const override;
+    void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
+                                sead::Camera const&, sead::Projection const&,
+                                sead::Viewport const&) const;
+
+    ILockProxy* getModuleLockObj() const override;
 
 private:
     void* _15;

@@ -10,9 +10,13 @@ public:
     ~SwitchContainer() override;
 
     u32 calc() override;
-    u64 getConditionMatchChildTable();
-    void printChildSelect(ResAssetCallTable const* /*unused*/) const {};
+
+    u64 getConditionMatchChildTable_();
+
+    bool start_(ResAssetCallTable const*);
+
     bool start() override;
-    bool start(ResAssetCallTable const*);
+
+    void printChildSelect(ResAssetCallTable const* /*unused*/) const;
 };
 }  // namespace xlink2

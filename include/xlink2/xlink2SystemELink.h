@@ -5,51 +5,55 @@
 #include "xlink2/xlink2UserInstanceELink.h"
 #include "xlink2/xlink2UserResourceELink.h"
 
+namespace sead::ptcl {
+class PtclSystem;
+}
+
 namespace xlink2 {
 class UserResourceELink;
 class UserInstanceELink;
 class AssetExecutorELink;
 
-
 class SystemELink : System {
-    SEAD_SINGLETON_DISPOSER(SystemELink);
 public:
     static ILockProxy* sLockProxy;
 
     SystemELink() = default;
     ~SystemELink() override;
 
-    class SingletonDisposer;
+    void setPtclSystemState();
 
-    // void initialize(sead::ptcl::PtclSystem*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
-
-    void allocAssetExecutor(Event*) override;
-    void allocHandle(sead::Heap*) override;
+    void initialize(sead::ptcl::PtclSystem*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
 
     UserInstanceELink* createUserInstance(UserInstance::CreateArg const&, sead::Heap*, u32);
     void createUserResource(User*, sead::Heap*) override;
 
-    // void drawInformationEvent(sead::TextWriter*) const;
-    // void drawInformationSystemDetail(sead::TextWriter*) const;
-    void genMessage(sead::hostio::Context* /*unused*/){};
+    void allocHandle(sead::Heap*) override;
+    void allocAssetExecutor(Event*) override;
+
+    u64 getResourceVersion() const override;
+    sead::SafeString* getModuleName() const override;
+
+    void genMessage(sead::hostio::Context* /*unused*/);
+
+    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/);
+
+    sead::SafeString* getORIconString();
 
     u64 getEventFromPool_(u32) const override;
-    ILockProxy* getModuleLockObj() const override;
-    char* getModuleName() const override;
-    void** getORIconString();
-    u64 getResourceVersion() const override;
-    u64 getUserParamNum() const override;
 
-    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/){};
+    void preDrawInformation_(sead::TextWriter*) const override;
+    void postDrawInformation_(sead::TextWriter*) const override;
+
+    void drawInformationSystemDetail_(sead::TextWriter*) const override;
+    void drawInformationEvent_(sead::TextWriter*) const override;
 
     void makeDebugAssetInformationString(s32, sead::BufferedSafeString*, sead::BufferedSafeString&,
-                                         sead::SafeString const&, Event*, AssetExecutorELink*,
-                                         bool) const;
+                                        sead::SafeString const&, Event*, AssetExecutorELink*,
+                                        bool) const;
 
-    // void postDrawInformation(sead::TextWriter*) const;
-    // void preDrawInformation(sead::TextWriter*) const;
-
-    void setPtclSystemState();
+    u64 getUserParamNum() const override;
+    ILockProxy* getModuleLockObj() const override;
 
 private:
     // sead::ptcl::PtclSystem* mPtclSystem;

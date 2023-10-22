@@ -22,15 +22,17 @@ public:
         sead::ListNode listNode;
     };
 
-    void calc();
+    u32 searchAndHold(char const*, Handle*, UserInstance*);
+
     void fade(char const*, UserInstance*, int);
+    void fade_(HoldAssetInfo*, int);
     void fade(UserInstance*, int);
-    void fade(HoldAssetInfo*, int);
     void fadeAll();
+
+    void calc();
 
     void genMessage(sead::hostio::Context*);
 
-    u32 searchAndHold(char const*, Handle*, UserInstance*);
 
 private:
     System* mSystem;

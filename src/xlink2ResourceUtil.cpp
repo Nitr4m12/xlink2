@@ -1,7 +1,7 @@
 #include "xlink2/xlink2ResourceUtil.h"
 
-namespace xlink2::ResourceUtil {
-TriggerType getActionTriggerType(ResActionTrigger const& action_trigger) {
+namespace xlink2 {
+TriggerType ResourceUtil::getActionTriggerType(ResActionTrigger const& action_trigger) {
     u16 flag{action_trigger.flag};
 
     if ((flag & 0x10) == 0)

@@ -9,22 +9,24 @@ class EnumPropertyDefinition : PropertyDefinition {
 public:
     class Entry {};
 
-    EnumPropertyDefinition(char const*, int, sead::Heap*);
+    EnumPropertyDefinition(char const*, int, sead::Heap*, bool);
     EnumPropertyDefinition(char const*, int, bool, sead::Heap*, ...);
     EnumPropertyDefinition(char const*, int, char const**, bool, sead::Heap*);
     EnumPropertyDefinition(char const*, bool);
 
     ~EnumPropertyDefinition() override;
 
+    void setEntries_(int, char const**);
+
+
     void entry(int, char const*);
 
     u64 getEntryKeyLength(u32) const;
 
-    void* searchEntryKeyByValue(int) const;
     void* searchEntryValueByKey(char const*) const;
+    void* searchEntryKeyByValue(int) const;
 
-    void setEntries(int, char const**);
-    void setEntryBuf(s32, Entry*);
+    void setEntryBuf_(s32, Entry*);
 
 private:
     u32 _10;

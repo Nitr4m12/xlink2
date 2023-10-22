@@ -11,35 +11,40 @@ namespace xlink2 {
 class TriggerCtrlMgr {
 public:
     TriggerCtrlMgr();
+    ~TriggerCtrlMgr() = default;
 
+    void destroy();
     void initialize(s32 /*unused*/, s32 /*unused*/, sead::Heap* /*unused*/);
 
-    void allocAndSetupCtrlParam(ResMode, sead::Heap*);
+    void freeCtrlParam_(TriggerCtrlParam*);
+
     void calc();
-    void changeAction(char const*, s32, s32);
-    void changeAction(s32, s32, s32);
-    void destroy();
-    void freeCtrlParam(TriggerCtrlParam*);
+    void reset();
 
-    u64 getCurrentActionFrame(s32) const;
-    u64 getCurrentActionName(s32) const;
-    u64 getCurrentResActionIdx(s32) const;
-    u64 getOverwriteBoneMtx(TriggerType, s32) const;
-    u64 getUserInstance() const;
+    void allocAndSetupCtrlParam(ResMode, sead::Heap*);
 
-    bool isCurrentActionNeedToObserve(s32) const;
+    u64 getUserInstance_() const;
 
-    void notifyActive();
     void postChangeResource(){};
 
-    void reset();
-    void resetAllModelTriggerConnection();
-
+    void changeAction(char const*, s32, s32);
+    void updateActionNeedToCalcFlag(s32);
+    void changeAction(s32, s32, s32);
     void setActionFrame(s32, s32);
     void stopAction(s32);
+    bool isCurrentActionNeedToObserve(s32) const;
+    u64 getCurrentResActionIdx(s32) const;
 
-    void updateActionNeedToCalcFlag(s32);
     void updateGlobalPropertyTriggerCtrl();
+
+    void notifyActive();
+
+    u64 getOverwriteBoneMtx(TriggerType, s32) const;
+
+    u64 getCurrentActionName(s32) const;
+    u64 getCurrentActionFrame(s32) const;
+
+    void resetAllModelTriggerConnection();
 
     ResMode getResMode() { return mResMode; }
     void setResMode(ResMode mode) { mResMode = mode; }
