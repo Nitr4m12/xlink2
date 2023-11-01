@@ -16,19 +16,20 @@ class UserResource {
 public:
     virtual ~UserResource();
     explicit UserResource(User*);
+
     void setup(sead::Heap*);
     void setupRomResourceParam_(sead::Heap*);
     void setupEditorResourceParam_(EditorResourceParam*, sead::Heap*);
     void setupResourceParam_(UserResourceParam*, ResUserHeader*, CommonResourceParam const*,
                         ParamDefineTable const*, sead::Heap*);
 
-    u64 getUserHeader() const;
+    const ResUserHeader* getUserHeader() const;
     ResAssetCallTable* searchAssetCallTableByName(Locator*, char const*) const;
-    u64 searchAssetCallTableByName(char const*) const;
+    void* searchAssetCallTableByName(char const*) const;
     u32* doBinarySearchAsset_(char const*, TriggerType) const;
     ResAssetCallTable* searchAssetCallTableByHash(Locator*, u32) const;
 
-    void* getAssetCallTableItem(s32) const;
+    ResAssetCallTable* getAssetCallTableItem(s32) const;
     void* getActionTriggerTableItem(s32) const;
     void* getPropertyTriggerTableItem(s32) const;
     void* getAlwaysTriggerTableItem(s32) const;
@@ -56,7 +57,7 @@ public:
     virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
-    sead::SafeArray<UserResourceParam*, 2> getParams() const { return mParams; }
+    UserResourceParam*const* getParams() const { return &mParams[0]; }
     ResMode getResMode() const { return mResMode; }
 
 protected:
@@ -67,7 +68,7 @@ protected:
     User* mUser;
     ResMode mResMode;
     u32 _5;
-    sead::SafeArray<UserResourceParam*, 2> mParams;
+    UserResourceParam* mParams[2];
     u8 _2;
     ResourceAccessor* mResourceAccessor;
     void* _3;

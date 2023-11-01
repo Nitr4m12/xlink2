@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xlink2/xlink2CommonResourceParam.h"
 #include "xlink2/xlink2ResAction.h"
 #include "xlink2/xlink2ResActionSlot.h"
 #include "xlink2/xlink2ResActionTrigger.h"
@@ -12,10 +13,11 @@
 
 namespace xlink2 {
 struct UserBinParam {
-    ResUserHeader* resUserHeader;
-    u32* localPropertyRefArray;
+    CommonResourceParam* resUserHeader;
+    ResUserHeader* localPropertyRefArray;
+    void* _0;
     ResParam* userParamArray;
-    u16* sortedAssetIdTable;
+    u32* localPropertyNameRefTable;
     ResAssetCallTable* resAssetCallTable;
     u32 containerTableLower;
     ResActionSlot* resActionSlotTable;

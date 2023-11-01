@@ -2,6 +2,6 @@
 
 namespace xlink2 {
 OuterLockProxy<sead::Mutex>::~OuterLockProxy() = default;
-void OuterLockProxy<sead::Mutex>::lock() { mMutex.lock(); }
-void OuterLockProxy<sead::Mutex>::unlock() { mMutex.unlock(); }
+void OuterLockProxy<sead::Mutex>::lock() { mMutex->lock(); }
+void OuterLockProxy<sead::Mutex>::unlock() { mMutex->unlock(); }
 }

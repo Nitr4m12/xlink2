@@ -9,4 +9,14 @@ ResourceBuffer::~ResourceBuffer() = default;
 //                                                               system);
 //     }
 // }
+
+RomResourceParam ResourceBuffer::getEmptyRomResourceParam() {
+    static RomResourceParam sDummy;
+    return sDummy;
+}
+
+ResUserHeader ResourceBuffer::getEmptyUserHeader() {
+    static ResUserHeader sDummy;
+    return sDummy;
+}
 }  // namespace xlink2

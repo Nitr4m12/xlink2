@@ -11,6 +11,7 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2BlendContainer.h
   include/xlink2/xlink2BoneMtx.h
   include/xlink2/xlink2ContainerBase.h
+  include/xlink2/xlink2ContainerType.h
   include/xlink2/xlink2ErrorMgr.h
   include/xlink2/xlink2Event.h
   include/xlink2/xlink2IEventCallbackELink.h

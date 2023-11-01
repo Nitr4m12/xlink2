@@ -52,7 +52,7 @@ void UserInstance::destroy() {
             freeInstanceParam_(mParamsByResMode[0], ResMode::Editor);
 
         if (mParamsByResMode[1])
-            freeInstanceParam_(mParamsByResMode[1], ResMode::Normal);
+            freeInstanceParam_(mParamsByResMode[1], ResMode::Rom);
 
         delete [] mPropertyValueArray;
 
@@ -124,8 +124,8 @@ void UserInstance::clearAllEvent() {
 }
 
 bool UserInstance::isSetupRomInstanceParam_() const {
-    if (mParamsByResMode[(s32)ResMode::Normal])
-        return mParamsByResMode[(s32)ResMode::Normal]->isSetupRom;
+    if (mParamsByResMode[(s32)ResMode::Rom])
+        return mParamsByResMode[(s32)ResMode::Rom]->isSetupRom;
     return false;
 }
 
@@ -176,7 +176,7 @@ ModelAssetConnection* UserInstance::getModelAssetConnection(u32 index) const {
 
 // WIP
 void UserInstance::searchAndEmitImpl(const char* name, Handle* handle) {
-    if (name && mUser->getSystem()->isCallEnable() &&
+    if (name && mUser->getSystem()->isCallEnabled() &&
         checkAndErrorCallWithoutSetup_("searchAndEmit(%s)", name)) {
         Locator l{};
         bool b = mUser->getUserResource()->searchAssetCallTableByName(&l, name);
@@ -213,7 +213,7 @@ u64 UserInstance::getCurrentResActionIdx(s32 index) const {
 // WIP: maybe needs Locator::reset() decompiled?
 ResAssetCallTable* UserInstance::searchAsset(Locator* locator, const char* name) {
     locator->reset();
-    if (mUser->getSystem()->isCallEnable())
+    if (mUser->getSystem()->isCallEnabled())
         return mUser->getUserResource()->searchAssetCallTableByName(locator, name);
     return nullptr;
 }
@@ -221,35 +221,35 @@ ResAssetCallTable* UserInstance::searchAsset(Locator* locator, const char* name)
 // WIP: maybe needs Locator::reset() decompiled?
 ResAssetCallTable* UserInstance::searchAsset(Locator* locator, u32 name_hash) {
     locator->reset();
-    if (mUser->getSystem()->isCallEnable())
+    if (mUser->getSystem()->isCallEnabled())
         return mUser->getUserResource()->searchAssetCallTableByHash(locator, name_hash);
     return nullptr;
 }
 
 void UserInstance::changeAction(char const* name, int p1, int p2) {
     auto* sys = mUser->getSystem();
-    if (sys->isCallEnable())
+    if (sys->isCallEnabled())
         mTriggerCtrlMgr.changeAction(name, p1, p2);
 }
 
 void UserInstance::changeAction(int p1, int p2, int p3) {
     auto* sys = mUser->getSystem();
-    if (sys->isCallEnable())
+    if (sys->isCallEnabled())
         mTriggerCtrlMgr.changeAction(p1, p2, p3);
 }
 
 void UserInstance::setActionFrame(s32 index, s32 p2) {
-    if (mUser->getSystem()->isCallEnable())
+    if (mUser->getSystem()->isCallEnabled())
         mTriggerCtrlMgr.setActionFrame(index, p2);
 }
 
 void UserInstance::stopAction(s32 index) {
-    if (mUser->getSystem()->isCallEnable())
+    if (mUser->getSystem()->isCallEnabled())
         mTriggerCtrlMgr.stopAction(index);
 }
 
 bool UserInstance::isCurrentActionNeedToObserve(s32 index) const {
-    if (mUser->getSystem()->isCallEnable())
+    if (mUser->getSystem()->isCallEnabled())
         return mTriggerCtrlMgr.isCurrentActionNeedToObserve(index);
 
     return false;
@@ -273,7 +273,7 @@ void UserInstance::printLogContainerSelect(const Event&, const char*, ...) const
 void UserInstance::printLogEmitFailed(Event const& /*unused*/, char const* /*unused*/, ...) const {}
 
 // NON-MATCHING: two instructions in the wrong place
-char* UserInstance::getContainerTypeName(ResAssetCallTable const& asset_call) const {
+const sead::SafeString* UserInstance::getContainerTypeName(ResAssetCallTable const& asset_call) const {
     return mUser->getUserResource()->getAccessor()->getCallTableTypeName(asset_call);
 }
 
@@ -299,7 +299,7 @@ bool UserInstance::doEventActivatingCallback_(const Locator& /*unused*/) {
 void UserInstance::doEventActivatedCallback_(const Locator& /*unused*/, Event* /*unused*/) {}
 
 bool UserInstance::unkCheck() {
-    return !((mParamType >> 1) & 1) && mUser->getSystem()->isCallEnable();
+    return !((mParamType >> 1) & 1) && mUser->getSystem()->isCallEnabled();
 }
 
 }  // namespace xlink2

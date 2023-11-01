@@ -73,25 +73,19 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     if (common_res_param->numResAssetParam > 0)
         common_res_param->assetParamTable = solveOffset<ResParam>(bin_accessor->mAssetsStart);
 
-    if (bin_accessor->mResourceHeader)
-        ptr = &bin_accessor->mResourceHeader->triggerOverwriteParamTablePos;
-    else
-        ptr = &bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
-
+    common_res_param->triggerOverwriteParamTablePos = bin_accessor->mResourceHeader ? bin_accessor->mResourceHeader->triggerOverwriteParamTablePos : bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
     if (common_res_param->numResTriggerOverwriteParam > 0)
-        common_res_param->triggerOverwriteParamTablePos = bin_accessor->mBinStart + *ptr;
+        common_res_param->triggerOverwriteParamTablePos += bin_accessor->mBinStart;
 
     if (bin_accessor->mResourceHeader)
         ptr = &bin_accessor->mResourceHeader->localPropertyNameRefTablePos;
     else
         ptr = &bin_accessor->mEditorHeader->localPropertyNameRefTablePos;
-
     auto* local_property_name_ref_table = solveOffset<u32>(bin_accessor->mBinStart + *ptr);
     if (common_res_param->numLocalPropertyNameRefTable > 0)
         common_res_param->localPropertyNameRefTable = local_property_name_ref_table;
 
     ptr = common_res_param->localPropertyNameRefTable + common_res_param->numLocalPropertyNameRefTable;
-
     if (common_res_param->numLocalPropertyEnumNameRefTable > 0)
         common_res_param->localPropertyEnumNameRefTable = ptr;
     ptr = ptr + common_res_param->numLocalPropertyEnumNameRefTable;
@@ -190,10 +184,10 @@ void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_resou
     dumpLine_(buffered_str, "[XLink2] EditorBuffer dump\n");
 
     EditorHeader* editor_header{editor_resource->pEditorHeader};
-    sead::SafeString* editor_name{editor_resource->editorName};
+    sead::FixedSafeString<64> editor_name{editor_resource->editorName};
 
     dumpLine_(buffered_str, "<< EditorHeader[%s] (addr:0x%x, size:%@) >>\n",
-              editor_resource->editorName2, editor_header, 0x44);
+              editor_resource->editorName.getBuffer(), editor_header, 0x44);
     dumpLine_(buffered_str, "  numResParam: %@\n", editor_header->numResParam);
     dumpLine_(buffered_str, "  numResAssetParam: %@\n", editor_header->numResAssetParam);
     dumpLine_(buffered_str, "  numResTriggerOverwriteParam: %@\n",
@@ -214,7 +208,7 @@ void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_resou
     dumpLine_(buffered_str, "\n");
 
     dumpCommonResourceFront_(editor_resource, bin_accessor, true, buffered_str);
-    dumpUserBin_(0, *editor_name, editor_resource->pResUserHeader, param_define, buffered_str);
+    dumpUserBin_(0, editor_name, editor_resource->pResUserHeader, param_define, buffered_str);
     dumpCommonResourceRear_(editor_resource, bin_accessor, editor_resource->_0, heap, false,
                             buffered_str);
 }
@@ -227,6 +221,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     dumpLine_(buffered_str, "<< ResAssetParamTable (addr:0x%x, size:print later) >>\n", common_res_param->assetParamTable);
     if (common_res_param->numResAssetParam == 0)
         return;
+    // sead::::BitUtil::countRightOnBit somewhere around here;
 
 };
 
@@ -296,15 +291,15 @@ void ResourceParamCreator::dumpUserBin_(u32 p1, const sead::SafeString& user_nam
             ResAssetCallTable* asset_call_table{
                 (ResAssetCallTable*)(pos2 + i * sizeof(ResAssetCallTable))};
             dumpLine_(buffered_str, "        [%d].keyNamePos: %u\n", i,
-                      asset_call_table->keyNamePos);
-            dumpLine_(buffered_str, "        [%d].assetId: %hd\n", i, asset_call_table->assetId);
-            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, asset_call_table->flag);
+                      asset_call_table->params->keyNamePos);
+            dumpLine_(buffered_str, "        [%d].assetId: %hd\n", i, asset_call_table->params->assetId);
+            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, asset_call_table->params->flag);
             dumpLine_(buffered_str, "        [%d].parentIndex: %d\n", i,
-                      asset_call_table->parentIndex);
+                      asset_call_table->params->parentIndex);
             dumpLine_(buffered_str, "        [%d].paramStartPos: %u\n", i,
-                      asset_call_table->paramStartPos);
+                      asset_call_table->params->paramStartPos);
             dumpLine_(buffered_str, "        [%d].conditionPos: %u\n", i,
-                      asset_call_table->conditionPos);
+                      asset_call_table->params->conditionPos);
         }
     }
     dumpLine_(buffered_str, "\n");

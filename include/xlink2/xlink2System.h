@@ -38,7 +38,7 @@ class ResourceBuffer;
 class UserInstance;
 
 class System : sead::hostio::Node {
-    SEAD_SINGLETON_DISPOSER(System)
+    //SEAD_SINGLETON_DISPOSER(System)
 
 public:
     void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
@@ -161,48 +161,50 @@ public:
         void end();
     };
 
-    sead::Heap* getUserHeap() { return mUserHeap; }
+    sead::Heap* getUserHeap() { return mUserCreateHeap; }
     EditorBuffer* getEditorBuffer() { return mEditorBuffer; }
     sead::Heap* getPrimaryHeap() { return mPrimaryHeap; }
 
-    bool isCallEnable() const { return mCallEnable; }
+    bool isCallEnabled() const { return mIsCallEnabled; }
 
 protected:
     ResourceBuffer* mResourceBuffer;
     sead::OffsetList<User> mUserList;
-    void* _1;
-    // s32 - 0x2c?
-    s32 _2;
-    s32 mCurrentEventId;
-    u8 _3;
-    u32 mMaxGlobalPropertyValues;
+    u32 _0;
+    u32 _15;
+    u32 _16;
+    u32 _17;
+    u32 _18;
+    s32 mCurrentEventId; // mNumGlobalProperty
     const PropertyDefinition** mGlobalPropertyDefinitions;
     float* mGlobalPropertyValues;
-    u64 mGlobalPropertyValueUsedBitfield;
-    u8 _4;
+    void* _19;
     ErrorMgr* mErrorMgr;
-    HoldMgr* mHoldMgr;
+    HoldMgr* mHoldMgr[2];
     u32 _5;
-    u8 mCallEnable;
-    sead::Heap* mUserHeap;
-    u32 _6;
+    bool mIsCallEnabled;
+    sead::Heap* mUserCreateHeap;
+    float _6;
     sead::PtrArrayImpl mGlobalPropertyTriggerUserList;
     sead::Random mRandom;
-    sead::Heap* mXlinkContainerHeap;
-    sead::Heap* mXlinkAssetExecutorHeap;
+    sead::Heap* mContainerHeap;
+    sead::Heap* mAssetExecutorHeap;
     sead::Heap* mPrimaryHeap;
     EditorBuffer* mEditorBuffer;
-    s32 mTick;
-    u32 _7;
-    sead::ListImpl mListImpl;
-    void* _9;
+    float mTick;
+    float _7;
+    sead::OffsetList<User> mDebugDrawUserList;
+    float mUserSortKey;
+    sead::SafeString* mDebugString;
     void* _10;
-    DebugOperationParam mDebugOperationParam;
-    DebugOperationParam mDebugOperationParam2;
-    u8 _11;
+    u32 _20;
+    u32 _21;
+    DebugOperationParam mDebugOperationParamOR;
+    DebugOperationParam mDebugOperationParamEditor;
     void* _12;
-    void* _13;
-    UserInstance* mUserInstance;
-    u8 _14;
+    UserInstance* mDrawInstance;
+    u8 _11;
+
+    SEAD_SINGLETON_DISPOSER(System);
 };
 }  // namespace xlink2

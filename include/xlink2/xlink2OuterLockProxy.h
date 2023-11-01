@@ -15,6 +15,6 @@ public:
     void unlock() override;
 
 private:
-    sead::Mutex mMutex;
+    sead::Mutex* mMutex;
 };
 }  // namespace xlink2

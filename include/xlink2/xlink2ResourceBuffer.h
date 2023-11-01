@@ -11,8 +11,8 @@ public:
     virtual ~ResourceBuffer();
 
     void applyGlobalPropertyDefinition(System*);
-    void getEmptyRomResourceParam();
-    void getEmptyUserHeader();
+    static RomResourceParam getEmptyRomResourceParam();
+    static ResUserHeader getEmptyUserHeader();
     u64 load(void*, System*);
 
     void* searchResUserHeader(char const*) const;

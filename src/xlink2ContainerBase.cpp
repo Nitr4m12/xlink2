@@ -51,7 +51,7 @@ void ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call
     mResAssetCallTable = &asset_call_table;
     mEvent = event;
     event->getUserInstance()->getUser()->getUserResource()->getAccessor();
-    mResAssetDuration = asset_call_table.duration;
+    mResAssetDuration = asset_call_table.params->duration;
 }
 
 void ContainerBase::kill() {

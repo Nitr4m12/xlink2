@@ -143,75 +143,75 @@ u32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_p
     return -1;
 }
 
-ParamValueType ParamDefineTable::getUserParamType(u32 user_param_idx) const {
+ParamValueType ParamDefineTable::getUserParamType(u32 id) const {
     if (mUserParams)
-        return mUserParams[user_param_idx].type;
+        return mUserParams[id].type;
     return ParamValueType::Invalid;
 }
 
-ParamValueType ParamDefineTable::getAssetParamType(u32 asset_param_idx) const {
-    if (asset_param_idx < mNumAssetParam)
-        return mAssetParams[asset_param_idx].type;
+ParamValueType ParamDefineTable::getAssetParamType(u32 id) const {
+    if (id < mNumAssetParam)
+        return mAssetParams[id].type;
     return ParamValueType::Invalid;
 }
 
-ParamValueType ParamDefineTable::getTriggerParamType(u32 trigger_param_idx) const {
+ParamValueType ParamDefineTable::getTriggerParamType(u32 id) const {
     if (mTriggerParams)
-        return mTriggerParams[trigger_param_idx].type;
+        return mTriggerParams[id].type;
     return ParamValueType::Invalid;
 }
 
-u32 ParamDefineTable::getUserParamDefaultValueInt(u32 user_param_idx) const {
+u32 ParamDefineTable::getUserParamDefaultValueInt(u32 id) const {
     if (mUserParams)
-        return mUserParams[user_param_idx].defaultValueInt;
+        return mUserParams[id].defaultValueInt;
     return 0;
 }
 
-f32 ParamDefineTable::getUserParamDefaultValueFloat(u32 user_param_idx) const {
+f32 ParamDefineTable::getUserParamDefaultValueFloat(u32 id) const {
     if (mUserParams)
-        return mUserParams[user_param_idx].defaultValueFloat;
+        return mUserParams[id].defaultValueFloat;
     return 0;
 }
 
-const char* ParamDefineTable::getUserParamDefaultValueString(u32 user_param_idx) const {
+const char* ParamDefineTable::getUserParamDefaultValueString(u32 id) const {
     if (mUserParams)
-        return solveOffset<char>(mUserParams[user_param_idx].defaultValueString);
+        return solveOffset<char>(mUserParams[id].defaultValueString);
     return "";
 }
 
-u32 ParamDefineTable::getAssetParamDefaultValueInt(u32 asset_param_idx) const {
-    if (asset_param_idx < mNumAssetParam)
-        return mAssetParams[asset_param_idx].defaultValueInt;
+u32 ParamDefineTable::getAssetParamDefaultValueInt(u32 id) const {
+    if (id < mNumAssetParam)
+        return mAssetParams[id].defaultValueInt;
     return 0;
 }
 
-f32 ParamDefineTable::getAssetParamDefaultValueFloat(u32 asset_param_idx) const {
-    if (asset_param_idx < mNumAssetParam)
-        return mAssetParams[asset_param_idx].defaultValueFloat;
+f32 ParamDefineTable::getAssetParamDefaultValueFloat(u32 id) const {
+    if (id < mNumAssetParam)
+        return mAssetParams[id].defaultValueFloat;
     return 0;
 }
 
-const char* ParamDefineTable::getAssetParamDefaultValueString(u32 asset_param_idx) const {
-    if (asset_param_idx < mNumAssetParam)
-        return solveOffset<char>(mAssetParams[asset_param_idx].defaultValueString);
+const char* ParamDefineTable::getAssetParamDefaultValueString(u32 id) const {
+    if (id < mNumAssetParam)
+        return solveOffset<char>(mAssetParams[id].defaultValueString);
     return "";
 }
 
-u32 ParamDefineTable::getTriggerParamDefaultValueInt(u32 trigger_param_idx) const {
+u32 ParamDefineTable::getTriggerParamDefaultValueInt(u32 id) const {
     if (mTriggerParams)
-        return mTriggerParams[trigger_param_idx].defaultValueInt;
+        return mTriggerParams[id].defaultValueInt;
     return 0;
 }
 
-f32 ParamDefineTable::getTriggerParamDefaultValueFloat(u32 trigger_param_idx) const {
+f32 ParamDefineTable::getTriggerParamDefaultValueFloat(u32 id) const {
     if (mTriggerParams)
-        return mTriggerParams[trigger_param_idx].defaultValueFloat;
+        return mTriggerParams[id].defaultValueFloat;
     return 0;
 }
 
-const char* ParamDefineTable::getTriggerParamDefaultValueString(u32 trigger_param_idx) const {
+const char* ParamDefineTable::getTriggerParamDefaultValueString(u32 id) const {
     if (mTriggerParams)
-        return solveOffset<char>(mTriggerParams[trigger_param_idx].defaultValueString);
+        return solveOffset<char>(mTriggerParams[id].defaultValueString);
     return nullptr;
 }
 
