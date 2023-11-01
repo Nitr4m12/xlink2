@@ -10,15 +10,15 @@ class ResourceAccessorELink : ResourceAccessor {
 public:
     ~ResourceAccessorELink() override;
 
-    bool isBlankAsset(ResAssetCallTable const&) const;
+    bool isBlankAsset(ResAssetCallTable const&) const override;
 
-    char* getAssetName(ResAssetCallTable const&) const;
+    const char* getAssetName(ResAssetCallTable const&) const;
     u64 getEsetVal(ResAssetCallTable const&) const;
-    char* getGroupName(ResAssetCallTable const&) const;
+    const char* getGroupName(ResAssetCallTable const&) const;
     u64 getGroupId(ResAssetCallTable const&) const;
     u64 getClipType(ResAssetCallTable const&) const;
 
-    bool isAutoOneTimeFade(ResAssetCallTable const&) const;
+    bool isAutoOneTimeFade(ResAssetCallTable const&) const override;
     bool isForceLoopAsset(ResAssetCallTable const&) const;
 
     u64 getForceCalc(ResAssetCallTable const&) const;
@@ -29,9 +29,9 @@ public:
     bool isUseOneEmitter(ResAssetCallTable const&) const;
 
     f32 getDelay(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getDuration(ResAssetCallTable const&, UserInstance const*) const;
+    f32 getDuration(ResAssetCallTable const&, UserInstance const*) const override;
 
-    char* getBoneName(ResAssetCallTable const&) const;
+    const char* getBoneName(ResAssetCallTable const&) const override;
 
     u64 getScale(ResAssetCallTable const&, UserInstance const*) const;
 
@@ -58,7 +58,7 @@ public:
 
     f32 getOverwriteDelay(u32, UserInstance const*) const;
 
-    char* getOverwriteBoneName(u32) const;
+    const char* getOverwriteBoneName(u32) const override;
 
     f32 getOverwriteScale(u32, UserInstance const*) const;
 
@@ -77,9 +77,9 @@ public:
 
     f32 getOverwriteEmissionRate(u32, UserInstance const*) const;
 
-    f32 getDelayWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
+    f32 getDelayWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const override;
 
-    char* getBoneNameWithOverwrite(ResAssetCallTable const&, u32) const;
+    const char* getBoneNameWithOverwrite(ResAssetCallTable const&, u32) const;
 
     u64 getScaleWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
 
@@ -100,8 +100,8 @@ public:
 
     u32 getTriggerOverwriteParamId(u32) const;
 
-    u32 getAssetBitFlag(ResAssetCallTable const&) const;
+    s32 getAssetBitFlag(ResAssetCallTable const&) const override;
 
-    bool isBoneNameOverwritten(u32) const;
+    bool isBoneNameOverwritten(u32) const override;
 };
 }  // namespace xlink2
