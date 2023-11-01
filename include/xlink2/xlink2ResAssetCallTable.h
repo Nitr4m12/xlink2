@@ -18,6 +18,6 @@ struct CallTableParam {
 };
 
 struct ResAssetCallTable {
-    CallTableParam* params;
+    CallTableParam param;
 };
 }  // namespace xlink2

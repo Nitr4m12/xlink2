@@ -48,7 +48,7 @@ public:
 
     void setError_(char const*, ...) const;
 
-    char* getKeyName(ResAssetCallTable const&) const;
+    const char* getKeyName(ResAssetCallTable const&) const;
 
     ContainerType getCallTableType(ResAssetCallTable const&) const;
 

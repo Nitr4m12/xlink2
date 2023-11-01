@@ -1,4 +1,5 @@
 #include "xlink2/xlink2ResourceAccessor.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 ResourceAccessor::~ResourceAccessor() = default;
@@ -52,5 +53,11 @@ const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const {
     }
 
     return nullptr;
+}
+
+void ResourceAccessor::setError_(const char *, ...) const {};
+
+const char* ResourceAccessor::getKeyName(const ResAssetCallTable& call_table) const {
+    return solveOffset<char>(call_table.param.keyNamePos);
 }
 }  // namespace xlink2

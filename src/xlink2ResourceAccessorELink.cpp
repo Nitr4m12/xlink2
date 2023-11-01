@@ -6,7 +6,7 @@ f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) con
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
 
-char* ResourceAccessorELink::getOverwriteBoneName(u32 p1) const {
+const char* ResourceAccessorELink::getOverwriteBoneName(u32 p1) const {
     return ResourceAccessor::getResOverwriteParamValueString_(p1, 0xb);
 }
 
