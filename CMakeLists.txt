@@ -30,6 +30,7 @@ add_library(xlink2 OBJECT
   include/xlink2/xlink2ResourceParamCreator.h
   include/xlink2/xlink2ResourceUtil.h
   include/xlink2/xlink2ResTriggerOverwriteParam.h
+  include/xlink2/xlink2ResUserInfo.h
   include/xlink2/xlink2SwitchContainer.h
   include/xlink2/xlink2System.h
   include/xlink2/xlink2SystemELink.h

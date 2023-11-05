@@ -48,99 +48,99 @@ public:
 
     void setError_(char const*, ...) const;
 
-    const char* getKeyName(ResAssetCallTable const&) const;
+    const char* getKeyName(const ResAssetCallTable&) const;
 
-    ContainerType getCallTableType(ResAssetCallTable const&) const;
+    ContainerType getCallTableType(const ResAssetCallTable&) const;
 
     const ContainerBase* getContainer(ResAssetCallTable const&) const;
 
-    const sead::SafeString* getCallTableTypeName(ResAssetCallTable const&) const;
+    const sead::SafeString* getCallTableTypeName(const ResAssetCallTable&) const;
 
-    bool isContainer(ResAssetCallTable const&) const;
+    bool isContainer(const ResAssetCallTable&) const;
 
-    const char* getCustomParamValueString(u32, ResAssetCallTable const&) const;
+    const char* getCustomParamValueString(u32, const ResAssetCallTable&) const;
 
-    bool checkAndErrorIsAsset_(ResAssetCallTable const&, char const*) const;
+    bool checkAndErrorIsAsset_(const ResAssetCallTable&, const char*) const;
 
     const ResParam* getResParamFromAssetParamPos(u32, u32) const;
 
-    const char* getResParamValueString_(ResParam const&) const;
+    const char* getResParamValueString_(const ResParam&) const;
 
-    bool getCustomParamValueBool(u32, ResAssetCallTable const&) const;
+    bool getCustomParamValueBool(u32, const ResAssetCallTable&) const;
 
-    s32 getResParamValueInt_(ResParam const&) const;
-    s32 getCustomParamValueInt(u32, ResAssetCallTable const&) const;
+    s32 getResParamValueInt_(const ResParam&) const;
+    s32 getCustomParamValueInt(u32, const ResAssetCallTable&) const;
 
-    f32 getCustomParamValueFloat(u32, ResAssetCallTable const&, UserInstance const*) const;
-    f32 getResParamValueFloat_(ResParam const&, UserInstance const*) const;
+    f32 getCustomParamValueFloat(u32, const ResAssetCallTable&, const UserInstance*) const;
+    f32 getResParamValueFloat_(const ResParam&, const UserInstance*) const;
 
-    char* getCustomParamValueString(char const*, ResAssetCallTable const&) const;
+    char* getCustomParamValueString(const char*, const ResAssetCallTable&) const;
 
-    bool getCustomParamValueBool(char const*, ResAssetCallTable const&) const;
+    bool getCustomParamValueBool(const char*, const ResAssetCallTable&) const;
 
-    s32 getCustomParamValueInt(char const*, ResAssetCallTable const&) const;
+    s32 getCustomParamValueInt(const char*, const ResAssetCallTable&) const;
 
-    f32 getCustomParamValueFloat(char const*, ResAssetCallTable const&, UserInstance const*) const;
+    f32 getCustomParamValueFloat(const char*, const ResAssetCallTable&, const UserInstance*) const;
 
     bool isCustomParamString(u32) const;
-    bool isCustomParamString(char const*) const;
+    bool isCustomParamString(const char*) const;
 
     bool isCustomParamBool(u32) const;
-    bool isCustomParamBool(char const*) const;
+    bool isCustomParamBool(const char*) const;
 
     bool isCustomParamInt(u32) const;
-    bool isCustomParamInt(char const*) const;
+    bool isCustomParamInt(const char*) const;
 
     bool isCustomParamFloat(u32) const;
-    bool isCustomParamFloat(char const*) const;
+    bool isCustomParamFloat(const char*) const;
 
-    bool isCustomParamValueUsingCurve(u32, ResAssetCallTable const&) const;
+    bool isCustomParamValueUsingCurve(u32, const ResAssetCallTable&) const;
 
-    bool isParamTypeEqual(ValueReferenceType, ResAssetCallTable const&, u32) const;
+    bool isParamTypeEqual(ValueReferenceType, const ResAssetCallTable&, u32) const;
 
     const char* getUserCustomParamValueString(s32) const;
     bool isOutOfRangeUserCustom_(u32) const;
-    bool isMismatchTypeUserCustom_(u32, ParamValueType, char const*) const;
+    bool isMismatchTypeUserCustom_(u32, ParamValueType, const char*) const;
 
     bool getUserCustomParamValueBool(s32) const;
     u32 getUserCustomParamValueInt(s32) const;
-    f32 getUserCustomParamValueFloat(s32, UserInstance const*);
+    f32 getUserCustomParamValueFloat(s32, const UserInstance*);
 
-    const char* getUserCustomParamValueString(char const*) const;
+    const char* getUserCustomParamValueString(const char*) const;
     bool isOutOfRangeUserCustom_(char*) const;
-    bool isMismatchTypeUserCustom_(char const*, ParamValueType, char const*) const;
+    bool isMismatchTypeUserCustom_(const char*, ParamValueType, const char*) const;
 
-    bool getUserCustomParamValueBool(char const*) const;
-    u32 getUserCustomParamValueInt(char const*) const;
-    f32 getUserCustomParamValueFloat(char const*, UserInstance const*);
+    bool getUserCustomParamValueBool(const char*) const;
+    u32 getUserCustomParamValueInt(const char*) const;
+    f32 getUserCustomParamValueFloat(const char*, const UserInstance*);
 
-    bool isLoopAsset(ResAssetCallTable const&) const;
-    bool isNeedObserve(ResAssetCallTable const&) const;
+    bool isLoopAsset(const ResAssetCallTable&) const;
+    bool isNeedObserve(const ResAssetCallTable&) const;
 
-    ParamValueType getParamType(ResAssetCallTable const&, u32) const;
+    ParamValueType getParamType(const ResAssetCallTable&, u32) const;
 
-    const ResCurveCallTable* getCurveCallTable(ResAssetCallTable const&, u32) const;
-    const ResRandomCallTable* getRandomCallTable(ResAssetCallTable const&, u32) const;
+    const ResCurveCallTable* getCurveCallTable(const ResAssetCallTable&, u32) const;
+    const ResRandomCallTable* getRandomCallTable(const ResAssetCallTable&, u32) const;
 
-    f32 getCurveValue(ResCurveCallTable const&, UserInstance const*);
+    f32 getCurveValue(const ResCurveCallTable&, const UserInstance*);
 
-    f32 getRandomValue(ResRandomCallTable const&) const;
-    f32 getRandomValue(ResRandomCallTable const&, f32) const;
-    f32 getRandomValueWeightMin(ResRandomCallTable const&, f32) const;
-    f32 getRandomValueWeightMax(ResRandomCallTable const&, f32) const;
+    f32 getRandomValue(const ResRandomCallTable&) const;
+    f32 getRandomValue(const ResRandomCallTable&, f32) const;
+    f32 getRandomValueWeightMin(const ResRandomCallTable&, f32) const;
+    f32 getRandomValueWeightMax(const ResRandomCallTable&, f32) const;
 
-    s32 getContainerChildNum(ResAssetCallTable const&) const;
-    s32 getContainerChildNum(ResContainerParam const&) const;
-    u64 getContainerChildCallTable(ResContainerParam const&, u32) const;
+    s32 getContainerChildNum(const ResAssetCallTable&) const;
+    s32 getContainerChildNum(const ResContainerParam&) const;
+    u64 getContainerChildCallTable(const ResContainerParam&, u32) const;
 
     bool isParamOverwritten(u32, u32) const;
     bool isOverwriteParamTypeEqual(ValueReferenceType, ResTriggerOverwriteParam const&, u32) const;
 
     const ResParam* getResParamFromOverwriteParamPos_(u32, u32) const;
 
-    const ResRandomCallTable* getResRandomCallTable_(ResParam const&) const;
+    const ResRandomCallTable* getResRandomCallTable_(const ResParam&) const;
 
-    f32 getResOverwriteParamValueFloat_(u32, u32, UserInstance const*) const;
+    f32 getResOverwriteParamValueFloat_(u32, u32, const UserInstance*) const;
 
     char* getResOverwriteParamValueString_(u32, u32) const;
 
