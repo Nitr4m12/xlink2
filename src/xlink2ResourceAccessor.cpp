@@ -58,7 +58,7 @@ const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const {
 void ResourceAccessor::setError_(const char*, ...) const {};
 
 const char* ResourceAccessor::getKeyName(const ResAssetCallTable& call_table) const {
-    return solveOffset<char>(call_table.params[0].keyNamePos);
+    return solveOffset<char>(call_table.keyNamePos);
 }
 
 // WIP
@@ -67,10 +67,10 @@ ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& call_t
         return ContainerType::Asset;
 
     ResContainerParam* container_param{
-        solveOffset<ResContainerParam>(call_table.params[0].paramStartPos)};
+        solveOffset<ResContainerParam>(call_table.paramStartPos)};
     if (container_param) {
         if (ContainerType::Sequence >= container_param->type) {
-            char* container_name{solveOffset<char>(call_table.params[0].keyNamePos)};
+            char* container_name{solveOffset<char>(call_table.keyNamePos)};
             setError_("[%s] invalid container type(=%d)", container_name, container_param->type);
             return ContainerType::Asset;
         }
@@ -82,14 +82,14 @@ ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& call_t
 
 const ContainerBase* ResourceAccessor::getContainer(const ResAssetCallTable& call_table) const {
     if (isContainer(call_table))
-        return solveOffset<ContainerBase>(call_table.params[0].paramStartPos);
+        return solveOffset<ContainerBase>(call_table.paramStartPos);
     return nullptr;
 }
 
 const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCallTable&) const {};
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& call_table) const {
-    return call_table.params[0].flag & 1;
+    return call_table.flag & 1;
 };
 
 // WIP
@@ -102,7 +102,7 @@ ResourceAccessor::getCustomParamValueString(u32 idx, const ResAssetCallTable& ca
         if (value_type == ParamValueType::String) {
             auto check {checkAndErrorIsAsset_(call_table, "getCustomParamValueString(%d)", idx)};
             if (check) {
-                auto* flag = solveOffset<sead::BitFlag64>(call_table.params[0].paramStartPos);
+                auto* flag = solveOffset<sead::BitFlag64>(call_table.paramStartPos);
 
             }
         }

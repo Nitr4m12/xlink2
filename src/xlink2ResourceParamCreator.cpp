@@ -291,15 +291,15 @@ void ResourceParamCreator::dumpUserBin_(u32 p1, const sead::SafeString& user_nam
             ResAssetCallTable* asset_call_table{
                 (ResAssetCallTable*)(pos2 + i * sizeof(ResAssetCallTable))};
             dumpLine_(buffered_str, "        [%d].keyNamePos: %u\n", i,
-                      asset_call_table->params[0].keyNamePos);
-            dumpLine_(buffered_str, "        [%d].assetId: %hd\n", i, asset_call_table->params[0].assetId);
-            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, asset_call_table->params[0].flag);
+                      asset_call_table->keyNamePos);
+            dumpLine_(buffered_str, "        [%d].assetId: %hd\n", i, asset_call_table->assetId);
+            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, asset_call_table->flag);
             dumpLine_(buffered_str, "        [%d].parentIndex: %d\n", i,
-                      asset_call_table->params[0].parentIndex);
+                      asset_call_table->parentIndex);
             dumpLine_(buffered_str, "        [%d].paramStartPos: %u\n", i,
-                      asset_call_table->params[0].paramStartPos);
+                      asset_call_table->paramStartPos);
             dumpLine_(buffered_str, "        [%d].conditionPos: %u\n", i,
-                      asset_call_table->params[0].conditionPos);
+                      asset_call_table->conditionPos);
         }
     }
     dumpLine_(buffered_str, "\n");
