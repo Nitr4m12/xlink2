@@ -18,7 +18,13 @@ ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
 
 void ActionTriggerCtrl::reset() {
     mAction = nullptr;
+    mUserInfo.mNameHash = 0;
+    mUserInfo.mOffset = 0;
     mUserBinPos = 0;
     mIsActive = false;
 }
+
+TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& action_trigger) {}
+
+
 }  // namespace xlink2

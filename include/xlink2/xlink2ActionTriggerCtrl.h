@@ -16,29 +16,25 @@ class ActionTriggerCtrl : TriggerCtrl {
 public:
     ActionTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*,
                       const ResActionSlot*);
-    ~ActionTriggerCtrl() override;
 
-    void calc() override;
-
-    void changeAction(char const*, int);
-    void changeAction(int, int);
-    void changeActionImpl(ResAction const*, int, UserResource const*);
-    void changeActionImpl_old(ResAction const*, int, UserResource const*);
-
-    void emitByTrigger(int);
-
-    static u32 getActionTriggerType_(const ResActionTrigger&);
-    int getCurrentResActionIdx();
-    void notifyActive();
     void reset();
-    void restartAction(char const*, int);
-    u32 searchResAction(ResActionSlot const*, char const*, int*);
+    void calc() override;
+    static TriggerType getActionTriggerType_(const ResActionTrigger&);
+    void emitByTrigger_(s32);
+    void notifyActive();
+    void changeAction(const char*, s32);
+    u32 searchResAction_(ResActionSlot const*, char const*, s32*);
     void stopAction();
+    void changeActionImpl_(ResAction const*, s32, UserResource const*);
+    void changeAction(s32, s32);
+    s32 getCurrentResActionIdx();
+    void changeActionImpl_old_(ResAction const*, s32, UserResource const*);
+    void restartAction(char const*, int);
+
+    ~ActionTriggerCtrl() override;
 
 private:
     const ResActionSlot* mActionSlot {nullptr};
-    // WARNING: These are temporary variables to denote that
-    // something is occupying this space
     ResUserInfo mUserInfo {};
     s32 mUserBinPos {0};
     ResAction* mAction{nullptr};
