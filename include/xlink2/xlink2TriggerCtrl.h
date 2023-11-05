@@ -22,6 +22,6 @@ public:
 
 protected:
     UserInstance* mUserInstance;
-    sead::Buffer<ModelTriggerConnection>* mBuffer;
+    sead::Buffer<ModelTriggerConnection>* mConnectionBuffer;
 };
 }  // namespace xlink2

@@ -3,7 +3,7 @@
 namespace xlink2 {
 void TriggerCtrl::fadeByTrigger_(s32 param)
 {
-    const auto* trigger = mBuffer->getBufferPtr();
+    const auto* trigger = mConnectionBuffer->getBufferPtr();
     Event* event = trigger[param].mEvent;
     if (event && trigger[param]._2 == event->get3()) {
         mUserInstance->printLogFadeOrKill(event, "fadeBySystem by %s Trigger", event->getTriggerType());

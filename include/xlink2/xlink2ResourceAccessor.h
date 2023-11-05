@@ -60,7 +60,7 @@ public:
 
     const char* getCustomParamValueString(u32, const ResAssetCallTable&) const;
 
-    bool checkAndErrorIsAsset_(const ResAssetCallTable&, const char*) const;
+    bool checkAndErrorIsAsset_(const ResAssetCallTable&, const char*, ...) const;
 
     const ResParam* getResParamFromAssetParamPos(u32, u32) const;
 

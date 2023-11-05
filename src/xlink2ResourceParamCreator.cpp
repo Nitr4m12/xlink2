@@ -15,7 +15,7 @@ ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header, Param
     auto num_user_params = param_define->getSize();
     mAssetsStart = mBinStart + num_user + num_user_params + sizeof(ResourceHeader);
     mNumUserParam = param_define->get0();
-    mNumAssetParam = param_define->getAssetParamNum();
+    mNumAssetParam = param_define->getNumAssetParam();
 }
 
 ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header, ParamDefineTable const* param_define) {
@@ -24,7 +24,7 @@ ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header, Para
     mBinStart = (long)editor_header;
     mAssetsStart = (long)editor_header + sizeof(EditorHeader);
     mNumUserParam = param_define->get0();
-    mNumAssetParam = param_define->getAssetParamNum();
+    mNumAssetParam = param_define->getNumAssetParam();
 }
 
 // NON-MATCHING
@@ -257,7 +257,7 @@ void ResourceParamCreator::dumpUserBin_(u32 p1, const sead::SafeString& user_nam
 
     // --------------------------------------- UserParamTable --------------------------------------
     u32 num_property{user_header->numLocalProperty};
-    u32 user_param_num{param_define->getUserParamNum()};
+    u32 user_param_num{param_define->getNumUserParam()};
     u64 pos2{pos + num_property * sizeof(u32)};
     dumpLine_(buffered_str, "    << UserParamTable (addr:0x%x, num=%d) >>\n", pos2, user_param_num);
 

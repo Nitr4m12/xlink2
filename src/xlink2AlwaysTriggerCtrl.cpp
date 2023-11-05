@@ -3,7 +3,7 @@
 namespace xlink2 {
 AlwaysTriggerCtrl::AlwaysTriggerCtrl(UserInstance* user_instance,
                                      sead::Buffer<ModelTriggerConnection>* buffer) {
-    mBuffer = buffer;
+    mConnectionBuffer = buffer;
     mUserInstance = user_instance;
     _0 = 1;
 };

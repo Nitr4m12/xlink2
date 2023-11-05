@@ -9,12 +9,13 @@
 #include "xlink2/xlink2TriggerCtrl.h"
 #include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2UserResource.h"
+#include "xlink2/xlink2ResUserInfo.h"
 
 namespace xlink2 {
 class ActionTriggerCtrl : TriggerCtrl {
 public:
-    ActionTriggerCtrl(UserInstance* param_1, sead::Buffer<ModelTriggerConnection>* param_2,
-                      ResActionSlot const* param_3);
+    ActionTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*,
+                      const ResActionSlot*);
     ~ActionTriggerCtrl() override;
 
     void calc() override;
@@ -26,7 +27,7 @@ public:
 
     void emitByTrigger(int);
 
-    static u32 getActionTriggerType_(ResActionTrigger const& action_trigger);
+    static u32 getActionTriggerType_(const ResActionTrigger&);
     int getCurrentResActionIdx();
     void notifyActive();
     void reset();
@@ -35,13 +36,13 @@ public:
     void stopAction();
 
 private:
-    ResActionSlot const* mResActionSlot;
+    const ResActionSlot* mActionSlot {nullptr};
     // WARNING: These are temporary variables to denote that
     // something is occupying this space
-    void* _0;
-    u32 _1;
-    ResAction* mResAction;
-    u8 _2;
+    ResUserInfo mUserInfo {};
+    s32 mUserBinPos {0};
+    ResAction* mAction{nullptr};
+    bool mIsActive{false};
 };
 static_assert(sizeof(ActionTriggerCtrl) == 0x40, "Wrong size for 'xlink2::ActionTriggerCtrl'");
 

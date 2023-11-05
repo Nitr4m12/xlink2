@@ -13,8 +13,8 @@
 
 namespace xlink2 {
 struct UserBinParam {
-    CommonResourceParam* resUserHeader;
-    ResUserHeader* localPropertyRefArray;
+    CommonResourceParam* commonResourceParam;
+    ResUserHeader* resUserHeader;
     void* _0;
     ResParam* userParamArray;
     u32* localPropertyNameRefTable;

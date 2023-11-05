@@ -2,24 +2,23 @@
 
 namespace xlink2 {
 
-// NON-MATCHING: Two subroutines in the wrong order
-ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* param_1,
-                                     sead::Buffer<ModelTriggerConnection>* param_2,
-                                     ResActionSlot const* param_3)
+ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
+                                     sead::Buffer<ModelTriggerConnection>* connection_buffer,
+                                     const ResActionSlot* action_slot)
 {
-    _0 = nullptr;
-    mBuffer = param_2;
-    mUserInstance = param_1;
-    _1 = 0;
-    mResAction = nullptr;
-    mResActionSlot = param_3;
-    _2 = 0;
+    mConnectionBuffer = connection_buffer;
+    mActionSlot = action_slot;
+    mUserInstance = user_instance;
+    mUserInfo.mOffset = 0;
+    mUserInfo.mNameHash = 0;
+    mUserBinPos = 0;
+    mAction = nullptr;
+    mIsActive = false;
 }
 
 void ActionTriggerCtrl::reset() {
-    mResAction = nullptr;
-    _0 = nullptr;
-    _1 = 0;
-    _2 = 0;
+    mAction = nullptr;
+    mUserBinPos = 0;
+    mIsActive = false;
 }
 }  // namespace xlink2

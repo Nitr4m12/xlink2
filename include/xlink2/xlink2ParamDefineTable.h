@@ -35,9 +35,10 @@ public:
     const char* getTriggerParamDefaultValueString(u32) const;
 
     u32 getSize() const { return mSize; }
-    u32 getAssetParamNum() const { return mNumAssetParam; }
-    u32 getUserParamNum() const { return mNumUserParam; }
+    u32 getNumAssetParam() const { return mNumAssetParam; }
+    u32 getNumUserParam() const { return mNumUserParam; }
     u32 get0() const { return _0; }
+    u32 getNumCustomParam() const { return mNumCustomParam; }
 
 private:
     u32 mNumUserParam;
