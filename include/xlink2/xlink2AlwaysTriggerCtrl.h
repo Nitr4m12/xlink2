@@ -1,24 +1,21 @@
 #pragma once
 
-#include <container/seadBuffer.h>
-
-#include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2TriggerCtrl.h"
-#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 class AlwaysTriggerCtrl : TriggerCtrl {
-    ~AlwaysTriggerCtrl() override;
-
 public:
     AlwaysTriggerCtrl(UserInstance* user_instance, sead::Buffer<ModelTriggerConnection>* buffer);
 
     void calc() override;
-    void emitByTrigger_(int);
+    void emitByTrigger_(s32);
     void notifyActive();
 
+    ~AlwaysTriggerCtrl() override;
+
 private:
-    u8 _0;
+    bool mIsActive{true};
 };
 static_assert(sizeof(AlwaysTriggerCtrl) == 0x20, "Wrong size for 'xlink2::AlwaysTriggerCtrl'");
 

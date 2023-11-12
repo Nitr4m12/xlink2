@@ -24,6 +24,9 @@ void ActionTriggerCtrl::reset() {
     mIsActive = false;
 }
 
+void ActionTriggerCtrl::calc() {
+}
+
 TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& action_trigger) {}
 
 

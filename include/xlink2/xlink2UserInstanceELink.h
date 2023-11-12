@@ -10,7 +10,7 @@
 namespace xlink2 {
 class UserResourceELink;
 
-class UserInstanceELink : UserInstance {
+class UserInstanceELink : public UserInstance {
 
 public:
     UserInstanceELink(UserInstance::CreateArg const&, System*, User*, sead::Heap*);
@@ -26,7 +26,7 @@ public:
 
     void fadeIfLoopEffect();
 
-    ResourceAccessor* getResourceAccessor() const;
+    ResourceAccessorELink* getResourceAccessor() const;
     UserResource* getResourceELink() const;
 
     void onPostCalc_() override;

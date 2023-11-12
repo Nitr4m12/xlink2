@@ -5,7 +5,7 @@
 namespace xlink2 {
 struct ModelTriggerConnection {
     void* _0;
-    void* _1;
+    sead::PtrArray<Event>* mEventPtrs;
     Event* mEvent;
     u32 _2;
     void* _3;

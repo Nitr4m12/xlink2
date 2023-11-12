@@ -32,7 +32,7 @@ public:
     ResAssetCallTable* getAssetCallTableItem(s32) const;
     void* getActionTriggerTableItem(s32) const;
     void* getPropertyTriggerTableItem(s32) const;
-    void* getAlwaysTriggerTableItem(s32) const;
+    ResAlwaysTrigger* getAlwaysTriggerTableItem(s32) const;
 
     virtual ResourceAccessor* getAccessor() const = 0;
     virtual ResourceAccessor* getAccessorPtr() = 0;

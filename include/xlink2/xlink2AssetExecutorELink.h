@@ -15,68 +15,82 @@ namespace xlink2 {
 class UserInstanceELink;
 
 class AssetExecutorELink : AssetExecutor {
+public:
     ~AssetExecutorELink() override;
 
-public:
-    void _applyColorAlpha();
-    void _callEffectDeletedCallback();
-    void activateImpl_() override;
     bool calc() override;
-    void calcMtx(sead::Matrix34f* param_1, ResAssetCallTable* param_2, UserInstanceELink* param_3,
-                 ResTriggerOverwriteParam* param_4, BoneMtx param_5);
+
+    u32 emitEffect();
+
+    ResourceAccessorELink* getResourceAccessor_() const;
+
+    void stopCalcDraw();
+    void restartCalcDraw();
+
+    void updateParam();
+
+    bool isLoopEvent() const override;
+
+    void kill() override;
+
+    void _callEffectDeletedCallback();
+
+    void setDelayParam(EventELink::DelayEmitParam*, sead::BitFlag32);
+
+    void fade(s32) override;
+    void fadeBySystem() override;
+
+    void activateImpl_() override;
+
+    void setInnerParam_();
+
+    void setMtx_(sead::Matrix34f const&, sead::Vector3f const&);
+    void setPos_(sead::Vector3f const&, sead::Vector3f const&);
+
+    void calcMtx(sead::Matrix34f*, ResAssetCallTable*, UserInstanceELink*,
+                 ResTriggerOverwriteParam*, BoneMtx);
+
+    void _applyColorAlpha();
+
+    void onResetOverwriteParam_() override;
+
+    void setManualParticleEmission(bool);
+    void setManualParticleEmissionWithParticleCount(int);
+
+    void emitParticle(sead::Vector3f*);
 
     void dumpDebugPrint() override;
 
-    u32 emitEffect();
-    void emitParticle(sead::Vector3f*);
-    void fade(s32) override;
-    void fadeBySystem() override;
-    ResourceAccessor* getResourceAccessor_() const;
+    f32 setInnerParamBit_(ELinkAssetParamId, ELinkEventParam);
+
     bool isAssetValid() const override;
-    bool isLoopEvent() const override;
+
+    void requestReEmit(bool) override;
     bool isRequestReEmit() const override;
 
-    void kill() override;
     void onFinalize_() override;
-    void onResetOverwriteParam_() override;
-    void requestReEmit(bool) override;
-    void restartCalcDraw();
-
-    void setDelayParam(EventELink::DelayEmitParam*, sead::BitFlag32);
-    void setInnerParam_();
-    u32 setInnerParamBit(ELinkAssetParamId, ELinkEventParam);
-    void setManualParticleEmission(bool);
-    void setManualParticleEmissionWithParticleCount(int);
-    void setMtx(sead::Matrix34f const&, sead::Vector3f const&);
-    void setPos(sead::Vector3f const&, sead::Vector3f const&);
-
-    void stopCalcDraw();
-    void updateParam();
 
 private:
     void* _0;
     void* _1;
     EventELink* mEvent;
     UserInstanceELink* mUserInstance;
-    ResAssetCallTable* mResAssetCallTable;
+    ResAssetCallTable* mAssetCallTable;
     u32 _2;
     f32 _3;
-    ResTriggerOverwriteParam* mResTriggerOverwriteParam;
-    BoneMtx* mBoneMtx;
+    ResTriggerOverwriteParam* _6;
+    void* _8;
     void* _4;
     u8 _5;
-    u32 _6;
+    u32 mDelay;
     void* _7;
     HandleELink* mHandle;
-    void* _9;
+    u32 _9;
+    u32 _16;
     u16 _10;
     u16 _11;
-    u32 mPositionX;
-    u32 mPositionY;
-    u32 mPositionZ;
-    u32 mRotationX;
-    u32 mRotationY;
-    u32 mRotationZ;
+    sead::Vector3f mPosition;
+    sead::Vector3f mRotation;
     f32 _12;
     f32 _13;
     f32 _14;

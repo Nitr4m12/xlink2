@@ -6,7 +6,7 @@
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class ResourceAccessorELink : ResourceAccessor {
+class ResourceAccessorELink : public ResourceAccessor {
 public:
     ~ResourceAccessorELink() override;
 

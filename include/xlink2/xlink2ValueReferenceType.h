@@ -1,5 +1,5 @@
 #pragma once
 
 namespace xlink2 {
-class ValueReferenceType {};
+enum class ValueReferenceType {};
 }  // namespace xlink2

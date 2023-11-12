@@ -1,7 +1,7 @@
 #pragma once
 
-#include "basis/seadTypes.h"
-#include "container/seadBuffer.h"
+#include <basis/seadTypes.h>
+#include <container/seadBuffer.h>
 
 #include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
@@ -16,12 +16,12 @@ public:
 
     void emitByTriggerImpl(TriggerType, s32, u32, ResAssetCallTable const*);
     void fadeByTrigger_(s32);
-    void* getModelTriggerConnection(s32 index);
+    void* getModelTriggerConnection(s32);
     void resetIsOnceCheck_();
     void setBoneMatrixToConnection(u32, ModelTriggerConnection*);
 
 protected:
-    UserInstance* mUserInstance;
-    sead::Buffer<ModelTriggerConnection>* mConnectionBuffer;
+    UserInstance* mUserInstance {nullptr};
+    sead::Buffer<ModelTriggerConnection>* mConnectionBuffer {nullptr};
 };
 }  // namespace xlink2

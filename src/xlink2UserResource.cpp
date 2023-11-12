@@ -110,7 +110,7 @@ void* UserResource::getActionTriggerTableItem(s32 index) const {
 }
 
 // NON_MATCHING: one sub instruction reordered
-void* UserResource::getAlwaysTriggerTableItem(s32 index) const {
+ResAlwaysTrigger* UserResource::getAlwaysTriggerTableItem(s32 index) const {
     // auto* param = mParams[int(mResMode)];
     // ResUserHeader* usr_head{nullptr};
 

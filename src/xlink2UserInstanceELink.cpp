@@ -9,8 +9,8 @@ void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mod
     }
 }
 
-ResourceAccessor* UserInstanceELink::getResourceAccessor() const {
-    return mUser->getUserResource()->getResourceAccessor();
+ResourceAccessorELink* UserInstanceELink::getResourceAccessor() const {
+    return (ResourceAccessorELink*)mUser->getUserResource()->getResourceAccessor();
 }
 
 UserResource* UserInstanceELink::getResourceELink() const {
