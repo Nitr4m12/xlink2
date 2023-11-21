@@ -3,7 +3,7 @@
 
 namespace xlink2 {
 ContainerBase::ContainerBase() {
-    mResAssetDuration = 0;
+    mAssetDuration = 0;
     mChildContainers[0] = nullptr;
     mChildContainers[1] = nullptr;
     mResAssetCallTable = nullptr;
@@ -35,7 +35,7 @@ void ContainerBase::fade(int p1) {
         child_container->fade(p1);
     }
 
-    mResAssetDuration = 0;
+    mAssetDuration = 0;
 }
 
 void ContainerBase::fadeBySystem() {
@@ -43,14 +43,14 @@ void ContainerBase::fadeBySystem() {
         child_container->fadeBySystem();
     }
 
-    mResAssetDuration = 0;
+    mAssetDuration = 0;
 }
 
 bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table) {
     mResAssetCallTable = &(ResAssetCallTable&)asset_call_table;
     mEvent = event;
     event->getUserInstance()->getUser()->getUserResource()->getAccessor();
-    mResAssetDuration = asset_call_table.duration;
+    mAssetDuration = asset_call_table.duration;
     return true;
 }
 
@@ -59,6 +59,6 @@ void ContainerBase::kill() {
         child_container->kill();
     }
 
-    mResAssetDuration = 0;
+    mAssetDuration = 0;
 }
 }  // namespace xlink2
