@@ -15,7 +15,7 @@ public:
 
     bool start_(ResAssetCallTable const*);
 
-    bool start() override;
+    void start() override;
 
     void printChildSelect(ResAssetCallTable const* /*unused*/) const;
 };

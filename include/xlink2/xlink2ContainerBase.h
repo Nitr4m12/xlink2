@@ -13,9 +13,9 @@ public:
     ContainerBase();
     virtual ~ContainerBase();
 
-    virtual void initialize(Event*, ResAssetCallTable const&);
+    virtual bool initialize(Event*, ResAssetCallTable const&);
     virtual void destroy();
-    virtual bool start() = 0;
+    virtual void start() = 0;
     virtual u32 calc() = 0;
     virtual void fadeBySystem();
     virtual void fade(int);
@@ -25,7 +25,7 @@ public:
     void* createChildContainer_(ResAssetCallTable const&, ContainerBase*);
 
 protected:
-    const ResAssetCallTable* mResAssetCallTable;
+    ResAssetCallTable* mResAssetCallTable;
     Event* mEvent;
     sead::SafeArray<ContainerBase*, 2> mChildContainers;
     s32 mResAssetDuration;

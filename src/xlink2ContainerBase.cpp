@@ -18,7 +18,7 @@ void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_t
     if (!child_container)
         return nullptr;
 
-    bool started{child_container->start()};
+    bool started{/*child_container->start()*/};
     if (!(started & 1)) {
         child_container->destroy();
         child_container = nullptr;
@@ -46,12 +46,12 @@ void ContainerBase::fadeBySystem() {
     mResAssetDuration = 0;
 }
 
-// NON-MATCHING: one extra subroutine
-void ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table) {
-    mResAssetCallTable = &asset_call_table;
+bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table) {
+    mResAssetCallTable = &(ResAssetCallTable&)asset_call_table;
     mEvent = event;
     event->getUserInstance()->getUser()->getUserResource()->getAccessor();
     mResAssetDuration = asset_call_table.duration;
+    return true;
 }
 
 void ContainerBase::kill() {
