@@ -15,7 +15,7 @@ public:
 
     virtual bool initialize(Event*, ResAssetCallTable const&);
     virtual void destroy();
-    virtual void start() = 0;
+    virtual bool start() = 0;
     virtual u32 calc() = 0;
     virtual void fadeBySystem();
     virtual void fade(int);

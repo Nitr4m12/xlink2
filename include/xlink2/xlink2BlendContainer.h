@@ -11,7 +11,7 @@ class BlendContainer : ContainerBase {
 public:
     ~BlendContainer() override;
     bool initialize(Event*, ResAssetCallTable const&) override;
-    void start() override;
+    bool start() override;
 
     u8 callAllChildContainer_();
 

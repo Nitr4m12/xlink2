@@ -78,14 +78,16 @@ void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_t
     if (!child_container)
         return nullptr;
 
-    bool started{/*child_container->start()*/};
-    if (!(started & 1)) {
+    bool started{child_container->start()};
+    if (!started) {
         child_container->destroy();
         child_container = nullptr;
-    } else if (container)
+    } else if (!container) {
         mChild = child_container;
-    else
+    }
+    else {
         container->mParent = child_container;
+    }
 
     return child_container;
 }
