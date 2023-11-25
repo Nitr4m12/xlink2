@@ -36,6 +36,13 @@ void ContainerBase::destroy() {
     this->~ContainerBase();
     heap->free(this);
 }
+void ContainerBase::fadeBySystem() {
+    for (auto* child = mChild; child != nullptr; child = child->mParent)
+        child->fadeBySystem();
+
+    mAssetDuration = 0;
+}
+
 
 void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
                                            ContainerBase* container) {
