@@ -164,6 +164,7 @@ public:
     sead::Heap* getUserHeap() { return mUserCreateHeap; }
     EditorBuffer* getEditorBuffer() { return mEditorBuffer; }
     sead::Heap* getPrimaryHeap() { return mPrimaryHeap; }
+    sead::Heap* getContainerHeap() { return mContainerHeap; }
 
     bool isCallEnabled() const { return mIsCallEnabled; }
 
