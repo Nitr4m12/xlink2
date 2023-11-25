@@ -50,6 +50,13 @@ void ContainerBase::fade(s32 p1) {
     mAssetDuration = 0;
 }
 
+void ContainerBase::kill() {
+    for (auto* child = mChild; child != nullptr; child = child->mParent)
+        child->kill();
+
+    mAssetDuration = 0;
+}
+
 
 void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
                                            ContainerBase* container) {
