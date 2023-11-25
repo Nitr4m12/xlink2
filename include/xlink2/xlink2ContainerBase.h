@@ -20,7 +20,7 @@ public:
     virtual void fadeBySystem();
     virtual void fade(int);
     virtual void kill();
-    virtual void* killOneTimeEvent();
+    virtual bool killOneTimeEvent();
 
     void* createChildContainer_(ResAssetCallTable const&, ContainerBase*);
 
@@ -28,7 +28,7 @@ protected:
     ResAssetCallTable* mResAssetCallTable;
     Event* mEvent;
     ContainerBase* mChild;
-    ContainerBase* mUnknownContainer;
+    ContainerBase* mParent;
     s32 mAssetDuration;
 };
 }  // namespace xlink2

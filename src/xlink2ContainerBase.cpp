@@ -4,7 +4,7 @@
 namespace xlink2 {
 ContainerBase::ContainerBase() {
     mAssetDuration = 0;
-    mUnknownContainer = nullptr;
+    mParent = nullptr;
     mChild = nullptr;
     mResAssetCallTable = nullptr;
     mEvent = nullptr;
@@ -24,7 +24,7 @@ void ContainerBase::destroy() {
     auto* child = mChild;
     while (child != nullptr) {
         auto* unk = child;
-        child = mUnknownContainer;
+        child = child->mParent;
         unk->destroy();
     }
 
@@ -36,6 +36,7 @@ void ContainerBase::destroy() {
     this->~ContainerBase();
     heap->free(this);
 }
+
 void ContainerBase::fadeBySystem() {
     for (auto* child = mChild; child != nullptr; child = child->mParent)
         child->fadeBySystem();
@@ -57,6 +58,18 @@ void ContainerBase::kill() {
     mAssetDuration = 0;
 }
 
+bool ContainerBase::killOneTimeEvent() {
+    bool unk = true;
+    for (auto* child = mChild; child != nullptr; child = child->mParent) {
+        bool unk2 = child->killOneTimeEvent();
+        unk = unk2 & unk;
+    }
+    if (!unk)
+        return false;
+
+    mAssetDuration = 0;
+    return true;
+}
 
 void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
                                            ContainerBase* container) {
@@ -72,28 +85,8 @@ void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_t
     } else if (container)
         mChild = child_container;
     else
-        container->mUnknownContainer = child_container;
+        container->mParent = child_container;
 
     return child_container;
-}
-
-void ContainerBase::fade(int p1) {
-    mUnknownContainer->fade(p1);
-    mChild->fade(p1);
-    mAssetDuration = 0;
-}
-
-void ContainerBase::fadeBySystem() {
-    mUnknownContainer->fadeBySystem();
-    mChild->fadeBySystem();
-
-    mAssetDuration = 0;
-}
-
-void ContainerBase::kill() {
-    mUnknownContainer->kill();
-    mChild->kill();
-
-    mAssetDuration = 0;
 }
 }  // namespace xlink2
