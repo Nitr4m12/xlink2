@@ -2,7 +2,8 @@
 #include "xlink2/xlink2ContainerCreator.h"
 
 namespace xlink2 {
-ContainerBase::ContainerBase() {
+ContainerBase::ContainerBase()
+{
     mAssetDuration = 0;
     mParent = nullptr;
     mChild = nullptr;
@@ -11,7 +12,8 @@ ContainerBase::ContainerBase() {
 }
 ContainerBase::~ContainerBase() = default;
 
-bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table) {
+bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table)
+{
     mResAssetCallTable = &(ResAssetCallTable&)asset_call_table;
     mEvent = event;
     event->getUserInstance()->getUser()->getUserResource()->getAccessor();
@@ -20,7 +22,8 @@ bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call
 }
 
 // NON-MATCHING: wrong register
-void ContainerBase::destroy() {
+void ContainerBase::destroy()
+{
     auto* child = mChild;
     while (child != nullptr) {
         auto* unk = child;
@@ -37,28 +40,32 @@ void ContainerBase::destroy() {
     heap->free(this);
 }
 
-void ContainerBase::fadeBySystem() {
+void ContainerBase::fadeBySystem()
+{
     for (auto* child = mChild; child != nullptr; child = child->mParent)
         child->fadeBySystem();
 
     mAssetDuration = 0;
 }
 
-void ContainerBase::fade(s32 p1) {
+void ContainerBase::fade(s32 p1)
+{
     for (auto* child = mChild; child != nullptr; child = child->mParent)
         child->fade(p1);
 
     mAssetDuration = 0;
 }
 
-void ContainerBase::kill() {
+void ContainerBase::kill()
+{
     for (auto* child = mChild; child != nullptr; child = child->mParent)
         child->kill();
 
     mAssetDuration = 0;
 }
 
-bool ContainerBase::killOneTimeEvent() {
+bool ContainerBase::killOneTimeEvent()
+{
     bool unk = true;
     for (auto* child = mChild; child != nullptr; child = child->mParent) {
         bool unk2 = child->killOneTimeEvent();
@@ -72,7 +79,8 @@ bool ContainerBase::killOneTimeEvent() {
 }
 
 void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
-                                           ContainerBase* container) {
+                                           ContainerBase* container)
+{
     auto* child_container{ContainerCreator::CreateContainer(mEvent, asset_call_table)};
 
     if (!child_container)
@@ -82,7 +90,8 @@ void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_t
     if (!started) {
         child_container->destroy();
         child_container = nullptr;
-    } else if (!container) {
+    }
+    else if (!container) {
         mChild = child_container;
     }
     else {

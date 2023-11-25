@@ -2,7 +2,6 @@
 
 #include <container/seadSafeArray.h>
 
-#include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 

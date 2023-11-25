@@ -7,13 +7,12 @@
 
 namespace xlink2 {
 class BlendContainer : ContainerBase {
-
 public:
     ~BlendContainer() override;
     bool initialize(Event*, ResAssetCallTable const&) override;
     bool start() override;
 
-    u8 callAllChildContainer_();
+    bool callAllChildContainer_();
 
     u32 calc() override;
 };
