@@ -27,7 +27,8 @@ public:
 protected:
     ResAssetCallTable* mResAssetCallTable;
     Event* mEvent;
-    sead::SafeArray<ContainerBase*, 2> mChildContainers;
-    f32 mAssetDuration;
+    ContainerBase* mChild;
+    ContainerBase* mUnknownContainer;
+    s32 mAssetDuration;
 };
 }  // namespace xlink2

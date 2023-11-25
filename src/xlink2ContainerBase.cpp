@@ -4,12 +4,38 @@
 namespace xlink2 {
 ContainerBase::ContainerBase() {
     mAssetDuration = 0;
-    mChildContainers[0] = nullptr;
-    mChildContainers[1] = nullptr;
+    mUnknownContainer = nullptr;
+    mChild = nullptr;
     mResAssetCallTable = nullptr;
     mEvent = nullptr;
 }
 ContainerBase::~ContainerBase() = default;
+
+bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table) {
+    mResAssetCallTable = &(ResAssetCallTable&)asset_call_table;
+    mEvent = event;
+    event->getUserInstance()->getUser()->getUserResource()->getAccessor();
+    mAssetDuration = asset_call_table.duration;
+    return true;
+}
+
+// NON-MATCHING: wrong register
+void ContainerBase::destroy() {
+    auto* child = mChild;
+    while (child != nullptr) {
+        auto* unk = child;
+        child = mUnknownContainer;
+        unk->destroy();
+    }
+
+    mAssetDuration = 0;
+    mChild = nullptr;
+
+    auto* system = mEvent->getUserInstance()->getUser()->getSystem();
+    auto* heap = system->getContainerHeap();
+    this->~ContainerBase();
+    heap->free(this);
+}
 
 void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
                                            ContainerBase* container) {
@@ -23,41 +49,29 @@ void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_t
         child_container->destroy();
         child_container = nullptr;
     } else if (container)
-        mChildContainers[0] = child_container;
+        mChild = child_container;
     else
-        container->mChildContainers[1] = child_container;
+        container->mUnknownContainer = child_container;
 
     return child_container;
 }
 
 void ContainerBase::fade(int p1) {
-    for (auto* child_container : mChildContainers) {
-        child_container->fade(p1);
-    }
-
+    mUnknownContainer->fade(p1);
+    mChild->fade(p1);
     mAssetDuration = 0;
 }
 
 void ContainerBase::fadeBySystem() {
-    for (auto* child_container : mChildContainers) {
-        child_container->fadeBySystem();
-    }
+    mUnknownContainer->fadeBySystem();
+    mChild->fadeBySystem();
 
     mAssetDuration = 0;
 }
 
-bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table) {
-    mResAssetCallTable = &(ResAssetCallTable&)asset_call_table;
-    mEvent = event;
-    event->getUserInstance()->getUser()->getUserResource()->getAccessor();
-    mAssetDuration = asset_call_table.duration;
-    return true;
-}
-
 void ContainerBase::kill() {
-    for (auto* child_container : mChildContainers) {
-        child_container->kill();
-    }
+    mUnknownContainer->kill();
+    mChild->kill();
 
     mAssetDuration = 0;
 }
