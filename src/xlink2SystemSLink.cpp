@@ -5,7 +5,7 @@ u64 SystemSLink::getResourceVersion() const {
     return 0x1c;
 }
 
-u64 SystemSLink::getUserParamNum() const {
+u32 SystemSLink::getUserParamNum() const {
     return 8;
 }
 

@@ -32,7 +32,7 @@ public:
 
     u64 getResourceVersion() const override;
     sead::SafeString* getModuleName() const override;
-    u64 getUserParamNum() const override;
+    u32 getUserParamNum() const override;
 
     bool isEnableUserAssetInfoReadable() const;
 

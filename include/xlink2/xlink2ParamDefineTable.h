@@ -39,6 +39,7 @@ public:
     u32 getNumUserParam() const { return mNumUserParam; }
     u32 get0() const { return _0; }
     u32 getNumCustomParam() const { return mNumCustomParam; }
+    bool isInitilized() const { return mIsInitialized; }
 
 private:
     u32 mNumUserParam;

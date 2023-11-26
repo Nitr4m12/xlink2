@@ -52,7 +52,7 @@ public:
                                         sead::SafeString const&, Event*, AssetExecutorELink*,
                                         bool) const;
 
-    u64 getUserParamNum() const override;
+    u32 getUserParamNum() const override;
     ILockProxy* getModuleLockObj() const override;
 
 private:

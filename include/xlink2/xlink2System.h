@@ -52,7 +52,7 @@ public:
                                    sead::Viewport const&, f32) const;
     virtual void createUserResource(User*, sead::Heap*) = 0;
     virtual void allocHandle(sead::Heap*) = 0;
-    virtual u64 getUserParamNum() const = 0;
+    virtual u32 getUserParamNum() const = 0;
     virtual sead::SafeString* getModuleName() const = 0;
     virtual void allocAssetExecutor(Event*) = 0;
     virtual ILockProxy* getModuleLockObj() const = 0;
@@ -166,6 +166,9 @@ public:
     sead::Heap* getPrimaryHeap() { return mPrimaryHeap; }
     sead::Heap* getContainerHeap() { return mContainerHeap; }
 
+    const DebugOperationParam& debugOperationParamOR() const { return mDebugOperationParamOR; }
+    DebugOperationParam* debugOperationParamEditor() { return &mDebugOperationParamEditor; }
+
     bool isCallEnabled() const { return mIsCallEnabled; }
 
 protected:
@@ -194,12 +197,13 @@ protected:
     EditorBuffer* mEditorBuffer;
     float mTick;
     float _7;
-    sead::OffsetList<User> mDebugDrawUserList;
+    sead::OffsetList<User>* mDebugDrawUserList;
     float mUserSortKey;
     sead::SafeString* mDebugString;
     void* _10;
     u32 _20;
     u32 _21;
+    s32 _22;
     DebugOperationParam mDebugOperationParamOR;
     DebugOperationParam mDebugOperationParamEditor;
     void* _12;

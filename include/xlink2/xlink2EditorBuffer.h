@@ -3,9 +3,9 @@
 #include <heap/seadHeap.h>
 #include <prim/seadSafeString.h>
 
+#include "xlink2/xlink2EditorResourceParam.h"
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2System.h"
-#include "xlink2/xlink2EditorResourceParam.h"
 
 namespace xlink2 {
 class System;
@@ -51,6 +51,6 @@ private:
     u64 _16;
     u64 _17;
     ParamDefineTable* mParamDefineTable;
-    sead::FixedSafeString<64>* _18;
+    u8* mParamDefineBuffer;
 };
 }  // namespace xlink2
