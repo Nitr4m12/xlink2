@@ -32,6 +32,6 @@ void EditorBuffer::setupParamDefineTable(u8* param_define_bin, u32 param_define_
     if (mParamDefineTable->isInitilized())
         mParamDefineTable->reset();
     mParamDefineTable->setup(mParamDefineBuffer, mSystem->getUserParamNum(),
-                             mSystem->debugOperationParamOR().get258() & 1);
+                             mSystem->debugOperationParamOR().get258Check());
 }
 }  // namespace xlink2

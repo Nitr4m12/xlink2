@@ -10,6 +10,7 @@ public:
 
     u32 get0() const { return _0; }
     u32 get258() const { return _0x258; }
+    bool get258Check() const { return _0x258 & 1; }
 
 private:
     //u8 _0[0x358];
