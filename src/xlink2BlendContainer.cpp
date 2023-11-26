@@ -1,4 +1,5 @@
 #include "xlink2/xlink2BlendContainer.h"
+#include "xlink2/xlink2ResourceUtil.h"
 
 namespace xlink2 {
 BlendContainer::~BlendContainer() = default;
