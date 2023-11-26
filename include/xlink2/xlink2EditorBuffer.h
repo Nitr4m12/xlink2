@@ -18,7 +18,7 @@ public:
 
     void destroy();
 
-    void allocReceiveBuffer(u32);
+    u8* allocReceiveBuffer(u32);
 
     void readFinished();
 
@@ -31,26 +31,13 @@ public:
     ParamDefineTable* getParamDefineTable() const { return mParamDefineTable; }
 
 private:
-    System* mSystem;
-    sead::Heap* mHeap;
-    sead::SafeArray<EditorResourceParam*, 2> mParams;
-    u32 _2;
-    u32 _3;
-    char* _4;
-    u32 _5;
-    sead::BufferedSafeString* _6;
-    void* _7;
-    u32 _8;
-    u32 _9;
-    u64 _10;
-    u64 _11;
-    u64 _12;
-    u64 _13;
-    u64 _14;
-    u64 _15;
-    u64 _16;
-    u64 _17;
-    ParamDefineTable* mParamDefineTable;
-    u8* mParamDefineBuffer;
+    System* mSystem{nullptr};
+    sead::Heap* mHeap{nullptr};
+    sead::OffsetList<xlink2::EditorResourceParam> mParams{};
+    u8* mReceiveBuffer{nullptr};
+    u32 mReceiveBufferSize{0};
+    sead::FixedSafeString<64> _6{};
+    ParamDefineTable* mParamDefineTable{nullptr};
+    u8* mParamDefineBuffer{nullptr};
 };
 }  // namespace xlink2
