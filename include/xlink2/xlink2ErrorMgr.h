@@ -4,25 +4,29 @@
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2User.h"
 
+namespace sead {
+class TextWriter;
+}
+
 namespace xlink2 {
 class User;
 class ErrorMgr {
-    virtual ~ErrorMgr();
 
 public:
     explicit ErrorMgr(System const*);
+    virtual ~ErrorMgr();
 
     void add(Error::Type, User const*, char const*);
-    void calc();
     void clear(User const*);
     void clearAll();
+    void calc();
 
-    // void draw(sead::TextWriter*) const;
+    void draw(sead::TextWriter*) const;
+
+    bool shouldErrorNoticed_(Error const*);
+    bool shouldErrorNoticed_(Error::Type const*);
 
     void* getIsDebugBreakEnablePtr();
-
-    bool shouldErrorNoticed(Error const*);
-    bool shouldErrorNoticed(Error::Type const*);
 
 private:
     u32 _0;

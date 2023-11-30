@@ -1,6 +1,7 @@
 #pragma once
 
 #include <container/seadSafeArray.h>
+#include <container/seadOffsetList.h>
 
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2BoneMtx.h"
@@ -25,6 +26,7 @@ public:
     virtual void doFinalize_();
 
     void destroyAllContainerAndAssetExecutor_();
+
     virtual void callEventCreateCallback_();
     virtual void callEventDestroyCallback_();
 
@@ -45,31 +47,28 @@ public:
 
     virtual void fixDelayParam_();
 
-    UserInstance* getUserInstance() const { return mUserInstance; }
+    UserInstance* getUserInstance() const { return mpUserInstance; }
 
-    u32& get3() { return _3; }
+    u32& get0x20() { return _0x20; }
     TriggerType& getTriggerType() { return mTriggerType; }
 
 private:
-    u32 _0;
-    void* _1;
-    void* _2;
-    u32 _3;
-    UserInstance* mUserInstance;
-    ResAssetCallTable* mResAssetCallTable;
+    u32 _0x08;
+    void* _0x10;
+    void* _0x18;
+    u32 _0x20;
+    UserInstance* mpUserInstance;
+    ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;
-    ResTriggerOverwriteParam* mResTriggerOverwriteParam;
-    BoneMtx* mBoneMtx;
-    u8 _4;
-    ContainerBase* mRootContainer;
-    void* _5;
-    void* _6;
-    u32 _7;
-    u32 _8;
-    sead::SafeArray<AssetExecutor*, 2> mAssetExecutors;
-    u32 _9;
-    u32 _10;
-    u32 _11;
-    u8 _12;
+    ResTriggerOverwriteParam* mpTriggerOverwriteParam;
+    BoneMtx* mpBoneMtx;
+    struct {
+        u8 _0x50;
+    };
+    ContainerBase* mpRootContainer;
+    sead::OffsetList<xlink2::AssetExecutor> mAssetExecutors;
+    sead::OffsetList<xlink2::AssetExecutor> mAssetExecutors2;
+    float _0x90;
+    u8 mGroupId;
 };
 }  // namespace xlink2
