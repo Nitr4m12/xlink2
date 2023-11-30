@@ -18,7 +18,7 @@ public:
     virtual void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
     virtual TriggerType getTriggerType() const;
     virtual const ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
-    virtual void* getOverwriteBoneMtx() const;
+    virtual BoneMtx getOverwriteBoneMtx() const;
 
 
     bool isNeedRebind() const;

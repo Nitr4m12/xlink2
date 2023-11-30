@@ -19,9 +19,8 @@ const ResTriggerOverwriteParam* Locator::getTriggerOverwriteParam() const
     return nullptr;
 }
 
-void* Locator::getOverwriteBoneMtx() const
+BoneMtx Locator::getOverwriteBoneMtx() const
 {
-    return _0;
 }
 
 bool Locator::isNeedRebind() const
