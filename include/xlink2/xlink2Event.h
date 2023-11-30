@@ -64,8 +64,8 @@ private:
     BoneMtx* mpBoneMtx{nullptr};
     bool _0x50{true};
     ContainerBase* mpRootContainer{nullptr};
-    sead::OffsetList<xlink2::AssetExecutor> mAssetExecutors;
-    sead::OffsetList<xlink2::AssetExecutor> mAssetExecutors2;
+    sead::OffsetList<xlink2::AssetExecutor> mAliveAssetExecutors;
+    sead::OffsetList<xlink2::AssetExecutor> mFadeBySystemAssetExecutors;
     float _0x90;
     u8 mGroupId{0xff};
 };

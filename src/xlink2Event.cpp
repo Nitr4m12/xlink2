@@ -3,9 +3,11 @@
 namespace xlink2 {
 Event::Event()
 {
-    mAssetExecutors.initOffset(8);
-    mAssetExecutors2.initOffset(8);
+    mAliveAssetExecutors.initOffset(8);
+    mFadeBySystemAssetExecutors.initOffset(8);
 }
+
+Event::~Event() = default;
 
 void Event::initialize(u32 param_int)
 {

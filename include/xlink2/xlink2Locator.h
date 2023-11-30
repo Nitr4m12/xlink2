@@ -1,6 +1,7 @@
 #pragma once
 
-#include "basis/seadTypes.h"
+#include <basis/seadTypes.h>
+
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2ResTriggerOverwriteParam.h"
 #include "xlink2/xlink2TriggerType.h"
@@ -13,15 +14,15 @@ public:
 
     static u32 sDataLoadedCount;
 
-    s32 getOverwriteBoneMtx() const;
-    s32 getSearchedGuid() const;
-    s32 getTriggerOverwriteParam() const;
-    s32 getTriggerType() const;
+    virtual void reset();
+    virtual void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
+    virtual TriggerType getTriggerType() const;
+    virtual const ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
+    virtual void* getOverwriteBoneMtx() const;
+
+
     bool isNeedRebind() const;
-
-    void reset();
-
-    TriggerType setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
+    s32 getSearchedGuid() const;
     void updateDataLoadedCount();
 
 private:
