@@ -53,22 +53,20 @@ public:
     TriggerType& getTriggerType() { return mTriggerType; }
 
 private:
-    u32 _0x08;
-    void* _0x10;
-    void* _0x18;
-    u32 _0x20;
+    u32 _0x08{0};
+    void* _0x10{nullptr};
+    void* _0x18{nullptr};
+    u32 _0x20{0};
     UserInstance* mpUserInstance;
     ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;
-    ResTriggerOverwriteParam* mpTriggerOverwriteParam;
-    BoneMtx* mpBoneMtx;
-    struct {
-        u8 _0x50;
-    };
-    ContainerBase* mpRootContainer;
+    ResTriggerOverwriteParam* mpTriggerOverwriteParam{nullptr};
+    BoneMtx* mpBoneMtx{nullptr};
+    bool _0x50{true};
+    ContainerBase* mpRootContainer{nullptr};
     sead::OffsetList<xlink2::AssetExecutor> mAssetExecutors;
     sead::OffsetList<xlink2::AssetExecutor> mAssetExecutors2;
     float _0x90;
-    u8 mGroupId;
+    u8 mGroupId{0xff};
 };
 }  // namespace xlink2

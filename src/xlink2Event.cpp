@@ -1,11 +1,11 @@
 #include "xlink2/xlink2Event.h"
 
 namespace xlink2 {
-void Event::initializeImpl_() {}
-void Event::doFinalize_() {}
-void Event::callEventCreateCallback_() {}
-void Event::callEventDestroyCallback_() {}
-void Event::fixDelayParam_() {}
+Event::Event()
+{
+    mAssetExecutors.initOffset(8);
+    mAssetExecutors2.initOffset(8);
+}
 
 void Event::initialize(u32 param_int)
 {
@@ -20,4 +20,10 @@ void Event::initialize(u32 param_int)
     mpBoneMtx = nullptr;
     this->initializeImpl_();
 }
+
+void Event::initializeImpl_() {}
+void Event::doFinalize_() {}
+void Event::callEventCreateCallback_() {}
+void Event::callEventDestroyCallback_() {}
+void Event::fixDelayParam_() {}
 }  // namespace xlink2
