@@ -11,4 +11,5 @@ struct ResCurveCallTable {
     u32 propIdx;
     s16 localPropertyNameIdx;
 };
+static_assert(sizeof(ResCurveCallTable) == 0x14, "Incorrect size of 'xlink2::ResCurveCallTable'");
 }  // namespace xlink2

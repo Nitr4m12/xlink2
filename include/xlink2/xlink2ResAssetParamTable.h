@@ -1,13 +1,11 @@
 #pragma once
 
 #include <basis/seadTypes.h>
+#include <prim/seadBitFlag.h>
 
 namespace xlink2 {
-struct ResAssetParam {
-    u64 mask;
-    u32 rawValue;
-};
 struct ResAssetParamTable {
-    ResAssetParam** params;
+    sead::BitFlag64 mask;
+    u32 rawValues[1];
 };
 }
