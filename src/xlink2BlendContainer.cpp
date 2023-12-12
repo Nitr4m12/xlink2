@@ -12,7 +12,7 @@ bool BlendContainer::start()
 bool BlendContainer::initialize(Event* event, const ResAssetCallTable& res_asset_call_table)
 {
     ContainerBase::initialize(event, res_asset_call_table);
-    ResourceUtil::getResContainerParam(mResAssetCallTable);
+    ResourceUtil::getResContainerParam(mAssetCallTable);
     return true;
 }
 }  // namespace xlink2

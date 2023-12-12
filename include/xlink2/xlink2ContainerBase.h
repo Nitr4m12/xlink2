@@ -24,7 +24,7 @@ public:
     void* createChildContainer_(ResAssetCallTable const&, ContainerBase*);
 
 protected:
-    ResAssetCallTable* mResAssetCallTable;
+    ResAssetCallTable* mAssetCallTable;
     Event* mEvent;
     ContainerBase* mChild;
     ContainerBase* mParent;

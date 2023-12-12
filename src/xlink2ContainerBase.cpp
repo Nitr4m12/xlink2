@@ -7,14 +7,14 @@ ContainerBase::ContainerBase()
     mAssetDuration = 0;
     mParent = nullptr;
     mChild = nullptr;
-    mResAssetCallTable = nullptr;
+    mAssetCallTable = nullptr;
     mEvent = nullptr;
 }
 ContainerBase::~ContainerBase() = default;
 
 bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table)
 {
-    mResAssetCallTable = &(ResAssetCallTable&)asset_call_table;
+    mAssetCallTable = &(ResAssetCallTable&)asset_call_table;
     mEvent = event;
     event->getUserInstance()->getUser()->getUserResource()->getAccessor();
     mAssetDuration = asset_call_table.duration;
