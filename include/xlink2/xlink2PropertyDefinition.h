@@ -8,7 +8,7 @@
 namespace xlink2 {
 class PropertyDefinition {
 public:
-    virtual ~PropertyDefinition() = default;
+    virtual ~PropertyDefinition();
 
     PropertyType getType() const { return mType; }
 

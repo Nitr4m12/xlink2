@@ -5,7 +5,7 @@
 
 namespace xlink2 {
 struct ResAssetParamTable {
-    sead::BitFlag64 mask;
+    sead::BitFlag32 mask;
     u32 rawValues[1];
 };
 }

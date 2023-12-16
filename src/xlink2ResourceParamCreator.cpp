@@ -269,7 +269,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     unsigned int not_default_param_num{0};
     unsigned int overwrite_param_num{0};
     u64 asset_param_table_end{(u64)common_res_param->assetParamTable};
-    sead::BitFlag64 mask = common_res_param->assetParamTable->mask;
+    sead::BitFlag32 mask = common_res_param->assetParamTable->mask;
 
     dumpLine_(dump_str, "<< ResAssetParamTable (addr:0x%x, size:print later) >>\n",
               common_res_param->assetParamTable);
@@ -281,9 +281,10 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
                 dumpLine_(dump_str, "  [%d] mask: %lu\n", i, mask.getDirect());
                 if (bin_accessor->mNumAssetParam != 0) {
                     for (u32 j{0}; j < bin_accessor->mNumAssetParam; ++j) {
-                        if (!(mask.getDirect() & 1L << (j & 0x3f)))
+                        if (!mask.countRightOnBit(j)) {
                             dumpLine_(dump_str,
                                       "  [%d] param of bit[%d]: not exist(default value)\n", i, j);
+                        }
                         else {
                             u32 raw_value = *raw_values;
                             dumpLine_(dump_str,
@@ -306,7 +307,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
                 mask = common_res_param->assetParamTable->mask;
                 if (bin_accessor->mNumAssetParam != 0) {
                     for (u32 j{0}; j < bin_accessor->mNumAssetParam; ++j) {
-                        if (!(mask.getDirect() & 1L << (j & 0x3f))) {
+                        if (mask.countRightOnBit(j)) {
                             not_default_param_num += 1;
                             raw_values += 1;
                         }
@@ -323,24 +324,23 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
         not_default_param_num = 0;
     }
 
-    // if (!param_bool1)
-
     dumpLine_(dump_str,
               "<< ResAssetParamTable finished(size:%d, allParamNum=%d, notDefaultParamNum=%d) >>\n",
               asset_param_table_end - (u64)common_res_param->assetParamTable, all_param_num,
               not_default_param_num);
 
-    u64 trigger_ow_param_table_pos;
+    u32* trigger_ow_param_table_pos;
     if (bin_accessor->mResourceHeader)
-        trigger_ow_param_table_pos = bin_accessor->mResourceHeader->triggerOverwriteParamTablePos;
+        trigger_ow_param_table_pos = (u32*)bin_accessor->mResourceHeader->triggerOverwriteParamTablePos;
     else
-        trigger_ow_param_table_pos = bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
+        trigger_ow_param_table_pos = (u32*)bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
 
     dumpLine_(dump_str, "<< ResTriggerOverwriteParamTable (addr:0x%x, size:print later) >>\n",
               trigger_ow_param_table_pos);
 
-    u64 pos{trigger_ow_param_table_pos};
+    u32 pos = (u64)trigger_ow_param_table_pos;
     u32 ow_param_table_end{0};
+    sead::BitFlag32 ow_mask;
     if (common_res_param->numResTriggerOverwriteParam == 0) {
         all_param_num = 0;
         overwrite_param_num = 0;
@@ -350,13 +350,13 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
         all_param_num = 0;
         for (u32 i{0}; i < common_res_param->numResTriggerOverwriteParam; ++i) {
             u32* param{solveOffset<u32>(pos)};
-            u32 mask = *param;
-            dumpLine_(dump_str, "  [%d] mask: %lu\n", i, mask);
+            ow_mask = *param;
+            dumpLine_(dump_str, "  [%d] mask: %lu\n", i, mask.getDirect());
             pos += 4;
             param += 1;
             if (bin_accessor->mNumUserParam != 0) {
                 for (u32 j{0}; j < bin_accessor->mNumAssetParam; ++j) {
-                    if (mask & 1L << (j & 0x3f)) {
+                    if (!ow_mask.countRightOnBit(1 << j)) {
                         dumpLine_(dump_str, "  [%d] param of bit[%d]: not exist(not overwritten)\n",
                                   i, j);
                     }
@@ -383,9 +383,9 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
         for (u32 i{0}; common_res_param->numResTriggerOverwriteParam; ++i) {
             if (bin_accessor->mNumUserParam != 0) {
                 u32* param_table{solveOffset<u32>(pos)};
-                u32 mask = *param_table;
+                ow_mask = *param_table;
                 for (u32 j{0}; j < bin_accessor->mNumUserParam; ++j) {
-                    if (mask & 1L << (j & 0x3f)) {
+                    if (!ow_mask.countRightOnBit(1 << j)) {
                         overwrite_param_num += 1;
                         k = param_value + 4;
                     }
@@ -410,7 +410,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     dumpLine_(dump_str, "<< LocalPropertyNameRefTable (addr:0x%x, size:%d*%u=%u) >>\n",
               common_res_param->localPropertyNameRefTable, 8,
               common_res_param->numLocalPropertyNameRefTable,
-              common_res_param->numLocalPropertyNameRefTable * 6);
+              common_res_param->numLocalPropertyNameRefTable * 8);
 
     if (param_bool1) {
         if (common_res_param->numLocalPropertyNameRefTable != 0) {
@@ -480,7 +480,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
 
     dumpLine_(dump_str, "<< CurveCallTable (addr:0x%x, size:%d*%u=%u) >>\n",
               common_res_param->curveCallTable, 14, common_res_param->numCurveTable,
-              common_res_param->numCurveTable * sizeof(ResCurveCallTable));
+              common_res_param->numCurveTable * 14);
 
     if (param_bool1) {
         if (common_res_param->numCurveTable != 0) {
