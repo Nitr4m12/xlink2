@@ -36,6 +36,7 @@ const ResAssetCallTable* ResourceAccessor::searchCallTable(Locator* locator,
     return (ResAssetCallTable*)mUserResource;
 }
 
+// WIP
 const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const {
     if (mUserResource && mSystem->isCallEnabled()) {
         UserResourceParam* param;
@@ -55,7 +56,19 @@ const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const {
     return nullptr;
 }
 
-void ResourceAccessor::setError_(const char*, ...) const {};
+void ResourceAccessor::setError_(const char* format, ...) const
+{
+    sead::FixedSafeString<256> msg;
+    msg.format(format);
+    const User* user;
+    if (mUserResource != nullptr)
+        user = mUserResource->getUser();
+    else
+        user = nullptr;
+
+    mSystem->addError((Error::Type)0x10, user, "%s", msg.mBuffer);
+
+};
 
 const char* ResourceAccessor::getKeyName(const ResAssetCallTable& call_table) const {
     return solveOffset<char>(call_table.keyNamePos);

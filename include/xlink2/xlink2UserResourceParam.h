@@ -4,11 +4,9 @@
 
 #include "xlink2/xlink2Condition.h"
 #include "xlink2/xlink2ResAction.h"
-#include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserBinParam.h"
 
 namespace xlink2 {
-class ResourceAccessor;
 struct UserResourceParam : public UserBinParam {
     sead::Buffer<ResCondition> conditionTableBuffer;
     sead::Buffer<CallTableParam> callTableBuffer;

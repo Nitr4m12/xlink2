@@ -21,7 +21,7 @@ public:
     void setupRomResourceParam_(sead::Heap*);
     void setupEditorResourceParam_(EditorResourceParam*, sead::Heap*);
     void setupResourceParam_(UserResourceParam*, ResUserHeader*, CommonResourceParam const*,
-                        ParamDefineTable const*, sead::Heap*);
+                             ParamDefineTable const*, sead::Heap*);
 
     const ResUserHeader* getUserHeader() const;
     ResAssetCallTable* searchAssetCallTableByName(Locator*, char const*) const;
@@ -57,13 +57,21 @@ public:
     virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
-    sead::SafeArray<UserResourceParam*, 2> getParams() const { return mParams; }
+    sead::SafeArray<UserResourceParam*, 2> getParamsUnsafe() { return mParams; }
+    const sead::SafeArray<UserResourceParam*, 2>& getParams() const { return mParams; }
     ResMode getResMode() const { return mResMode; }
+    const User* getUser() const { return mUser; }
 
 protected:
-    struct Dummy { u8 bytes[0x18]; };
-    struct Dummy2 { u8 bytes[0x10]; };
-    struct Dummy3 { u8 bytes[0x20]; };
+    struct Dummy {
+        u8 bytes[0x18];
+    };
+    struct Dummy2 {
+        u8 bytes[0x10];
+    };
+    struct Dummy3 {
+        u8 bytes[0x20];
+    };
 
     User* mUser;
     ResMode mResMode;

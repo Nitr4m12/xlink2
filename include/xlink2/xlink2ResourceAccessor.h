@@ -20,25 +20,15 @@ class ContainerBase;
 class ResourceAccessor {
 public:
     virtual ~ResourceAccessor() = 0;
-
     virtual bool isBlankAsset(const ResAssetCallTable&) const = 0;
-
     virtual const char* getBoneName(const ResAssetCallTable&) const = 0;
-
     virtual bool isBoneNameOverwritten(u32) const = 0;
-
     virtual const char* getOverwriteBoneName(u32) const = 0;
-
     virtual bool isAutoOneTimeFade(const ResAssetCallTable&) const = 0;
-
     virtual bool isForceBoolAsset(const ResAssetCallTable&) const = 0;
-
     virtual f32 getDelayWithOverwrite(const ResAssetCallTable&, u32, UserInstance const*) const = 0;
-
     virtual f32 getDuration(const ResAssetCallTable&, UserInstance const*) const = 0;
-
     virtual s32 getTriggerOverwriteParamId_(u32) const = 0;
-
     virtual s32 getAssetBitFlag(const ResAssetCallTable&) const = 0;
 
     const ResAssetCallTable* searchCallTable(char const*) const;
@@ -70,16 +60,12 @@ public:
 
     s32 getResParamValueInt_(const ResParam&) const;
     s32 getCustomParamValueInt(u32, const ResAssetCallTable&) const;
-
     f32 getCustomParamValueFloat(u32, const ResAssetCallTable&, const UserInstance*) const;
     f32 getResParamValueFloat_(const ResParam&, const UserInstance*) const;
 
     char* getCustomParamValueString(const char*, const ResAssetCallTable&) const;
-
     bool getCustomParamValueBool(const char*, const ResAssetCallTable&) const;
-
     s32 getCustomParamValueInt(const char*, const ResAssetCallTable&) const;
-
     f32 getCustomParamValueFloat(const char*, const ResAssetCallTable&, const UserInstance*) const;
 
     bool isCustomParamString(u32) const;
@@ -141,8 +127,7 @@ public:
     const ResRandomCallTable* getResRandomCallTable_(const ResParam&) const;
 
     f32 getResOverwriteParamValueFloat_(u32, u32, const UserInstance*) const;
-
-    char* getResOverwriteParamValueString_(u32, u32) const;
+    const char* getResOverwriteParamValueString_(u32, u32) const;
 
 private:
     ResUserHeader* mUserHeader {nullptr};
