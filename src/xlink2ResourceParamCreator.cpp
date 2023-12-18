@@ -1,6 +1,7 @@
 #include <cstddef>
 
 #include "xlink2/xlink2Condition.h"
+#include "xlink2/xlink2ResContainerParam.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2Util.h"

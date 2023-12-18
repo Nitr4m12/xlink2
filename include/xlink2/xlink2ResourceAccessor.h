@@ -8,11 +8,11 @@
 #include "xlink2/xlink2ResCurveCallTable.h"
 #include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2ResRandomCallTable.h"
+#include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2ValueReferenceType.h"
 
 namespace xlink2 {
-class UserResource;
 class UserInstance;
 class System;
 class ContainerBase;
@@ -128,6 +128,13 @@ public:
 
     f32 getResOverwriteParamValueFloat_(u32, u32, const UserInstance*) const;
     const char* getResOverwriteParamValueString_(u32, u32) const;
+
+    UserResourceParam* getResourceParam() const
+    {
+        if (ResMode::Editor >= mUserResource->getResMode())
+            return mUserResource->getParams()[(s32)mUserResource->getResMode()];
+        return mUserResource->getParams()[0];
+    }
 
 private:
     ResUserHeader* mUserHeader {nullptr};

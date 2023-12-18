@@ -2,7 +2,6 @@
 
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 
@@ -10,7 +9,6 @@ namespace xlink2 {
 class System;
 class ResourceAccessor;
 class User;
-struct UserResourceParam;
 
 class UserResource {
 public:

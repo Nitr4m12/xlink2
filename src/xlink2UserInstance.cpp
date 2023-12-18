@@ -1,5 +1,6 @@
 #include <xlink2/xlink2UserInstance.h>
 #include "xlink2/xlink2System.h"
+#include "xlink2/xlink2ResourceAccessor.h"
 
 namespace xlink2 {
 // WIP
