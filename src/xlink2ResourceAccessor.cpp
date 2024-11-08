@@ -129,4 +129,15 @@ const char* ResourceAccessor::getResParamValueString_(const ResParam& param) con
     return solveOffset<char>(value_string_pos);
 }
 
+bool ResourceAccessor::getCustomParamValueBool(u32 custom_param_idx, const ResAssetCallTable& asset_call_table) const
+{
+
+}
+
+//WIP
+s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
+{
+    return getResourceParam()->commonResourceParam->directValueTable[param.rawValue[0] & 0xffffff];
+}
+
 }  // namespace xlink2

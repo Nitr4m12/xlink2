@@ -3,6 +3,7 @@
 #include "xlink2/xlink2Condition.h"
 #include "xlink2/xlink2ResContainerParam.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
+#include "xlink2/xlink2ResUserHeader.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2Util.h"
 
@@ -159,7 +160,8 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     common_res_param->nameTablePos = *ptr + bin_accessor->mBinStart;
 }
 
-// WIP
+// TWO UNMATCHING
+// add     x2, x8, w26, uxtw  ->  add     x2, x8, w26, uxtw #2
 void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
                                             const BinAccessor* bin_accessor,
                                             const ParamDefineTable* param_define, sead::Heap* heap,
@@ -205,15 +207,16 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     }
     dumpLine_(buffered_str, "\n");
 
-    dumpLine_(buffered_str, "<< ParamDefineTable (addr:0x%x, size:%@) >>\n", rom_res->offsetTable,
+    dumpLine_(buffered_str, "<< ParamDefineTable (addr:0x%x, size:%@) >>\n", rom_res->offsetTable + offset_table_size,
               param_define->getSize());
     dumpLine_(buffered_str, "  ...no content print.\n\n");
 
     dumpCommonResourceFront_(rom_res, bin_accessor, p1, buffered_str);
     if (p1 && res_header->numUser != 0) {
         for (u32 i{0}; i < res_header->numUser; ++i) {
-            u64 user_offset = bin_accessor->mBinStart + rom_res->offsetTable[i];
-            dumpUserBin_(i, "", solveOffset<ResUserHeader>(user_offset), param_define,
+            u64 user_offset = rom_res->offsetTable[i] + bin_accessor->mBinStart;
+            auto* solved_offset = solveOffset<ResUserHeader>(user_offset);
+            dumpUserBin_(i, "", solved_offset, param_define,
                          buffered_str);
         }
     }
