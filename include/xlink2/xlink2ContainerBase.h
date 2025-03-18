@@ -21,13 +21,13 @@ public:
     virtual void kill();
     virtual bool killOneTimeEvent();
 
-    void* createChildContainer_(ResAssetCallTable const&, ContainerBase*);
+    ContainerBase* createChildContainer_(const ResAssetCallTable&, ContainerBase*);
 
 protected:
-    ResAssetCallTable* mAssetCallTable;
-    Event* mEvent;
-    ContainerBase* mChild;
-    ContainerBase* mParent;
+    ResAssetCallTable* mpAssetCallTable;
+    Event* mpEvent;
+    ContainerBase* mpChild;
+    ContainerBase* mpParent;
     s32 mAssetDuration;
 };
 }  // namespace xlink2

@@ -5,6 +5,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}AssetExecutorELink.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}AssetExecutorSLink.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}BlendContainer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ContainerBase.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}EditorBuffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ErrorMgr.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Event.cpp

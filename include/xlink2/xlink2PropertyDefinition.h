@@ -11,18 +11,14 @@ public:
     virtual ~PropertyDefinition();
 
     PropertyType getType() const { return mType; }
+    sead::FixedSafeString<64>* getPropertyName() { return &mPropertyName; }
 
 protected:
-    void* _0;
-    sead::FixedSafeString<64>* mUserName;
-    u32 _2;
-    u32 _3;
-    u32 mUserNamePos;
-    u8 unknown[54];
+    sead::FixedSafeString<64> mPropertyName;
     PropertyType mType;
-    u8 _1;
-    u64 _4;
+    u64 _0;
+    u64 _1;
 };
-static_assert(sizeof(PropertyDefinition) == 0x70, "Wrong size for 'xlink2::PropertyDefinition'");
+static_assert(sizeof(PropertyDefinition) == 0x78, "Wrong size for 'xlink2::PropertyDefinition'");
 
 }  // namespace xlink2

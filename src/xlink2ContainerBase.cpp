@@ -5,36 +5,35 @@ namespace xlink2 {
 ContainerBase::ContainerBase()
 {
     mAssetDuration = 0;
-    mParent = nullptr;
-    mChild = nullptr;
-    mAssetCallTable = nullptr;
-    mEvent = nullptr;
+    mpParent = nullptr;
+    mpChild = nullptr;
+    mpAssetCallTable = nullptr;
+    mpEvent = nullptr;
 }
 ContainerBase::~ContainerBase() = default;
 
 bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table)
 {
-    mAssetCallTable = &(ResAssetCallTable&)asset_call_table;
-    mEvent = event;
+    mpAssetCallTable = &(ResAssetCallTable&)asset_call_table;
+    mpEvent = event;
     event->getUserInstance()->getUser()->getUserResource()->getAccessor();
     mAssetDuration = asset_call_table.duration;
     return true;
 }
 
-// NON-MATCHING: wrong register
 void ContainerBase::destroy()
 {
-    auto* child = mChild;
+    auto* child = mpChild;
     while (child != nullptr) {
         auto* unk = child;
-        child = child->mParent;
+        child = child->mpParent;
         unk->destroy();
     }
 
     mAssetDuration = 0;
-    mChild = nullptr;
+    mpChild = nullptr;
 
-    auto* system = mEvent->getUserInstance()->getUser()->getSystem();
+    auto* system = mpEvent->getUserInstance()->getUser()->getSystem();
     auto* heap = system->getContainerHeap();
     this->~ContainerBase();
     heap->free(this);
@@ -42,7 +41,7 @@ void ContainerBase::destroy()
 
 void ContainerBase::fadeBySystem()
 {
-    for (auto* child = mChild; child != nullptr; child = child->mParent)
+    for (auto* child = mpChild; child != nullptr; child = child->mpParent)
         child->fadeBySystem();
 
     mAssetDuration = 0;
@@ -50,7 +49,7 @@ void ContainerBase::fadeBySystem()
 
 void ContainerBase::fade(s32 p1)
 {
-    for (auto* child = mChild; child != nullptr; child = child->mParent)
+    for (auto* child = mpChild; child != nullptr; child = child->mpParent)
         child->fade(p1);
 
     mAssetDuration = 0;
@@ -58,7 +57,7 @@ void ContainerBase::fade(s32 p1)
 
 void ContainerBase::kill()
 {
-    for (auto* child = mChild; child != nullptr; child = child->mParent)
+    for (auto* child = mpChild; child != nullptr; child = child->mpParent)
         child->kill();
 
     mAssetDuration = 0;
@@ -67,7 +66,7 @@ void ContainerBase::kill()
 bool ContainerBase::killOneTimeEvent()
 {
     bool unk = true;
-    for (auto* child = mChild; child != nullptr; child = child->mParent) {
+    for (auto* child = mpChild; child != nullptr; child = child->mpParent) {
         bool unk2 = child->killOneTimeEvent();
         unk = unk2 & unk;
     }
@@ -78,10 +77,10 @@ bool ContainerBase::killOneTimeEvent()
     return true;
 }
 
-void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
+ContainerBase* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
                                            ContainerBase* container)
 {
-    auto* child_container{ContainerCreator::CreateContainer(mEvent, asset_call_table)};
+    auto* child_container{ContainerCreator::CreateContainer(mpEvent, asset_call_table)};
 
     if (!child_container)
         return nullptr;
@@ -92,10 +91,10 @@ void* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_t
         child_container = nullptr;
     }
     else if (!container) {
-        mChild = child_container;
+        mpChild = child_container;
     }
     else {
-        container->mParent = child_container;
+        container->mpParent = child_container;
     }
 
     return child_container;
