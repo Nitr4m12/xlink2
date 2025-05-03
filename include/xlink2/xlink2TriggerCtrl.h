@@ -24,4 +24,6 @@ protected:
     UserInstance* mUserInstance {nullptr};
     sead::Buffer<ModelTriggerConnection>* mConnectionBuffer {nullptr};
 };
+static_assert(sizeof(TriggerCtrl) == 0x18, "'xlink2::TriggerCtrl' is not of the correct size");
+
 }  // namespace xlink2
