@@ -8,6 +8,8 @@ struct ModelTriggerConnection {
     sead::PtrArray<Event>* mEventPtrs;
     Event* mEvent;
     u32 _2;
-    void* _3;
+    u8 padding[6];
+    bool isOnce;
 };
+static_assert(sizeof(ModelTriggerConnection) == 0x28, "'xlink2::ModelTriggerConnection' is not of the correct size");
 }  // namespace xlink2
