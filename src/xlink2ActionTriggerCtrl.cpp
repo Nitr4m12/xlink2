@@ -29,5 +29,20 @@ void ActionTriggerCtrl::calc() {
 
 TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& action_trigger) {}
 
+void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2) {
+
+    UserResource* user_resource {getUserResource()};
+    UserResourceParam* user_resource_param {getUserResourceParam()};
+   
+    if (-1 < action_idx && action_idx < (s32)user_resource_param->resUserHeader->numResAction) { 
+        ResAction* res_action = &user_resource_param->resActionTable[action_idx];
+        if (mAction != res_action) {
+            changeActionImpl_(res_action, p2, user_resource);
+        }
+        return;
+    }
+    stopAction();
+}
+
 
 }  // namespace xlink2
