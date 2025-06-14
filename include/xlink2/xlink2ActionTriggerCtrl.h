@@ -31,13 +31,13 @@ public:
     void changeActionImpl_(ResAction const*, s32, UserResource const*);
     void changeAction(s32 action_idx, s32 p2);
     
-    s32 getCurrentResActionIdx();
+    s32 getCurrentResActionIdx() const;
     void changeActionImpl_old_(ResAction const*, s32, UserResource const*);
     void restartAction(char const*, int);
 
     ~ActionTriggerCtrl() override;
 
-    UserResource* getUserResource() { return mUserInstance->getUser()->getUserResource(); }
+    UserResource* getUserResource() const { return mUserInstance->getUser()->getUserResource(); }
 
 private:
     const ResActionSlot* mActionSlot {nullptr};

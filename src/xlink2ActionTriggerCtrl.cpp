@@ -1,4 +1,5 @@
 #include "xlink2/xlink2ActionTriggerCtrl.h"
+#include "codec/seadHashCRC32.h"
 
 namespace xlink2 {
 
@@ -44,5 +45,13 @@ void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2) {
     stopAction();
 }
 
+s32 ActionTriggerCtrl::getCurrentResActionIdx() const {
+    if (mAction != nullptr) {
+        UserResourceParam* param {getUserResource()->getParam()};
+        return mAction - param->resActionTable;
+    }
+
+    return -1;
+}
 
 }  // namespace xlink2
