@@ -129,13 +129,6 @@ public:
     f32 getResOverwriteParamValueFloat_(u32, u32, const UserInstance*) const;
     const char* getResOverwriteParamValueString_(u32, u32) const;
 
-    UserResourceParam* getResourceParam() const
-    {
-        if (ResMode::Editor >= mUserResource->getResMode())
-            return mUserResource->getParams()[(s32)mUserResource->getResMode()];
-        return mUserResource->getParams()[0];
-    }
-
 private:
     ResUserHeader* mUserHeader {nullptr};
     UserResource* mUserResource {nullptr};

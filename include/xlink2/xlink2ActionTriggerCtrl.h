@@ -38,7 +38,6 @@ public:
     ~ActionTriggerCtrl() override;
 
     UserResource* getUserResource() { return mUserInstance->getUser()->getUserResource(); }
-    UserResourceParam* getUserResourceParam() { return getUserResource()->getParams()[(s32)getUserResource()->getResMode()]; }
 
 private:
     const ResActionSlot* mActionSlot {nullptr};

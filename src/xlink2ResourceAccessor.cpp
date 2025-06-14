@@ -7,7 +7,7 @@ ResourceAccessor::~ResourceAccessor() = default;
 const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) const
 {
     if (mUserResource && mSystem->isCallEnabled()) {
-        UserResourceParam* param = getResourceParam();
+        UserResourceParam* param = mUserResource->getParam();
 
         if (param && param->isSetup)
             return mUserResource->searchAssetCallTableByName(name);
@@ -19,7 +19,7 @@ const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) con
 const ResAssetCallTable* ResourceAccessor::searchCallTable(Locator* locator, const char* name) const
 {
     if (mUserResource && mSystem->isCallEnabled()) {
-        UserResourceParam* param = getResourceParam();
+        UserResourceParam* param = mUserResource->getParam();
 
         if (param && param->isSetup)
             return mUserResource->searchAssetCallTableByName(locator, name);
@@ -32,7 +32,7 @@ const ResAssetCallTable* ResourceAccessor::searchCallTable(Locator* locator, con
 const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const
 {
     if (mUserResource && mSystem->isCallEnabled()) {
-        UserResourceParam* param = getResourceParam();
+        UserResourceParam* param = mUserResource->getParam();
 
         if (param && param->isSetup) {
             if (idx < mUserHeader->numCallTable)
@@ -123,9 +123,9 @@ bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_call
 
 const char* ResourceAccessor::getResParamValueString_(const ResParam& param) const
 {
-    UserResourceParam* user_param = getResourceParam();
+    UserResourceParam* user_param = mUserResource->getParam();
     u64 value_string_pos =
-        user_param->commonResourceParam->nameTablePos + (*param.rawValue & 0xffffff);
+        user_param->commonResourceParam->nameTablePos + (param.rawValue & 0xffffff);
     return solveOffset<char>(value_string_pos);
 }
 
@@ -137,7 +137,7 @@ bool ResourceAccessor::getCustomParamValueBool(u32 custom_param_idx, const ResAs
 //WIP
 s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 {
-    return getResourceParam()->commonResourceParam->directValueTable[param.rawValue[0] & 0xffffff];
+    return mUserResource->getParam()->commonResourceParam->directValueTable[param.rawValue & 0xffffff];
 }
 
 }  // namespace xlink2

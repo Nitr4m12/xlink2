@@ -55,8 +55,7 @@ public:
     virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
-    sead::SafeArray<UserResourceParam*, 2> getParamsUnsafe() { return mParams; }
-    const sead::SafeArray<UserResourceParam*, 2>& getParams() const { return mParams; }
+    UserResourceParam* getParam() const { return mParams[(s32)mResMode]; }
     ResMode getResMode() const { return mResMode; }
     const User* getUser() const { return mUser; }
 

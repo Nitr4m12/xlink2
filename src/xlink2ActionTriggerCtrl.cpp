@@ -32,7 +32,7 @@ TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& act
 void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2) {
 
     UserResource* user_resource {getUserResource()};
-    UserResourceParam* user_resource_param {getUserResourceParam()};
+    UserResourceParam* user_resource_param {user_resource->getParam()};
    
     if (-1 < action_idx && action_idx < (s32)user_resource_param->resUserHeader->numResAction) { 
         ResAction* res_action = &user_resource_param->resActionTable[action_idx];

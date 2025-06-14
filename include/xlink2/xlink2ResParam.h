@@ -4,6 +4,6 @@
 
 namespace xlink2 {
 struct ResParam {
-    u32 rawValue[1];
+    u32 rawValue;
 };
 }  // namespace xlink2
