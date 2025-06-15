@@ -1,6 +1,7 @@
 #pragma once
 
 #include "basis/seadTypes.h"
+#include "prim/seadBitFlag.h"
 
 namespace xlink2 {
 struct ResActionTrigger {
@@ -8,7 +9,7 @@ struct ResActionTrigger {
     u32 assetCtbPos;
     s32 startFrame;
     s32 endFrame;
-    u16 flag;
+    sead::BitFlag16 flag;
     s16 overwriteHash;
     u32 overwriteParamPos;
 };

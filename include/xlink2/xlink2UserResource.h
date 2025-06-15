@@ -2,6 +2,7 @@
 
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2ResActionTrigger.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 
@@ -28,7 +29,7 @@ public:
     ResAssetCallTable* searchAssetCallTableByHash(Locator*, u32) const;
 
     ResAssetCallTable* getAssetCallTableItem(s32) const;
-    void* getActionTriggerTableItem(s32) const;
+    ResActionTrigger* getActionTriggerTableItem(s32) const;
     void* getPropertyTriggerTableItem(s32) const;
     ResAlwaysTrigger* getAlwaysTriggerTableItem(s32) const;
 

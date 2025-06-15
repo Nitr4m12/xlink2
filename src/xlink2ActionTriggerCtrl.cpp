@@ -1,5 +1,6 @@
 #include "xlink2/xlink2ActionTriggerCtrl.h"
 #include "codec/seadHashCRC32.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 
@@ -25,10 +26,28 @@ void ActionTriggerCtrl::reset() {
     mIsActive = false;
 }
 
-void ActionTriggerCtrl::calc() {
-}
+void ActionTriggerCtrl::calc() {}
 
 TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& action_trigger) {}
+
+void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx) {
+    ResActionTrigger* action_trigger {getUserResource()->getActionTriggerTableItem(action_trigger_idx)};
+
+    if (!(action_trigger->flag & 1) || !getModelTriggerConnection(action_trigger_idx)->isActive) {
+        u32 ow_param_pos {action_trigger->overwriteParamPos};
+        ResAssetCallTable* asset_ctb {calcOffset<ResAssetCallTable>(action_trigger->assetCtbPos)};
+        emitByTriggerImpl(TriggerType::Action, action_trigger_idx, ow_param_pos, asset_ctb);
+        getModelTriggerConnection(action_trigger_idx)->isActive = true;
+    }
+}
+
+void ActionTriggerCtrl::notifyActive() {
+    if (mAction != nullptr && mAction->triggerStartIdx <= mAction->triggerEndIdx) {
+        for (int i {mAction->triggerStartIdx}; i <= mAction->triggerEndIdx; i++) {
+            getModelTriggerConnection(i)->isActive = false;
+        }
+    }
+}
 
 void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2) {
 
@@ -53,13 +72,4 @@ s32 ActionTriggerCtrl::getCurrentResActionIdx() const {
 
     return -1;
 }
-
-void ActionTriggerCtrl::notifyActive() {
-    if (mAction != nullptr && mAction->triggerStartIdx <= mAction->triggerEndIdx) {
-        for (int i {mAction->triggerStartIdx}; i <= mAction->triggerEndIdx; i++) {
-            getModelTriggerConnection(i)->isActive = false;
-        }
-    }
-}
-
 }  // namespace xlink2

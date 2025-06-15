@@ -104,7 +104,7 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
 
     if (common_res_param->numResAssetParam > 0)
         common_res_param->assetParamTable =
-            solveOffset<ResAssetParamTable>(bin_accessor->mAssetsStart);
+            calcOffset<ResAssetParamTable>(bin_accessor->mAssetsStart);
 
     common_res_param->triggerOverwriteParamTablePos =
         bin_accessor->mResourceHeader ?
@@ -117,7 +117,7 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
         ptr = &bin_accessor->mResourceHeader->localPropertyNameRefTablePos;
     else
         ptr = &bin_accessor->mEditorHeader->localPropertyNameRefTablePos;
-    auto* local_property_name_ref_table = solveOffset<u32>(bin_accessor->mBinStart + *ptr);
+    auto* local_property_name_ref_table = calcOffset<u32>(bin_accessor->mBinStart + *ptr);
     if (common_res_param->numLocalPropertyNameRefTable > 0)
         common_res_param->localPropertyNameRefTable = local_property_name_ref_table;
 
@@ -217,7 +217,7 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     if (p1 && res_header->numUser != 0) {
         for (u32 i{0}; i < res_header->numUser; ++i) {
             u64 user_offset = rom_res->offsetTable[i] + bin_accessor->mBinStart;
-            auto* solved_offset = solveOffset<ResUserHeader>(user_offset);
+            auto* solved_offset = calcOffset<ResUserHeader>(user_offset);
             dumpUserBin_(i, "", solved_offset, param_define,
                          buffered_str);
         }
@@ -356,7 +356,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     else if (param_bool1) {
         all_param_num = 0;
         for (u32 i{0}; i < common_res_param->numResTriggerOverwriteParam; ++i) {
-            u32* param{solveOffset<u32>(pos)};
+            u32* param{calcOffset<u32>(pos)};
             ow_mask = *param;
             dumpLine_(dump_str, "  [%d] mask: %lu\n", i, mask.getDirect());
             pos += 4;
@@ -389,7 +389,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
         u32 k = param_value;
         for (u32 i{0}; common_res_param->numResTriggerOverwriteParam; ++i) {
             if (bin_accessor->mNumUserParam != 0) {
-                u32* param_table{solveOffset<u32>(pos)};
+                u32* param_table{calcOffset<u32>(pos)};
                 ow_mask = *param_table;
                 for (u32 j{0}; j < bin_accessor->mNumUserParam; ++j) {
                     if (!ow_mask.countRightOnBit(1 << j)) {

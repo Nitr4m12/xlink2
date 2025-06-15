@@ -22,7 +22,7 @@ public:
     void calc() override;
 
     static TriggerType getActionTriggerType_(const ResActionTrigger&);
-    void emitByTrigger_(s32);
+    void emitByTrigger_(s32 action_trigger_idx);
 
     void notifyActive();
     void changeAction(const char*, s32);

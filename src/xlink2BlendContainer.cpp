@@ -40,11 +40,11 @@ bool BlendContainer::callAllChildContainer_()
         while (b2) {
 
             const char* container_type_name {user_instance->getContainerTypeName(*mpAssetCallTable)->cstr()};
-            char* key_name {solveOffset<char>(mpAssetCallTable->keyNamePos)};
+            char* key_name {calcOffset<char>(mpAssetCallTable->keyNamePos)};
 
             ResAssetCallTable* asset_call_item {user_resource->getAssetCallTableItem(j)};
             const char* other_container_name {user_instance->getContainerTypeName(*asset_call_item)->cstr()};
-            char* other_key_name {solveOffset<char>(asset_call_item->keyNamePos)};
+            char* other_key_name {calcOffset<char>(asset_call_item->keyNamePos)};
 
             user_instance->printLogContainerSelect(*mpEvent, "%s[%s] -> %s[%s] (idx=%d)", container_type_name, key_name, other_container_name, other_key_name, i);
             childContainer = createChildContainer_(*asset_call_item, container);

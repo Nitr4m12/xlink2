@@ -60,7 +60,7 @@ void ResourceAccessor::setError_(const char* format, ...) const
 
 const char* ResourceAccessor::getKeyName(const ResAssetCallTable& call_table) const
 {
-    return solveOffset<char>(call_table.keyNamePos);
+    return calcOffset<char>(call_table.keyNamePos);
 }
 
 // WIP
@@ -69,10 +69,10 @@ ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& call_t
     if (!isContainer(call_table))
         return ContainerType::Asset;
 
-    ResContainerParam* container_param {solveOffset<ResContainerParam>(call_table.paramStartPos)};
+    ResContainerParam* container_param {calcOffset<ResContainerParam>(call_table.paramStartPos)};
     if (container_param) {
         if (container_param->type > ContainerType::Sequence) {
-            char* container_name {solveOffset<char>(call_table.keyNamePos)};
+            char* container_name {calcOffset<char>(call_table.keyNamePos)};
             setError_("[%s] invalid container type(=%d)", container_name, container_param->type);
             return ContainerType::Asset;
         }
@@ -85,7 +85,7 @@ ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& call_t
 const ContainerBase* ResourceAccessor::getContainer(const ResAssetCallTable& call_table) const
 {
     if (isContainer(call_table))
-        return solveOffset<ContainerBase>(call_table.paramStartPos);
+        return calcOffset<ContainerBase>(call_table.paramStartPos);
     return nullptr;
 }
 
@@ -108,7 +108,7 @@ const char* ResourceAccessor::getCustomParamValueString(u32 idx,
         if (value_type == ParamValueType::String) {
             auto is_asset {checkAndErrorIsAsset_(call_table, "getCustomParamValueString(%d)", idx)};
             if (is_asset) {
-                auto* flag = solveOffset<sead::BitFlag64>(call_table.paramStartPos);
+                auto* flag = calcOffset<sead::BitFlag64>(call_table.paramStartPos);
             }
         }
     }
@@ -126,7 +126,7 @@ const char* ResourceAccessor::getResParamValueString_(const ResParam& param) con
     UserResourceParam* user_param = mUserResource->getParam();
     u64 value_string_pos =
         user_param->commonResourceParam->nameTablePos + (param.rawValue & 0xffffff);
-    return solveOffset<char>(value_string_pos);
+    return calcOffset<char>(value_string_pos);
 }
 
 bool ResourceAccessor::getCustomParamValueBool(u32 custom_param_idx, const ResAssetCallTable& asset_call_table) const
