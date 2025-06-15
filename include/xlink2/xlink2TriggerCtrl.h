@@ -16,7 +16,7 @@ public:
 
     void emitByTriggerImpl(TriggerType, s32, u32, ResAssetCallTable const*);
     void fadeByTrigger_(s32);
-    void* getModelTriggerConnection(s32);
+    ModelTriggerConnection* getModelTriggerConnection(s32 index);
     void resetIsOnceCheck_();
     void setBoneMatrixToConnection(u32, ModelTriggerConnection*);
 

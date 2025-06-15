@@ -1,6 +1,8 @@
 #include <cstddef>
 
+#include "prim/seadSafeString.h"
 #include "xlink2/xlink2Condition.h"
+#include "xlink2/xlink2ResAssetParamTable.h"
 #include "xlink2/xlink2ResContainerParam.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2ResUserHeader.h"
@@ -269,19 +271,20 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
                                                     bool param_bool1,
                                                     sead::BufferedSafeString* dump_str)
 {
-    unsigned int all_param_num{0};
-    unsigned int not_default_param_num{0};
-    unsigned int overwrite_param_num{0};
-    u64 asset_param_table_end{(u64)common_res_param->assetParamTable};
-    sead::BitFlag32 mask = common_res_param->assetParamTable->mask;
+    unsigned int all_param_num {0};
+    unsigned int not_default_param_num {0};
+    unsigned int overwrite_param_num {0};
+    ResAssetParamTable* asset_param_table {common_res_param->assetParamTable};
+    u64 asset_param_table_end {(u64)asset_param_table};
+    sead::BitFlag32 mask = asset_param_table->mask;
 
     dumpLine_(dump_str, "<< ResAssetParamTable (addr:0x%x, size:print later) >>\n",
-              common_res_param->assetParamTable);
+              asset_param_table);
     if (common_res_param->numResAssetParam != 0) {
         if (!param_bool1) {
             for (u32 i{0}; i < common_res_param->numResAssetParam; ++i) {
-                u32* raw_values = common_res_param->assetParamTable->rawValues;
-                mask = common_res_param->assetParamTable->mask;
+                u32* raw_values = asset_param_table->rawValues;
+                mask = asset_param_table->mask;
                 dumpLine_(dump_str, "  [%d] mask: %lu\n", i, mask.getDirect());
                 if (bin_accessor->mNumAssetParam != 0) {
                     for (u32 j{0}; j < bin_accessor->mNumAssetParam; ++j) {
@@ -307,8 +310,8 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
         }
         else {
             for (u32 i{0}; i < common_res_param->numResAssetParam; ++i) {
-                u32* raw_values = common_res_param->assetParamTable->rawValues;
-                mask = common_res_param->assetParamTable->mask;
+                u32* raw_values = asset_param_table->rawValues;
+                mask = asset_param_table->mask;
                 if (bin_accessor->mNumAssetParam != 0) {
                     for (u32 j{0}; j < bin_accessor->mNumAssetParam; ++j) {
                         if (mask.countRightOnBit(j)) {
@@ -330,7 +333,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
 
     dumpLine_(dump_str,
               "<< ResAssetParamTable finished(size:%d, allParamNum=%d, notDefaultParamNum=%d) >>\n",
-              asset_param_table_end - (u64)common_res_param->assetParamTable, all_param_num,
+              asset_param_table_end - (u64)asset_param_table, all_param_num,
               not_default_param_num);
 
     u32* trigger_ow_param_table_pos;
@@ -483,8 +486,8 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     dumpLine_(dump_str, "\n");
 
     dumpLine_(dump_str, "<< CurveCallTable (addr:0x%x, size:%d*%u=%u) >>\n",
-              common_res_param->curveCallTable, 14, common_res_param->numCurveTable,
-              common_res_param->numCurveTable * 14);
+              common_res_param->curveCallTable, common_res_param->numCurveTable, 0x14,
+              common_res_param->numCurveTable * 0x14);
 
     if (param_bool1) {
         if (common_res_param->numCurveTable != 0) {
@@ -538,7 +541,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
         dumpLine_(dump_str, "  ...no content print.\n");
 
     dumpLine_(dump_str, "\n");
-};
+}
 
 // WIP
 void ResourceParamCreator::dumpUserBin_(u32 p1, const sead::SafeString& user_name,

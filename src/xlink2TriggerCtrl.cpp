@@ -8,7 +8,7 @@ void TriggerCtrl::resetIsOnceCheck_() {
     if (mConnectionBuffer != nullptr && 0 < mConnectionBuffer->getSize()) {
         ModelTriggerConnection* model_trigger_connections {mConnectionBuffer->getBufferPtr()};
         for (s32 i{0}; i < mConnectionBuffer->size(); ++i)
-            model_trigger_connections[i].isOnce = false;
+            model_trigger_connections[i].isActive = false;
     }
 }
 

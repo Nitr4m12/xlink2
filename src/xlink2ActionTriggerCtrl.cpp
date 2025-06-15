@@ -54,4 +54,12 @@ s32 ActionTriggerCtrl::getCurrentResActionIdx() const {
     return -1;
 }
 
+void ActionTriggerCtrl::notifyActive() {
+    if (mAction != nullptr && mAction->triggerStartIdx <= mAction->triggerEndIdx) {
+        for (int i {mAction->triggerStartIdx}; i <= mAction->triggerEndIdx; i++) {
+            getModelTriggerConnection(i)->isActive = false;
+        }
+    }
+}
+
 }  // namespace xlink2

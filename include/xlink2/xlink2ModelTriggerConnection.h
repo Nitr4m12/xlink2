@@ -9,7 +9,7 @@ struct ModelTriggerConnection {
     Event* mEvent;
     u32 _2;
     u8 padding[6];
-    bool isOnce;
+    bool isActive;
 };
 static_assert(sizeof(ModelTriggerConnection) == 0x28, "'xlink2::ModelTriggerConnection' is not of the correct size");
 }  // namespace xlink2
