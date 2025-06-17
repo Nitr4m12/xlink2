@@ -36,7 +36,7 @@ public:
     u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
     u8 calc();
 
-    s32 getAliveAssetNum();
+    s32 getAliveAssetNum() const;
     s32 getFadeBySystemListAssetNum();
 
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);

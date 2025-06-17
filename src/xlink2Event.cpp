@@ -28,4 +28,14 @@ void Event::doFinalize_() {}
 void Event::callEventCreateCallback_() {}
 void Event::callEventDestroyCallback_() {}
 void Event::fixDelayParam_() {}
+
+s32 Event::getAliveAssetNum() const
+{
+    int alive_asset_num {0};
+    for (auto& asset_executor : mAliveAssetExecutors)
+        if (asset_executor.isAssetValid())
+            ++alive_asset_num; 
+
+    return alive_asset_num;
+}
 }  // namespace xlink2
