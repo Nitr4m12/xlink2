@@ -51,4 +51,5 @@ struct Error {
     sead::FixedSafeString<256> fixedString2;
     u32 _0;
 };
+static_assert(sizeof(Error) == 0x280, "Wrong size for 'xlink2::Error'");
 }  // namespace xlink2
