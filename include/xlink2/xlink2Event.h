@@ -37,7 +37,7 @@ public:
     u8 calc();
 
     s32 getAliveAssetNum() const;
-    s32 getFadeBySystemListAssetNum();
+    s32 getFadeBySystemListAssetNum() const;
 
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
 
