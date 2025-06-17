@@ -6,12 +6,9 @@
 #include "xlink2/xlink2ResEset.h"
 #include "xlink2/xlink2ResourceAccessorELink.h"
 
-namespace sead {
-class TextWriter;
-namespace ptcl {
+namespace sead::ptcl {
 class EmitterSet;
-}
-}  // namespace sead
+}  // namespace sead::ptcl
 
 namespace xlink2 {
 class IEventCallbackELink {

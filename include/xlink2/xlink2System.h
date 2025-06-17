@@ -24,7 +24,6 @@
 
 namespace sead {
 class DrawContext;
-class TextWriter;
 class Viewport;
 }  // namespace sead
 

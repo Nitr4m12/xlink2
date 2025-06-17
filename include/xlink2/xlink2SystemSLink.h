@@ -10,7 +10,6 @@ class System;
 
 namespace sead {
 class DrawContext;
-class TextWriter;
 }
 
 namespace xlink2 {
