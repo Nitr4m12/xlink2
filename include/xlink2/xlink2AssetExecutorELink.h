@@ -18,7 +18,7 @@ class AssetExecutorELink : AssetExecutor {
 public:
     ~AssetExecutorELink() override;
 
-    bool calc() override;
+    u32 calc() override;
 
     u32 emitEffect();
 
@@ -96,4 +96,5 @@ private:
     f32 _14;
     f32 _15;
 };
+static_assert(sizeof(AssetExecutorELink) == 0xa0, "Wrong size of 'xlink2::AssetExecutorELink'");
 }  // namespace xlink2

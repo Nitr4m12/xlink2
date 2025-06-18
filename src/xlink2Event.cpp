@@ -13,7 +13,7 @@ Event::~Event() = default;
 
 void Event::initialize(u32 param_int)
 {
-    _0x08 = 2;
+    mBitFlag = 2;
     mpUserInstance = nullptr;
     mpAssetCallTable = nullptr;
     mTriggerType = TriggerType::Invalid;
@@ -52,16 +52,17 @@ void Event::callEventDestroyCallback_() {}
 
 void Event::reEmit(const ResAssetCallTable* asset_ctb) 
 {
-    _0x08 |= 0x34;
+    mBitFlag.set(52);
     kill();
-    _0x08 &= -53;
+    mBitFlag.reset(52);
+
     destroyAllContainerAndAssetExecutor_();
     createRootContainer(mpUserInstance, *asset_ctb);
 }   
 
 void Event::kill() 
 {
-    _0x08 = _0x08 | 0x30;
+    mBitFlag.set(48);
     if (mpUserInstance != nullptr) {
         System* sys {mpUserInstance->getUser()->getSystem()};
         {
@@ -113,6 +114,42 @@ bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallT
     
 }
 
+bool Event::calc()
+{
+
+    if (mBitFlag.isOn(64)) {
+        if (mBitFlag.isOff(16))
+            reEmit(mpAssetCallTable);
+
+        mBitFlag.reset(64);
+    }  
+
+    fixDelayParam_();
+
+    bool container_done {true};    
+    if (mpRootContainer != nullptr) {
+        container_done = mpRootContainer->calc();
+        if (container_done) {
+            auto* container {mpRootContainer};
+            mpRootContainer = nullptr;
+            container->destroy();
+        }
+    }
+
+    bool is_empty {mFadeBySystemAssetExecutors.isEmpty()};
+    if (!is_empty) {
+        for (auto& executor : mFadeBySystemAssetExecutors.robustRange()) {
+            if (executor.calc()) {
+                mFadeBySystemAssetExecutors.erase(&executor);
+                mpUserInstance->getUser()->getSystem()->freeAssetExecutor(&executor);
+            }
+        }
+        is_empty = mFadeBySystemAssetExecutors.isEmpty();
+    }
+
+    return is_empty && container_done;
+}
+
 s32 Event::getAliveAssetNum() const
 {
     int asset_num {0};
@@ -135,9 +172,9 @@ s32 Event::getFadeBySystemListAssetNum() const
 
 void Event::fade(s32 p1) 
 {
-    _0x08 = _0x08 | 0x10;
+    mBitFlag.set(16);
     if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
-        System* sys = {getUserInstance()->getUser()->getSystem()};
+        System* sys = {mpUserInstance->getUser()->getSystem()};
         {
             auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
             mpRootContainer->fade(p1);    
@@ -147,9 +184,9 @@ void Event::fade(s32 p1)
 
 void Event::fadeBySystem() 
 {
-    _0x08 = _0x08 | 0x10;
+    mBitFlag.set(16);
     if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
-        System* sys = {getUserInstance()->getUser()->getSystem()};
+        System* sys = {mpUserInstance->getUser()->getSystem()};
         {
             auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
             mpRootContainer->fadeBySystem();    

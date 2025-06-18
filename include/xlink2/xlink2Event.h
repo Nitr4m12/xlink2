@@ -2,6 +2,7 @@
 
 #include <container/seadSafeArray.h>
 #include <container/seadOffsetList.h>
+#include <prim/seadBitFlag.h>
 
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2BoneMtx.h"
@@ -34,7 +35,7 @@ public:
     void kill();
 
     bool createRootContainer(UserInstance*, const ResAssetCallTable&);
-    u8 calc();
+    bool calc();
 
     s32 getAliveAssetNum() const;
     s32 getFadeBySystemListAssetNum() const;
@@ -53,7 +54,7 @@ public:
     TriggerType& getTriggerType() { return mTriggerType; }
 
 private:
-    u32 _0x08{0};
+    sead::BitFlag32 mBitFlag{0};
     void* _0x10{nullptr};
     void* _0x18{nullptr};
     u32 _0x20{0};

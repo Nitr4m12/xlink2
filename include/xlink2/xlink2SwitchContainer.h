@@ -9,7 +9,7 @@ class SwitchContainer : ContainerBase {
 public:
     ~SwitchContainer() override;
 
-    u32 calc() override;
+    bool calc() override;
 
     u64 getConditionMatchChildTable_();
 

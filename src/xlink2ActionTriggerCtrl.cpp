@@ -42,7 +42,7 @@ void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx) {
 }
 
 void ActionTriggerCtrl::notifyActive() {
-    if (mAction != nullptr && mAction->triggerStartIdx <= mAction->triggerEndIdx) {
+    if (mAction != nullptr) {
         for (int i {mAction->triggerStartIdx}; i <= mAction->triggerEndIdx; i++) {
             getModelTriggerConnection(i)->isActive = false;
         }

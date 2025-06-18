@@ -8,7 +8,7 @@ class AssetExecutor {
 public:
     virtual ~AssetExecutor();
 
-    virtual bool calc() = 0;
+    virtual u32 calc() = 0;
 
     virtual bool isAssetValid() const = 0;
 

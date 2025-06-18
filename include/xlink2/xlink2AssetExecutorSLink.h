@@ -22,7 +22,7 @@ public:
     void activateImpl_() override;
     void appendAalInfoStr(sead::BufferedSafeString*);
     void applyParam(bool);
-    bool calc() override;
+    u32 calc() override;
     void* emitSound();
     void fade(s32) override;
     void fadeBySystem() override;
@@ -72,5 +72,7 @@ private:
     f32 mVelocityX;                                       // 0x90
     f32 mVelocityY;                                       // 0x94
     f32 mVelocityZ;                                       // 0x98
+    u8 p[0x8];
 };
+static_assert(sizeof(AssetExecutorSLink) == 0xa8, "Wrong size of 'xlink2::AssetExecutorELink'");
 }  // namespace xlink2
