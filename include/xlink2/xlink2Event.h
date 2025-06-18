@@ -30,7 +30,7 @@ public:
     virtual void callEventCreateCallback_();
     virtual void callEventDestroyCallback_();
 
-    void reEmit();
+    void reEmit(const ResAssetCallTable*);
     void kill();
 
     bool createRootContainer(UserInstance*, const ResAssetCallTable&);

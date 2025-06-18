@@ -50,6 +50,15 @@ void Event::destroyAllContainerAndAssetExecutor_()
 void Event::callEventCreateCallback_() {}
 void Event::callEventDestroyCallback_() {}
 
+void Event::reEmit(const ResAssetCallTable* asset_ctb) 
+{
+    _0x08 |= 0x34;
+    kill();
+    _0x08 &= -53;
+    destroyAllContainerAndAssetExecutor_();
+    createRootContainer(mpUserInstance, *asset_ctb);
+}   
+
 void Event::kill() 
 {
     _0x08 = _0x08 | 0x30;
