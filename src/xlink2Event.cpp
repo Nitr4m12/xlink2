@@ -1,4 +1,5 @@
 #include "xlink2/xlink2Event.h"
+#include "prim/seadScopedLock.h"
 #include "xlink2/xlink2ContainerCreator.h"
 
 namespace xlink2 {
@@ -90,5 +91,17 @@ s32 Event::getFadeBySystemListAssetNum() const
             ++asset_num;
 
     return asset_num;
+}
+
+void Event::fadeBySystem() 
+{
+    _0x08 = _0x08 | 0x10;
+    if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
+        System* sys = {getUserInstance()->getUser()->getSystem()};
+        {
+            auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
+            mpRootContainer->fadeBySystem();    
+        }
+    }
 }
 }  // namespace xlink2
