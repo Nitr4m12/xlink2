@@ -24,7 +24,23 @@ void Event::initialize(u32 param_int)
 }
 
 void Event::initializeImpl_() {}
+
+void Event::finalize() 
+{
+    doFinalize_();
+    if (mpRootContainer != nullptr)
+        mpRootContainer->destroy();
+
+    for (auto& asset_executor : mFadeBySystemAssetExecutors.robustRange()) {
+        mFadeBySystemAssetExecutors.erase(&asset_executor);
+        mpUserInstance->getUser()->getSystem()->freeAssetExecutor(&asset_executor);
+    }
+
+    _0x20 = 0;
+}
+
 void Event::doFinalize_() {}
+
 void Event::callEventCreateCallback_() {}
 void Event::callEventDestroyCallback_() {}
 void Event::fixDelayParam_() {}
