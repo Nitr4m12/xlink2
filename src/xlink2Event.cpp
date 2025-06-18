@@ -49,7 +49,22 @@ void Event::destroyAllContainerAndAssetExecutor_()
 
 void Event::callEventCreateCallback_() {}
 void Event::callEventDestroyCallback_() {}
-void Event::fixDelayParam_() {}
+
+void Event::kill() 
+{
+    _0x08 = _0x08 | 0x30;
+    if (mpUserInstance != nullptr) {
+        System* sys {mpUserInstance->getUser()->getSystem()};
+        {
+            auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
+            if (mpRootContainer != nullptr)
+                mpRootContainer->kill();
+
+            for (auto& executor : mFadeBySystemAssetExecutors)
+                executor.kill();
+        }
+    }
+}
 
 // NON-MATCHING: Instruction in the wrong place
 bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallTable& asset_ctb) 
@@ -76,8 +91,8 @@ bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallT
 s32 Event::getAliveAssetNum() const
 {
     int asset_num {0};
-    for (auto& asset_executor : mAliveAssetExecutors)
-        if (asset_executor.isAssetValid())
+    for (auto& executor : mAliveAssetExecutors)
+        if (executor.isAssetValid())
             ++asset_num; 
 
     return asset_num;
@@ -86,8 +101,8 @@ s32 Event::getAliveAssetNum() const
 s32 Event::getFadeBySystemListAssetNum() const 
 {
     int asset_num {0};
-    for (auto& asset_executor : mFadeBySystemAssetExecutors)
-        if (asset_executor.isAssetValid())
+    for (auto& executor : mFadeBySystemAssetExecutors)
+        if (executor.isAssetValid())
             ++asset_num;
 
     return asset_num;
@@ -116,4 +131,7 @@ void Event::fadeBySystem()
         }
     }
 }
+
+void Event::fixDelayParam_() {}
+
 }  // namespace xlink2
