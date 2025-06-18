@@ -93,6 +93,18 @@ s32 Event::getFadeBySystemListAssetNum() const
     return asset_num;
 }
 
+void Event::fade(s32 p1) 
+{
+    _0x08 = _0x08 | 0x10;
+    if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
+        System* sys = {getUserInstance()->getUser()->getSystem()};
+        {
+            auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
+            mpRootContainer->fade(p1);    
+        }
+    }
+}
+
 void Event::fadeBySystem() 
 {
     _0x08 = _0x08 | 0x10;
