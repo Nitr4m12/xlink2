@@ -33,7 +33,7 @@ public:
     void reEmit();
     void kill();
 
-    u64 createRootContainer(UserInstance*, ResAssetCallTable const&);
+    bool createRootContainer(UserInstance*, const ResAssetCallTable&);
     u8 calc();
 
     s32 getAliveAssetNum() const;
@@ -58,7 +58,7 @@ private:
     void* _0x18{nullptr};
     u32 _0x20{0};
     UserInstance* mpUserInstance;
-    ResAssetCallTable* mpAssetCallTable;
+    const ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;
     ResTriggerOverwriteParam* mpTriggerOverwriteParam{nullptr};
     BoneMtx* mpBoneMtx{nullptr};

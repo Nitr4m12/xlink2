@@ -1,4 +1,5 @@
 #include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2ContainerCreator.h"
 
 namespace xlink2 {
 Event::Event()
@@ -28,22 +29,48 @@ void Event::initializeImpl_() {}
 void Event::finalize() 
 {
     doFinalize_();
-    if (mpRootContainer != nullptr)
-        mpRootContainer->destroy();
-
-    for (auto& asset_executor : mFadeBySystemAssetExecutors.robustRange()) {
-        mFadeBySystemAssetExecutors.erase(&asset_executor);
-        mpUserInstance->getUser()->getSystem()->freeAssetExecutor(&asset_executor);
-    }
-
+    destroyAllContainerAndAssetExecutor_();
     _0x20 = 0;
 }
 
 void Event::doFinalize_() {}
 
+void Event::destroyAllContainerAndAssetExecutor_() 
+{
+    if (mpRootContainer != nullptr)
+        mpRootContainer->destroy();
+
+    for (auto& executor : mFadeBySystemAssetExecutors.robustRange()) {
+        mFadeBySystemAssetExecutors.erase(&executor);
+        mpUserInstance->getUser()->getSystem()->freeAssetExecutor(&executor);
+    }
+}
+
 void Event::callEventCreateCallback_() {}
 void Event::callEventDestroyCallback_() {}
 void Event::fixDelayParam_() {}
+
+// NON-MATCHING: Instruction in the wrong place
+bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallTable& asset_ctb) 
+{
+    mpUserInstance = user_instance;
+    mpAssetCallTable = &asset_ctb;
+    mGroupId = user_instance->getDefaultGroup();
+
+    ContainerBase* root_container {ContainerCreator::CreateContainer(this, asset_ctb)};
+    if (root_container == nullptr)
+        return false;
+
+    callEventCreateCallback_();
+    if (!root_container->start()) {
+        root_container->destroy();
+        mpRootContainer = nullptr;
+        return false;
+    }
+    mpRootContainer = root_container;
+    return true;
+    
+}
 
 s32 Event::getAliveAssetNum() const
 {
