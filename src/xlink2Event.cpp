@@ -66,6 +66,22 @@ void Event::kill()
     }
 }
 
+void Event::killOneTimeEvent() 
+{
+    if (mpUserInstance != nullptr) {
+        System* sys {mpUserInstance->getUser()->getSystem()};
+        {
+            auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
+            if (mpRootContainer != nullptr)
+                mpRootContainer->killOneTimeEvent();
+
+            for (auto& executor : mFadeBySystemAssetExecutors)
+                if (!executor.isLoopEvent())    
+                    executor.kill();
+        }
+    }
+}
+
 // NON-MATCHING: Instruction in the wrong place
 bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallTable& asset_ctb) 
 {
