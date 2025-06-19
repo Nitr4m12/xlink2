@@ -1,4 +1,5 @@
 #include "xlink2/xlink2AssetExecutorSLink.h"
+#include "xlink2/xlink2ResourceAccessor.h"
 
 namespace xlink2 {
 bool AssetExecutorSLink::isRequestReEmit() const {
@@ -6,11 +7,11 @@ bool AssetExecutorSLink::isRequestReEmit() const {
 }
 
 bool AssetExecutorSLink::isLoopEvent() const {
-    if (!mResAssetCallTable)
+    if (!mpAssetCallTable)
         return false;
 
-    auto* res_accessor = mUserInstance->getUser()->getUserResource()->getAccessorPtr();
-    return res_accessor->isLoopAsset(*mResAssetCallTable);
+    auto* res_accessor = mpUserInstance->getUser()->getUserResource()->getAccessorPtr();
+    return res_accessor->isLoopAsset(*mpAssetCallTable);
 }
 
 void AssetExecutorSLink::onFinalize_() {

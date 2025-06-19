@@ -2,21 +2,21 @@
 
 namespace xlink2 {
 ResourceAccessorELink* AssetExecutorELink::getResourceAccessor_() const {
-    return mUserInstance->getResourceAccessor();
+    return ((UserInstanceELink*)mpUserInstance)->getResourceAccessor();
 }
 
 bool AssetExecutorELink::isLoopEvent() const {
-    if (!mAssetCallTable)
+    if (!mpAssetCallTable)
         return false;
 
     auto* res_accessor = getResourceAccessor_();
-    return res_accessor->isLoopAsset(*mAssetCallTable);
+    return res_accessor->isLoopAsset(*mpAssetCallTable);
 }
 
 void AssetExecutorELink::onResetOverwriteParam_() {
-    if (mAssetCallTable) {
-        auto* accessor{mUserInstance->getResourceAccessor()};
-        if (accessor->isFollow(*mAssetCallTable))
+    if (mpAssetCallTable) {
+        auto* accessor{((UserInstanceELink*)mpUserInstance)->getResourceAccessor()};
+        if (accessor->isFollow(*mpAssetCallTable))
             _5 |= 1;
     }
 }
@@ -33,8 +33,8 @@ void AssetExecutorELink::setInnerParam_() {
 }
 
 f32 AssetExecutorELink::setInnerParamBit_(ELinkAssetParamId param_id, ELinkEventParam param) {
-    auto* accessor{mUserInstance->getResourceAccessor()};
-    u32 unk = (u64)_6;
+    auto* accessor{((UserInstanceELink*)mpUserInstance)->getResourceAccessor()};
+    u32 unk = (u64)mpTriggerOverwriteParam;
     bool is_param_overwritten{accessor->isParamOverwritten(unk, (u32)param_id)};
     bool unknown_check;
     f32 param_value{0.0};
@@ -42,53 +42,53 @@ f32 AssetExecutorELink::setInnerParamBit_(ELinkAssetParamId param_id, ELinkEvent
     if (is_param_overwritten) {
         switch ((u32)param_id - 13) {
         case 0:
-            param_value = accessor->getOverwritePositionX(unk, mUserInstance);
+            param_value = accessor->getOverwritePositionX(unk, mpUserInstance);
             break;
         case 1:
-            param_value = accessor->getOverwritePositionY(unk, mUserInstance);
+            param_value = accessor->getOverwritePositionY(unk, mpUserInstance);
             break;
         case 2:
-            param_value = accessor->getOverwritePositionZ(unk, mUserInstance);
+            param_value = accessor->getOverwritePositionZ(unk, mpUserInstance);
             break;
         case 3:
-            param_value = accessor->getOverwriteRotationX(unk, mUserInstance);
+            param_value = accessor->getOverwriteRotationX(unk, mpUserInstance);
             break;
         case 4:
-            param_value = accessor->getOverwriteRotationY(unk, mUserInstance);
+            param_value = accessor->getOverwriteRotationY(unk, mpUserInstance);
             break;
         case 5:
-            param_value = accessor->getOverwriteRotationZ(unk, mUserInstance);
+            param_value = accessor->getOverwriteRotationZ(unk, mpUserInstance);
             break;
         default:
             param_value = 0.0;
         }
         unknown_check =
-            accessor->isOverwriteParamTypeEqual((ValueReferenceType)2, *_6, (u32)param_id);
+            accessor->isOverwriteParamTypeEqual((ValueReferenceType)2, *mpTriggerOverwriteParam, (u32)param_id);
     } else {
         switch ((u32)param_id - 13) {
         case 0:
-            param_value = accessor->getPositionX(*mAssetCallTable, mUserInstance);
+            param_value = accessor->getPositionX(*mpAssetCallTable, mpUserInstance);
             break;
         case 1:
-            param_value = accessor->getPositionY(*mAssetCallTable, mUserInstance);
+            param_value = accessor->getPositionY(*mpAssetCallTable, mpUserInstance);
             break;
         case 2:
-            param_value = accessor->getPositionZ(*mAssetCallTable, mUserInstance);
+            param_value = accessor->getPositionZ(*mpAssetCallTable, mpUserInstance);
             break;
         case 3:
-            param_value = accessor->getRotationX(*mAssetCallTable, mUserInstance);
+            param_value = accessor->getRotationX(*mpAssetCallTable, mpUserInstance);
             break;
         case 4:
-            param_value = accessor->getRotationY(*mAssetCallTable, mUserInstance);
+            param_value = accessor->getRotationY(*mpAssetCallTable, mpUserInstance);
             break;
         case 5:
-            param_value = accessor->getRotationZ(*mAssetCallTable, mUserInstance);
+            param_value = accessor->getRotationZ(*mpAssetCallTable, mpUserInstance);
             break;
         default:
             param_value = 0.0;
         }
         unknown_check =
-            accessor->isParamTypeEqual((ValueReferenceType)2, *mAssetCallTable, (u32)param_id);
+            accessor->isParamTypeEqual((ValueReferenceType)2, *mpAssetCallTable, (u32)param_id);
     }
     if (unknown_check)
         _10 |= 1 << (u32)param;

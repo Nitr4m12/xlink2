@@ -168,10 +168,6 @@ s32 Event::getFadeBySystemListAssetNum() const
     return asset_num;
 }
 
-void Event::setOverwriteParam(TriggerType type, ResTriggerOverwriteParam* param, BoneMtx) {
-    
-}
-
 void Event::fade(s32 param_int) 
 {
     mBitFlag.set(16);

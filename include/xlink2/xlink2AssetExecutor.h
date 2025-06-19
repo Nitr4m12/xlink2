@@ -3,7 +3,18 @@
 #include <math/seadMatrix.h>
 #include <prim/seadBitFlag.h>
 
+#include "xlink2/xlink2BoneMtx.h"
+#include "xlink2/xlink2ContainerType.h"
+#include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2ResTriggerOverwriteParam.h"
+#include "xlink2/xlink2UserInstance.h"
+
 namespace xlink2 {
+class BoneMtx;
+class Event;
+class UserInstance;
+
 class AssetExecutor {
 public:
     virtual ~AssetExecutor();
@@ -29,5 +40,26 @@ public:
     virtual void onDestroy_();
     virtual void onResetOverwriteParam_() = 0;
     virtual void onFinalize_() = 0;
+
+    BoneMtx* boneMtx() { return mBoneMtx; }
+    void boneMtx(BoneMtx* new_mtx) { mBoneMtx = new_mtx; }
+
+    u8* _0x48() {return m_0x48; }
+    void _0x48(u8 new_val) {m_0x48[0] = new_val; }
+
+    ResTriggerOverwriteParam* triggerOverwriteParam() { return mpTriggerOverwriteParam; }
+    void triggerOverwriteParam(ResTriggerOverwriteParam* new_param) { mpTriggerOverwriteParam = new_param; }
+
+protected:
+    u8 _0x08[0x10];
+    class Event* mpEvent;
+    UserInstance* mpUserInstance;
+    ResAssetCallTable* mpAssetCallTable;
+    ContainerType mContainerType;
+    float _0x34;
+    ResTriggerOverwriteParam* mpTriggerOverwriteParam;
+    class BoneMtx* mBoneMtx;
+    u8 m_0x48[0x8];
 };
+static_assert(sizeof(AssetExecutor) == 0x50, "Wrong size for 'xlink2::AssetExecutor'");
 }  // namespace xlink2

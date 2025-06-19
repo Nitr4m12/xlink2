@@ -28,6 +28,7 @@ class Viewport;
 }  // namespace sead
 
 namespace xlink2 {
+class AssetExecutor;
 class ContainerBase;
 class Event;
 class EditorBuffer;

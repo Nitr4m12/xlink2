@@ -10,7 +10,6 @@
 #include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2ResUserInfo.h"
-#include "xlink2/xlink2UserResourceParam.h"
 
 namespace xlink2 {
 class ActionTriggerCtrl : TriggerCtrl {
@@ -25,7 +24,7 @@ public:
     void emitByTrigger_(s32 action_trigger_idx);
 
     void notifyActive();
-    void changeAction(const char*, s32);
+    void changeAction(const char* name, s32 p2);
     u32 searchResAction_(ResActionSlot const*, char const*, s32*);
     void stopAction();
     void changeActionImpl_(ResAction const*, s32, UserResource const*);

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "math/seadMatrix.h"
-#include "prim/seadBitFlag.h"
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2ELinkAssetParamId.h"
@@ -71,16 +69,6 @@ public:
     void onFinalize_() override;
 
 private:
-    void* _0;
-    void* _1;
-    EventELink* mEvent;
-    UserInstanceELink* mUserInstance;
-    ResAssetCallTable* mAssetCallTable;
-    u32 _2;
-    f32 _3;
-    ResTriggerOverwriteParam* _6;
-    void* _8;
-    void* _4;
     u8 _5;
     u32 mDelay;
     void* _7;

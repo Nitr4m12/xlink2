@@ -12,6 +12,7 @@
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
+class AssetExecutor;
 class ContainerBase;
 class UserInstance;
 
@@ -40,7 +41,7 @@ public:
     s32 getAliveAssetNum() const;
     s32 getFadeBySystemListAssetNum() const;
 
-    void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
+    void setOverwriteParam(TriggerType type, ResTriggerOverwriteParam* param, BoneMtx bone_mtx);
 
     void fade(s32 param_int);
     void killOneTimeEvent();
