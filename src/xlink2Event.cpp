@@ -92,7 +92,6 @@ void Event::killOneTimeEvent()
     }
 }
 
-// NON-MATCHING: Instruction in the wrong place
 bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallTable& asset_ctb) 
 {
     mpUserInstance = user_instance;
@@ -104,14 +103,13 @@ bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallT
         return false;
 
     callEventCreateCallback_();
-    if (!root_container->start()) {
-        root_container->destroy();
-        mpRootContainer = nullptr;
-        return false;
+    if (root_container->start()) {
+        mpRootContainer = root_container;
+        return true;
     }
-    mpRootContainer = root_container;
-    return true;
-    
+    root_container->destroy();
+    mpRootContainer = nullptr;
+    return false;
 }
 
 bool Event::calc()
@@ -170,14 +168,18 @@ s32 Event::getFadeBySystemListAssetNum() const
     return asset_num;
 }
 
-void Event::fade(s32 p1) 
+void Event::setOverwriteParam(TriggerType type, ResTriggerOverwriteParam* param, BoneMtx) {
+    
+}
+
+void Event::fade(s32 param_int) 
 {
     mBitFlag.set(16);
     if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
         System* sys = {mpUserInstance->getUser()->getSystem()};
         {
             auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
-            mpRootContainer->fade(p1);    
+            mpRootContainer->fade(param_int);    
         }
     }
 }

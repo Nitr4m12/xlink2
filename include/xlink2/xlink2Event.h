@@ -20,7 +20,7 @@ public:
     Event();
     virtual ~Event();
 
-    void initialize(u32);
+    void initialize(u32 param_int);
     virtual void initializeImpl_();
 
     void finalize();
@@ -42,7 +42,7 @@ public:
 
     void setOverwriteParam(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
 
-    void fade(int);
+    void fade(s32 param_int);
     void killOneTimeEvent();
     void fadeBySystem();
 
