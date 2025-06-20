@@ -19,6 +19,13 @@ s32 User::calcNumActiveInstance() const
     return num_active_instance;
 }
 
+void User::setActionSlot(u32 action_slot_idx, const char** name)
+{
+    mResActionSlotIdx = action_slot_idx;
+    if (mResActionSlotIdx > 0)
+        mResActionSlotName = name;
+}
+
 u64 User::searchPropertyIndex(const char* name) const 
 {
     u16 num_local_prop = mNumLocalProp;

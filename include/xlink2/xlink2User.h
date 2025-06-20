@@ -23,7 +23,7 @@ public:
 
     s32 calcNumActiveInstance() const;
 
-    void setActionSlot(u32, char const**);
+    void setActionSlot(u32 action_slot_idx, const char** name);
     u64 searchActionSlotPos(char const*) const;
     
     void createPropertyDefinitionTable(u32);
@@ -61,9 +61,9 @@ private:
     sead::Heap* mHeap;
     u32 _8;
     u16 mNumLocalProp;
-    s16 mResActionSlotNum;
+    s16 mResActionSlotIdx;
     PropertyDefinition** mPropertyDefinitionTable;
-    ResActionSlot* mResActionSlot;
+    const char** mResActionSlotName;
     u8 _11;
 };
 static_assert(sizeof(User) == 0x60, "Wrong size for 'xlink2::User'");
