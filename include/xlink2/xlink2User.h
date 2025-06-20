@@ -5,7 +5,6 @@
 
 #include "xlink2/xlink2EditorResourceParam.h"
 #include "xlink2/xlink2PropertyDefinition.h"
-#include "xlink2/xlink2ResActionSlot.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2UserResource.h"
@@ -29,7 +28,7 @@ public:
     void createPropertyDefinitionTable(u32);
     void createPropertyDefinitionTable(u32, PropertyDefinition const**);
     void setPropertyDefinition(u32, PropertyDefinition const*);
-    u64 searchPropertyIndex(char const*) const;
+    u32 searchPropertyIndex(const char* name) const;
     
     void changeEditorResource(EditorResourceParam*, sead::Heap*);
     void rollbackToRomResource();

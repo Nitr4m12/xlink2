@@ -26,23 +26,20 @@ void User::setActionSlot(u32 action_slot_idx, const char** name)
         mResActionSlotName = name;
 }
 
-u64 User::searchPropertyIndex(const char* name) const 
+u32 User::searchPropertyIndex(const char* name) const 
 {
-    u16 num_local_prop = mNumLocalProp;
-    if (num_local_prop != 0) {
-        for (u64 i{0}; i < num_local_prop; ++i) {
+    if (mNumLocalProp != 0) {
+        for (u32 i{0}; i < mNumLocalProp; ++i) {
             PropertyDefinition* property_definition = mPropertyDefinitionTable[i];
             if (property_definition != nullptr) {
                 sead::FixedSafeString<64>* prop_name = property_definition->getPropertyName();
-                int result = strcmp(name, prop_name->getBuffer());
-                if (result == 0)
+                if (strcmp(name, prop_name->cstr()) == 0)
                     return i;
             }
         }
-        num_local_prop = mNumLocalProp;
     }
 
-    return 0xFFFFFFFF;
+    return -1;
 }
 
 void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* heap) 
