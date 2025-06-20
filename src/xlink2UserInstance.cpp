@@ -93,21 +93,19 @@ void UserInstance::killAll() {
     mTriggerCtrlMgr.reset();
 }
 
-// NON-MATCHING: Two instructions missing
-void UserInstance::setIsActive(bool p1) {
-    auto unk1 = p1 ^ (mBitFlag & 2);
-    auto unk2 = unk1 >> 1;
-    if (!unk2) {
-        if (p1)
+void UserInstance::setIsActive(bool is_active) 
+{
+    if (!(is_active ^ mBitFlag.isOnBit(1))) {
+        if (is_active)
             mTriggerCtrlMgr.notifyActive();
         else
             sleep();
-        u8 unk;
-        if (!p1)
-            unk = mBitFlag | 2;
+        u8 flag_bits;
+        if (!is_active)
+            flag_bits = mBitFlag | 2;
         else
-            unk = mBitFlag & 0xfd;
-        mBitFlag = unk;
+            flag_bits = mBitFlag & 0b11111101;
+        mBitFlag = flag_bits;
     }
 }
 
