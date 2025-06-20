@@ -55,6 +55,12 @@ void User::rollbackToRomResource()
         user_instance.changeInstanceParam(ResMode::Rom);
 }
 
+void User::saveEvent() 
+{
+    for (auto& user_instance : mUserInstanceList)
+        user_instance.saveEvent();
+}
+
 void User::loadEventAndTriggerRestart() 
 {
     for (auto& user_instance : mUserInstanceList)
