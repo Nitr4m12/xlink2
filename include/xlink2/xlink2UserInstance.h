@@ -143,7 +143,7 @@ public:
 
     void updateSortKey();
     u64 getPosForSort() const;
-    u32 getSortKey() const;
+    f32 getSortKey() const;
     void getRootMtxForDrawText(sead::Matrix34f*);
 
     void printLogContainerSelect(Event const&, char const*, ...) const;

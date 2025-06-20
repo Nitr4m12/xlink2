@@ -51,6 +51,18 @@ UserInstance* User::getLeaderInstance() const
     return mUserInstanceList.front();
 }
 
+f32 User::getMinSortKey() const
+{
+    f32 min_sort_key {sead::MathCalcCommon<f32>::infinity()};
+    for (auto& user_instance : mUserInstanceList) {
+        f32 sort_key = user_instance.getSortKey();
+        sort_key = sead::MathCalcCommon<f32>::min(sort_key, min_sort_key);
+
+        min_sort_key = sort_key;
+    }
+    return min_sort_key;
+}
+
 void User::beginOtameshi() 
 {
     for (auto& user_instance : mUserInstanceList) {
