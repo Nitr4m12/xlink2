@@ -1,3 +1,5 @@
+#include <math/seadMathCalcCommon.h>
+
 #include "xlink2/xlink2User.h"
 
 namespace xlink2 {
@@ -61,6 +63,20 @@ f32 User::getMinSortKey() const
         min_sort_key = sort_key;
     }
     return min_sort_key;
+}
+
+UserInstance* User::getMinSortKeyInstance()
+{
+    f32 min_sort_key {sead::MathCalcCommon<f32>::infinity()};
+    UserInstance* min_sort_key_instance {};
+    for (auto& user_instance : mUserInstanceList) {
+        f32 sort_key = user_instance.getSortKey();
+        if (sort_key < min_sort_key) {
+            min_sort_key = sort_key;
+            min_sort_key_instance = &user_instance;;
+        }
+    }
+    return min_sort_key_instance;
 }
 
 void User::beginOtameshi() 
