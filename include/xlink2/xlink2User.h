@@ -22,7 +22,7 @@ public:
 
     s32 calcNumActiveInstance() const;
 
-    void setActionSlot(u32 total_action_slot, const char** slot_names);
+    void setActionSlot(u32 total_action_slots, const char** slot_names);
     s32 searchActionSlotPos(char const*) const;
     
     void createPropertyDefinitionTable(u32);
@@ -49,22 +49,23 @@ public:
     bool requestOtameshi();
 
     char* getUserName() { return mUserName; }
-    UserResource* getUserResource() { return mUserResource; }
-    u16 getPropertyDefinitionTableNum() const { return mNumLocalProp; }
+    UserResource* getUserResource() { return mpUserResource; }
+    u16 getPropertyDefinitionTableNum() const { return mLocalPropNum; }
+
 private:
     void* _0;
     void* _1;
     char* mUserName;
-    UserResource* mUserResource;
+    UserResource* mpUserResource;
     sead::OffsetList<UserInstance> mUserInstanceList;
-    sead::Heap* mHeap;
+    sead::Heap* mpHeap;
     u32 _8;
-    u16 mNumLocalProp;
+    u16 mLocalPropNum;
     s16 mActionSlotNum;
-    PropertyDefinition** mPropertyDefinitionTable;
-    const char** mActionSlotNames;
+    PropertyDefinition** mpPropertyDefinitionTable;
+    const char** mActionSlotNameTable;
     u8 _11;
 };
-static_assert(sizeof(User) == 0x60, "Wrong size for 'xlink2::User'");
+static_assert(sizeof(User) == 0x60, "xlink2::User size mismatch");
 
 }  // namespace xlink2

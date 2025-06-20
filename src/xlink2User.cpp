@@ -6,7 +6,7 @@ namespace xlink2 {
 
 System* User::getSystem() const 
 {
-    return mUserResource->getSystem();
+    return mpUserResource->getSystem();
 }
 
 s32 User::calcNumActiveInstance() const
@@ -19,18 +19,18 @@ s32 User::calcNumActiveInstance() const
     return num_active_instance;
 }
 
-void User::setActionSlot(u32 total_action_slot, const char** slot_names)
+void User::setActionSlot(u32 total_action_slots, const char** slot_names)
 {
-    mActionSlotNum = total_action_slot;
+    mActionSlotNum = total_action_slots;
     if (mActionSlotNum > 0)
-        mActionSlotNames = slot_names;
+        mActionSlotNameTable = slot_names;
 }
 
 s32 User::searchActionSlotPos(const char* name) const
 {
     if (mActionSlotNum > 0) {
         for (s32 i {0}; i < mActionSlotNum; ++i) {
-            const char* action_slot_name {mActionSlotNames[i]}; 
+            const char* action_slot_name {mActionSlotNameTable[i]}; 
             if (strcmp(action_slot_name, name) == 0)
                 return i & -1;
         }
@@ -41,9 +41,9 @@ s32 User::searchActionSlotPos(const char* name) const
 
 u32 User::searchPropertyIndex(const char* name) const 
 {
-    if (mNumLocalProp != 0) {
-        for (u32 i{0}; i < mNumLocalProp; ++i) {
-            PropertyDefinition* property_definition = mPropertyDefinitionTable[i];
+    if (mLocalPropNum != 0) {
+        for (u32 i{0}; i < mLocalPropNum; ++i) {
+            PropertyDefinition* property_definition = mpPropertyDefinitionTable[i];
             if (property_definition != nullptr) {
                 sead::FixedSafeString<64>* prop_name = property_definition->getPropertyName();
                 if (strcmp(name, prop_name->cstr()) == 0)
@@ -57,8 +57,8 @@ u32 User::searchPropertyIndex(const char* name) const
 
 void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* heap) 
 {
-    mUserResource->setupEditorResourceParam_(editor_param, heap);
-    mUserResource->setResMode(ResMode::Editor);
+    mpUserResource->setupEditorResourceParam_(editor_param, heap);
+    mpUserResource->setResMode(ResMode::Editor);
     for (auto& user_instance : mUserInstanceList) {
         user_instance.setupEditorInstanceParam();
         user_instance.changeInstanceParam(ResMode::Editor);
@@ -67,7 +67,7 @@ void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* h
 
 void User::rollbackToRomResource()
 {
-    mUserResource->setResMode(ResMode::Rom);
+    mpUserResource->setResMode(ResMode::Rom);
     for (auto& user_instance : mUserInstanceList)
         user_instance.changeInstanceParam(ResMode::Rom);
 }
@@ -115,7 +115,7 @@ UserInstance* User::getMinSortKeyInstance()
         f32 sort_key = user_instance.getSortKey();
         if (sort_key < min_sort_key) {
             min_sort_key = sort_key;
-            min_sort_key_instance = &user_instance;;
+            min_sort_key_instance = &user_instance;
         }
     }
     return min_sort_key_instance;
@@ -135,5 +135,12 @@ void User::beginOtameshi()
         user_instance.fadeOrKillOtameshi(true);
         user_instance.freeEventIfFadeOrKillCalled();
     }
+}
+
+// NON-MATCHING
+bool User::requestOtameshi() 
+{
+    updateSortKey();
+    return getMinSortKeyInstance() == nullptr;
 }
 }  // namespace xlink2
