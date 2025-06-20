@@ -67,32 +67,32 @@ public:
     UserInstance(const CreateArg&, System*, User*, sead::Heap*);
     void destroy();
 
-    bool checkAndErrorCallInCalc(char const* /*unused*/, ...) const; //
-    void printLogFadeOrKill(Event const*, char const*, ...) const; //
+    bool checkAndErrorCallInCalc(char const* /*unused*/, ...) const;
+    void printLogFadeOrKill(Event const*, char const*, ...) const;
     void preCalc();
-    void doOtameshiEmit_(); //
+    void doOtameshiEmit_();
     void postCalc();
 
-    void reset(); //
-    void killAll(); //
+    void reset(); 
+    void killAll();
     void sleep();
 
-    void setIsActive(bool);
+    void setIsActive(bool is_active);
     void killAllOneTimeEvent();
-    void clearAllEvent(); //
+    void clearAllEvent();
 
     void setupResource(sead::Heap*);
     bool isSetupRomInstanceParam_() const;
 
     void setupInstanceParam_(ResMode, sead::Heap*);
-    void setupEditorInstanceParam(); //
-    void changeInstanceParam(ResMode); //
+    void setupEditorInstanceParam();
+    void changeInstanceParam(ResMode);
 
     void linkPropertyDefinitionToValueStruct(u32, PropertyDefinition const*);
 
     void saveEvent();
     void loadEventAndTriggerRestart();
-    bool isInstanceParamValid() const; //
+    bool isInstanceParamValid() const;
 
     ModelAssetConnection* getModelAssetConnection(u32) const;
     void searchAndEmitImpl(char const*, Handle*);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <basis/seadTypes.h>
+#include <container/seadBuffer.h>
 
 #include "xlink2/xlink2ModelAssetConnection.h"
 
@@ -11,12 +12,11 @@ struct UserInstanceParam {
         s32 newIndex;
     };
 
-    u32 numModelAssetConnection;
-    ModelAssetConnection* modelAssetConnections;
+    sead::Buffer<ModelAssetConnection> modelAssetConnectionBuffer;
     u32 numRandomHistory;
     RandomEvent* randomHistory;
     bool isSetupRom;
 };
-static_assert(sizeof(UserInstanceParam) == 0x28, "Incorrect size of 'xlink2::UserInstanceParam'");
+static_assert(sizeof(UserInstanceParam) == 0x28, "xlink2::UserInstanceParam size mismatch");
 
 }  // namespace xlink2

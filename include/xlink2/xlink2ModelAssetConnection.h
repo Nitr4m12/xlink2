@@ -8,7 +8,7 @@ public:
     virtual ~ModelAssetConnection();
 
 private:
-    sead::Matrix34f mRootMtx;
-    u8 _10;
+    void* _0;
+    sead::Matrix34f* mRootMtx;
 };
 }

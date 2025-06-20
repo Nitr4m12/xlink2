@@ -161,19 +161,17 @@ bool UserInstance::isInstanceParamValid() const {
     return false;
 }
 
-// WIP
-ModelAssetConnection* UserInstance::getModelAssetConnection(u32 index) const {
-    auto* param = mParams[mBitFlag & 1];
-    if (param && param->isSetupRom) {
-        if (param->numModelAssetConnection <= index)
-            return param->modelAssetConnections;
-        return &param->modelAssetConnections[index];
-    }
+ModelAssetConnection* UserInstance::getModelAssetConnection(u32 index) const 
+{
+    UserInstanceParam* param = mParams[mBitFlag & 1];
+    if (param && param->isSetupRom)
+        return &param->modelAssetConnectionBuffer[index];
     return nullptr;
 }
 
 // WIP
-void UserInstance::searchAndEmitImpl(const char* name, Handle* handle) {
+void UserInstance::searchAndEmitImpl(const char* name, Handle* handle) 
+{
     if (name && mUser->getSystem()->isCallEnabled() &&
         checkAndErrorCallWithoutSetup_("searchAndEmit(%s)", name)) {
         Locator l{};
