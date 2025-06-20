@@ -48,6 +48,12 @@ void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* h
     }
 }
 
+void User::loadEventAndTriggerRestart() 
+{
+    for (auto& user_instance : mUserInstanceList)
+        user_instance.loadEventAndTriggerRestart();
+}
+
 void User::killAll() 
 {
     for (auto& user_instance : mUserInstanceList)
