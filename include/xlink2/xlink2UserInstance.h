@@ -1,6 +1,7 @@
 #pragma once
 
-#include "math/seadMatrix.h"
+#include <math/seadMatrix.h>
+#include <prim/seadBitFlag.h>
 
 #include "xlink2/xlink2DebugLogFlag.h"
 #include "xlink2/xlink2DebugOperationParam.h"
@@ -168,12 +169,13 @@ public:
     virtual void doEventActivatedCallback_(Locator const& /*unused*/, Event* /*unused*/);
 
     User* getUser() const { return mUser; };
+    sead::BitFlag8 getBitFlag() const { return mBitFlag; };
 
     bool unkCheck();
 
 protected:
     sead::OffsetList<Event> mEventList;
-    sead::SafeArray<UserInstanceParam*, 2> mParamsByResMode;
+    sead::SafeArray<UserInstanceParam*, 2> mParams;
     User* mUser;
     IUser* mIUser;
     const sead::Matrix34f* mRootMtx;
@@ -186,7 +188,7 @@ protected:
     TriggerCtrlMgr mTriggerCtrlMgr;
     void* _0x98;
     u8 _0xA0[0x30];
-    u8 mParamType;
+    sead::BitFlag8 mBitFlag;
 };
 static_assert(sizeof(UserInstance) == 0xd8, "xlink2::UserInstance size mismatch");
 }  // namespace xlink2

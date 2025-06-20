@@ -8,6 +8,16 @@ System* User::getSystem() const
     return mUserResource->getSystem();
 }
 
+s32 User::calcNumActiveInstance() const
+{
+    s32 num_active_instance {0};
+    for (auto& user_instance : mUserInstanceList) {
+        num_active_instance += user_instance.getBitFlag().isOffBit(1);
+    }
+
+    return num_active_instance;
+}
+
 u64 User::searchPropertyIndex(const char* name) const 
 {
     u16 num_local_prop = mNumLocalProp;

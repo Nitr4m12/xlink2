@@ -17,7 +17,7 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     mPropertyValueArray = nullptr;
     mTriggerCtrlMgr = {};
     _0x98 = nullptr;
-    mParamType = 0;
+    mBitFlag = 0;
     mEventList.initOffset(10);
     if (!create_arg.getRootMtx()) {
         mRootMtx = &sead::Matrix34f::ident;
@@ -32,7 +32,7 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
 
     mTriggerCtrlMgr.initialize(create_arg.getActionSlotCount(), create_arg.getLocalPropertyCount(), heap);
 
-    mParamsByResMode.fill(nullptr);
+    mParams.fill(nullptr);
 }
 
 // WIP
@@ -46,11 +46,11 @@ void UserInstance::destroy() {
 
         onDestroy_();
 
-        if (mParamsByResMode[0])
-            freeInstanceParam_(mParamsByResMode[0], ResMode::Editor);
+        if (mParams[0])
+            freeInstanceParam_(mParams[0], ResMode::Editor);
 
-        if (mParamsByResMode[1])
-            freeInstanceParam_(mParamsByResMode[1], ResMode::Rom);
+        if (mParams[1])
+            freeInstanceParam_(mParams[1], ResMode::Rom);
 
         delete [] mPropertyValueArray;
 
@@ -78,7 +78,7 @@ void UserInstance::postCalc() {
     if (unkCheck()) {
         onPostCalc_();
         mValueChangedBitfield = 0;
-        mParamType = mParamType & 0xfb;
+        mBitFlag = mBitFlag & 0xfb;
     }
 }
 
@@ -95,7 +95,7 @@ void UserInstance::killAll() {
 
 // NON-MATCHING: Two instructions missing
 void UserInstance::setIsActive(bool p1) {
-    auto unk1 = p1 ^ (mParamType & 2);
+    auto unk1 = p1 ^ (mBitFlag & 2);
     auto unk2 = unk1 >> 1;
     if (!unk2) {
         if (p1)
@@ -104,10 +104,10 @@ void UserInstance::setIsActive(bool p1) {
             sleep();
         u8 unk;
         if (!p1)
-            unk = mParamType | 2;
+            unk = mBitFlag | 2;
         else
-            unk = mParamType & 0xfd;
-        mParamType = unk;
+            unk = mBitFlag & 0xfd;
+        mBitFlag = unk;
     }
 }
 
@@ -122,29 +122,29 @@ void UserInstance::clearAllEvent() {
 }
 
 bool UserInstance::isSetupRomInstanceParam_() const {
-    if (mParamsByResMode[(s32)ResMode::Rom])
-        return mParamsByResMode[(s32)ResMode::Rom]->isSetupRom;
+    if (mParams[(s32)ResMode::Rom])
+        return mParams[(s32)ResMode::Rom]->isSetupRom;
     return false;
 }
 
 void UserInstance::setupEditorInstanceParam() {
     auto* heap = mUser->getSystem()->getPrimaryHeap();
 
-    if (mParamsByResMode[(s32)ResMode::Editor])
-        freeInstanceParam_(mParamsByResMode[(s32)ResMode::Editor], ResMode::Editor);
+    if (mParams[(s32)ResMode::Editor])
+        freeInstanceParam_(mParams[(s32)ResMode::Editor], ResMode::Editor);
 
-    mParamsByResMode[(s32)ResMode::Editor] = allocInstanceParam_(heap);
+    mParams[(s32)ResMode::Editor] = allocInstanceParam_(heap);
     setupInstanceParam_(ResMode::Editor, heap);
     mTriggerCtrlMgr.allocAndSetupCtrlParam(ResMode::Editor, heap);
 }
 
 void UserInstance::changeInstanceParam(ResMode mode) {
-    u8 param_type = mParamType;
+    u8 param_type = mBitFlag;
     if (mode != ResMode::Editor)
         param_type &= 0xfe;
     else
         param_type |= 1;
-    mParamType = param_type;
+    mBitFlag = param_type;
     mTriggerCtrlMgr.setResMode(mode);
 }
 
@@ -156,14 +156,14 @@ void UserInstance::linkPropertyDefinitionToValueStruct(u32 index,
 }
 
 bool UserInstance::isInstanceParamValid() const {
-    if (mParamsByResMode[mParamType & 1])
-        return mParamsByResMode[mParamType & 1]->isSetupRom;
+    if (mParams[mBitFlag & 1])
+        return mParams[mBitFlag & 1]->isSetupRom;
     return false;
 }
 
 // WIP
 ModelAssetConnection* UserInstance::getModelAssetConnection(u32 index) const {
-    auto* param = mParamsByResMode[mParamType & 1];
+    auto* param = mParams[mBitFlag & 1];
     if (param && param->isSetupRom) {
         if (param->numModelAssetConnection <= index)
             return param->modelAssetConnections;
@@ -185,7 +185,7 @@ void UserInstance::searchAndEmitImpl(const char* name, Handle* handle) {
 
 // WIP
 u64 UserInstance::checkAndErrorCallWithoutSetup_(const char* p1, ...) const {
-    if (!mParamsByResMode[mParamType & 1] || !mParamsByResMode[mParamType & 1]) {
+    if (!mParams[mBitFlag & 1] || !mParams[mBitFlag & 1]) {
         sead::BufferedSafeString d(nullptr, 100);
         d.formatV(p1, std::va_list());
         mUser->getSystem()->addError(Error::Type(0x19), mUser, "%s");
@@ -297,7 +297,7 @@ bool UserInstance::doEventActivatingCallback_(const Locator& /*unused*/) {
 void UserInstance::doEventActivatedCallback_(const Locator& /*unused*/, Event* /*unused*/) {}
 
 bool UserInstance::unkCheck() {
-    return !((mParamType >> 1) & 1) && mUser->getSystem()->isCallEnabled();
+    return !((mBitFlag >> 1) & 1) && mUser->getSystem()->isCallEnabled();
 }
 
 }  // namespace xlink2
