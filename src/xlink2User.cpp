@@ -48,6 +48,13 @@ void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* h
     }
 }
 
+void User::rollbackToRomResource()
+{
+    mUserResource->setResMode(ResMode::Rom);
+    for (auto& user_instance : mUserInstanceList)
+        user_instance.changeInstanceParam(ResMode::Rom);
+}
+
 void User::loadEventAndTriggerRestart() 
 {
     for (auto& user_instance : mUserInstanceList)
