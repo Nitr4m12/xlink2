@@ -46,6 +46,11 @@ void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* h
     }
 }
 
+UserInstance* User::getLeaderInstance() const
+{
+    return mUserInstanceList.front();
+}
+
 void User::beginOtameshi() 
 {
     for (auto& user_instance : mUserInstanceList) {

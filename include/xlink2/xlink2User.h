@@ -38,7 +38,7 @@ public:
     void loadEventAndTriggerRestart();
     void killAll();
 
-    u64 getLeaderInstance() const;
+    UserInstance* getLeaderInstance() const;
     
     f32 getMinSortKey() const;
     UserInstance* getMinSortKeyInstance();
