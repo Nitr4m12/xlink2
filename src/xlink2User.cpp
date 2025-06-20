@@ -19,11 +19,24 @@ s32 User::calcNumActiveInstance() const
     return num_active_instance;
 }
 
-void User::setActionSlot(u32 action_slot_idx, const char** name)
+void User::setActionSlot(u32 total_action_slot, const char** slot_names)
 {
-    mResActionSlotIdx = action_slot_idx;
-    if (mResActionSlotIdx > 0)
-        mResActionSlotName = name;
+    mActionSlotNum = total_action_slot;
+    if (mActionSlotNum > 0)
+        mActionSlotNames = slot_names;
+}
+
+s32 User::searchActionSlotPos(const char* name) const
+{
+    if (mActionSlotNum > 0) {
+        for (s32 i {0}; i < mActionSlotNum; ++i) {
+            const char* action_slot_name {mActionSlotNames[i]}; 
+            if (strcmp(action_slot_name, name) == 0)
+                return i & -1;
+        }
+    }
+
+    return -1;
 }
 
 u32 User::searchPropertyIndex(const char* name) const 
