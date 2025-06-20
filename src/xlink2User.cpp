@@ -1,5 +1,4 @@
 #include "xlink2/xlink2User.h"
-#include "prim/seadSafeString.h"
 
 namespace xlink2 {
 
@@ -35,6 +34,16 @@ u64 User::searchPropertyIndex(const char* name) const
     }
 
     return 0xFFFFFFFF;
+}
+
+void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* heap) 
+{
+    mUserResource->setupEditorResourceParam_(editor_param, heap);
+    mUserResource->setResMode(ResMode::Editor);
+    for (auto& user_instance : mUserInstanceList) {
+        user_instance.setupEditorInstanceParam();
+        user_instance.changeInstanceParam(ResMode::Editor);
+    }
 }
 
 void User::beginOtameshi() 

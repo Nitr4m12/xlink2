@@ -60,6 +60,8 @@ public:
     ResMode getResMode() const { return mResMode; }
     const User* getUser() const { return mUser; }
 
+    void setResMode(ResMode new_val) { mResMode = new_val; }
+
 protected:
     struct Dummy {
         u8 bytes[0x18];
