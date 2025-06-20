@@ -187,8 +187,6 @@ protected:
     void* _0x98;
     u8 _0xA0[0x30];
     u8 mParamType;
-    void* _0xd8;
-    void* _0xe0;
-    void* _0xe8;
 };
+static_assert(sizeof(UserInstance) == 0xd8, "xlink2::UserInstance size mismatch");
 }  // namespace xlink2

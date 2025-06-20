@@ -18,9 +18,6 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     mTriggerCtrlMgr = {};
     _0x98 = nullptr;
     mParamType = 0;
-    _0xe0 = nullptr;
-    _0xe8 = nullptr;
-    _0xd8 = nullptr;
     mEventList.initOffset(10);
     if (!create_arg.getRootMtx()) {
         mRootMtx = &sead::Matrix34f::ident;

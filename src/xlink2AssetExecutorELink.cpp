@@ -9,7 +9,7 @@ bool AssetExecutorELink::isLoopEvent() const {
     if (!mpAssetCallTable)
         return false;
 
-    auto* res_accessor = getResourceAccessor_();
+    auto* res_accessor {getResourceAccessor_()};
     return res_accessor->isLoopAsset(*mpAssetCallTable);
 }
 

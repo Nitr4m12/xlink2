@@ -3,11 +3,13 @@
 
 namespace xlink2 {
 
-System* User::getSystem() const {
+System* User::getSystem() const 
+{
     return mUserResource->getSystem();
 }
 
-u64 User::searchPropertyIndex(const char* name) const {
+u64 User::searchPropertyIndex(const char* name) const 
+{
     u16 num_local_prop = mNumLocalProp;
     if (num_local_prop != 0) {
         for (u64 i{0}; i < num_local_prop; ++i) {
@@ -23,5 +25,13 @@ u64 User::searchPropertyIndex(const char* name) const {
     }
 
     return 0xFFFFFFFF;
+}
+
+void User::beginOtameshi() 
+{
+    for (auto& user_instance : mUserInstanceList) {
+        user_instance.fadeOrKillOtameshi(true);
+        user_instance.freeEventIfFadeOrKillCalled();
+    }
 }
 }  // namespace xlink2

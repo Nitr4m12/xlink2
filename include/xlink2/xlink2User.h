@@ -1,6 +1,8 @@
 #pragma once
 
-#include "heap/seadHeap.h"
+#include <container/seadOffsetList.h>
+#include <heap/seadHeap.h>
+
 #include "xlink2/xlink2EditorResourceParam.h"
 #include "xlink2/xlink2PropertyDefinition.h"
 #include "xlink2/xlink2ResActionSlot.h"
@@ -55,9 +57,7 @@ private:
     void* _1;
     char* mUserName;
     UserResource* mUserResource;
-    sead::SafeArray<UserInstance*, 2> mUserInstanceArray;
-    u32 _6;
-    s32 _7;
+    sead::OffsetList<UserInstance> mUserInstanceList;
     sead::Heap* mHeap;
     u32 _8;
     u16 mNumLocalProp;
