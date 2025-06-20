@@ -104,6 +104,12 @@ UserInstance* User::getMinSortKeyInstance()
     return min_sort_key_instance;
 }
 
+void User::updateSortKey() 
+{
+    for (auto& user_instance : mUserInstanceList)
+        user_instance.updateSortKey();
+}
+
 void User::beginOtameshi() 
 {
     for (auto& user_instance : mUserInstanceList) {
