@@ -110,6 +110,8 @@ void User::updateSortKey()
         user_instance.updateSortKey();
 }
 
+void User::setDebugDisable(bool) {}
+
 void User::beginOtameshi() 
 {
     for (auto& user_instance : mUserInstanceList) {
