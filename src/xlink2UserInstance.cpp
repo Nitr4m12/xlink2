@@ -136,6 +136,15 @@ void UserInstance::setIsActive(bool is_active)
     }
 }
 
+void UserInstance::killAllOneTimeEvent()
+{
+    {
+        auto lock = sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj());
+        for (auto& event : mEventList)
+            event.killOneTimeEvent();
+    }
+}
+
 void UserInstance::clearAllEvent() 
 {
     {
