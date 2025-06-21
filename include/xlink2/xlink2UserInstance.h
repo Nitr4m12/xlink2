@@ -122,9 +122,9 @@ public:
     bool isCurrentActionNeedToObserve(s32) const;
     bool isCurrentActionNeedToCalc() const;
 
-    void setPropertyValue(u32, s32);
-    void setPropertyValue(u32, f32);
-    bool isPropertyAssigned(u32) const;
+    void setPropertyValue(u32 idx, s32 value);
+    void setPropertyValue(u32 idx, f32 value);
+    bool isPropertyAssigned(u32 idx) const;
     void setPropertyDefinition(u32, PropertyDefinition const*);
 
     char* getUserName() const;

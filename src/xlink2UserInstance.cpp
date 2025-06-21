@@ -421,6 +421,14 @@ void UserInstance::setPropertyValue(u32 idx, f32 value)
     }
 }
 
+bool UserInstance::isPropertyAssigned(u32 idx) const
+{
+    UserResourceParam* user_param {mUser->getUserResource()->getParam()};
+    if (user_param != nullptr && user_param->isSetup)
+        return user_param->bitFlag.isOnBit(idx);
+    return false;
+}
+
 char* UserInstance::getUserName() const 
 {
     return mUser->getUserName();
