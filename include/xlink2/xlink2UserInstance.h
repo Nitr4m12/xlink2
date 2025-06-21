@@ -183,8 +183,11 @@ protected:
     const sead::Vector3f* mRootPos;
     const sead::Vector3f* mScale;
     f32 mSortKey;
-    u64 mValueChangedBitfield;
-    f32* mPropertyValueArray;
+    sead::BitFlag64 mValueChangedBitfield;
+    union {
+        f32* mPropertyValueArrayFloat;
+        u32* mPropertyValueArrayInt;
+    };
     TriggerCtrlMgr mTriggerCtrlMgr;
     void* _0x98;
     u8 _0xA0[0x30];

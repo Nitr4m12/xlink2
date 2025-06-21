@@ -18,7 +18,7 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     mSortKey = INFINITY;
     mScale = create_arg.getScale();
     mValueChangedBitfield = 0;
-    mPropertyValueArray = nullptr;
+    mPropertyValueArrayFloat = nullptr;
     mTriggerCtrlMgr = {};
     _0x98 = nullptr;
     mBitFlag = 0;
@@ -30,9 +30,9 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     if (!create_arg.getScale())
         mScale = &sead::Vector3f::ones;
 
-    u16 prop_define_table_num = mUser->getPropertyDefinitionTableNum();
+    u16 prop_define_table_num = mUser->getNumLocalProp();
     if (prop_define_table_num > 0)
-        mPropertyValueArray = new (heap, 8) f32[prop_define_table_num << 2];
+        mPropertyValueArrayFloat = new (heap, 8) f32[prop_define_table_num << 2];
 
     mTriggerCtrlMgr.initialize(create_arg.getActionSlotCount(), create_arg.getLocalPropertyCount(), heap);
 
@@ -57,8 +57,8 @@ void UserInstance::destroy()
         if (mParams[1])
             freeInstanceParam_(mParams[1], ResMode::Editor);
 
-        f32* prop_val_arr {mPropertyValueArray};
-        mPropertyValueArray = nullptr;
+        f32* prop_val_arr {mPropertyValueArrayFloat};
+        mPropertyValueArrayFloat = nullptr;
         delete[] prop_val_arr;
         
         mUser->getSystem()->removeUserInstance(this);
@@ -193,8 +193,8 @@ void UserInstance::setupResource(sead::Heap* heap)
             }
         }
 
-        if (mUser->getPropertyDefinitionTableNum() > 0) {
-            for (u32 i {0}; i < mUser->getPropertyDefinitionTableNum(); ++i) {
+        if (mUser->getNumLocalProp() > 0) {
+            for (u32 i {0}; i < mUser->getNumLocalProp(); ++i) {
                 if (mUser->getPropertyDefinitionEntry(i) != nullptr)
                     linkPropertyDefinitionToValueStruct(i, mUser->getPropertyDefinitionEntry(i));
             }
@@ -237,7 +237,7 @@ void UserInstance::linkPropertyDefinitionToValueStruct(u32 index,
                                                        const PropertyDefinition* prop_define) 
 {
     if (PropertyType::S32 < prop_define->getType())
-        mPropertyValueArray[index] = 0.0;
+        mPropertyValueArrayFloat[index] = 0.0;
 }
 
 bool UserInstance::isInstanceParamValid() const 
@@ -353,6 +353,39 @@ bool UserInstance::isCurrentActionNeedToObserve(s32 index) const
 bool UserInstance::isCurrentActionNeedToCalc() const 
 {
     return mTriggerCtrlMgr.get1() != 0;
+}
+
+void UserInstance::setPropertyValue(u32 idx, s32 value)
+{
+    if (mUser->getSystem()->isCallEnabled()) {
+        if (mPropertyValueArrayInt == nullptr) {
+            mUser->getSystem()->addError(Error::Type::PropertyOutOfRange, 
+                                         mUser, 
+                                         "There is no local property definition");
+            return;
+        }
+         
+        if (mUser->getNumLocalProp() <= idx) {
+            mUser->getSystem()->addError(Error::Type::PropertyOutOfRange, 
+                                mUser, 
+                                "ix(=%d) is out of bound (mNumLocalProp=%d)", 
+                                idx, mUser->getNumLocalProp());
+            return;
+        }
+
+        if (mUser->getPropertyDefinitionEntry(idx)->getType() == PropertyType::F32) {
+            mUser->getSystem()->addError(Error::Type::InvalidPropertyType, 
+                                mUser, 
+                                "local prop ix(=%d) is F32 type\n", 
+                                idx);
+            return;
+        }
+
+        if (mPropertyValueArrayInt[idx] != value) {
+            mPropertyValueArrayInt[idx] = value;
+            mValueChangedBitfield.setBit(idx);
+        }
+    }
 }
 
 char* UserInstance::getUserName() const 
