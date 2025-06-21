@@ -388,6 +388,39 @@ void UserInstance::setPropertyValue(u32 idx, s32 value)
     }
 }
 
+void UserInstance::setPropertyValue(u32 idx, f32 value)
+{
+    if (mUser->getSystem()->isCallEnabled()) {
+        if (mPropertyValueArrayFloat == nullptr) {
+            mUser->getSystem()->addError(Error::Type::PropertyOutOfRange, 
+                                         mUser, 
+                                         "There is no local property definition");
+            return;
+        }
+         
+        if (mUser->getNumLocalProp() <= idx) {
+            mUser->getSystem()->addError(Error::Type::PropertyOutOfRange, 
+                                mUser, 
+                                "ix(=%d) is out of bound (mNumLocalProp=%d)", 
+                                idx, mUser->getNumLocalProp());
+            return;
+        }
+
+        if (mUser->getPropertyDefinitionEntry(idx)->getType() != PropertyType::F32) {
+            mUser->getSystem()->addError(Error::Type::InvalidPropertyType, 
+                                mUser, 
+                                "local prop ix(=%d) is not F32 type\n", 
+                                idx);
+            return;
+        }
+
+        if (mPropertyValueArrayFloat[idx] != value) {
+            mPropertyValueArrayFloat[idx] = value;
+            mValueChangedBitfield.setBit(idx);
+        }
+    }
+}
+
 char* UserInstance::getUserName() const 
 {
     return mUser->getUserName();
