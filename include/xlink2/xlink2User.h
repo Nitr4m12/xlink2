@@ -51,6 +51,7 @@ public:
     char* getUserName() { return mUserName; }
     UserResource* getUserResource() { return mpUserResource; }
     u16 getPropertyDefinitionTableNum() const { return mLocalPropNum; }
+    PropertyDefinition* getPropertyDefinitionEntry(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
 
 private:
     void* _0;

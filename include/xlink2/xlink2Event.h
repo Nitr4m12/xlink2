@@ -53,6 +53,7 @@ public:
 
     u32& get0x20() { return _0x20; }
     TriggerType& getTriggerType() { return mTriggerType; }
+    sead::BitFlag32 getBitFlag() { return mBitFlag; }
 
 private:
     sead::BitFlag32 mBitFlag{0};

@@ -1,6 +1,7 @@
 #include <cstdarg>
 #include <xlink2/xlink2UserInstance.h>
 #include "prim/seadScopedLock.h"
+#include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2ResourceAccessor.h"
 
@@ -156,6 +157,51 @@ void UserInstance::clearAllEvent()
     }
 }
 
+// NON-MATCHING: Missing linkPropertyDefinitionToValueStruct
+void UserInstance::setupResource(sead::Heap* heap)
+{
+    if (mUser->getSystem()->isCallEnabled()) {
+        {
+            auto lock = sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj());
+            UserInstanceParam* param_inst {mParams[0]};
+            if (param_inst == nullptr || !param_inst->isSetupRom) {
+                UserResourceParam* param_res {mUser->getUserResource()->getParamBuffer()[0]};
+                if (param_res == nullptr || !param_res->isSetup) {
+                    mUser->getUserResource()->setup(heap);
+                }
+                if (mParams[0] == nullptr) {
+                    mParams[0] = allocInstanceParam_(heap);
+                    setupInstanceParam_(ResMode::Rom, heap);
+                    mTriggerCtrlMgr.allocAndSetupCtrlParam(ResMode::Rom, heap);
+                }
+                mUser->getSystem()->registUserForGlobalPropertyTrigger(mUser);
+            }
+
+            UserResourceParam* param_res {mUser->getUserResource()->getParamBuffer()[1]};
+            if (mUser->getUserResource()->getResMode() == ResMode::Editor && 
+                mUser->getUserResource()->getParamBuffer()[1] != nullptr && 
+                mUser->getUserResource()->getParamBuffer()[1]->isSetup) {
+                sead::Heap* primary_heap {mUser->getSystem()->getPrimaryHeap()};
+                if (mParams[1] != nullptr)
+                    freeInstanceParam_(mParams[1], ResMode::Editor);
+
+                mParams[1] = allocInstanceParam_(primary_heap);
+                setupInstanceParam_(ResMode::Editor, primary_heap);
+                mTriggerCtrlMgr.allocAndSetupCtrlParam(ResMode::Editor, primary_heap);
+                mBitFlag.set(1);
+                mTriggerCtrlMgr.setResMode(ResMode::Editor);
+            }
+        }
+
+        if (mUser->getPropertyDefinitionTableNum() > 0) {
+            for (u32 i {0}; i < mUser->getPropertyDefinitionTableNum(); ++i) {
+                if (mUser->getPropertyDefinitionEntry(i) != nullptr)
+                    linkPropertyDefinitionToValueStruct(i, mUser->getPropertyDefinitionEntry(i));
+            }
+        }
+    }
+}
+
 bool UserInstance::isSetupRomInstanceParam_() const 
 {
     if (mParams[(s32)ResMode::Rom])
@@ -190,7 +236,7 @@ void UserInstance::changeInstanceParam(ResMode mode)
 void UserInstance::linkPropertyDefinitionToValueStruct(u32 index,
                                                        const PropertyDefinition* prop_define) 
 {
-    if (prop_define->getType() <= PropertyType::F32)
+    if (PropertyType::S32 < prop_define->getType())
         mPropertyValueArray[index] = 0.0;
 }
 

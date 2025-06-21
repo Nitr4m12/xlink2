@@ -81,7 +81,7 @@ public:
     void killAllOneTimeEvent();
     void clearAllEvent();
 
-    void setupResource(sead::Heap*);
+    void setupResource(sead::Heap* heap);
     bool isSetupRomInstanceParam_() const;
 
     void setupInstanceParam_(ResMode, sead::Heap*);

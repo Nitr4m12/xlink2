@@ -57,6 +57,7 @@ public:
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
     UserResourceParam* getParam() const { return mParams[(s32)mResMode]; }
+    sead::SafeArray<UserResourceParam*, 2> getParamBuffer() const { return mParams; }
     ResMode getResMode() const { return mResMode; }
     const User* getUser() const { return mUser; }
 
