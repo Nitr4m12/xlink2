@@ -7,8 +7,7 @@ class ModelAssetConnection {
 public:
     virtual ~ModelAssetConnection();
 
-private:
-    void* _0;
-    sead::Matrix34f* mRootMtx;
+    const sead::Matrix34f* mRootMtx;
+    u8 _1;
 };
 }

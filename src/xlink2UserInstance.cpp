@@ -157,7 +157,7 @@ void UserInstance::clearAllEvent()
     }
 }
 
-// NON-MATCHING: Missing linkPropertyDefinitionToValueStruct
+// NON-MATCHING: Needs linkPropertyDefinitionToValueStruct
 void UserInstance::setupResource(sead::Heap* heap)
 {
     if (mUser->getSystem()->isCallEnabled()) {
@@ -429,6 +429,13 @@ bool UserInstance::isPropertyAssigned(u32 idx) const
     return false;
 }
 
+// NON-MATCHING: Needs linkPropertyDefinitionToValueStruct
+void UserInstance::setPropertyDefinition(u32 idx, const PropertyDefinition* prop_define)
+{
+    mUser->setPropertyDefinition(idx, prop_define);
+    linkPropertyDefinitionToValueStruct(idx, prop_define);
+}
+
 char* UserInstance::getUserName() const 
 {
     return mUser->getUserName();
@@ -451,6 +458,24 @@ const sead::SafeString* UserInstance::getContainerTypeName(const ResAssetCallTab
     return accessor->getCallTableTypeName(asset_call);
 }
 
+void UserInstance::fadeOrKillOtameshi(bool kill)
+{
+    {
+        auto lock = sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj());
+        for (auto& event : mEventList) {
+            if (kill) {
+                if (event.getBitFlag() & 1)
+                    event.kill();
+            }
+            else {
+                if (event.getBitFlag() & 1)
+                    event.fade(-1);
+            }
+        }
+    }
+}
+
+
 u32 UserInstance::getDefaultGroup() const 
 {
     return 0;
@@ -462,7 +487,7 @@ void UserInstance::onReset_() {}
 void UserInstance::freeInstanceParam_(UserInstanceParam* param, ResMode mode) 
 {
     param->modelAssetConnectionBuffer.freeBuffer();
-    param->randomEventBufffer.freeBuffer();
+    param->randomHistoryBufffer.freeBuffer();
 }
 
 void UserInstance::onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/) {}

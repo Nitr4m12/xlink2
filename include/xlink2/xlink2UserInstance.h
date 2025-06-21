@@ -125,7 +125,7 @@ public:
     void setPropertyValue(u32 idx, s32 value);
     void setPropertyValue(u32 idx, f32 value);
     bool isPropertyAssigned(u32 idx) const;
-    void setPropertyDefinition(u32, PropertyDefinition const*);
+    void setPropertyDefinition(u32, const PropertyDefinition*);
 
     char* getUserName() const;
 
@@ -135,8 +135,8 @@ public:
     void makeDebugStringLocalProperty(sead::BufferedSafeString*, sead::SafeString const&) const;
     void setDebugLogFlag(sead::BitFlag32);
 
-    void setRootMtx(sead::Matrix34f const*);
-    void setRootPos(sead::Vector3f const*);
+    void setRootMtx(const sead::Matrix34f* root_mtx);
+    void setRootPos(const sead::Vector3f* root_pos);
 
     void setRandomHistory(u32, u32);
     u32 searchRandomHistory(u32) const;
@@ -151,7 +151,7 @@ public:
 
     const sead::SafeString* getContainerTypeName(ResAssetCallTable const&) const;
 
-    void fadeOrKillOtameshi(bool);
+    void fadeOrKillOtameshi(bool kill);
 
     void rebuild(const RebuildArg&);
 
@@ -170,6 +170,7 @@ public:
 
     User* getUser() const { return mUser; };
     sead::BitFlag8 getBitFlag() const { return mBitFlag; };
+    UserInstanceParam* getParam() const { return mParams[mBitFlag & 1]; };
 
     bool unkCheck();
 

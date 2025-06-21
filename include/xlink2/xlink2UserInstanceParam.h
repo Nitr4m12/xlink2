@@ -7,13 +7,13 @@
 
 namespace xlink2 {
 struct UserInstanceParam {
-    struct RandomEvent {
+    struct RandomHistory {
         s32 oldIndex;
         s32 newIndex;
     };
 
     sead::Buffer<ModelAssetConnection> modelAssetConnectionBuffer;
-    sead::Buffer<RandomEvent> randomEventBufffer;
+    sead::Buffer<RandomHistory> randomHistoryBufffer;
     bool isSetupRom;
 };
 static_assert(sizeof(UserInstanceParam) == 0x28, "xlink2::UserInstanceParam size mismatch");
