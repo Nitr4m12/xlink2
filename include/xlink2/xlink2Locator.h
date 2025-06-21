@@ -10,7 +10,7 @@ namespace xlink2 {
 class Locator {
 public:
     Locator() = default;
-    virtual ~Locator();
+    // virtual ~Locator() = 0;
 
     static u32 sDataLoadedCount;
 
@@ -29,5 +29,5 @@ private:
     void* _0;
     u8 _1;
 };
-static_assert(sizeof(Locator) == 0x18, "Incorrect size of xlink2::Locator");
+static_assert(sizeof(Locator) == 0x18, "xlink2::Locator size mismatch");
 }  // namespace xlink2

@@ -90,7 +90,10 @@ const ContainerBase* ResourceAccessor::getContainer(const ResAssetCallTable& cal
 }
 
 // WIP
-const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCallTable&) const {};
+const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCallTable&) const 
+{
+    return nullptr;
+}
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& call_table) const
 {

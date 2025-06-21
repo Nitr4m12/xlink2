@@ -97,7 +97,7 @@ public:
     ModelAssetConnection* getModelAssetConnection(u32) const;
     void searchAndEmitImpl(char const*, Handle*);
 
-    u64 checkAndErrorCallWithoutSetup_(char const*, ...) const;
+    bool checkAndErrorCallWithoutSetup_(char const*, ...) const;
     void printLogSearchAsset_(bool, char const*, ...) const;
     void emitImpl(const Locator&, Handle*);
 
