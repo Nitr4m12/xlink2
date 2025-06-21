@@ -55,9 +55,8 @@ public:
     public:
         RebuildArg() = default;
 
-        sead::Matrix34f* _0;
-        u8 _8;
-        sead::Vector3f* _10;
+        BoneMtx rootMtx;
+        sead::Vector3f* rootPos;
         sead::Vector3f* _18;
     };
 
@@ -183,7 +182,7 @@ protected:
     IUser* mIUser;
     BoneMtx mRootMtx;
     const sead::Vector3f* mRootPos;
-    const sead::Vector3f* mScale;
+    const sead::Vector3f* mScale; // Just a guess
     f32 mSortKey;
     sead::BitFlag64 mValueChangedBitfield;
     PropertyValueType* mPropertyValueArray;

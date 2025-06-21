@@ -1,6 +1,7 @@
 #include <cstdarg>
-#include <xlink2/xlink2UserInstance.h>
-#include "prim/seadScopedLock.h"
+#include <prim/seadScopedLock.h>
+
+#include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2ResourceAccessor.h"
@@ -475,19 +476,17 @@ void UserInstance::fadeOrKillOtameshi(bool kill)
     }
 }
 
-// NON-MATCHING
 void UserInstance::rebuild(const RebuildArg& arg)
 {
-    if (arg._0 != nullptr) {
-        mRootMtx._0 = arg._8;
-        mRootMtx.rawMtx = arg._0;
-    }
-    else {
+    if (arg.rootMtx.rawMtx == nullptr) {
         mRootMtx.rawMtx = &sead::Matrix34f::ident;
         mRootMtx._0 = 0;
     }
+    else {
+        mRootMtx = arg.rootMtx;
+    }
 
-    mRootPos = arg._10;
+    mRootPos = arg.rootPos;
 
     mScale = arg._18 != nullptr ? arg._18 : &sead::Vector3f::ones;
 
