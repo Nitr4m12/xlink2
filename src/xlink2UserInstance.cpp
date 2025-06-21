@@ -12,27 +12,27 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     mEventList.clear();
     mUser = user;
     mIUser = create_arg.getIUser();
-    _0x48 = create_arg.get18();
-    mRootMtx = create_arg.getRootMtx();
+    mRootMtx._0 = create_arg.get18();
+    mRootMtx.rawMtx = create_arg.getRootMtx();
     mRootPos = create_arg.getRootPos();
     mSortKey = INFINITY;
     mScale = create_arg.getScale();
     mValueChangedBitfield = 0;
-    mPropertyValueArrayFloat = nullptr;
+    mPropertyValueArray = nullptr;
     mTriggerCtrlMgr = {};
     _0x98 = nullptr;
     mBitFlag = 0;
     mEventList.initOffset(10);
     if (!create_arg.getRootMtx()) {
-        mRootMtx = &sead::Matrix34f::ident;
-        _0x48 = 0;
+        mRootMtx.rawMtx = &sead::Matrix34f::ident;
+        mRootMtx._0 = 0;
     }
     if (!create_arg.getScale())
         mScale = &sead::Vector3f::ones;
 
     u16 prop_define_table_num = mUser->getNumLocalProp();
     if (prop_define_table_num > 0)
-        mPropertyValueArrayFloat = new (heap, 8) f32[prop_define_table_num << 2];
+        mPropertyValueArray = new (heap, 8) PropertyValueType[prop_define_table_num << 2];
 
     mTriggerCtrlMgr.initialize(create_arg.getActionSlotCount(), create_arg.getLocalPropertyCount(), heap);
 
@@ -57,8 +57,8 @@ void UserInstance::destroy()
         if (mParams[1])
             freeInstanceParam_(mParams[1], ResMode::Editor);
 
-        f32* prop_val_arr {mPropertyValueArrayFloat};
-        mPropertyValueArrayFloat = nullptr;
+        PropertyValueType* prop_val_arr {mPropertyValueArray};
+        mPropertyValueArray = nullptr;
         delete[] prop_val_arr;
         
         mUser->getSystem()->removeUserInstance(this);
@@ -237,7 +237,7 @@ void UserInstance::linkPropertyDefinitionToValueStruct(u32 index,
                                                        const PropertyDefinition* prop_define) 
 {
     if (PropertyType::S32 < prop_define->getType())
-        mPropertyValueArrayFloat[index] = 0.0;
+        mPropertyValueArray[index].valueFloat = 0.0;
 }
 
 bool UserInstance::isInstanceParamValid() const 
@@ -358,7 +358,7 @@ bool UserInstance::isCurrentActionNeedToCalc() const
 void UserInstance::setPropertyValue(u32 idx, s32 value)
 {
     if (mUser->getSystem()->isCallEnabled()) {
-        if (mPropertyValueArrayInt == nullptr) {
+        if (mPropertyValueArray == nullptr) {
             mUser->getSystem()->addError(Error::Type::PropertyOutOfRange, 
                                          mUser, 
                                          "There is no local property definition");
@@ -381,8 +381,8 @@ void UserInstance::setPropertyValue(u32 idx, s32 value)
             return;
         }
 
-        if (mPropertyValueArrayInt[idx] != value) {
-            mPropertyValueArrayInt[idx] = value;
+        if (mPropertyValueArray[idx].valueInt != value) {
+            mPropertyValueArray[idx].valueInt = value;
             mValueChangedBitfield.setBit(idx);
         }
     }
@@ -391,7 +391,7 @@ void UserInstance::setPropertyValue(u32 idx, s32 value)
 void UserInstance::setPropertyValue(u32 idx, f32 value)
 {
     if (mUser->getSystem()->isCallEnabled()) {
-        if (mPropertyValueArrayFloat == nullptr) {
+        if (mPropertyValueArray == nullptr) {
             mUser->getSystem()->addError(Error::Type::PropertyOutOfRange, 
                                          mUser, 
                                          "There is no local property definition");
@@ -414,8 +414,8 @@ void UserInstance::setPropertyValue(u32 idx, f32 value)
             return;
         }
 
-        if (mPropertyValueArrayFloat[idx] != value) {
-            mPropertyValueArrayFloat[idx] = value;
+        if (mPropertyValueArray[idx].valueFloat != value) {
+            mPropertyValueArray[idx].valueFloat = value;
             mValueChangedBitfield.setBit(idx);
         }
     }
@@ -475,6 +475,30 @@ void UserInstance::fadeOrKillOtameshi(bool kill)
     }
 }
 
+// NON-MATCHING
+void UserInstance::rebuild(const RebuildArg& arg)
+{
+    if (arg._0 != nullptr) {
+        mRootMtx._0 = arg._8;
+        mRootMtx.rawMtx = arg._0;
+    }
+    else {
+        mRootMtx.rawMtx = &sead::Matrix34f::ident;
+        mRootMtx._0 = 0;
+    }
+
+    mRootPos = arg._10;
+
+    mScale = arg._18 != nullptr ? arg._18 : &sead::Vector3f::ones;
+
+    if (mParams[0] != nullptr) {
+        initModelAssetConnection_(ResMode::Rom, mUser->getSystem()->getParamDefineTable(ResMode::Rom), nullptr);
+    }
+    if (mParams[1] != nullptr) {
+        initModelAssetConnection_(ResMode::Editor, mUser->getSystem()->getParamDefineTable(ResMode::Editor), nullptr);
+    }
+
+}
 
 u32 UserInstance::getDefaultGroup() const 
 {

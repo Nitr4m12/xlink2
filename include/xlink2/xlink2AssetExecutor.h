@@ -11,7 +11,6 @@
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class BoneMtx;
 class Event;
 class UserInstance;
 
@@ -41,11 +40,11 @@ public:
     virtual void onResetOverwriteParam_() = 0;
     virtual void onFinalize_() = 0;
 
-    BoneMtx* boneMtx() { return mBoneMtx; }
-    void boneMtx(BoneMtx* new_mtx) { mBoneMtx = new_mtx; }
+    BoneMtx boneMtx() { return mBoneMtx; }
+    void boneMtx(BoneMtx new_mtx) { mBoneMtx = new_mtx; }
 
-    u8* _0x48() {return m_0x48; }
-    void _0x48(u8 new_val) {m_0x48[0] = new_val; }
+    u8 _0x48() {return mBoneMtx._0; }
+    void _0x48(u8 new_val) {mBoneMtx._0 = new_val; }
 
     ResTriggerOverwriteParam* triggerOverwriteParam() { return mpTriggerOverwriteParam; }
     void triggerOverwriteParam(ResTriggerOverwriteParam* new_param) { mpTriggerOverwriteParam = new_param; }
@@ -58,8 +57,7 @@ protected:
     ContainerType mContainerType;
     float _0x34;
     ResTriggerOverwriteParam* mpTriggerOverwriteParam;
-    class BoneMtx* mBoneMtx;
-    u8 m_0x48[0x8];
+    BoneMtx mBoneMtx;
 };
 static_assert(sizeof(AssetExecutor) == 0x50, "Wrong size for 'xlink2::AssetExecutor'");
 }  // namespace xlink2

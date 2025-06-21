@@ -3,6 +3,7 @@
 #include <math/seadMatrix.h>
 #include <prim/seadBitFlag.h>
 
+#include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2DebugLogFlag.h"
 #include "xlink2/xlink2DebugOperationParam.h"
 #include "xlink2/xlink2Event.h"
@@ -12,6 +13,7 @@
 #include "xlink2/xlink2ModelAssetConnection.h"
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2TriggerCtrlMgr.h"
+#include "xlink2/xlink2PropertyValueType.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserInstanceParam.h"
 
@@ -179,16 +181,12 @@ protected:
     sead::SafeArray<UserInstanceParam*, 2> mParams;
     User* mUser;
     IUser* mIUser;
-    const sead::Matrix34f* mRootMtx;
-    u8 _0x48;
+    BoneMtx mRootMtx;
     const sead::Vector3f* mRootPos;
     const sead::Vector3f* mScale;
     f32 mSortKey;
     sead::BitFlag64 mValueChangedBitfield;
-    union {
-        f32* mPropertyValueArrayFloat;
-        u32* mPropertyValueArrayInt;
-    };
+    PropertyValueType* mPropertyValueArray;
     TriggerCtrlMgr mTriggerCtrlMgr;
     void* _0x98;
     u8 _0xA0[0x30];

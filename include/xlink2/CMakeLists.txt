@@ -49,6 +49,7 @@ target_sources(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PropertyDefinition.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PropertyTriggerCtrl.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PropertyType.h
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PropertyValueType.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PtclResourceAccessorELink.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}RandomContainer.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}RandomContainer2.h

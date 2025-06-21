@@ -3,5 +3,8 @@
 #include "math/seadMatrix.h"
 
 namespace xlink2 {
-class BoneMtx : sead::Matrix34f {};
+struct BoneMtx {
+    const sead::Matrix34f* rawMtx;
+    u8 _0;
+};
 }  // namespace xlink2
