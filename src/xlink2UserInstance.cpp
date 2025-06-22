@@ -39,7 +39,6 @@ UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user,
     mParams.fill(nullptr);
 }
 
-// NON-MATCHING: One instruction in the wrong place
 void UserInstance::destroy() 
 {
     {
@@ -51,14 +50,17 @@ void UserInstance::destroy()
 
         onDestroy_();
 
-        if (mParams[0])
+        if (mParams[0] != nullptr)
             freeInstanceParam_(mParams[0], ResMode::Rom);
 
-        if (mParams[1])
+        if (mParams[1] != nullptr)
             freeInstanceParam_(mParams[1], ResMode::Editor);
 
-        delete[] mPropertyValueArray;
-        mPropertyValueArray = nullptr;
+        auto* property_value_array {mPropertyValueArray};
+        if (property_value_array != nullptr) {
+            delete[] property_value_array;
+            mPropertyValueArray = nullptr;
+        }
         
         mUser->getSystem()->removeUserInstance(this);
         
@@ -277,13 +279,13 @@ void UserInstance::searchAndEmitImpl(const char* name, Handle* handle)
 // WIP
 bool UserInstance::checkAndErrorCallWithoutSetup_(const char* p1, ...) const 
 {
-    if (mParams[mBitFlag & 1] == nullptr || !mParams[mBitFlag & 1]->isSetupRom) {
+    if (mParams[mBitFlag & 1] != nullptr && mParams[mBitFlag & 1]->isSetupRom) {
         sead::FixedSafeString<256> d{};
         std::va_list args;
         va_start(args, p1);
         d.formatV(p1, args);
-        mUser->getSystem()->addError(Error::Type::CallWithoutSetup, mUser, "%s", d.cstr());
         va_end(args);
+        mUser->getSystem()->addError(Error::Type::CallWithoutSetup, mUser, "%s", d.cstr());
         return false;
     }
     return true;
