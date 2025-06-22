@@ -52,9 +52,9 @@ void Event::callEventDestroyCallback_() {}
 
 void Event::reEmit(const ResAssetCallTable* asset_ctb) 
 {
-    mBitFlag.set(52);
+    mBitFlag.set(0b110100);
     kill();
-    mBitFlag.reset(52);
+    mBitFlag.reset(0b110100);
 
     destroyAllContainerAndAssetExecutor_();
     createRootContainer(mpUserInstance, *asset_ctb);
@@ -62,7 +62,7 @@ void Event::reEmit(const ResAssetCallTable* asset_ctb)
 
 void Event::kill() 
 {
-    mBitFlag.set(48);
+    mBitFlag.set(0b110000);
     if (mpUserInstance != nullptr) {
         System* sys {mpUserInstance->getUser()->getSystem()};
         {
@@ -115,11 +115,11 @@ bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallT
 bool Event::calc()
 {
 
-    if (mBitFlag.isOn(64)) {
-        if (mBitFlag.isOff(16))
+    if (mBitFlag.isOnBit(6)) {
+        if (mBitFlag.isOffBit(4))
             reEmit(mpAssetCallTable);
 
-        mBitFlag.reset(64);
+        mBitFlag.resetBit(6);
     }  
 
     fixDelayParam_();
@@ -170,7 +170,7 @@ s32 Event::getFadeBySystemListAssetNum() const
 
 void Event::fade(s32 param_int) 
 {
-    mBitFlag.set(16);
+    mBitFlag.setBit(4);
     if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
         System* sys = {mpUserInstance->getUser()->getSystem()};
         {
@@ -182,7 +182,7 @@ void Event::fade(s32 param_int)
 
 void Event::fadeBySystem() 
 {
-    mBitFlag.set(16);
+    mBitFlag.setBit(4);
     if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
         System* sys = {mpUserInstance->getUser()->getSystem()};
         {
