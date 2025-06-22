@@ -16,17 +16,14 @@ const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) con
     return nullptr;
 }
 
-const ResAssetCallTable* ResourceAccessor::searchCallTable(Locator* locator, const char* name) const
+void ResourceAccessor::searchCallTable(Locator* locator, const char* name) const
 {
     if (mUserResource && mSystem->isCallEnabled()) {
         UserResourceParam* param = mUserResource->getParam();
 
         if (param && param->isSetup)
-            return mUserResource->searchAssetCallTableByName(locator, name);
+            mUserResource->searchAssetCallTableByName(locator, name);
     }
-
-    // why does this work?? it's probably wrong
-    return (ResAssetCallTable*)mUserResource;
 }
 
 const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const

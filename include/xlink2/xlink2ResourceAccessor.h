@@ -32,7 +32,7 @@ public:
     virtual s32 getAssetBitFlag(const ResAssetCallTable&) const = 0;
 
     const ResAssetCallTable* searchCallTable(char const*) const;
-    const ResAssetCallTable* searchCallTable(Locator*, char const*) const;
+    void searchCallTable(Locator*, char const*) const;
 
     const ResAssetCallTable* getCallTable(u32) const;
 
