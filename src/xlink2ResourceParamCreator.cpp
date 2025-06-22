@@ -869,4 +869,15 @@ void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_r
         }
     }
 };
+
+void ResourceParamCreator::dumpLine_(sead::BufferedSafeString* dump_str, const char* fmt, ...)
+{
+    va_list args;
+    va_start(args, fmt);
+    sead::FixedSafeString<256> msg;
+    msg.formatV(fmt, args);
+    va_end(args);
+    if (dump_str != nullptr)
+        dump_str->appendWithFormat("%s", msg.cstr());
+}
 }  // namespace xlink2

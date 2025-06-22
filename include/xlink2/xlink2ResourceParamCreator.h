@@ -49,7 +49,7 @@ class ResourceParamCreator {
     static void solveCommonResourceAboutGlobalProperty_(CommonResourceParam*, System*);
     static void solveUserBinAboutGlobalProperty(ResUserHeader*, ParamDefineTable const*, System*);
 
-    static void dumpLine_(sead::BufferedSafeString*, char const*, ...);
+    static void dumpLine_(sead::BufferedSafeString*, const char*, ...);
 
     static void dumpCommonResourceFront_(CommonResourceParam*, BinAccessor const*, bool,
                                          sead::BufferedSafeString*);
