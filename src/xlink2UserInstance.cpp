@@ -84,13 +84,15 @@ void UserInstance::preCalc()
 
 void UserInstance::doOtameshiEmit_() {}
 
-// NON-MATCHING: One instruction missing
 void UserInstance::postCalc() 
 {
-    if (mBitFlag.isOffBit(1) && mUser->getSystem() && mUser->getSystem()->isCallEnabled()) {
-        onPostCalc_();
-        mValueChangedBitfield.makeAllZero();
-        mBitFlag.reset(4);
+    if (mBitFlag.isOffBit(1)) {
+        System* sys {mUser->getSystem()};
+        if (sys && sys->isCallEnabled()) {
+            onPostCalc_();
+            mValueChangedBitfield.makeAllZero();
+            mBitFlag.reset(4);
+        }
     }
 }
 
