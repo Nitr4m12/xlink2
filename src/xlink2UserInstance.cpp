@@ -300,13 +300,12 @@ u64 UserInstance::getCurrentResActionIdx(s32 idx) const
     return mTriggerCtrlMgr.getCurrentResActionIdx(idx);
 }
 
-// NON-MATCHING: Wrong register
-ResAssetCallTable* UserInstance::searchAsset(Locator* locator, const char* name) 
+bool UserInstance::searchAsset(Locator* locator, const char* name) 
 {
     locator->reset();
     if (mUser->getSystem()->isCallEnabled())
         return mUser->getUserResource()->searchAssetCallTableByName(locator, name);
-    return nullptr;
+    return false;
 }
 
 // NON-MATCHING: Wrong register

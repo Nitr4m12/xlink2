@@ -23,7 +23,7 @@ public:
                              ParamDefineTable const*, sead::Heap*);
 
     const ResUserHeader* getUserHeader() const;
-    ResAssetCallTable* searchAssetCallTableByName(Locator*, char const*) const;
+    bool searchAssetCallTableByName(Locator*, const char*) const;
     ResAssetCallTable* searchAssetCallTableByName(char const*) const;
     u32* doBinarySearchAsset_(char const*, TriggerType) const;
     ResAssetCallTable* searchAssetCallTableByHash(Locator*, u32) const;
