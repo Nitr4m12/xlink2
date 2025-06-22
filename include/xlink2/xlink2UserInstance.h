@@ -100,7 +100,7 @@ public:
     u64 getCurrentResActionIdx(s32) const;
 
     bool searchAsset(Locator*, char const*);
-    ResAssetCallTable* searchAsset(Locator*, u32);
+    bool searchAsset(Locator*, u32);
     bool searchAssetRecursive(Locator*, char const*);
     void* trySearchSwitchContainerRecursive_(ResAssetCallTable const**, const ResAssetCallTable&);
     u64 searchEmittingEvent(Handle*, char const*) const;

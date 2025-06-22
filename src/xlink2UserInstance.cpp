@@ -308,13 +308,12 @@ bool UserInstance::searchAsset(Locator* locator, const char* name)
     return false;
 }
 
-// NON-MATCHING: Wrong register
-ResAssetCallTable* UserInstance::searchAsset(Locator* locator, u32 name_hash) 
+bool UserInstance::searchAsset(Locator* locator, u32 name_hash) 
 {
     locator->reset();
     if (mUser->getSystem()->isCallEnabled())
         return mUser->getUserResource()->searchAssetCallTableByHash(locator, name_hash);
-    return nullptr;
+    return false;
 }
 
 void UserInstance::changeAction(char const* name, int p1, int p2) 
