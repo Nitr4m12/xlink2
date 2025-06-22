@@ -276,19 +276,18 @@ void UserInstance::searchAndEmitImpl(const char* name, Handle* handle)
     }
 }
 
-// WIP
-bool UserInstance::checkAndErrorCallWithoutSetup_(const char* p1, ...) const 
+bool UserInstance::checkAndErrorCallWithoutSetup_(const char* fmt, ...) const 
 {
-    if (mParams[mBitFlag & 1] != nullptr && mParams[mBitFlag & 1]->isSetupRom) {
-        sead::FixedSafeString<256> d{};
-        std::va_list args;
-        va_start(args, p1);
-        d.formatV(p1, args);
-        va_end(args);
-        mUser->getSystem()->addError(Error::Type::CallWithoutSetup, mUser, "%s", d.cstr());
-        return false;
-    }
-    return true;
+    if (mParams[mBitFlag & 1] != nullptr && mParams[mBitFlag & 1]->isSetupRom)
+        return true;
+
+    va_list args;
+    va_start(args, fmt);
+    sead::FixedSafeString<256> msg;
+    msg.formatV(fmt, args);
+    va_end(args);
+    mUser->getSystem()->addError(Error::Type::CallWithoutSetup, mUser, "%s", msg.cstr());
+    return false;
 }
 
 void UserInstance::printLogSearchAsset_(bool /*unused*/, char const* /*unused*/, ...) const {}
