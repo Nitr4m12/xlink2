@@ -95,13 +95,14 @@ public:
     bool isDebugLogEnable(DebugLogFlag) const;
 
     void checkAndBreakWhenEmit_(char const* /*unused*/);
+    
     void freeEventIfFadeOrKillCalled();
 
     u64 getCurrentResActionIdx(s32) const;
 
     bool searchAsset(Locator*, char const*);
     bool searchAsset(Locator*, u32);
-    bool searchAssetRecursive(Locator*, char const*);
+    bool searchAssetRecursive(Locator*, const char*);
     void* trySearchSwitchContainerRecursive_(ResAssetCallTable const**, const ResAssetCallTable&);
     u64 searchEmittingEvent(Handle*, char const*) const;
 

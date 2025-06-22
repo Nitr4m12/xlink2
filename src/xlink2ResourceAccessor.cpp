@@ -1,3 +1,5 @@
+#include <cstdarg>
+
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2Util.h"
 
@@ -42,17 +44,19 @@ const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const
     return nullptr;
 }
 
-void ResourceAccessor::setError_(const char* format, ...) const
+void ResourceAccessor::setError_(const char* fmt, ...) const
 {
+    va_list args;
+    va_start(args, fmt);
     sead::FixedSafeString<256> msg;
-    msg.format(format);
-    const User* user;
+    msg.formatV(fmt, args);
+    va_end(args);
+    User* user {nullptr};
+    System* sys {mSystem};
     if (mUserResource != nullptr)
         user = mUserResource->getUser();
-    else
-        user = nullptr;
 
-    mSystem->addError((Error::Type)0x10, user, "%s", msg.mBuffer);
+    sys->addError(Error::Type::ResourceAccessFailed, user, "%s", msg.getBuffer());
 }
 
 const char* ResourceAccessor::getKeyName(const ResAssetCallTable& call_table) const

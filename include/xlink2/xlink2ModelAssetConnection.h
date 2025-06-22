@@ -2,12 +2,13 @@
 
 #include <math/seadMatrix.h>
 
+#include "xlink2/xlink2BoneMtx.h"
+
 namespace xlink2 {
 class ModelAssetConnection {
 public:
     virtual ~ModelAssetConnection();
 
-    const sead::Matrix34f* mRootMtx;
-    u8 _1;
+    BoneMtx mRootMtx;
 };
 }

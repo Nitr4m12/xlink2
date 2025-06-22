@@ -13,7 +13,7 @@ struct UserInstanceParam {
     };
 
     sead::Buffer<ModelAssetConnection> modelAssetConnectionBuffer;
-    sead::Buffer<RandomHistory> randomHistoryBufffer;
+    sead::Buffer<RandomHistory> randomHistoryBuffer;
     bool isSetupRom;
 };
 static_assert(sizeof(UserInstanceParam) == 0x28, "xlink2::UserInstanceParam size mismatch");

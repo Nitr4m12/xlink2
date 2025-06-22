@@ -3,7 +3,7 @@
 namespace xlink2 {
 void Locator::reset()
 {
-    _0 = nullptr;
+    mpAssetCallTable = nullptr;
     _1 = 0;
 }
 

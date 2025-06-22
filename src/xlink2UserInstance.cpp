@@ -511,7 +511,7 @@ void UserInstance::onReset_() {}
 void UserInstance::freeInstanceParam_(UserInstanceParam* param, ResMode mode) 
 {
     param->modelAssetConnectionBuffer.freeBuffer();
-    param->randomHistoryBufffer.freeBuffer();
+    param->randomHistoryBuffer.freeBuffer();
 }
 
 void UserInstance::onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/) {}

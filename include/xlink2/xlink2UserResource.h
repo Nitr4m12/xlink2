@@ -59,7 +59,7 @@ public:
     UserResourceParam* getParam() const { return mParams[(s32)mResMode]; }
     sead::SafeArray<UserResourceParam*, 2> getParamBuffer() const { return mParams; }
     ResMode getResMode() const { return mResMode; }
-    const User* getUser() const { return mUser; }
+    User* getUser() const { return mUser; }
 
     void setResMode(ResMode new_val) { mResMode = new_val; }
 

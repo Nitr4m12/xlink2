@@ -3,13 +3,14 @@
 #include <basis/seadTypes.h>
 
 #include "xlink2/xlink2BoneMtx.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResTriggerOverwriteParam.h"
 #include "xlink2/xlink2TriggerType.h"
 
 namespace xlink2 {
 class Locator {
 public:
-    Locator() : _0{nullptr}, _1{0} {};
+    Locator() : mpAssetCallTable{nullptr}, _1{0} {};
     // virtual ~Locator() = 0;
 
     static u32 sDataLoadedCount;
@@ -20,13 +21,14 @@ public:
     virtual const ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
     virtual BoneMtx getOverwriteBoneMtx() const;
 
-
     bool isNeedRebind() const;
     s32 getSearchedGuid() const;
     void updateDataLoadedCount();
 
+    void setAssetCallTable(const ResAssetCallTable* asset_call_table) {mpAssetCallTable = asset_call_table; }
+
 private:
-    void* _0;
+    const ResAssetCallTable* mpAssetCallTable;
     u8 _1;
 };
 static_assert(sizeof(Locator) == 0x18, "xlink2::Locator size mismatch");
