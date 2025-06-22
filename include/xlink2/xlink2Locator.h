@@ -9,7 +9,7 @@
 namespace xlink2 {
 class Locator {
 public:
-    Locator() = default;
+    Locator() : _0{nullptr}, _1{0} {};
     // virtual ~Locator() = 0;
 
     static u32 sDataLoadedCount;

@@ -257,15 +257,15 @@ ModelAssetConnection* UserInstance::getModelAssetConnection(u32 idx) const
     return nullptr;
 }
 
-// WIP
 void UserInstance::searchAndEmitImpl(const char* name, Handle* handle) 
 {
-    if (name != nullptr && mUser->getSystem()->isCallEnabled() &&
-        checkAndErrorCallWithoutSetup_("searchAndEmit(%s)", name)) {
-        Locator l{};
-        ResAssetCallTable* b = mUser->getUserResource()->searchAssetCallTableByName(&l, name);
-        if (b)
-            emitImpl(l, handle);
+    System* sys {mUser->getSystem()};
+    if (name != nullptr && sys->isCallEnabled()) {
+        if (checkAndErrorCallWithoutSetup_("searchAndEmit(%s)", name)) {
+            Locator l{};
+            if (mUser->getUserResource()->searchAssetCallTableByName(&l, name))
+                emitImpl(l, handle);
+        }
     }
 }
 
