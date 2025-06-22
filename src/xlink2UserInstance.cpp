@@ -159,7 +159,6 @@ void UserInstance::clearAllEvent()
     }
 }
 
-// NON-MATCHING: Needs linkPropertyDefinitionToValueStruct
 void UserInstance::setupResource(sead::Heap* heap)
 {
     if (mUser->getSystem()->isCallEnabled()) {
@@ -234,12 +233,18 @@ void UserInstance::changeInstanceParam(ResMode mode)
     mTriggerCtrlMgr.setResMode(mode);
 }
 
-// NON-MATCHING: One instruction missing
 void UserInstance::linkPropertyDefinitionToValueStruct(u32 idx,
                                                        const PropertyDefinition* prop_define) 
 {
-    if (PropertyType::F32 == prop_define->getType())
-        mPropertyValueArray[idx].valueFloat = 0.0;
+    switch (prop_define->getType()) {
+        case PropertyType::Enum:
+        case PropertyType::S32:
+            mPropertyValueArray[idx].valueInt = 0;
+            break;
+        case PropertyType::F32:
+            mPropertyValueArray[idx].valueFloat = 0.0;
+            break;
+    }
 }
 
 bool UserInstance::isInstanceParamValid() const 
@@ -429,7 +434,6 @@ bool UserInstance::isPropertyAssigned(u32 idx) const
     return false;
 }
 
-// NON-MATCHING: Needs linkPropertyDefinitionToValueStruct
 void UserInstance::setPropertyDefinition(u32 idx, const PropertyDefinition* prop_define)
 {
     mUser->setPropertyDefinition(idx, prop_define);
@@ -448,8 +452,8 @@ void UserInstance::setRootPos(const sead::Vector3f* root_pos)
     mRootPos = root_pos;
 }
 
-void UserInstance::printLogContainerSelect(const Event&, const char*, ...) const {}
-void UserInstance::printLogEmitFailed(Event const& /*unused*/, char const* /*unused*/, ...) const {}
+void UserInstance::printLogContainerSelect(const Event& /*unused*/, const char* /*unused*/, ...) const {}
+void UserInstance::printLogEmitFailed(const Event& /*unused*/, char const* /*unused*/, ...) const {}
 
 // NON-MATCHING: two instructions in the wrong place
 const sead::SafeString* UserInstance::getContainerTypeName(const ResAssetCallTable& asset_call) const 
