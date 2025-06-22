@@ -10,37 +10,36 @@ namespace xlink2 {
 // WIP
 UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user, sead::Heap* heap) 
 {
-    mEventList.clear();
+    mEventList = {};
+    mEventList.initOffset(10);
     mUser = user;
-    mIUser = create_arg.getIUser();
-    mRootMtx._0 = create_arg.get18();
-    mRootMtx.rawMtx = create_arg.getRootMtx();
-    mRootPos = create_arg.getRootPos();
+    mIUser = create_arg.iUser;
+    mRootMtx = create_arg.rootMtx;
+    mRootPos = create_arg.rootPos;
     mSortKey = INFINITY;
-    mScale = create_arg.getScale();
+    mScale = create_arg.scale;
     mValueChangedBitfield = 0;
     mPropertyValueArray = nullptr;
     mTriggerCtrlMgr = {};
     _0x98 = nullptr;
     mBitFlag = 0;
-    mEventList.initOffset(10);
-    if (!create_arg.getRootMtx()) {
+    if (!create_arg.rootMtx.rawMtx) {
         mRootMtx.rawMtx = &sead::Matrix34f::ident;
         mRootMtx._0 = 0;
     }
-    if (!create_arg.getScale())
+    if (!create_arg.scale)
         mScale = &sead::Vector3f::ones;
 
     u16 prop_define_table_num = mUser->getNumLocalProp();
     if (prop_define_table_num > 0)
         mPropertyValueArray = new (heap, 8) PropertyValueType[prop_define_table_num << 2];
 
-    mTriggerCtrlMgr.initialize(create_arg.getActionSlotCount(), create_arg.getLocalPropertyCount(), heap);
+    mTriggerCtrlMgr.initialize(create_arg.actionSlotCount, create_arg.localPropertyCount, heap);
 
     mParams.fill(nullptr);
 }
 
-// NON-MATCHING: One instruction missing
+// NON-MATCHING: One instruction in the wrong place
 void UserInstance::destroy() 
 {
     {
@@ -58,11 +57,11 @@ void UserInstance::destroy()
         if (mParams[1])
             freeInstanceParam_(mParams[1], ResMode::Editor);
 
-        PropertyValueType* prop_val_arr {mPropertyValueArray};
+        delete[] mPropertyValueArray;
         mPropertyValueArray = nullptr;
-        delete[] prop_val_arr;
         
         mUser->getSystem()->removeUserInstance(this);
+        
         delete this;
     }
 }
@@ -74,11 +73,11 @@ bool UserInstance::checkAndErrorCallInCalc(const char* /*unused*/, ...) const
 
 void UserInstance::printLogFadeOrKill(Event const* /*unused*/, char const* /*unused*/, ...) const {}
 
-// NON-MATCHING: One instruction missing
 void UserInstance::preCalc() 
 {
     if (mBitFlag.isOffBit(1)) {
-        if (mUser->getSystem() != nullptr && mUser->getSystem()->isCallEnabled())
+        System* sys {mUser->getSystem()};
+        if (sys != nullptr && sys->isCallEnabled())
             mTriggerCtrlMgr.calc();
     }
 }
@@ -90,7 +89,7 @@ void UserInstance::postCalc()
 {
     if (mBitFlag.isOffBit(1) && mUser->getSystem() && mUser->getSystem()->isCallEnabled()) {
         onPostCalc_();
-        mValueChangedBitfield = 0;
+        mValueChangedBitfield.makeAllZero();
         mBitFlag.reset(4);
     }
 }
@@ -234,11 +233,11 @@ void UserInstance::changeInstanceParam(ResMode mode)
 }
 
 // NON-MATCHING: One instruction missing
-void UserInstance::linkPropertyDefinitionToValueStruct(u32 index,
+void UserInstance::linkPropertyDefinitionToValueStruct(u32 idx,
                                                        const PropertyDefinition* prop_define) 
 {
-    if (PropertyType::S32 < prop_define->getType())
-        mPropertyValueArray[index].valueFloat = 0.0;
+    if (PropertyType::F32 == prop_define->getType())
+        mPropertyValueArray[idx].valueFloat = 0.0;
 }
 
 bool UserInstance::isInstanceParamValid() const 
@@ -248,11 +247,11 @@ bool UserInstance::isInstanceParamValid() const
     return false;
 }
 
-ModelAssetConnection* UserInstance::getModelAssetConnection(u32 index) const 
+ModelAssetConnection* UserInstance::getModelAssetConnection(u32 idx) const 
 {
     UserInstanceParam* param = mParams[mBitFlag & 1];
     if (param != nullptr && param->isSetupRom)
-        return &param->modelAssetConnectionBuffer[index];
+        return &param->modelAssetConnectionBuffer[idx];
     return nullptr;
 }
 
@@ -294,9 +293,9 @@ bool UserInstance::isDebugLogEnable(DebugLogFlag /*unused*/) const
 
 void UserInstance::checkAndBreakWhenEmit_(const char* /*unused*/) {}
 
-u64 UserInstance::getCurrentResActionIdx(s32 index) const 
+u64 UserInstance::getCurrentResActionIdx(s32 idx) const 
 {
-    return mTriggerCtrlMgr.getCurrentResActionIdx(index);
+    return mTriggerCtrlMgr.getCurrentResActionIdx(idx);
 }
 
 // NON-MATCHING: Wrong register
@@ -478,13 +477,10 @@ void UserInstance::fadeOrKillOtameshi(bool kill)
 
 void UserInstance::rebuild(const RebuildArg& arg)
 {
-    if (arg.rootMtx.rawMtx == nullptr) {
-        mRootMtx.rawMtx = &sead::Matrix34f::ident;
-        mRootMtx._0 = 0;
-    }
-    else {
+    if (arg.rootMtx.rawMtx == nullptr)
+        mRootMtx.reset();
+    else
         mRootMtx = arg.rootMtx;
-    }
 
     mRootPos = arg.rootPos;
 

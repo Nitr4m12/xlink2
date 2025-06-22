@@ -18,7 +18,7 @@ protected:
     PropertyType mType;
     u8 _0;
 };
-static_assert(sizeof(PropertyDefinition) == 0x68, "Wrong size for 'xlink2::PropertyDefinition'");
+static_assert(sizeof(PropertyDefinition) == 0x68, "xlink2::PropertyDefinition size mismatch");
 
 class F32PropertyDefinition : public PropertyDefinition {
 public:
@@ -28,7 +28,7 @@ private:
     f32 mMinValue;
     f32 mMaxValue;
 };
-static_assert(sizeof(F32PropertyDefinition) == 0x70, "Wrong size for 'xlink2::F32PropertyDefinition'");
+static_assert(sizeof(F32PropertyDefinition) == 0x70, "xlink2::F32PropertyDefinition size mismatch");
 
 class S32PropertyDefinition : public PropertyDefinition {
 public:
@@ -38,6 +38,6 @@ private:
     s32 mMinValue;
     s32 mMaxValue;
 };
-static_assert(sizeof(S32PropertyDefinition) == 0x70, "Wrong size for 'xlink2::S32PropertyDefinition'");
+static_assert(sizeof(S32PropertyDefinition) == 0x70, "xlink2::S32PropertyDefinition size mismatch");
 
 }  // namespace xlink2

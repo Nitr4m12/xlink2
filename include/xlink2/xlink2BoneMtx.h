@@ -14,5 +14,13 @@ struct BoneMtx {
         rawMtx = other.rawMtx;
         _0 = other._0;
     }
+
+    void reset()
+    {
+        rawMtx = &sead::Matrix34f::ident;
+        _0 = 0;
+    }
+
+    bool isNullMtxPtr() { return rawMtx == nullptr; }
 };
 }  // namespace xlink2

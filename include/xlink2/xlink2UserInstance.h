@@ -30,25 +30,14 @@ public:
         CreateArg(char const*, IUser*);
         CreateArg(const CreateArg& other);
 
-        IUser* getIUser() const { return mIUser; }
-        u8 get18() const { return _18; }
-        sead::Matrix34f* getRootMtx() const { return mRootMtx; }
-        sead::Vector3f* getRootPos() const { return mRootPos; }
-        sead::Vector3f* getScale() const { return mScale; }
-        s32 getActionSlotCount() const { return mActionSlotCount; }
-        s32 getLocalPropertyCount() const { return mLocalPropertyCount; }
-        char* getActionSlotNames() const { return mActionSlotNames; }
-
-    private:
-        char* mName;
-        IUser* mIUser;
-        sead::Matrix34f* mRootMtx;
-        u8 _18;
-        sead::Vector3f* mRootPos;
-        sead::Vector3f* mScale;
-        s32 mActionSlotCount;
-        s32 mLocalPropertyCount;
-        char* mActionSlotNames;
+        char* name;
+        IUser* iUser;
+        BoneMtx rootMtx;
+        sead::Vector3f* rootPos;
+        sead::Vector3f* scale;
+        s32 actionSlotCount;
+        s32 localPropertyCount;
+        char* actionSlotNames;
     };
 
     class RebuildArg {
