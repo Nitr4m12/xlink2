@@ -118,11 +118,24 @@ const char* ResourceAccessor::getCustomParamValueString(u32 idx,
     }
 }
 
-// WIP
-bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_call_table,
-                                             const char* format_str, ...) const
+bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_ctb,
+                                             const char* fmt, ...) const
 {
-    // Requires setError_
+    if (asset_ctb.flag & 1) {
+        va_list args;
+        va_start(args, fmt);
+        sead::FixedSafeString<256> msg;
+        msg.formatV(fmt, args);
+        va_end(args);
+        User* user {nullptr};
+        System* sys {mSystem};
+        if (mUserResource != nullptr)
+            user = mUserResource->getUser();
+
+        sys->addError(Error::Type::ResourceAccessFailed, user, "%s: [%s] is container", msg.getBuffer(), getKeyName(asset_ctb));
+        return false;
+    }
+    return true;
 }
 
 const char* ResourceAccessor::getResParamValueString_(const ResParam& param) const
