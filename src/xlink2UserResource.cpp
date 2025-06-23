@@ -238,22 +238,18 @@ u64 UserResource::getEditorSetupTime() const {
     return 0;
 }
 
-bool UserResource::hasGlobalPropertyTrigger() const {
-    // auto* param{mParams[int(mResMode)]};
-    // ResUserHeader* usr_head {nullptr};
+bool UserResource::hasGlobalPropertyTrigger() const 
+{
+    UserResourceParam* param {getParam()};
 
-    // if (!param || !param->isSetup || usr_head->numResProperty == 0)
-    //     return false;
+    if (param != nullptr && param->isSetup) {
+        for (u32 i{0}; i < param->resUserHeader->numResProperty; ++i) {
+            if (param->resPropertyTable[i].isGlobal)
+                return true;
+        }
+    }
 
-    // ResRandomCallTable* random_table{param->randomCallTable};
-    // f32 max_val{random_table->maxValue};
-    // for (int i{0}; i < usr_head->numResProperty; ++i) {
-    //     if (max_val != 0)
-    //         return true;
-
-    //     max_val += 16;
-    // }
-    // return false;
+    return false;
 }
 
 UserResource::~UserResource() = default;
