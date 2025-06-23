@@ -202,6 +202,21 @@ bool UserResource::doBinarySearchToNameArray_(s32* value_idx, const char* name, 
     return false;
 }
 
+void UserResource::solveNeedObserveFlag_(UserResourceParam* param)
+{
+    ResUserHeader* user_header {param->resUserHeader};
+
+    if (user_header->numCallTable != 0) {
+        ResAssetCallTable* asset_ctb {param->resAssetCallTable};
+
+        for (u32 i {0}; i < user_header->numCallTable; ++i) {
+            s32 parent_index {asset_ctb[i].parentIndex};
+            if (parent_index < 0 || asset_ctb[parent_index].flag.isOffBit(0))
+                solveNeedObserveFlagImpl_(i, &asset_ctb[i], param, user_header);
+        }
+    }
+}
+
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
                                                         TriggerType /*unused*/) {}
 

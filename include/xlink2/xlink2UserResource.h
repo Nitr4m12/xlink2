@@ -46,8 +46,8 @@ public:
 
     static bool doBinarySearchToNameArray_(s32*, const char*, u32*, u32);
 
-    void solveNeedObserveFlag(UserResourceParam*);
-    u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
+    static void solveNeedObserveFlag_(UserResourceParam*);
+    static bool solveNeedObserveFlagImpl_(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
     u64 searchAssetAllResource(const char*) const;
     bool hasGlobalPropertyTrigger() const;
 

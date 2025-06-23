@@ -1,6 +1,7 @@
 #pragma once
 
-#include "basis/seadTypes.h"
+#include <basis/seadTypes.h>
+#include <prim/seadBitFlag.h>
 
 namespace xlink2 {
 struct CallTableParam {
@@ -20,7 +21,7 @@ struct CallTableParam {
 struct ResAssetCallTable {
     u32 keyNamePos;
     s16 assetId;
-    u16 flag;
+    sead::BitFlag8 flag;
     s32 duration;
     s32 parentIndex;
     u16 enumIndex;
