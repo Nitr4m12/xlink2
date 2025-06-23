@@ -1,10 +1,6 @@
 #include <cstring>
 
 #include "xlink2/xlink2UserResource.h"
-
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResUserHeader.h"
-#include "xlink2/xlink2UserResourceParam.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -94,7 +90,7 @@ ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerT
             return nullptr;
 
         s32 a {0};
-        s32 b {(s32)param->resUserHeader->numCallTable - 1};
+        s32 b {param->resUserHeader->numCallTable - 1};
 #ifdef MATCHING_HACK_NX_CLANG
         asm("");
 #endif
@@ -180,6 +176,30 @@ void UserResource::freeResourceParam_(UserResourceParam* param)
     param->conditionTableBuffer.freeBuffer();
     param->callTableBuffer.freeBuffer();
     param->actionBuffer.freeBuffer();
+}
+
+bool UserResource::doBinarySearchToNameArray_(s32* value_idx, const char* name, u32* name_refs, u32 num_item) 
+{
+    s32 a {0};
+    s32 b = num_item - 1;
+
+    while (a <= b) {
+        const s32 m = (a + b) / 2;
+        char* key_name {calcOffset<char>(name_refs[m])};
+
+        const s32 c {strcmp(name, key_name)};
+        if (c == 0) {
+            *value_idx = m;
+            return true;
+        }
+
+        if (c > 0)
+            a = m + 1;
+        else
+            b = m - 1;
+    }
+
+    return false;
 }
 
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,

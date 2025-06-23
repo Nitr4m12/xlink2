@@ -44,7 +44,7 @@ public:
     void destroy();
     virtual void freeResourceParam_(UserResourceParam*);
 
-    u64 doBinarySearchToNameArray(s32*, const char*, u32*, u32);
+    static bool doBinarySearchToNameArray_(s32*, const char*, u32*, u32);
 
     void solveNeedObserveFlag(UserResourceParam*);
     u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
