@@ -13,7 +13,7 @@ struct ResUserHeader {
     u32 numResAction;
     s32 numResActionTrigger;
     u32 numResProperty;
-    u32 numResPropertyTrigger;
+    s32 numResPropertyTrigger;
     u32 numResAlwaysTrigger;
     u32 triggerTablePos;
 };

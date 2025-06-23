@@ -12,6 +12,8 @@ UserResource::UserResource(User* user)
     mParams[1] = nullptr;
 }
 
+UserResource::~UserResource() = default;
+
 void UserResource::setup(sead::Heap* heap) 
 {
     sead::Heap* user_heap;
@@ -151,6 +153,17 @@ ResActionTrigger* UserResource::getActionTriggerTableItem(s32 idx) const
     if (param != nullptr && param->isSetup) {
         if (idx >= 0 && param->resUserHeader->numResActionTrigger > idx)
             return &param->resActionTriggerTable[idx];
+    }
+    return nullptr;
+}
+
+ResPropertyTrigger* UserResource::getPropertyTriggerTableItem(s32 idx) const 
+{
+    UserResourceParam* param = getParamWithSetupCheck();
+    
+    if (param != nullptr && param->isSetup) {
+        if (idx >= 0 && param->resUserHeader->numResPropertyTrigger > idx)
+            return &param->resPropertyTriggerTable[idx];
     }
     return nullptr;
 }
