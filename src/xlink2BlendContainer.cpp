@@ -13,7 +13,7 @@ bool BlendContainer::start()
 bool BlendContainer::initialize(Event* event, const ResAssetCallTable& asset_call_table)
 {
     ContainerBase::initialize(event, asset_call_table);
-    ResourceUtil::getResContainerParam(mpAssetCallTable);
+    ResourceUtil::getResContainerParam(*mpAssetCallTable);
     return true;
 }
 
@@ -21,7 +21,7 @@ bool BlendContainer::initialize(Event* event, const ResAssetCallTable& asset_cal
 bool BlendContainer::callAllChildContainer_() 
 {
     UserInstance* user_instance {mpEvent->getUserInstance()};
-    ResContainerParam* param {ResourceUtil::getResContainerParam(mpAssetCallTable)};
+    ResContainerParam* param {ResourceUtil::getResContainerParam(*mpAssetCallTable)};
     if (param->childrenEndIndex > param->childrenStartIndex)
         return false;
     ContainerBase* container {nullptr};

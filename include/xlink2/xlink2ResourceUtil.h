@@ -9,9 +9,9 @@
 namespace xlink2 {
 class ResourceUtil {
 public:
-    static ResContainerParam* getResContainerParam(ResAssetCallTable*);
-    static u32 getResSwitchContainerParam(ResAssetCallTable const&);
-    static u32 getResSequenceContainerParam(ResAssetCallTable const&);
+    static ResContainerParam* getResContainerParam(const ResAssetCallTable&);
+    static ResContainerParam* getResSwitchContainerParam(const ResAssetCallTable&);
+    static ResContainerParam* getResSequenceContainerParam(const ResAssetCallTable&);
 
     static TriggerType getActionTriggerType(ResActionTrigger const&);
 };
