@@ -122,6 +122,21 @@ ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerT
     return nullptr;
 }
 
+bool UserResource::searchAssetCallTableByHash(Locator* locator, u32 name_hash) const
+{
+    UserResourceParam* param {getParam()};
+    if (param != nullptr && param->isSetup && param->resUserHeader->numCallTable != 0) {
+        for (u32 i {0}; i < param->resUserHeader->numCallTable; ++i) {
+            if (param->resAssetCallTable[i].keyNameHash == name_hash) {
+                locator->setAssetCallTable(&param->resAssetCallTable[i]);
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
+
 // // NON_MATCHING: one sub instruction reordered
 ResAssetCallTable* UserResource::getAssetCallTableItem(s32 index) const {
     auto* param = mParams[int(mResMode)];
