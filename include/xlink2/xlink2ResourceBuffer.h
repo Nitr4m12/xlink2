@@ -15,9 +15,10 @@ public:
     static ResUserHeader getEmptyUserHeader();
     u64 load(void*, System*);
 
-    void* searchResUserHeader(char const*) const;
+    ResUserHeader* searchResUserHeader(char const*) const;
 
-    ParamDefineTable getParamDefineTable() const { return mParamDefineTable; }
+    ParamDefineTable getParamDefineTable() { return mParamDefineTable; }
+    RomResourceParam getRomResourceParam() { return mRomResourceParam; }
 
 private:
     RomResourceParam mRomResourceParam;

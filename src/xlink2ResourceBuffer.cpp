@@ -11,12 +11,12 @@ ResourceBuffer::~ResourceBuffer() = default;
 // }
 
 RomResourceParam ResourceBuffer::getEmptyRomResourceParam() {
-    static RomResourceParam sDummy;
+    static RomResourceParam sDummy{};
     return sDummy;
 }
 
 ResUserHeader ResourceBuffer::getEmptyUserHeader() {
-    static ResUserHeader sDummy;
+    static ResUserHeader sDummy{};
     return sDummy;
 }
 }  // namespace xlink2

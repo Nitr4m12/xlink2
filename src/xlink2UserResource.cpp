@@ -1,22 +1,27 @@
 #include <xlink2/xlink2UserResource.h>
-#include "xlink2/xlink2Util.h"
+#include "xlink2/xlink2ResUserHeader.h"
+#include "xlink2/xlink2ResourceBuffer.h"
+#include "xlink2/xlink2RomResourceParam.h"
+#include "xlink2/xlink2UserResourceParam.h"
 
 namespace xlink2 {
-UserResource::UserResource(User* user) {
+UserResource::UserResource(User* user) 
+{
     mUser = user;
     mResMode = ResMode::Rom;
     mParams[0] = nullptr;
     mParams[1] = nullptr;
 }
 
-void UserResource::setup(sead::Heap* heap) {
+void UserResource::setup(sead::Heap* heap) 
+{
     sead::Heap* user_heap;
     System* sys;
 
-    if (!mParams[0] || !mParams[0]->isSetup) {
+    if (mParams[0] == nullptr || !mParams[0]->isSetup) {
         sys = mUser->getSystem();
         user_heap = sys->getUserHeap();
-        if (!user_heap || user_heap->getFreeSize() >> 10 < 5) {
+        if (!user_heap || user_heap->getFreeSize() / 1024 < 5) {
             user_heap = heap;
         }
         setupRomResourceParam_(user_heap);
@@ -25,17 +30,18 @@ void UserResource::setup(sead::Heap* heap) {
     sys = getSystem();
 
     if (sys->getEditorBuffer() && sys->isServerConnecting()) {
-        EditorResourceParam* editor_res_param{
-            sys->getEditorBuffer()->searchEditorResourceParam(mUser->getUserName())};
+        EditorResourceParam* editor_res_param
+                    {sys->getEditorBuffer()->searchEditorResourceParam(mUser->getUserName())};
         if (editor_res_param) {
-            sead::Heap* primary_heap{sys->getPrimaryHeap()};
+            sead::Heap* primary_heap {sys->getPrimaryHeap()};
             if (mParams[1])
                 freeResourceParam_(mParams[1]);
-            UserResourceParam* res_param{allocResourceParam_(primary_heap)};
+            
+            UserResourceParam* res_param {allocResourceParam_(primary_heap)};
             mParams[1] = res_param;
-            ResUserHeader* user_header{editor_res_param->pResUserHeader};
+            ResUserHeader* user_header {editor_res_param->pResUserHeader};
 
-            System* new_res_system{getSystem()};
+            System* new_res_system {getSystem()};
             setupResourceParam_(res_param, user_header, editor_res_param,
                                 new_res_system->getEditorBuffer()->getParamDefineTable(),
                                 primary_heap);
@@ -45,7 +51,18 @@ void UserResource::setup(sead::Heap* heap) {
     }
 }
 
-const ResUserHeader* UserResource::getUserHeader() const {
+void UserResource::setupEditorResourceParam(EditorResourceParam* param, sead::Heap* heap)
+{
+    if (mParams[1] != nullptr)
+        freeResourceParam_(mParams[1]);
+
+    mParams[1] = allocResourceParam_(heap);
+
+    setupResourceParam_(mParams[1], param->pResUserHeader, param, getSystem()->getEditorBuffer()->getParamDefineTable(), heap);
+}
+
+const ResUserHeader* UserResource::getUserHeader() const 
+{
     auto* param = mParams[int(mResMode)];
 
     if (!param || !param->isSetup)

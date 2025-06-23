@@ -171,6 +171,8 @@ public:
 
     bool isCallEnabled() const { return mIsCallEnabled; }
 
+    ResourceBuffer* getResourceBuffer() { return mResourceBuffer; }
+
 protected:
     ResourceBuffer* mResourceBuffer;
     sead::OffsetList<User> mUserList;

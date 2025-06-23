@@ -57,7 +57,7 @@ u32 User::searchPropertyIndex(const char* name) const
 
 void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* heap) 
 {
-    mpUserResource->setupEditorResourceParam_(editor_param, heap);
+    mpUserResource->setupEditorResourceParam(editor_param, heap);
     mpUserResource->setResMode(ResMode::Editor);
     for (auto& user_instance : mUserInstanceList) {
         user_instance.setupEditorInstanceParam();

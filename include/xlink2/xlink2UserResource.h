@@ -3,6 +3,7 @@
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResActionTrigger.h"
+#include "xlink2/xlink2ResPropertyTrigger.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 
@@ -13,24 +14,24 @@ class User;
 
 class UserResource {
 public:
-    virtual ~UserResource();
     explicit UserResource(User*);
+    virtual ~UserResource();
 
     void setup(sead::Heap*);
     void setupRomResourceParam_(sead::Heap*);
-    void setupEditorResourceParam_(EditorResourceParam*, sead::Heap*);
-    void setupResourceParam_(UserResourceParam*, ResUserHeader*, CommonResourceParam const*,
+    void setupEditorResourceParam(EditorResourceParam*, sead::Heap*);
+    void setupResourceParam_(UserResourceParam*, ResUserHeader*, const CommonResourceParam*,
                              ParamDefineTable const*, sead::Heap*);
 
     const ResUserHeader* getUserHeader() const;
     bool searchAssetCallTableByName(Locator*, const char*) const;
-    ResAssetCallTable* searchAssetCallTableByName(char const*) const;
-    u32* doBinarySearchAsset_(char const*, TriggerType) const;
+    ResAssetCallTable* searchAssetCallTableByName(const char*) const;
+    u32* doBinarySearchAsset_(const char*, TriggerType) const;
     bool searchAssetCallTableByHash(Locator*, u32) const;
 
     ResAssetCallTable* getAssetCallTableItem(s32) const;
     ResActionTrigger* getActionTriggerTableItem(s32) const;
-    void* getPropertyTriggerTableItem(s32) const;
+    ResPropertyTrigger* getPropertyTriggerTableItem(s32) const;
     ResAlwaysTrigger* getAlwaysTriggerTableItem(s32) const;
 
     virtual ResourceAccessor* getAccessor() const = 0;
@@ -40,20 +41,20 @@ public:
     virtual UserResourceParam* allocResourceParam_(sead::Heap*) = 0;
 
     void destroy();
+    virtual void freeResourceParam_(UserResourceParam*);
 
-    u64 doBinarySearchToNameArray(s32*, char const*, u32*, u32);
+    u64 doBinarySearchToNameArray(s32*, const char*, u32*, u32);
 
     void solveNeedObserveFlag(UserResourceParam*);
     u64 solveNeedObserveFlagImpl(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
-    u64 searchAssetAllResource(char const*) const;
+    u64 searchAssetAllResource(const char*) const;
     bool hasGlobalPropertyTrigger() const;
 
     u64 getEditorSetupTime() const;
-    void checkAndAddErrorMultipleKeyByTrigger(ResAssetCallTable const&, TriggerType);
+    void checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable&, TriggerType);
     u64 searchAssetCallTableByGuid(Locator*, s32) const;
 
-    virtual void freeResourceParam_(UserResourceParam*);
-    virtual void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*);
+    virtual void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
     UserResourceParam* getParam() const { return mParams[(s32)mResMode]; }
