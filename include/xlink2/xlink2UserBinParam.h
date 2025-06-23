@@ -17,7 +17,7 @@ struct UserBinParam {
     ResUserHeader* resUserHeader;
     void* _0;
     ResParam* userParamArray;
-    u32* localPropertyNameRefTable;
+    u16* sortedAssetIdTable;
     ResAssetCallTable* resAssetCallTable;
     u32 containerTableLower;
     ResActionSlot* resActionSlotTable;

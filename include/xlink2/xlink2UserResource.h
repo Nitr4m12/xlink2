@@ -26,7 +26,7 @@ public:
     const ResUserHeader* getUserHeader() const;
     bool searchAssetCallTableByName(Locator*, const char*) const;
     ResAssetCallTable* searchAssetCallTableByName(const char*) const;
-    u32* doBinarySearchAsset_(const char*, TriggerType) const;
+    ResAssetCallTable* doBinarySearchAsset_(const char*, TriggerType) const;
     bool searchAssetCallTableByHash(Locator*, u32) const;
 
     ResAssetCallTable* getAssetCallTableItem(s32) const;

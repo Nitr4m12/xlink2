@@ -1,8 +1,11 @@
-#include <xlink2/xlink2UserResource.h>
+#include <cstring>
+
+#include "xlink2/xlink2UserResource.h"
+
+#include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResUserHeader.h"
-#include "xlink2/xlink2ResourceBuffer.h"
-#include "xlink2/xlink2RomResourceParam.h"
 #include "xlink2/xlink2UserResourceParam.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 UserResource::UserResource(User* user) 
@@ -70,41 +73,78 @@ const ResUserHeader* UserResource::getUserHeader() const
     return nullptr;
 }
 
-// NON-MATCHING
-u32* UserResource::doBinarySearchAsset_(const char* name, TriggerType type) const {
-    // auto* param{mParams[int(mResMode)]};
-    // ResUserHeader* usr_head{};
-    // u32 num_asset{usr_head->numCallTable};
+bool UserResource::searchAssetCallTableByName(Locator* locator, const char* name) const
+{
+    UserResourceParam* param {getParam()};
+    s32 num_call_table {(s32)param->resUserHeader->numCallTable};
+    ResAssetCallTable* asset_ctb {param->resAssetCallTable};
+    if (param != nullptr && param->isSetup) {
+        s32 a {0};
+        s32 b {(s32)param->resUserHeader->numCallTable - 1};
 
-    // if (!param || !param->isSetup)
-    //     return nullptr;
+        while (a < b) {
+            s32 m = a + b;
+            if (m < 0)
+                ++m;
+            
+            m /= 2;
+            auto* asset_param {asset_ctb + param->sortedAssetIdTable[m]};
+            if (asset_param == nullptr)
+                asset_ctb = nullptr;
 
-    // s32 v1 = 0;
-    // s64 v2 = param->numCurvePointTable;
-    // // ResAssetParam* res_param_table = param->assetParamTable;
+            char* key_name {calcOffset<char>(asset_param->keyNamePos)};
 
-    // while (v1 <= num_asset - 1) {
-    //     s32 v3 = v1 + (num_asset - 1);
-    //     if (v3 < 0)
-    //         ++v3;
-    //     v3 >>= 1;
-    //     u32* asset = &num_asset + (v2 + v3 * 2) * sizeof(Dummy3);
-    //     if (asset == nullptr)
-    //         return nullptr;
+            s32 result {strcmp(name, key_name)};
+            if (result == 0)
+                asset_ctb = asset_param;
 
-    //     char* asset_name = (char*)(sMinAddressHigh | *asset);
-    //     if (*asset < sMinAddressLow)
-    //         asset_name += 0x100000000;
+            if (0 < result) {
+                ++a;
+            }
+            
+            b = result < 0 ? m - 1 : m;
+        }
 
-    //     if (strcmp(name, asset_name) == 0)
-    //         return asset;
+    }
 
-    //     s32 v4 = v3 - 1;
-    //     if (strcmp(name, asset_name) > 0) {
-    //         v1 = v3 + 1;
-    //         v4 = num_asset - 1;
-    //     }
-    // }
+    locator->setAssetCallTable(asset_ctb);
+    return asset_ctb != nullptr;
+}
+
+ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerType type) const 
+{
+    UserResourceParam* param {getParam()};
+    if (param != nullptr && param->isSetup) {
+        if (param->resUserHeader->numCallTable == 0)
+            return nullptr;
+
+        s32 a {0};
+        s32 b {(s32)param->resUserHeader->numCallTable - 1};
+#ifdef MATCHING_HACK_NX_CLANG
+        asm("");
+#endif
+
+        while (a <= b) {
+            const s32 m = (a + b) / 2;
+            auto* asset_param {&param->resAssetCallTable[param->sortedAssetIdTable[m]]};
+            if (asset_param == nullptr)
+                return nullptr;
+
+            char* key_name {calcOffset<char>(asset_param->keyNamePos)};
+
+            const s32 c {strcmp(name, key_name)};
+            if (c == 0)
+                return asset_param;
+
+            if (c > 0)
+                a = m + 1;
+            else
+                b = m - 1;
+        }
+
+    }
+
+    return nullptr;
 }
 
 // // NON_MATCHING: one sub instruction reordered
