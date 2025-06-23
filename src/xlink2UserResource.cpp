@@ -75,40 +75,15 @@ const ResUserHeader* UserResource::getUserHeader() const
 
 bool UserResource::searchAssetCallTableByName(Locator* locator, const char* name) const
 {
-    UserResourceParam* param {getParam()};
-    s32 num_call_table {(s32)param->resUserHeader->numCallTable};
-    ResAssetCallTable* asset_ctb {param->resAssetCallTable};
-    if (param != nullptr && param->isSetup) {
-        s32 a {0};
-        s32 b {(s32)param->resUserHeader->numCallTable - 1};
-
-        while (a < b) {
-            s32 m = a + b;
-            if (m < 0)
-                ++m;
-            
-            m /= 2;
-            auto* asset_param {asset_ctb + param->sortedAssetIdTable[m]};
-            if (asset_param == nullptr)
-                asset_ctb = nullptr;
-
-            char* key_name {calcOffset<char>(asset_param->keyNamePos)};
-
-            s32 result {strcmp(name, key_name)};
-            if (result == 0)
-                asset_ctb = asset_param;
-
-            if (0 < result) {
-                ++a;
-            }
-            
-            b = result < 0 ? m - 1 : m;
-        }
-
-    }
+    ResAssetCallTable* asset_ctb {doBinarySearchAsset_(name, TriggerType::Action)};
 
     locator->setAssetCallTable(asset_ctb);
     return asset_ctb != nullptr;
+}
+
+ResAssetCallTable* UserResource::searchAssetCallTableByName(const char* name) const
+{
+    return doBinarySearchAsset_(name, TriggerType::Action);
 }
 
 ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerType type) const 
