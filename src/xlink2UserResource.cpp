@@ -217,6 +217,20 @@ void UserResource::solveNeedObserveFlag_(UserResourceParam* param)
     }
 }
 
+ResAssetCallTable* UserResource::searchAssetAllResource(const char* name) const
+{
+    UserResourceParam* param {getParam()};
+    if (param != nullptr && param->isSetup && param->resUserHeader->numCallTable != 0) {
+        for (u64 i {0}; i < (u32)param->resUserHeader->numCallTable; ++i) {
+            char* key_name {calcOffset<char>(param->resAssetCallTable[i].keyNamePos)};
+            if (strcmp(name, key_name) == 0)
+                return &param->resAssetCallTable[i];
+        }
+    }
+
+    return nullptr;
+}
+
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
                                                         TriggerType /*unused*/) {}
 

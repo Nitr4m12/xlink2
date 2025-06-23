@@ -3,6 +3,7 @@
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResActionTrigger.h"
+#include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResPropertyTrigger.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
@@ -48,7 +49,9 @@ public:
 
     static void solveNeedObserveFlag_(UserResourceParam*);
     static bool solveNeedObserveFlagImpl_(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
-    u64 searchAssetAllResource(const char*) const;
+    
+    ResAssetCallTable* searchAssetAllResource(const char*) const;
+    
     bool hasGlobalPropertyTrigger() const;
 
     u64 getEditorSetupTime() const;
