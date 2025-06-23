@@ -144,24 +144,16 @@ ResAssetCallTable* UserResource::getAssetCallTableItem(s32 idx) const
     return nullptr;
 }
 
-// NON_MATCHING: one sub instruction reordered
-ResActionTrigger* UserResource::getActionTriggerTableItem(s32 index) const {
-    // auto* param = mParams[int(mResMode)];
-    // ResUserHeader* usr_head {nullptr};
-
-    // if (!param || !param->isSetup || index >= usr_head->numResActionTrigger || index < 0)
-    //     return nullptr;
-    // return &param->directValueTable[index * sizeof(Dummy)];
+ResActionTrigger* UserResource::getActionTriggerTableItem(s32 idx) const 
+{
+    UserResourceParam* param = getParamWithSetupCheck();
+    
+    if (param != nullptr && param->isSetup) {
+        if (idx >= 0 && param->resUserHeader->numResActionTrigger > idx)
+            return &param->resActionTriggerTable[idx];
+    }
+    return nullptr;
 }
-
-// NON_MATCHING: one sub instruction reordered
-ResAlwaysTrigger* UserResource::getAlwaysTriggerTableItem(s32 index) const {
-    // auto* param = mParams[int(mResMode)];
-    // ResUserHeader* usr_head{nullptr};
-
-    // if (!param || !param->isSetup || index >= usr_head->numResAlwaysTrigger || index < 0)
-    //     return nullptr;
-    // return &param->curvePointTable[index * sizeof(Dummy2)];
 }
 
 void UserResource::destroy() 
