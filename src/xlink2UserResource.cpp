@@ -166,7 +166,8 @@ ResAlwaysTrigger* UserResource::getAlwaysTriggerTableItem(s32 index) const {
     // return &param->curvePointTable[index * sizeof(Dummy2)];
 }
 
-void UserResource::destroy() {
+void UserResource::destroy() 
+{
     if (mParams[0] != nullptr)
         this->freeResourceParam_(mParams[0]);
 
@@ -174,16 +175,11 @@ void UserResource::destroy() {
         this->freeResourceParam_(mParams[1]);
 }
 
-// NON-MATCHING
-void UserResource::freeResourceParam_(UserResourceParam* param) {
-    // if (param->nameTablePos != 0) {
-    //     delete[] param->resourceAccessor;
-    //     param->resourceAccessor = nullptr;
-    //     param->conditionTablePos = 0;
-    // }
-
-    // param->resCallTableBuffer.freeBuffer();
-    // param->actionTriggerBoolBuffer.freeBuffer();
+void UserResource::freeResourceParam_(UserResourceParam* param) 
+{
+    param->conditionTableBuffer.freeBuffer();
+    param->callTableBuffer.freeBuffer();
+    param->actionBuffer.freeBuffer();
 }
 
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,

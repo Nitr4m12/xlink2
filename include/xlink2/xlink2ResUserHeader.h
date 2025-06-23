@@ -6,7 +6,7 @@ namespace xlink2 {
 struct ResUserHeader {
     u32 isSetup;
     u32 numLocalProperty;
-    u32 numCallTable;
+    s32 numCallTable;
     u32 numAsset;
     u32 numRandomContainer2;
     u32 numResActionSlot;

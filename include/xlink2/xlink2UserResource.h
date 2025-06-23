@@ -24,6 +24,7 @@ public:
                              ParamDefineTable const*, sead::Heap*);
 
     const ResUserHeader* getUserHeader() const;
+    
     bool searchAssetCallTableByName(Locator*, const char*) const;
     ResAssetCallTable* searchAssetCallTableByName(const char*) const;
     ResAssetCallTable* doBinarySearchAsset_(const char*, TriggerType) const;
@@ -57,7 +58,7 @@ public:
     virtual void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
-    UserResourceParam* getParam() const { return mParams[(s32)mResMode]; }
+    UserResourceParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; }
     sead::SafeArray<UserResourceParam*, 2> getParamBuffer() const { return mParams; }
     ResMode getResMode() const { return mResMode; }
     User* getUser() const { return mUser; }
@@ -65,16 +66,6 @@ public:
     void setResMode(ResMode new_val) { mResMode = new_val; }
 
 protected:
-    struct Dummy {
-        u8 bytes[0x18];
-    };
-    struct Dummy2 {
-        u8 bytes[0x10];
-    };
-    struct Dummy3 {
-        u8 bytes[0x20];
-    };
-
     User* mUser;
     ResMode mResMode;
     u32 _5;
@@ -83,5 +74,6 @@ protected:
     ResourceAccessor* mResourceAccessor;
     void* _3;
     void* _4;
+
 };
 }  // namespace xlink2
