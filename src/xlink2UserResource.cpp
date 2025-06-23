@@ -252,6 +252,28 @@ bool UserResource::hasGlobalPropertyTrigger() const
     return false;
 }
 
+u64 UserResource::getEditorSetupTime() const {
+    return 0;
+}
+
+void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
+                                                        TriggerType /*unused*/) {}
+
+bool UserResource::searchAssetCallTableByGuid(Locator* locator, s32 guid) const
+{
+    locator->reset();
+    UserResourceParam* param {getParam()};
+    if (param != nullptr && param->isSetup) {
+        for (u32 i{0}; i < param->resUserHeader->numCallTable; ++i) {
+            if (param->resAssetCallTable[i].guid == guid) {
+                locator->setAssetCallTable(&param->resAssetCallTable[i]);
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 UserResource::~UserResource() = default;
 
 void UserResource::onSetupResourceParam_(UserResourceParam* /*unused*/,

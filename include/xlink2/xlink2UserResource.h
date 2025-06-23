@@ -56,7 +56,8 @@ public:
 
     u64 getEditorSetupTime() const;
     void checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable&, TriggerType);
-    u64 searchAssetCallTableByGuid(Locator*, s32) const;
+    
+    bool searchAssetCallTableByGuid(Locator*, s32) const;
 
     virtual void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*);
 

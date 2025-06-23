@@ -24,9 +24,7 @@ struct ResAssetCallTable {
     sead::BitFlag8 flag;
     s32 duration;
     s32 parentIndex;
-    u16 enumIndex;
-    u8 isSolved;
-    u8 unknown;
+    s32 guid;
     u32 keyNameHash;
     u32 paramStartPos;
     u32 conditionPos;
