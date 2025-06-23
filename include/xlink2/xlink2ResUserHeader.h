@@ -14,7 +14,7 @@ struct ResUserHeader {
     s32 numResActionTrigger;
     u32 numResProperty;
     s32 numResPropertyTrigger;
-    u32 numResAlwaysTrigger;
+    s32 numResAlwaysTrigger;
     u32 triggerTablePos;
 };
 static_assert(sizeof(ResUserHeader) == 0x30, "Wrong size for 'xlink2::ResUserHeader'");

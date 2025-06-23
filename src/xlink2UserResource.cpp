@@ -167,6 +167,16 @@ ResPropertyTrigger* UserResource::getPropertyTriggerTableItem(s32 idx) const
     }
     return nullptr;
 }
+
+ResAlwaysTrigger* UserResource::getAlwaysTriggerTableItem(s32 idx) const 
+{
+    UserResourceParam* param = getParamWithSetupCheck();
+    
+    if (param != nullptr && param->isSetup) {
+        if (idx >= 0 && param->resUserHeader->numResAlwaysTrigger > idx)
+            return &param->resAlwaysTriggerTable[idx];
+    }
+    return nullptr;
 }
 
 void UserResource::destroy() 
@@ -238,13 +248,6 @@ ResAssetCallTable* UserResource::searchAssetAllResource(const char* name) const
     return nullptr;
 }
 
-void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
-                                                        TriggerType /*unused*/) {}
-
-u64 UserResource::getEditorSetupTime() const {
-    return 0;
-}
-
 bool UserResource::hasGlobalPropertyTrigger() const 
 {
     UserResourceParam* param {getParam()};
@@ -280,8 +283,6 @@ bool UserResource::searchAssetCallTableByGuid(Locator* locator, s32 guid) const
     }
     return false;
 }
-
-UserResource::~UserResource() = default;
 
 void UserResource::onSetupResourceParam_(UserResourceParam* /*unused*/,
                                          const ParamDefineTable* /*unused*/,
