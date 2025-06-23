@@ -65,9 +65,9 @@ const ResUserHeader* UserResource::getUserHeader() const
 {
     auto* param = mParams[int(mResMode)];
 
-    if (!param || !param->isSetup)
-        return 0;
-    // return param;
+    if (param != nullptr && param->isSetup)
+        return param->resUserHeader;
+    return nullptr;
 }
 
 // NON-MATCHING
