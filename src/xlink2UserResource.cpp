@@ -133,13 +133,15 @@ bool UserResource::searchAssetCallTableByHash(Locator* locator, u32 name_hash) c
     return false;
 }
 
-// // NON_MATCHING: one sub instruction reordered
-ResAssetCallTable* UserResource::getAssetCallTableItem(s32 index) const {
-    auto* param = mParams[int(mResMode)];
-    ResUserHeader* usr_head {nullptr};
-    if (!param || !param->isSetup || index >= usr_head->numCallTable || index < 0)
-        return nullptr;
-    //return &param->assetParamTable[index * sizeof(Dummy3)];
+ResAssetCallTable* UserResource::getAssetCallTableItem(s32 idx) const 
+{
+    UserResourceParam* param = getParamWithSetupCheck();
+    
+    if (param && param->isSetup) {
+        if (idx >= 0 && param->resUserHeader->numCallTable > idx)
+            return &param->resAssetCallTable[idx];
+    }
+    return nullptr;
 }
 
 // NON_MATCHING: one sub instruction reordered

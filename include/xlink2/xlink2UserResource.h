@@ -62,8 +62,12 @@ public:
     virtual void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*);
 
     ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
+    
     UserResourceParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; }
+    UserResourceParam* getParamWithSetupCheck() const { return getParam() != nullptr && getParam()->isSetup ? getParam() : nullptr; }
+    
     sead::SafeArray<UserResourceParam*, 2> getParamBuffer() const { return mParams; }
+    
     ResMode getResMode() const { return mResMode; }
     User* getUser() const { return mUser; }
 
