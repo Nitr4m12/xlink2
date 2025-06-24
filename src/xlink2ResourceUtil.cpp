@@ -15,15 +15,18 @@ ResContainerParam* ResourceUtil::getResContainerParam(const ResAssetCallTable& a
 TriggerType ResourceUtil::getActionTriggerType(const ResActionTrigger& action_trigger) {
     // sead::BitFlag16 flag {action_trigger.flag};
 
-    if ((action_trigger.flag & 16) == 0)
-        return TriggerType::Action;
 
-    if (action_trigger.flag | 8)
-        return TriggerType::Always;
-
-    if (action_trigger.flag | 4)
+TriggerType ResourceUtil::getActionTriggerType(const ResActionTrigger& action_trigger) 
+{
+    if (action_trigger.flag.isOnBit(2))
         return TriggerType::Property;
 
+    if (action_trigger.flag.isOnBit(3))
+        return TriggerType::Always;
+
+    if (action_trigger.flag.isOnBit(4))
     return TriggerType::None;
+
+    return TriggerType::Action;
 }
 }  // namespace xlink2::ResourceUtil
