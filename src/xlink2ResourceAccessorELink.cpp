@@ -78,6 +78,18 @@ bool ResourceAccessorELink::isForceLoopAsset(const ResAssetCallTable& asset_ctb)
     return getAssetBitFlag(asset_ctb).isOnBit(3);
 }
 
+s32 ResourceAccessorELink::getForceCalc(const ResAssetCallTable& asset_ctb) const
+{
+    if (!checkAndErrorIsAsset_(asset_ctb, "getForceCalc"))
+        return 0;
+    
+    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 8)};
+    if (asset_param != nullptr)
+        return this->getResParamValueInt_(*asset_param);
+
+    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(8);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
