@@ -158,6 +158,19 @@ f32 ResourceAccessorELink::getDuration(const ResAssetCallTable& asset_ctb, const
     return param_value;
 }
 
+const char* ResourceAccessorELink::getBoneName(const ResAssetCallTable& asset_ctb) const
+{
+    if (checkAndErrorIsAsset_(asset_ctb, "getBoneName")) {
+        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 11)};
+        if (asset_param != nullptr)
+            return this->getResParamValueString_(*asset_param);
+
+        return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueString(11);
+    }
+
+    return "";
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }

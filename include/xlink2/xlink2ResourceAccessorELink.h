@@ -69,7 +69,7 @@ public:
 
     f32 getOverwriteDelay(u32, const UserInstance* user_instance) const;
 
-    const char* getOverwriteBoneName(u32) const override;
+    const char* getOverwriteBoneName(u32 idx) const override;
 
     f32 getOverwriteScale(u32, const UserInstance* user_instance) const;
 
