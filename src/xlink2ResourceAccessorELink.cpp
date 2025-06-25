@@ -21,29 +21,13 @@ bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) con
 
 const char* ResourceAccessorELink::getAssetName(const ResAssetCallTable& asset_ctb) const
 {
-    if (checkAndErrorIsAsset_(asset_ctb, "getAssetName")) {
-        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 1)};
-        if (asset_param != nullptr)
-            return this->getResParamValueString_(*asset_param);
-
-        return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueString(1);
-    }
-
-    return "";
+    return getResParamValueString("getAssetName", asset_ctb, 1, "");
     
 }
 
 const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_ctb) const
 {
-    if (checkAndErrorIsAsset_(asset_ctb, "getGroupName")) {
-        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 3)};
-        if (asset_param != nullptr)
-            return this->getResParamValueString_(*asset_param);
-
-        return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueString(3);
-    }
-
-    return "";
+    return getResParamValueString("getGroupName", asset_ctb, 3, "");
 }
 
 ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAssetCallTable& asset_ctb) const
@@ -79,39 +63,18 @@ bool ResourceAccessorELink::isForceLoopAsset(const ResAssetCallTable& asset_ctb)
 }
 
 s32 ResourceAccessorELink::getForceCalc(const ResAssetCallTable& asset_ctb) const
-{
-    if (!checkAndErrorIsAsset_(asset_ctb, "getForceCalc"))
-        return 0;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 8)};
-    if (asset_param != nullptr)
-        return this->getResParamValueInt_(*asset_param);
-
-    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(8);
+{   
+    return getResParamValueInt("getForceCalc", asset_ctb, 8, 0);
 }
 
 s32 ResourceAccessorELink::getMtxSetType(const ResAssetCallTable& asset_ctb) const
 {
-    if (!checkAndErrorIsAsset_(asset_ctb, "getMtxSetType"))
-        return 0;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 9)};
-    if (asset_param != nullptr)
-        return this->getResParamValueInt_(*asset_param);
-
-    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(9);
+    return getResParamValueInt("getMtxSetType", asset_ctb, 9, 0);
 }
 
 s32 ResourceAccessorELink::getRotateSourceType(const ResAssetCallTable& asset_ctb) const
 {
-    if (!checkAndErrorIsAsset_(asset_ctb, "getRotateSourceType"))
-        return 0;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 10)};
-    if (asset_param != nullptr)
-        return this->getResParamValueInt_(*asset_param);
-
-    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(10);
+    return getResParamValueInt("getRotateSourceType", asset_ctb, 10, 0);
 }
 
 bool ResourceAccessorELink::isFollow(const ResAssetCallTable& asset_ctb) const
@@ -126,85 +89,37 @@ bool ResourceAccessorELink::isUseOneEmitter(const ResAssetCallTable& asset_ctb) 
 
 f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    f32 param_value {0.0};
-    if (!checkAndErrorIsAsset_(asset_ctb, "getDelay"))
-        return param_value;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 5)};
-    if (asset_param != nullptr)
-        param_value = this->getResParamValueFloat_(*asset_param, user_instance);
-    else
-        param_value = this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(5);
-
-    if (param_value < 0.0)
-        return 0.0;
-    return param_value;
+    return getResParamValueFloatWithLimit("getDelay", asset_ctb, 5, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    f32 param_value {0.0};
-    if (!checkAndErrorIsAsset_(asset_ctb, "getDuration"))
-        return param_value;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 6)};
-    if (asset_param != nullptr)
-        param_value = this->getResParamValueFloat_(*asset_param, user_instance);
-    else
-        param_value = this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(6);
-
-    if (param_value < 0.0)
-        return 0.0;
-    return param_value;
+    return getResParamValueFloatWithLimit("getDuration", asset_ctb, 6, 0.0, user_instance);
 }
 
 const char* ResourceAccessorELink::getBoneName(const ResAssetCallTable& asset_ctb) const
 {
-    if (checkAndErrorIsAsset_(asset_ctb, "getBoneName")) {
-        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 11)};
-        if (asset_param != nullptr)
-            return this->getResParamValueString_(*asset_param);
-
-        return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueString(11);
-    }
-
-    return "";
+    return getResParamValueString("getBoneName", asset_ctb, 11, "");
 }
 
 f32 ResourceAccessorELink::getScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    if (!checkAndErrorIsAsset_(asset_ctb, "getScale"))
-        return 1.0;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 12)};
-    if (asset_param != nullptr)
-        return this->getResParamValueFloat_(*asset_param, user_instance);
-    
-    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(12);
+    return getResParamValueFloat("getScale", asset_ctb, 12, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getPositionX(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    if (!checkAndErrorIsAsset_(asset_ctb, "getPositionX"))
-        return 0.0;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 13)};
-    if (asset_param != nullptr)
-        return this->getResParamValueFloat_(*asset_param, user_instance);
-    
-    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(13);
+    return getResParamValueFloat("getPositionX", asset_ctb, 13, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getPositionY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    if (!checkAndErrorIsAsset_(asset_ctb, "getPositionY"))
-        return 0.0;
-    
-    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 14)};
-    if (asset_param != nullptr)
-        return this->getResParamValueFloat_(*asset_param, user_instance);
-    
-    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(14);
+    return getResParamValueFloat("getPositionY", asset_ctb, 14, 0.0, user_instance);
+}
+
+f32 ResourceAccessorELink::getPositionZ(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return getResParamValueFloat("getPositionZ", asset_ctb, 15, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
