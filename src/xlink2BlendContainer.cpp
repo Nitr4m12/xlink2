@@ -39,12 +39,32 @@ bool BlendContainer::callAllChildContainer_()
         const char* other_container_name {user_instance->getContainerTypeName(*asset_call_item)->cstr()};
         char* other_key_name {calcOffset<char>(asset_call_item->keyNamePos)};
 
-        user_instance->printLogContainerSelect(*mpEvent, "%s[%s] -> %s[%s] (idx=%d)", container_type_name, key_name, other_container_name, other_key_name, i);
-        childContainer = createChildContainer_(*asset_call_item, container);
-        if (childContainer)
-            container = childContainer;
-        b2 = b2 | (container != nullptr);
+
+s8 BlendContainer::calc()
+{
+    ContainerBase* next {mpChild};
+    ContainerBase* current {nullptr};
+    bool finished {true};
+
+    for (ContainerBase* previous {current}; next != nullptr; previous = current) {
+        while (next != nullptr) {
+            current = next;
+            next = current->getNext();
+            if (!(current->calc() & 1)) {
+                finished = false;
+                break;
+            }
+            if (previous != nullptr)
+                previous->setNext(next);
+            else
+                mpChild = next;
+            current->destroy();
     }
-    return b2;
+    }
+
+    if (finished == 0)
+        return 0;
+
+    return assetFinished();
 }
 }  // namespace xlink2

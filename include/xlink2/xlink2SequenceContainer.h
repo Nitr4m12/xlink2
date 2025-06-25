@@ -8,7 +8,7 @@ class SequenceContainer : ContainerBase {
 public:
     ~SequenceContainer() override;
 
-    bool calc() override;
+    s8 calc() override;
 
     bool callNextChildSequence_();
 
