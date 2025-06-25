@@ -30,6 +30,20 @@ const char* ResourceAccessorELink::getAssetName(const ResAssetCallTable& asset_c
     }
 
     return "";
+    
+}
+
+const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_ctb) const
+{
+    if (checkAndErrorIsAsset_(asset_ctb, "getGroupName")) {
+        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 3)};
+        if (asset_param != nullptr)
+            return this->getResParamValueString_(*asset_param);
+
+        return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueString(3);
+    }
+
+    return "";
 }
 
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
