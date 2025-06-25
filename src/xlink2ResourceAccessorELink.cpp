@@ -132,6 +132,11 @@ f32 ResourceAccessorELink::getRotationY(const ResAssetCallTable& asset_ctb, cons
     return getResParamValueFloat("getRotationY", asset_ctb, 17, 0.0, user_instance);
 }
 
+f32 ResourceAccessorELink::getRotationZ(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return getResParamValueFloat("getRotationZ", asset_ctb, 18, 0.0, user_instance);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
