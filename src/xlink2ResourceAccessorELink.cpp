@@ -70,7 +70,12 @@ ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAsse
 
 bool ResourceAccessorELink::isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const
 {
-    return getAssetBitFlag(asset_ctb).isOn(1);
+    return getAssetBitFlag(asset_ctb).isOnBit(0);
+}
+
+bool ResourceAccessorELink::isForceLoopAsset(const ResAssetCallTable& asset_ctb) const
+{
+    return getAssetBitFlag(asset_ctb).isOnBit(3);
 }
 
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
