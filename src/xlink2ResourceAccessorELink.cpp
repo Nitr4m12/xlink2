@@ -142,6 +142,11 @@ f32 ResourceAccessorELink::getColorRed(const ResAssetCallTable& asset_ctb, const
     return getResParamValueFloat("getColorRed", asset_ctb, 19, 1.0, user_instance);
 }
 
+f32 ResourceAccessorELink::getColorGreen(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return getResParamValueFloat("getColorGreen", asset_ctb, 20, 1.0, user_instance);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
