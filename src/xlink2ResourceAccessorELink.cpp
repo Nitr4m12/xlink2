@@ -68,6 +68,11 @@ ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAsse
 
 }
 
+bool ResourceAccessorELink::isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const
+{
+    return getAssetBitFlag(asset_ctb).isOn(1);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
