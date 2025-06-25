@@ -8,7 +8,7 @@ class SequenceContainer : ContainerBase {
 public:
     ~SequenceContainer() override;
 
-    u32 calc() override;
+    bool calc() override;
 
     u64 callNextChildSequence_();
 

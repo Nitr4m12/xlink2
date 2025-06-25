@@ -26,6 +26,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceBuffer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceParamCreator.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceUtil.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}SequenceContainer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}SwitchContainer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}System.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}SystemELink.cpp
