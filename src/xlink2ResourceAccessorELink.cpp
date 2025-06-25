@@ -182,6 +182,11 @@ f32 ResourceAccessorELink::getLifeScale(const ResAssetCallTable& asset_ctb, cons
     return getResParamValueFloat("getLifeScale", asset_ctb, 27, 1.0, user_instance);
 }
 
+f32 ResourceAccessorELink::getOverwriteDelay(u32 idx, const UserInstance* user_instance) const
+{
+    return getResOverwriteParamValueFloatWithLimit(idx, 5, user_instance);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }

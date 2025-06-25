@@ -1,7 +1,7 @@
 #pragma once
 
 #include "basis/seadTypes.h"
-#include "xlink2/xlink2ParamValueType.h"
+#include "math/seadMathCalcCommon.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
@@ -67,53 +67,53 @@ public:
 
     f32 getLifeScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
-    f32 getOverwriteDelay(u32, const UserInstance* user_instance) const;
+    f32 getOverwriteDelay(u32 idx, const UserInstance* user_instance) const;
 
     const char* getOverwriteBoneName(u32 idx) const override;
 
-    f32 getOverwriteScale(u32, const UserInstance* user_instance) const;
+    f32 getOverwriteScale(u32 idx, const UserInstance* user_instance) const;
 
-    f32 getOverwritePositionX(u32, const UserInstance* user_instance) const;
-    f32 getOverwritePositionY(u32, const UserInstance* user_instance) const;
-    f32 getOverwritePositionZ(u32, const UserInstance* user_instance) const;
+    f32 getOverwritePositionX(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwritePositionY(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwritePositionZ(u32 idx, const UserInstance* user_instance) const;
 
-    f32 getOverwriteRotationX(u32, const UserInstance* user_instance) const;
-    f32 getOverwriteRotationY(u32, const UserInstance* user_instance) const;
-    f32 getOverwriteRotationZ(u32, const UserInstance* user_instance) const;
+    f32 getOverwriteRotationX(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteRotationY(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteRotationZ(u32 idx, const UserInstance* user_instance) const;
 
-    f32 getOverwriteColorRed(u32, const UserInstance* user_instance) const;
-    f32 getOverwriteColorGreen(u32, const UserInstance* user_instance) const;
-    f32 getOverwriteColorBlue(u32, const UserInstance* user_instance) const;
-    f32 getOverwriteAlpha(u32, const UserInstance* user_instance) const;
+    f32 getOverwriteColorRed(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteColorGreen(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteColorBlue(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteAlpha(u32 idx, const UserInstance* user_instance) const;
 
-    f32 getOverwriteEmissionRate(u32, const UserInstance* user_instance) const;
+    f32 getOverwriteEmissionRate(u32 idx, const UserInstance* user_instance) const;
 
-    f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const override;
+    f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const override;
 
-    const char* getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32) const;
+    const char* getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx) const;
 
-    u64 getScaleWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
+    u64 getScaleWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
 
-    f32 getPositionXWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
-    f32 getPositionYWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
-    f32 getPositionZWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
+    f32 getPositionXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getPositionYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getPositionZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
 
-    f32 getRotationXWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
-    f32 getRotationYWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
-    f32 getRotationZWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
+    f32 getRotationXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getRotationYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getRotationZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
 
-    u64 getColorRedWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
-    u64 getColorGreenWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
-    u64 getColorBlueWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
-    f64 getAlphaWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
+    u64 getColorRedWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    u64 getColorGreenWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    u64 getColorBlueWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f64 getAlphaWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
 
-    u64 getEmissionRateWithOverwrite(const ResAssetCallTable& asset_ctb, u32, const UserInstance* user_instance) const;
+    u64 getEmissionRateWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
 
-    u32 getTriggerOverwriteParamId(u32) const;
+    u32 getTriggerOverwriteParamId(u32 idx) const;
 
     sead::BitFlag32 getAssetBitFlag(const ResAssetCallTable& asset_ctb) const override;
 
-    bool isBoneNameOverwritten(u32) const override;
+    bool isBoneNameOverwritten(u32 idx) const override;
 
 private:
     const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* default_value) const
@@ -169,6 +169,12 @@ private:
         if (param_value < 0.0)
             return 0.0;
         return param_value;
+    }
+
+    f32 getResOverwriteParamValueFloatWithLimit(u32 idx, u32 define_idx, const UserInstance* user_instance) const
+    {
+        f32 param_value {this->getResOverwriteParamValueFloat_(idx, define_idx, user_instance)};
+        return sead::MathCalcCommon<float>::max(param_value, 0.0);
     }
 };
 }  // namespace xlink2
