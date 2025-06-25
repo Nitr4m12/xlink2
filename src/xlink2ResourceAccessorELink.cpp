@@ -124,6 +124,23 @@ bool ResourceAccessorELink::isUseOneEmitter(const ResAssetCallTable& asset_ctb) 
     return getAssetBitFlag(asset_ctb).isOnBit(2);
 }
 
+f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    f32 param_value {0.0};
+    if (!checkAndErrorIsAsset_(asset_ctb, "getDelay"))
+        return param_value;
+    
+    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 5)};
+    if (asset_param != nullptr)
+        param_value = this->getResParamValueFloat_(*asset_param, user_instance);
+    else
+        param_value = this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(5);
+
+    if (param_value < 0.0)
+        return 0.0;
+    return param_value;
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
