@@ -102,6 +102,18 @@ s32 ResourceAccessorELink::getMtxSetType(const ResAssetCallTable& asset_ctb) con
     return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(9);
 }
 
+s32 ResourceAccessorELink::getRotateSourceType(const ResAssetCallTable& asset_ctb) const
+{
+    if (!checkAndErrorIsAsset_(asset_ctb, "getRotateSourceType"))
+        return 0;
+    
+    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 10)};
+    if (asset_param != nullptr)
+        return this->getResParamValueInt_(*asset_param);
+
+    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(10);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }

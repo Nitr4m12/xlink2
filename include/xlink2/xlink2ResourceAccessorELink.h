@@ -34,7 +34,7 @@ public:
 
     s32 getForceCalc(const ResAssetCallTable& asset_ctb) const;
     s32 getMtxSetType(const ResAssetCallTable& asset_ctb) const;
-    f64 getRotateSourceType(const ResAssetCallTable& asset_ctb) const;
+    s32 getRotateSourceType(const ResAssetCallTable& asset_ctb) const;
 
     bool isFollow(const ResAssetCallTable& asset_ctb) const;
     bool isUseOneEmitter(const ResAssetCallTable& asset_ctb) const;
