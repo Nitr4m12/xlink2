@@ -162,6 +162,11 @@ f32 ResourceAccessorELink::getEmissionRate(const ResAssetCallTable& asset_ctb, c
     return getResParamValueFloat("getEmissionRate", asset_ctb, 23, 1.0, user_instance);
 }
 
+f32 ResourceAccessorELink::getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return getResParamValueFloat("getEmissionScale", asset_ctb, 24, 1.0, user_instance);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
