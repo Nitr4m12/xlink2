@@ -19,6 +19,12 @@ bool SequenceContainer::callNextChildSequence_()
     return true;
 }
 
+bool SequenceContainer::start()
+{
+    mSequenceIndex = -1;
+    return callNextChildSequence_();
+}
+
 bool SequenceContainer::callChildSequence_(s32 idx)
 {
     UserInstance* user_instance {mpEvent->getUserInstance()};
