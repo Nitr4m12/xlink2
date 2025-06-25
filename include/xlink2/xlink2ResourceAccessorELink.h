@@ -1,6 +1,7 @@
 #pragma once
 
 #include "basis/seadTypes.h"
+#include "xlink2/xlink2ParamValueType.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
@@ -8,15 +9,25 @@
 namespace xlink2 {
 class ResourceAccessorELink : public ResourceAccessor {
 public:
+    enum class ClipType {
+        None,
+        Kill,
+        NeedObserve,
+        Unknown
+    };
+
     ~ResourceAccessorELink() override;
 
     bool isBlankAsset(const ResAssetCallTable& asset_ctb) const override;
 
     const char* getAssetName(const ResAssetCallTable& asset_ctb) const;
+    
     u64 getEsetVal(const ResAssetCallTable& asset_ctb) const;
+    
     const char* getGroupName(const ResAssetCallTable& asset_ctb) const;
     u64 getGroupId(const ResAssetCallTable& asset_ctb) const;
-    u64 getClipType(const ResAssetCallTable& asset_ctb) const;
+    
+    ClipType getClipType(const ResAssetCallTable& asset_ctb) const;
 
     bool isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const override;
     bool isForceLoopAsset(const ResAssetCallTable& asset_ctb) const;

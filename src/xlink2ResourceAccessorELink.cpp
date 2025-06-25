@@ -46,6 +46,28 @@ const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_c
     return "";
 }
 
+ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAssetCallTable& asset_ctb) const
+{
+    u32 param_value {0};
+    if (checkAndErrorIsAsset_(asset_ctb, "getClipType")) {
+        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 7)};
+        if (asset_param == nullptr)
+            param_value = this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(7);
+        else
+            param_value = this->getResParamValueInt_(*asset_param);
+
+        if (param_value == 0) {
+            if (this->isNeedObserve(asset_ctb)) {
+                return ClipType::NeedObserve;
+            }
+            return ClipType::Kill;
+        }
+    }
+
+    return static_cast<ClipType>(param_value);
+
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
