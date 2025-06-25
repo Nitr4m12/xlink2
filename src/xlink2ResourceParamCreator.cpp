@@ -128,7 +128,7 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     ptr = ptr + common_res_param->numLocalPropertyEnumNameRefTable;
 
     if (common_res_param->numDirectValueTable > 0)
-        common_res_param->directValueTable = ptr;
+        common_res_param->directValueTable = (s32*)ptr;
     ptr = ptr + common_res_param->numDirectValueTable;
 
     auto* rrct_ptr = (ResRandomCallTable*)ptr;

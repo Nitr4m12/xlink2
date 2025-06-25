@@ -161,7 +161,7 @@ ParamValueType ParamDefineTable::getTriggerParamType(u32 id) const {
     return ParamValueType::Invalid;
 }
 
-u32 ParamDefineTable::getUserParamDefaultValueInt(u32 id) const {
+s32 ParamDefineTable::getUserParamDefaultValueInt(u32 id) const {
     if (mUserParams)
         return mUserParams[id].defaultValueInt;
     return 0;
@@ -179,7 +179,7 @@ const char* ParamDefineTable::getUserParamDefaultValueString(u32 id) const {
     return "";
 }
 
-u32 ParamDefineTable::getAssetParamDefaultValueInt(u32 id) const {
+s32 ParamDefineTable::getAssetParamDefaultValueInt(u32 id) const {
     if (id < mNumAssetParam)
         return mAssetParams[id].defaultValueInt;
     return 0;
@@ -197,7 +197,7 @@ const char* ParamDefineTable::getAssetParamDefaultValueString(u32 id) const {
     return "";
 }
 
-u32 ParamDefineTable::getTriggerParamDefaultValueInt(u32 id) const {
+s32 ParamDefineTable::getTriggerParamDefaultValueInt(u32 id) const {
     if (mTriggerParams)
         return mTriggerParams[id].defaultValueInt;
     return 0;

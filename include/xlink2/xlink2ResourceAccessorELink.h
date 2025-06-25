@@ -32,7 +32,7 @@ public:
     bool isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const override;
     bool isForceLoopAsset(const ResAssetCallTable& asset_ctb) const;
 
-    u64 getForceCalc(const ResAssetCallTable& asset_ctb) const;
+    s32 getForceCalc(const ResAssetCallTable& asset_ctb) const;
     u64 getMtxSetType(const ResAssetCallTable& asset_ctb) const;
     f64 getRotateSourceType(const ResAssetCallTable& asset_ctb) const;
 

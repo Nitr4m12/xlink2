@@ -22,15 +22,15 @@ public:
     ParamValueType getAssetParamType(u32) const;
     ParamValueType getTriggerParamType(u32) const;
 
-    u32 getUserParamDefaultValueInt(u32) const;
+    s32 getUserParamDefaultValueInt(u32) const;
     f32 getUserParamDefaultValueFloat(u32) const;
     const char* getUserParamDefaultValueString(u32) const;
 
-    u32 getAssetParamDefaultValueInt(u32) const;
+    s32 getAssetParamDefaultValueInt(u32) const;
     f32 getAssetParamDefaultValueFloat(u32) const;
     const char* getAssetParamDefaultValueString(u32) const;
 
-    u32 getTriggerParamDefaultValueInt(u32) const;
+    s32 getTriggerParamDefaultValueInt(u32) const;
     f32 getTriggerParamDefaultValueFloat(u32) const;
     const char* getTriggerParamDefaultValueString(u32) const;
 

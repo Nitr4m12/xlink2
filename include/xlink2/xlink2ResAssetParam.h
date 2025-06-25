@@ -9,7 +9,7 @@ struct ResAssetParam {
     u32 namePos;
     ParamValueType type;
     union {
-        u32 defaultValueInt;
+        s32 defaultValueInt;
         f32 defaultValueFloat;
         u32 defaultValueString;
     };

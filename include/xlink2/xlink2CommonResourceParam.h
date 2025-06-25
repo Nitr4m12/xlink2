@@ -27,7 +27,7 @@ struct CommonResourceParam {
     u32 _0;
     u32* localPropertyNameRefTable;
     u32* localPropertyEnumNameRefTable;
-    u32* directValueTable;
+    s32* directValueTable;
     ResRandomCallTable* randomCallTable;
     ResCurveCallTable* curveCallTable;
     CurvePoint* curvePointTable;

@@ -159,10 +159,10 @@ bool ResourceAccessor::getCustomParamValueBool(u32 custom_param_idx, const ResAs
 
 }
 
-//WIP
 s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 {
-    return mUserResource->getParam()->commonResourceParam->directValueTable[param.rawValue & 0xffffff];
+    UserResourceParam* user_resource_param {mUserResource->getParam()};
+    return user_resource_param->commonResourceParam->directValueTable[param.rawValue & 0xffffff];
 }
 
 }  // namespace xlink2
