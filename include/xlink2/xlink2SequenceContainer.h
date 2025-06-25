@@ -10,13 +10,13 @@ public:
 
     bool calc() override;
 
-    u64 callNextChildSequence_();
+    bool callNextChildSequence_();
 
     bool start() override;
 
     bool callChildSequence_(s32);
 
 private:
-    s32 _0;
+    s32 mSequenceIndex;
 };
 }  // namespace xlink2

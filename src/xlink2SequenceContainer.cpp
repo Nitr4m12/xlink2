@@ -1,11 +1,24 @@
 #include "xlink2/xlink2SequenceContainer.h"
-#include "prim/seadSafeString.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResContainerParam.h"
 #include "xlink2/xlink2ResourceUtil.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+bool SequenceContainer::callNextChildSequence_()
+{
+    ResContainerParam* param {ResourceUtil::getResContainerParam(*mpAssetCallTable)};
+
+    s32 start {param->childrenStartIndex};
+    s32 end {param->childrenEndIndex};
+    do {
+        if (mSequenceIndex >= end - start)
+            return false;
+
+        ++mSequenceIndex;
+    } while (!callChildSequence_(mSequenceIndex));
+
+    return true;
+}
+
 bool SequenceContainer::callChildSequence_(s32 idx)
 {
     UserInstance* user_instance {mpEvent->getUserInstance()};
