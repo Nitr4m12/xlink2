@@ -141,6 +141,23 @@ f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb, const Us
     return param_value;
 }
 
+f32 ResourceAccessorELink::getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    f32 param_value {0.0};
+    if (!checkAndErrorIsAsset_(asset_ctb, "getDuration"))
+        return param_value;
+    
+    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 6)};
+    if (asset_param != nullptr)
+        param_value = this->getResParamValueFloat_(*asset_param, user_instance);
+    else
+        param_value = this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(6);
+
+    if (param_value < 0.0)
+        return 0.0;
+    return param_value;
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
