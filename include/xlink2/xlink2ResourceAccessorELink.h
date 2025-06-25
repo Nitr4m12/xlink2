@@ -54,10 +54,10 @@ public:
     f32 getRotationY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getRotationZ(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
-    u64 getColorRed(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    u64 getColorGreen(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    u64 getColorBlue(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    f64 getAlpha(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getColorRed(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getColorGreen(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getColorBlue(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getAlpha(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
     u64 getEmissionRate(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     u64 getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
