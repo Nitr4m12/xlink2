@@ -195,6 +195,18 @@ f32 ResourceAccessorELink::getPositionX(const ResAssetCallTable& asset_ctb, cons
     return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(13);
 }
 
+f32 ResourceAccessorELink::getPositionY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    if (!checkAndErrorIsAsset_(asset_ctb, "getPositionY"))
+        return 0.0;
+    
+    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 14)};
+    if (asset_param != nullptr)
+        return this->getResParamValueFloat_(*asset_param, user_instance);
+    
+    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(14);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
