@@ -12,7 +12,7 @@ public:
 
     bool isBlankAsset(const ResAssetCallTable& asset_ctb) const override;
 
-    const char* getAssetName(const ResAssetCallTable&) const;
+    const char* getAssetName(const ResAssetCallTable& asset_ctb) const;
     u64 getEsetVal(const ResAssetCallTable&) const;
     const char* getGroupName(const ResAssetCallTable&) const;
     u64 getGroupId(const ResAssetCallTable&) const;

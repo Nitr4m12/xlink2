@@ -19,6 +19,19 @@ bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) con
     return false;
 }
 
+const char* ResourceAccessorELink::getAssetName(const ResAssetCallTable& asset_ctb) const
+{
+    if (checkAndErrorIsAsset_(asset_ctb, "getAssetName")) {
+        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 1)};
+        if (asset_param != nullptr)
+            return this->getResParamValueString_(*asset_param);
+
+        return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueString(1);
+    }
+
+    return "";
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
