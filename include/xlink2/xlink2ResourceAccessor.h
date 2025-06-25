@@ -129,7 +129,7 @@ public:
     f32 getResOverwriteParamValueFloat_(u32, u32, const UserInstance*) const;
     const char* getResOverwriteParamValueString_(u32, u32) const;
 
-private:
+protected:
     ResUserHeader* mUserHeader {nullptr};
     UserResource* mUserResource {nullptr};
     System* mSystem {nullptr};
