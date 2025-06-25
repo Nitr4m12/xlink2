@@ -59,13 +59,13 @@ public:
     f32 getColorBlue(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getAlpha(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
-    u64 getEmissionRate(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    u64 getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    u64 getEmissionInterval(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getEmissionRate(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getEmissionInterval(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
-    u64 getDirectionalVel(const ResAssetCallTable& asset_ctb, UserInstance const*) const;
+    f32 getDirectionalVel(const ResAssetCallTable& asset_ctb, UserInstance const*) const;
 
-    u64 getLifeScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getLifeScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
     f32 getOverwriteDelay(u32, const UserInstance* user_instance) const;
 
