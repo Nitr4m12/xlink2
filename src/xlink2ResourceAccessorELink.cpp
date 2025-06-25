@@ -119,6 +119,11 @@ bool ResourceAccessorELink::isFollow(const ResAssetCallTable& asset_ctb) const
     return getAssetBitFlag(asset_ctb).isOnBit(1);
 }
 
+bool ResourceAccessorELink::isUseOneEmitter(const ResAssetCallTable& asset_ctb) const
+{
+    return getAssetBitFlag(asset_ctb).isOnBit(2);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }
