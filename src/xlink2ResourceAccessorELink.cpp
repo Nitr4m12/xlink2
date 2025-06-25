@@ -171,6 +171,19 @@ const char* ResourceAccessorELink::getBoneName(const ResAssetCallTable& asset_ct
     return "";
 }
 
+f32 ResourceAccessorELink::getScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    f32 param_value {1.0};
+    if (!checkAndErrorIsAsset_(asset_ctb, "getScale"))
+        return param_value;
+    
+    const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 12)};
+    if (asset_param != nullptr)
+        return this->getResParamValueFloat_(*asset_param, user_instance);
+    
+    return this->mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(12);
+}
+
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 p1, const UserInstance* p2) const {
     return ResourceAccessor::getResOverwriteParamValueFloat_(p1, 0x16, p2);
 }

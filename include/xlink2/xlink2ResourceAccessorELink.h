@@ -44,7 +44,7 @@ public:
 
     const char* getBoneName(const ResAssetCallTable& asset_ctb) const override;
 
-    u64 getScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
     f32 getPositionX(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getPositionY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
