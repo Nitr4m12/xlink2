@@ -9,7 +9,7 @@ class SwitchContainer : ContainerBase {
 public:
     ~SwitchContainer() override;
 
-    s8 calc() override;
+    CalcResult calc() override;
 
     u64 getConditionMatchChildTable_();
 

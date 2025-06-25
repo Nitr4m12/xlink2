@@ -3,6 +3,22 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+SequenceContainer::~SequenceContainer() = default;
+
+ContainerBase::CalcResult SequenceContainer::calc()
+{
+    if (mpChild->calc() & CalcResult::Success) {
+        mpChild->destroy();
+        mpChild = nullptr;
+        if (mpEvent->getBitFlag().isOnBit(4) || !callNextChildSequence_())
+            return assetFinished();
+    
+        return CalcResult::Failure;
+    }  
+
+    return CalcResult::Success;
+}
+
 bool SequenceContainer::callNextChildSequence_()
 {
     ResContainerParam* param {ResourceUtil::getResContainerParam(*mpAssetCallTable)};

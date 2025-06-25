@@ -7,7 +7,7 @@ class RandomContainer : ContainerBase {
 public:
     ~RandomContainer() override;
 
-    s8 calc() override;
+    CalcResult calc() override;
     bool start() override;
 };
 }  // namespace xlink2

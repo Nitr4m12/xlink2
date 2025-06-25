@@ -20,6 +20,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ParamDefineTable.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PropertyDefinition.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PropertyTriggerCtrl.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}RandomContainer.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceAccessor.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceAccessorELink.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceAccessorSLink.cpp

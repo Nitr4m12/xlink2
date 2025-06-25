@@ -12,10 +12,15 @@ public:
     ContainerBase();
     virtual ~ContainerBase();
 
+    enum CalcResult {
+        Failure,
+        Success,
+    };
+    
     virtual bool initialize(Event*, ResAssetCallTable const&);
     virtual void destroy();
     virtual bool start() = 0;
-    virtual s8 calc() = 0;
+    virtual CalcResult calc() = 0;
     virtual void fadeBySystem();
     virtual void fade(int);
     virtual void kill();
@@ -26,15 +31,15 @@ public:
     ContainerBase* getNext() { return mpParent; }
     void setNext(ContainerBase* parent) { mpParent = parent; }
 
-    s8 assetFinished() 
+    CalcResult assetFinished() 
     {
         if (mAssetDuration > 0)
             --mAssetDuration;
     
         if (mAssetDuration != 0) {
-            return !start();
+            return static_cast<CalcResult>(!start());
         }
-        return true;
+        return CalcResult::Success;
     }
 
 protected:

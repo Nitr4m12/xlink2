@@ -22,25 +22,39 @@ bool BlendContainer::callAllChildContainer_()
 {
     UserInstance* user_instance {mpEvent->getUserInstance()};
     ResContainerParam* param {ResourceUtil::getResContainerParam(*mpAssetCallTable)};
-    if (param->childrenEndIndex > param->childrenStartIndex)
-        return false;
-    ContainerBase* container {nullptr};
-    ContainerBase* childContainer {nullptr};
-    bool b2 {false};
-    // u32 i {0};
-    UserResource* user_resource {user_instance->getUser()->getUserResource()};
-    // s32 j{param->childrenStartIndex};
-    for (s32 i {0}, j {param->childrenStartIndex}; i < param->childrenEndIndex; ++i, ++j) {
-        ResAssetCallTable* asset_call_item {user_resource->getAssetCallTableItem(j)};
+    s32 child_start_idx {param->childrenStartIndex};
+    ContainerBase* temp_child{};
+
+    bool ret_val {false};
+
+    for (s32 i {child_start_idx}, j{0}; i <= param->childrenEndIndex; ++i, ++j) {
+        ResAssetCallTable* asset_ctb_item {user_instance->getUser()->getUserResource()->getAssetCallTableItem(j)};
         
-        const char* container_type_name {user_instance->getContainerTypeName(*mpAssetCallTable)->cstr()};
-        char* key_name {calcOffset<char>(mpAssetCallTable->keyNamePos)};
+        Event* event {mpEvent};
 
-        const char* other_container_name {user_instance->getContainerTypeName(*asset_call_item)->cstr()};
-        char* other_key_name {calcOffset<char>(asset_call_item->keyNamePos)};
+        const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable)->cstr()};
+        const char* key_name {calcOffset<char>(mpAssetCallTable->keyNamePos)};
+        
+        const char* container_name_child {user_instance->getContainerTypeName(*asset_ctb_item)->cstr()};
+        const char* key_name_child {calcOffset<char>(asset_ctb_item->keyNamePos)};
+
+        user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_name_child, key_name_child, j);
+
+        ContainerBase* child_container {createChildContainer_(*asset_ctb_item, temp_child)};
+        if (child_container != nullptr)
+            temp_child = child_container;
+
+        if (temp_child != nullptr)
+            return true;
+        // ret_val = ret_val | (temp_child != nullptr);
+    }
+
+    return false;
 
 
-s8 BlendContainer::calc()
+}
+
+ContainerBase::CalcResult BlendContainer::calc()
 {
     ContainerBase* next {mpChild};
     ContainerBase* current {nullptr};
@@ -50,7 +64,7 @@ s8 BlendContainer::calc()
         while (next != nullptr) {
             current = next;
             next = current->getNext();
-            if (!(current->calc() & 1)) {
+            if (!(current->calc() & CalcResult::Success)) {
                 finished = false;
                 break;
             }
@@ -59,11 +73,11 @@ s8 BlendContainer::calc()
             else
                 mpChild = next;
             current->destroy();
-    }
+        }
     }
 
-    if (finished == 0)
-        return 0;
+    if (!finished)
+        return CalcResult::Failure;
 
     return assetFinished();
 }
