@@ -201,6 +201,14 @@ f32 ResourceAccessorSLink::getStopFrameWithOverwrite(const ResAssetCallTable& as
     return getStopFrame(asset_ctb, user_instance);
 }
 
+f32 ResourceAccessorSLink::getFadeInTimeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 9))
+        return getOverwriteFadeInTime(idx, user_instance);
+
+    return getFadeInTime(asset_ctb, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
