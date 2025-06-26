@@ -134,6 +134,11 @@ f32 ResourceAccessorSLink::getOverwriteVolume(u32 idx, const UserInstance* user_
     return this->getResOverwriteParamValueFloatWithLimit(idx, 3, user_instance);
 }
 
+f32 ResourceAccessorSLink::getOverwritePitch(u32 idx, const UserInstance* user_instance) const
+{
+    return this->getResOverwriteParamValueFloatWithLimit(idx, 6, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
