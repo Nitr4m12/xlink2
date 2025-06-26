@@ -192,10 +192,10 @@ const char* ResourceAccessorELink::getOverwriteBoneName(u32 idx) const
     return this->getResOverwriteParamValueString_(idx, 11);
 }
 
+f32 ResourceAccessorELink::getOverwriteScale(u32 idx, const UserInstance* user_instance) const
+{
+    return this->getResOverwriteParamValueFloat_(idx, 12, user_instance);
 }
-
-const char* ResourceAccessorELink::getOverwriteBoneName(u32 p1) const {
-    return ResourceAccessor::getResOverwriteParamValueString_(p1, 0xb);
 }
 
 f32 ResourceAccessorELink::getOverwriteColorBlue(u32 p1, const UserInstance* p2) const {
