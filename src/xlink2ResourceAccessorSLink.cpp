@@ -109,6 +109,11 @@ f32 ResourceAccessorSLink::getDuration(const ResAssetCallTable& asset_ctb, const
     return this->getResParamValueFloatWithLowerLimit("getDuration", asset_ctb, 12, 0.0, user_instance);
 }
 
+f32 ResourceAccessorSLink::getPriority(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloat("getPriority", asset_ctb, 13, 0.0, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
