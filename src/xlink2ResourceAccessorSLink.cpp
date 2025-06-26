@@ -54,6 +54,11 @@ bool ResourceAccessorSLink::isUnified(const ResAssetCallTable& asset_ctb) const
     return getAssetBitFlag_(asset_ctb).isOnBit(4);
 }
 
+bool ResourceAccessorSLink::isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const
+{
+    return getAssetBitFlag_(asset_ctb).isOnBit(5);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
