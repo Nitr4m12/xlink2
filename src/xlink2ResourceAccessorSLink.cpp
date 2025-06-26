@@ -233,6 +233,16 @@ const char* ResourceAccessorSLink::getBoneNameWithOverwrite(const ResAssetCallTa
     return getBoneName(asset_ctb);
 }
 
+s32 ResourceAccessorSLink::getTriggerOverwriteParamId_(u32 idx) const
+{
+    constexpr s32 OVERWRITE_PARAM_IDS[13] {0, -1, -1, 1, 2, 3, 4, -1, 5, -1, 6, -1, 7};
+
+    if (idx - 3 < 13)
+        return OVERWRITE_PARAM_IDS[(s32)idx - 3];
+
+    return -1;
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
