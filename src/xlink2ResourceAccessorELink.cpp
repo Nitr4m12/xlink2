@@ -323,5 +323,13 @@ f32 ResourceAccessorELink::getRotationZWithOverwrite(const ResAssetCallTable& as
 
     return getRotationZ(asset_ctb, user_instance);
 }
+
+f32 ResourceAccessorELink::getColorRedWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 19))
+        return getOverwriteColorRed(idx, user_instance);
+
+    return getColorRed(asset_ctb, user_instance);
+}
 }
 }  // namespace xlink2
