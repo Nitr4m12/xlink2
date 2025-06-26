@@ -21,13 +21,13 @@ bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) con
 
 const char* ResourceAccessorELink::getAssetName(const ResAssetCallTable& asset_ctb) const
 {
-    return getResParamValueString("getAssetName", asset_ctb, 1, "");
+    return this->getResParamValueString("getAssetName", asset_ctb, 1, "");
     
 }
 
 const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_ctb) const
 {
-    return getResParamValueString("getGroupName", asset_ctb, 3, "");
+    return this->getResParamValueString("getGroupName", asset_ctb, 3, "");
 }
 
 ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAssetCallTable& asset_ctb) const
@@ -64,17 +64,17 @@ bool ResourceAccessorELink::isForceLoopAsset(const ResAssetCallTable& asset_ctb)
 
 s32 ResourceAccessorELink::getForceCalc(const ResAssetCallTable& asset_ctb) const
 {   
-    return getResParamValueInt("getForceCalc", asset_ctb, 8, 0);
+    return this->getResParamValueInt("getForceCalc", asset_ctb, 8, 0);
 }
 
 s32 ResourceAccessorELink::getMtxSetType(const ResAssetCallTable& asset_ctb) const
 {
-    return getResParamValueInt("getMtxSetType", asset_ctb, 9, 0);
+    return this->getResParamValueInt("getMtxSetType", asset_ctb, 9, 0);
 }
 
 s32 ResourceAccessorELink::getRotateSourceType(const ResAssetCallTable& asset_ctb) const
 {
-    return getResParamValueInt("getRotateSourceType", asset_ctb, 10, 0);
+    return this->getResParamValueInt("getRotateSourceType", asset_ctb, 10, 0);
 }
 
 bool ResourceAccessorELink::isFollow(const ResAssetCallTable& asset_ctb) const
@@ -89,102 +89,102 @@ bool ResourceAccessorELink::isUseOneEmitter(const ResAssetCallTable& asset_ctb) 
 
 f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloatWithLimit("getDelay", asset_ctb, 5, 0.0, user_instance);
+    return this->getResParamValueFloatWithLimit("getDelay", asset_ctb, 5, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloatWithLimit("getDuration", asset_ctb, 6, 0.0, user_instance);
+    return this->getResParamValueFloatWithLimit("getDuration", asset_ctb, 6, 0.0, user_instance);
 }
 
 const char* ResourceAccessorELink::getBoneName(const ResAssetCallTable& asset_ctb) const
 {
-    return getResParamValueString("getBoneName", asset_ctb, 11, "");
+    return this->getResParamValueString("getBoneName", asset_ctb, 11, "");
 }
 
 f32 ResourceAccessorELink::getScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getScale", asset_ctb, 12, 1.0, user_instance);
+    return this->getResParamValueFloat("getScale", asset_ctb, 12, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getPositionX(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getPositionX", asset_ctb, 13, 0.0, user_instance);
+    return this->getResParamValueFloat("getPositionX", asset_ctb, 13, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getPositionY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getPositionY", asset_ctb, 14, 0.0, user_instance);
+    return this->getResParamValueFloat("getPositionY", asset_ctb, 14, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getPositionZ(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getPositionZ", asset_ctb, 15, 0.0, user_instance);
+    return this->getResParamValueFloat("getPositionZ", asset_ctb, 15, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getRotationX(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getRotationX", asset_ctb, 16, 0.0, user_instance);
+    return this->getResParamValueFloat("getRotationX", asset_ctb, 16, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getRotationY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getRotationY", asset_ctb, 17, 0.0, user_instance);
+    return this->getResParamValueFloat("getRotationY", asset_ctb, 17, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getRotationZ(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getRotationZ", asset_ctb, 18, 0.0, user_instance);
+    return this->getResParamValueFloat("getRotationZ", asset_ctb, 18, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getColorRed(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getColorRed", asset_ctb, 19, 1.0, user_instance);
+    return this->getResParamValueFloat("getColorRed", asset_ctb, 19, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getColorGreen(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getColorGreen", asset_ctb, 20, 1.0, user_instance);
+    return this->getResParamValueFloat("getColorGreen", asset_ctb, 20, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getColorBlue(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getColorBlue", asset_ctb, 21, 1.0, user_instance);
+    return this->getResParamValueFloat("getColorBlue", asset_ctb, 21, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getAlpha(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getAlpha", asset_ctb, 22, 1.0, user_instance);
+    return this->getResParamValueFloat("getAlpha", asset_ctb, 22, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getEmissionRate(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getEmissionRate", asset_ctb, 23, 1.0, user_instance);
+    return this->getResParamValueFloat("getEmissionRate", asset_ctb, 23, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getEmissionScale", asset_ctb, 24, 1.0, user_instance);
+    return this->getResParamValueFloat("getEmissionScale", asset_ctb, 24, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getEmissionInterval(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getEmissionInterval", asset_ctb, 25, 1.0, user_instance);
+    return this->getResParamValueFloat("getEmissionInterval", asset_ctb, 25, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getDirectionalVel(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getDirectionalVel", asset_ctb, 26, 1.0, user_instance);
+    return this->getResParamValueFloat("getDirectionalVel", asset_ctb, 26, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getLifeScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return getResParamValueFloat("getLifeScale", asset_ctb, 27, 1.0, user_instance);
+    return this->getResParamValueFloat("getLifeScale", asset_ctb, 27, 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteDelay(u32 idx, const UserInstance* user_instance) const
 {
-    return getResOverwriteParamValueFloatWithLimit(idx, 5, user_instance);
+    return this->getResOverwriteParamValueFloatWithLimit(idx, 5, user_instance);
 }
 
 const char* ResourceAccessorELink::getOverwriteBoneName(u32 idx) const
@@ -376,7 +376,7 @@ s32 ResourceAccessorELink::getTriggerOverwriteParamId_(u32 idx) const
 
 sead::BitFlag32 ResourceAccessorELink::getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const
 {
-    return getResParamValueInt("getAssetBitFlag_", asset_ctb, 28, 0);
+    return this->getResParamValueInt("getAssetBitFlag_", asset_ctb, 28, 0);
 }
 
 bool ResourceAccessorELink::isBoneNameOverwritten(u32 idx) const

@@ -135,5 +135,66 @@ protected:
     ResUserHeader* mUserHeader {nullptr};
     UserResource* mUserResource {nullptr};
     System* mSystem {nullptr};
+
+    const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* default_value) const
+    {
+        if (!checkAndErrorIsAsset_(asset_ctb, func_name))
+            return default_value;
+
+        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+        if (asset_param != nullptr)
+            return getResParamValueString_(*asset_param);
+
+        return mSystem->getParamDefineTable()->getAssetParamDefaultValueString(param_idx);
+    }
+
+    s32 getResParamValueInt(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, s32 default_value) const
+    {
+        if (!checkAndErrorIsAsset_(asset_ctb, func_name))
+            return default_value;
+    
+        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+        if (asset_param != nullptr)
+            return getResParamValueInt_(*asset_param);
+
+        return mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(param_idx);
+    }
+
+    f32 getResParamValueFloat(const char* func_name, const ResAssetCallTable& asset_ctb, 
+                              s32 param_idx, f32 default_value, const UserInstance* user_instance) const
+    {
+        if (!checkAndErrorIsAsset_(asset_ctb, func_name))
+            return default_value;
+    
+        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+        if (asset_param != nullptr)
+            return getResParamValueFloat_(*asset_param, user_instance);
+        
+        return mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
+    }
+    
+    f32 getResParamValueFloatWithLimit(const char* func_name, const ResAssetCallTable& asset_ctb, 
+                                       s32 param_idx, f32 default_value, const UserInstance* user_instance) const
+    {
+        f32 param_value {default_value};
+        if (!checkAndErrorIsAsset_(asset_ctb, func_name))
+            return param_value;
+        
+        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+        if (asset_param != nullptr)
+            param_value = getResParamValueFloat_(*asset_param, user_instance);
+        else
+            param_value = mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
+
+        if (param_value < 0.0)
+            return 0.0;
+        return param_value;
+    }
+
+    f32 getResOverwriteParamValueFloatWithLimit(u32 idx, u32 define_idx, const UserInstance* user_instance) const
+    {
+        f32 param_value {getResOverwriteParamValueFloat_(idx, define_idx, user_instance)};
+        return sead::MathCalcCommon<float>::max(param_value, 0.0);
+    }
 };
 }  // namespace xlink2
