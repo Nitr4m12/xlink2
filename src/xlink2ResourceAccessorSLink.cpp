@@ -35,6 +35,17 @@ f32 ResourceAccessorSLink::getUserPriority() const
     return 0.0;
 }
 
+bool ResourceAccessorSLink::isUserNoPos() const
+{
+    if (mpUserResource != nullptr) {
+        UserResourceParamSLink* user_resource_param {static_cast<UserResourceParamSLink*>(mpUserResource->getParamWithSetupCheck())};
+        if (user_resource_param != nullptr)
+            return user_resource_param->isNoPos;
+    }
+
+    return false;
+}
+
 bool ResourceAccessorSLink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
 {
     const char* param_name;
