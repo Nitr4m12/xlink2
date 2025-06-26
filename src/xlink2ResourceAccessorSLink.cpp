@@ -243,6 +243,11 @@ s32 ResourceAccessorSLink::getTriggerOverwriteParamId_(u32 idx) const
     return -1;
 }
 
+sead::BitFlag32 ResourceAccessorSLink::getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const
+{
+    return this->getResParamValueInt("getAssetBitFlag_", asset_ctb, 17, 0);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
