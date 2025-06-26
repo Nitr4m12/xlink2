@@ -159,6 +159,11 @@ f32 ResourceAccessorSLink::getOverwriteDelay(u32 idx, const UserInstance* user_i
     return this->getResOverwriteParamValueFloatWithLimit(idx, 11, user_instance);
 }
 
+f32 ResourceAccessorSLink::getOverwritePriority(u32 idx, const UserInstance* user_instance) const
+{
+    return this->getResOverwriteParamValueFloat_(idx, 13, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
