@@ -129,6 +129,11 @@ const char* ResourceAccessorSLink::getDistanceParamSetName(const ResAssetCallTab
     return this->getResParamValueString("getDistanceParamSetName", asset_ctb, 16, "");
 }
 
+f32 ResourceAccessorSLink::getOverwriteVolume(u32 idx, const UserInstance* user_instance) const
+{
+    return this->getResOverwriteParamValueFloatWithLimit(idx, 3, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
