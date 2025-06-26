@@ -275,5 +275,13 @@ f32 ResourceAccessorELink::getScaleWithOverwrite(const ResAssetCallTable& asset_
 
     return getScale(asset_ctb, user_instance);
 }
+
+f32 ResourceAccessorELink::getPositionXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 13))
+        return getOverwritePositionX(idx, user_instance);
+
+    return getPositionX(asset_ctb, user_instance);
+}
 }
 }  // namespace xlink2
