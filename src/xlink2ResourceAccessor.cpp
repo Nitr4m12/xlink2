@@ -61,21 +61,22 @@ void ResourceAccessor::setError_(const char* fmt, ...) const
 
 const char* ResourceAccessor::getKeyName(const ResAssetCallTable& asset_ctb) const
 {
-    return calcOffset<char>(asset_ctb.keyNamePos);
+    return calcOffset<const char>(asset_ctb.keyNamePos);
 }
 
 // NON-MATCHING: Wrong register
 ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_ctb) const
 {
-    if (isContainer(asset_ctb)) {
-        ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
-        if (container_param != nullptr) {
-            if (ContainerType::Sequence < container_param->type) {
-                setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
-                return ContainerType::Asset;
-            }
-            return container_param->type;
+    if (!isContainer(asset_ctb))
+        return ContainerType::Asset;
+
+    ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
+    if (container_param != nullptr) {
+        if (container_param->type > ContainerType::Sequence) {
+            setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
+            return ContainerType::Asset;
         }
+        return container_param->type;
     }
 
     return ContainerType::Asset;
@@ -91,17 +92,19 @@ const ContainerBase* ResourceAccessor::getContainer(const ResAssetCallTable& ass
 // WIP
 const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const 
 {
-    // if (isContainer(asset_ctb)) {
-    //     ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
-    //     if (container_param != nullptr) {
-    //         if (container_param->type < ContainerType::Asset)
-    //             return &sContainerNames[(s8)container_param->type];
+    if (isContainer(asset_ctb)) {
+        ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
+        if (container_param != nullptr) {
+            if (container_param->type > ContainerType::Sequence) {
+                setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb));
+                return &sContainerNames[6];
+            }
+            return &sContainerNames[(s8)container_param->type];
 
-    //         setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb));
-    //     }
-    // }
+        }
+    }
 
-    // return &sContainerNames[6];
+    return &sContainerNames[5];
 }
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const
@@ -120,7 +123,10 @@ const char* ResourceAccessor::getCustomParamValueString(u32 idx,
         if (value_type == ParamValueType::String) {
             auto is_asset {checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx)};
             if (is_asset) {
-                auto* flag = calcOffset<sead::BitFlag64>(asset_ctb.paramStartPos);
+                auto* mask = calcOffset<sead::BitFlag64>(asset_ctb.paramStartPos);
+                if (mask->countOnBit()) {
+                    
+                }
             }
         }
     }
@@ -162,7 +168,7 @@ bool ResourceAccessor::getCustomParamValueBool(u32 custom_param_idx, const ResAs
 s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 {
     UserResourceParam* user_resource_param {mpUserResource->getParam()};
-    return user_resource_param->commonResourceParam->directValueTable[param.rawValue & 0xffffff];
+    return user_resource_param->commonResourceParam->directValueTable[param.getValue()];
 }
 
 }  // namespace xlink2

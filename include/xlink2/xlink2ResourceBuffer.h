@@ -1,6 +1,5 @@
 #pragma once
 
-#include <heap/seadHeap.h>
 #include "xlink2/xlink2RomResourceParam.h"
 #include "xlink2/xlink2System.h"
 
@@ -10,13 +9,14 @@ public:
     ResourceBuffer();
     virtual ~ResourceBuffer();
 
-    void applyGlobalPropertyDefinition(System*);
+    bool load(void* bin, System* system);
+    
+    ResUserHeader* searchResUserHeader(const char* user_name) const;
+    void applyGlobalPropertyDefinition(System* system);
+    
     static RomResourceParam getEmptyRomResourceParam();
     static ResUserHeader getEmptyUserHeader();
-    u64 load(void*, System*);
-
-    ResUserHeader* searchResUserHeader(char const*) const;
-
+    
     ParamDefineTable getParamDefineTable() { return mParamDefineTable; }
     RomResourceParam getRomResourceParam() { return mRomResourceParam; }
 

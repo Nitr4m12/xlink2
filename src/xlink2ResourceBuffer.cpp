@@ -3,7 +3,6 @@
 
 namespace xlink2 {
 ResourceBuffer::~ResourceBuffer() = default;
-
 void ResourceBuffer::applyGlobalPropertyDefinition(System* system) {
     if (mRomResourceParam.isInitialized) {
         ResourceParamCreator::solveAboutGlobalProperty(&mRomResourceParam, &mParamDefineTable,
