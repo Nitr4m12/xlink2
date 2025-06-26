@@ -59,6 +59,11 @@ bool ResourceAccessorSLink::isAutoOneTimeFade(const ResAssetCallTable& asset_ctb
     return getAssetBitFlag_(asset_ctb).isOnBit(5);
 }
 
+bool ResourceAccessorSLink::isForceLoopAsset(const ResAssetCallTable& asset_ctb) const
+{
+    return getAssetBitFlag_(asset_ctb).isOnBit(6);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
