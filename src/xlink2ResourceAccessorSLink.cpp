@@ -119,6 +119,11 @@ f32 ResourceAccessorSLink::getDopplerFactor(const ResAssetCallTable& asset_ctb, 
     return this->getResParamValueFloat("getDopplerFactor", asset_ctb, 14, 0.0, user_instance);
 }
 
+const char* ResourceAccessorSLink::getBoneName(const ResAssetCallTable& asset_ctb) const
+{
+    return this->getResParamValueString("getBoneName", asset_ctb, 15, "");
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
