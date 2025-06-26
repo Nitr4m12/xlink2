@@ -364,6 +364,16 @@ f32 ResourceAccessorELink::getEmissionRateWithOverwrite(const ResAssetCallTable&
     return getEmissionRate(asset_ctb, user_instance);
 }
 
+s32 ResourceAccessorELink::getTriggerOverwriteParamId_(u32 idx) const
+{
+    constexpr s32 OVERWRITE_PARAM_IDS[19] {0, -1, -1, -1, -1 -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
+
+    if (idx - 5 < 19)
+        return OVERWRITE_PARAM_IDS[(s32)idx - 5];
+
+    return -1;
+}
+
 sead::BitFlag32 ResourceAccessorELink::getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const
 {
     return getResParamValueInt("getAssetBitFlag_", asset_ctb, 28, 0);
