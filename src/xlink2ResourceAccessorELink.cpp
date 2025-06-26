@@ -355,5 +355,13 @@ f32 ResourceAccessorELink::getAlphaWithOverwrite(const ResAssetCallTable& asset_
 
     return getAlpha(asset_ctb, user_instance);
 }
+
+f32 ResourceAccessorELink::getEmissionRateWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 23))
+        return getOverwriteEmissionRate(idx, user_instance);
+
+    return getEmissionRate(asset_ctb, user_instance);
+}
 }
 }  // namespace xlink2
