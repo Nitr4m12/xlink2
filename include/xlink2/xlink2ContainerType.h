@@ -4,7 +4,7 @@
 
 namespace xlink2 {
 enum class ContainerType : u32 {
-    Switch = 0,
+    Switch,
     Random,
     Random2,
     Blend,
