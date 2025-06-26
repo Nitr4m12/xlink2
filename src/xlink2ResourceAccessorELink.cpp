@@ -363,5 +363,10 @@ f32 ResourceAccessorELink::getEmissionRateWithOverwrite(const ResAssetCallTable&
 
     return getEmissionRate(asset_ctb, user_instance);
 }
+
+sead::BitFlag32 ResourceAccessorELink::getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const
+{
+    return getResParamValueInt("getAssetBitFlag_", asset_ctb, 28, 0);
+}
 }
 }  // namespace xlink2
