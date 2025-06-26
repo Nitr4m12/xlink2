@@ -1,6 +1,17 @@
 #include <xlink2/xlink2ResourceAccessorSLink.h>
+#include "xlink2/xlink2UserResourceParamSLink.h"
 
 namespace xlink2 {
+s32 ResourceAccessorSLink::getUserLimitType() const
+{
+    if (mpUserResource != nullptr) {
+        UserResourceParamSLink* user_resource_param {static_cast<UserResourceParamSLink*>(mpUserResource->getParamWithSetupCheck())};
+        if (user_resource_param != nullptr)
+            return user_resource_param->limitType;
+    }
+
+    return 0;
+}
 
 bool ResourceAccessorSLink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
 {
