@@ -241,5 +241,10 @@ f32 ResourceAccessorELink::getOverwriteColorBlue(u32 idx, const UserInstance* us
 {
     return this->getResOverwriteParamValueFloat_(idx, 21, user_instance);
 }
+
+f32 ResourceAccessorELink::getOverwriteAlpha(u32 idx, const UserInstance* user_instance) const
+{
+    return this->getResOverwriteParamValueFloat_(idx, 22, user_instance);
+}
 }
 }  // namespace xlink2
