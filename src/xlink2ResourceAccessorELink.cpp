@@ -368,5 +368,9 @@ sead::BitFlag32 ResourceAccessorELink::getAssetBitFlag_(const ResAssetCallTable&
 {
     return getResParamValueInt("getAssetBitFlag_", asset_ctb, 28, 0);
 }
+
+bool ResourceAccessorELink::isBoneNameOverwritten(u32 idx) const
+{
+    return this->isParamOverwritten(idx, 11);
 }
 }  // namespace xlink2
