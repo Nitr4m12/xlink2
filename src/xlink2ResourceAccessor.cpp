@@ -106,7 +106,7 @@ const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCal
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const
 {
-    return asset_ctb.flag & 1;
+    return asset_ctb.flag.isOnBit(0);
 }
 
 // WIP

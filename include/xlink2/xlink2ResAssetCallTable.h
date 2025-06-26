@@ -21,7 +21,7 @@ struct CallTableParam {
 struct ResAssetCallTable {
     u32 keyNamePos;
     s16 assetId;
-    sead::BitFlag8 flag;
+    sead::BitFlag16 flag;
     s32 duration;
     s32 parentIndex;
     s32 guid;
