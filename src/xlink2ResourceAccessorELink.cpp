@@ -267,5 +267,13 @@ const char* ResourceAccessorELink::getBoneNameWithOverwrite(const ResAssetCallTa
 
     return getBoneName(asset_ctb);
 }
+
+f32 ResourceAccessorELink::getScaleWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 12))
+        return getOverwriteScale(idx, user_instance);
+
+    return getScale(asset_ctb, user_instance);
+}
 }
 }  // namespace xlink2
