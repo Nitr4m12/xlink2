@@ -79,6 +79,11 @@ f32 ResourceAccessorSLink::getVolumeDrc(const ResAssetCallTable& asset_ctb, cons
     return this->getResParamValueFloat("getVolumeDrc", asset_ctb, 5, -1.0, user_instance);
 }
 
+f32 ResourceAccessorSLink::getPitch(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloatWithLimit("getPitch", asset_ctb, 6, 1.0, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
