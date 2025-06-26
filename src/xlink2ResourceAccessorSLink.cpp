@@ -64,6 +64,11 @@ bool ResourceAccessorSLink::isForceLoopAsset(const ResAssetCallTable& asset_ctb)
     return getAssetBitFlag_(asset_ctb).isOnBit(6);
 }
 
+f32 ResourceAccessorSLink::getVolume(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloatWithLimit("getVolume", asset_ctb, 3, 0.0, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
