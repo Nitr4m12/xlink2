@@ -173,6 +173,8 @@ public:
 
     ResourceBuffer* getResourceBuffer() { return mResourceBuffer; }
 
+    sead::Random* getRandom() { return &mRandom; }
+
 protected:
     ResourceBuffer* mResourceBuffer;
     sead::OffsetList<User> mUserList;

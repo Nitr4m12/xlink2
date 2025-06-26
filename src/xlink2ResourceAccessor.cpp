@@ -171,4 +171,9 @@ s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
     return user_resource_param->commonResourceParam->directValueTable[param.getValue()];
 }
 
+f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb) const
+{
+   return mpSystem->getRandom()->getF32Range(random_ctb.minValue, random_ctb.maxValue);
+}
+
 }  // namespace xlink2
