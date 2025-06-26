@@ -12,64 +12,62 @@ public:
     ~ResourceAccessorSLink() override;
 
     const char* getUserDistanceParamSetName() const;
-    u32 getUserLimitType() const;
-    u32 getUserPlayableLimitNum() const;
-    u32 getUserPriority() const;
-
+    s32 getUserLimitType() const;
+    s32 getUserPlayableLimitNum() const;
+    s32 getUserPriority() const;
     bool isUserNoPos() const;
+    s32 getUserDopplerFactor() const;
 
-    u32 getUserDopplerFactor() const;
+    bool isBlankAsset(const ResAssetCallTable& asset_ctb) const override;
+    const char* getAssetName(const ResAssetCallTable& asset_ctb) const;
 
-    bool isBlankAsset(ResAssetCallTable const&) const override;
-    const char* getAssetName(ResAssetCallTable const&) const;
+    const char* getGroupName(const ResAssetCallTable& asset_ctb) const;
 
-    const char* getGroupName(ResAssetCallTable const&) const;
+    bool isFollow(const ResAssetCallTable& asset_ctb) const;
+    bool isNoParamUpdate(const ResAssetCallTable& asset_ctb) const;
+    bool isNoPos(const ResAssetCallTable& asset_ctb) const;
+    bool isStopWhenEmitterDestroying(const ResAssetCallTable& asset_ctb) const;
+    bool isUnified(const ResAssetCallTable& asset_ctb) const;
+    bool isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const override;
+    bool isForceLoopAsset(const ResAssetCallTable& asset_ctb) const;
 
-    bool isFollow(ResAssetCallTable const&) const;
-    bool isNoParamUpdate(ResAssetCallTable const&) const;
-    bool isNoPos(ResAssetCallTable const&) const;
-    bool isStopWhenEmitterDestroying(ResAssetCallTable const&) const;
-    bool isUnified(ResAssetCallTable const&) const;
-    bool isAutoOneTimeFade(ResAssetCallTable const&) const override;
-    bool isForceLoopAsset(ResAssetCallTable const&) const;
+    f32 getVolume(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getVolumeTv(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getVolumeDrc(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getPitch(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getLpf(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getStopFrame(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getFadeInTime(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getFadeCurveType(const ResAssetCallTable& asset_ctb);
+    f32 getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const override;
+    f32 getPriority(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getDopplerFactor(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    const char* getBoneName(const ResAssetCallTable& asset_ctb) const override;
+    const char* getDistanceParamSetName(const ResAssetCallTable& asset_ctb) const;
 
-    f32 getVolume(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getVolumeTv(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getVolumeDrc(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getPitch(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getLpf(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getStopFrame(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getFadeInTime(ResAssetCallTable const&, UserInstance*) const;
-    u32 getFadeCurveType(ResAssetCallTable const&);
-    f32 getDelay(ResAssetCallTable const&, UserInstance const*) const;
-    f32 getDuration(ResAssetCallTable const&, UserInstance const*) const override;
-    f32 getPriority(ResAssetCallTable const&, UserInstance const*) const;
-    u64 getDopplerFactor(ResAssetCallTable const&, UserInstance const*) const;
-    const char* getBoneName(ResAssetCallTable const&) const override;
-    const char* getDistanceParamSetName(ResAssetCallTable const&) const;
+    f32 getOverwriteVolume(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwritePitch(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteLpf(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteStopFrame(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteFadeInTime(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwriteDelay(u32 idx, const UserInstance* user_instance) const;
+    f32 getOverwritePriority(u32 idx, const UserInstance* user_instance) const;
+    const char* getOverwriteBoneName(u32 idx) const override;
 
-    u64 getOverwriteVolume(u32, UserInstance const*) const;
-    u64 getOverwritePitch(u32, UserInstance const*) const;
-    u64 getOverwriteLpf(u32, UserInstance const*) const;
-    u64 getOverwriteStopFrame(u32, UserInstance const*) const;
-    u64 getOverwriteFadeInTime(u32, UserInstance const*) const;
-    f32 getOverwriteDelay(u32, UserInstance const*) const;
-    u64 getOverwritePriority(u32, UserInstance const*) const;
-    const char* getOverwriteBoneName(u32) const override;
+    f32 getVolumeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getPitchWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getLpfWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance);
+    f32 getStopFrameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getFadeInTimeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, UserInstance*) const;
+    f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const override;
+    f32 getPriorityWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    const char* getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx) const;
 
-    f32 getVolumeWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getPitchWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    f32 getLpfWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*);
-    f32 getStopFrameWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    u64 getFadeInTimeWithOverwrite(ResAssetCallTable const&, u32, UserInstance*) const;
-    f32 getDelayWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const override;
-    f32 getPriorityWithOverwrite(ResAssetCallTable const&, u32, UserInstance const*) const;
-    const char* getBoneNameWithOverwrite(ResAssetCallTable const&, u32) const;
+    s32 getTriggerOverwriteParamId_(u32 idx) const override;
 
-    s32 getTriggerOverwriteParamId_(u32) const override;
+    sead::BitFlag32 getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const override;
 
-    sead::BitFlag32 getAssetBitFlag_(ResAssetCallTable const&) const override;
-
-    bool isBoneNameOverwritten(u32) const override;
+    bool isBoneNameOverwritten(u32 idx) const override;
 };
 }  // namespace xlink2

@@ -132,9 +132,9 @@ public:
     const char* getResOverwriteParamValueString_(u32, u32) const;
 
 protected:
-    ResUserHeader* mUserHeader {nullptr};
-    UserResource* mUserResource {nullptr};
-    System* mSystem {nullptr};
+    ResUserHeader* mpUserHeader {nullptr};
+    UserResource* mpUserResource {nullptr};
+    System* mpSystem {nullptr};
 
     const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* default_value) const
     {
@@ -145,7 +145,7 @@ protected:
         if (asset_param != nullptr)
             return getResParamValueString_(*asset_param);
 
-        return mSystem->getParamDefineTable()->getAssetParamDefaultValueString(param_idx);
+        return mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(param_idx);
     }
 
     s32 getResParamValueInt(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, s32 default_value) const
@@ -157,7 +157,7 @@ protected:
         if (asset_param != nullptr)
             return getResParamValueInt_(*asset_param);
 
-        return mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(param_idx);
+        return mpSystem->getParamDefineTable()->getAssetParamDefaultValueInt(param_idx);
     }
 
     f32 getResParamValueFloat(const char* func_name, const ResAssetCallTable& asset_ctb, 
@@ -170,7 +170,7 @@ protected:
         if (asset_param != nullptr)
             return getResParamValueFloat_(*asset_param, user_instance);
         
-        return mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
+        return mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
     }
     
     f32 getResParamValueFloatWithLimit(const char* func_name, const ResAssetCallTable& asset_ctb, 
@@ -184,7 +184,7 @@ protected:
         if (asset_param != nullptr)
             param_value = getResParamValueFloat_(*asset_param, user_instance);
         else
-            param_value = mSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
+            param_value = mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
 
         if (param_value < 0.0)
             return 0.0;

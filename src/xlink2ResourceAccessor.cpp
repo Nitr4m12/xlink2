@@ -8,11 +8,11 @@ ResourceAccessor::~ResourceAccessor() = default;
 
 const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) const
 {
-    if (mUserResource && mSystem->isCallEnabled()) {
-        UserResourceParam* param = mUserResource->getParam();
+    if (mpUserResource && mpSystem->isCallEnabled()) {
+        UserResourceParam* param = mpUserResource->getParam();
 
         if (param && param->isSetup)
-            return mUserResource->searchAssetCallTableByName(name);
+            return mpUserResource->searchAssetCallTableByName(name);
     }
 
     return nullptr;
@@ -20,24 +20,24 @@ const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) con
 
 void ResourceAccessor::searchCallTable(Locator* locator, const char* name) const
 {
-    if (mUserResource && mSystem->isCallEnabled()) {
-        UserResourceParam* param = mUserResource->getParam();
+    if (mpUserResource && mpSystem->isCallEnabled()) {
+        UserResourceParam* param = mpUserResource->getParam();
 
         if (param && param->isSetup)
-            mUserResource->searchAssetCallTableByName(locator, name);
+            mpUserResource->searchAssetCallTableByName(locator, name);
     }
 }
 
 const ResAssetCallTable* ResourceAccessor::getCallTable(u32 idx) const
 {
-    if (mUserResource && mSystem->isCallEnabled()) {
-        UserResourceParam* param = mUserResource->getParam();
+    if (mpUserResource && mpSystem->isCallEnabled()) {
+        UserResourceParam* param = mpUserResource->getParam();
 
         if (param && param->isSetup) {
-            if (idx < mUserHeader->numCallTable)
-                return mUserResource->getAssetCallTableItem(idx);
+            if (idx < mpUserHeader->numCallTable)
+                return mpUserResource->getAssetCallTableItem(idx);
 
-            setError_("getCallTable: idx(%d) >= numCallTable(%d)", idx, mUserHeader->numCallTable);
+            setError_("getCallTable: idx(%d) >= numCallTable(%d)", idx, mpUserHeader->numCallTable);
         }
     }
 
@@ -52,9 +52,9 @@ void ResourceAccessor::setError_(const char* fmt, ...) const
     msg.formatV(fmt, args);
     va_end(args);
     User* user {nullptr};
-    System* sys {mSystem};
-    if (mUserResource != nullptr)
-        user = mUserResource->getUser();
+    System* sys {mpSystem};
+    if (mpUserResource != nullptr)
+        user = mpUserResource->getUser();
 
     sys->addError(Error::Type::ResourceAccessFailed, user, "%s", msg.getBuffer());
 }
@@ -113,7 +113,7 @@ bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const
 const char* ResourceAccessor::getCustomParamValueString(u32 idx,
                                                         const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define {mSystem->getParamDefineTable()};
+    ParamDefineTable* param_define {mpSystem->getParamDefineTable()};
     u32 id = param_define->getNumCustomParam() + idx;
     if (id < param_define->getNumAssetParam()) {
         ParamValueType value_type {param_define->getAssetParamType(id)};
@@ -136,9 +136,9 @@ bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_ctb,
         msg.formatV(fmt, args);
         va_end(args);
         User* user {nullptr};
-        System* sys {mSystem};
-        if (mUserResource != nullptr)
-            user = mUserResource->getUser();
+        System* sys {mpSystem};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
 
         sys->addError(Error::Type::ResourceAccessFailed, user, "%s: [%s] is container", msg.getBuffer(), getKeyName(asset_ctb));
         return false;
@@ -148,7 +148,7 @@ bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_ctb,
 
 const char* ResourceAccessor::getResParamValueString_(const ResParam& param) const
 {
-    UserResourceParam* user_param = mUserResource->getParam();
+    UserResourceParam* user_param = mpUserResource->getParam();
     u64 value_string_pos =
         user_param->commonResourceParam->nameTablePos + (param.rawValue & 0xffffff);
     return calcOffset<char>(value_string_pos);
@@ -161,7 +161,7 @@ bool ResourceAccessor::getCustomParamValueBool(u32 custom_param_idx, const ResAs
 
 s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 {
-    UserResourceParam* user_resource_param {mUserResource->getParam()};
+    UserResourceParam* user_resource_param {mpUserResource->getParam()};
     return user_resource_param->commonResourceParam->directValueTable[param.rawValue & 0xffffff];
 }
 

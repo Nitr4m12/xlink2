@@ -1,6 +1,24 @@
 #include <xlink2/xlink2ResourceAccessorSLink.h>
 
 namespace xlink2 {
+
+bool ResourceAccessorSLink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
+{
+    const char* param_name;
+    if (checkAndErrorIsAsset_(asset_ctb, "isBlankAsset")) {
+        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 1)};
+
+        if (asset_param == nullptr)
+            param_name = this->mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(1);
+        else
+            param_name = this->getResParamValueString_(*asset_param);
+
+        return strncmp(param_name, "@Blank", 6) == 0;
+    }
+
+    return false;
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }

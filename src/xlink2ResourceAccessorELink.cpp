@@ -9,7 +9,7 @@ bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) con
         const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 1)};
 
         if (asset_param == nullptr)
-            param_name = this->mSystem->getParamDefineTable()->getAssetParamDefaultValueString(1);
+            param_name = this->mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(1);
         else
             param_name = this->getResParamValueString_(*asset_param);
 
@@ -36,7 +36,7 @@ ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAsse
     if (checkAndErrorIsAsset_(asset_ctb, "getClipType")) {
         const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 7)};
         if (asset_param == nullptr)
-            param_value = this->mSystem->getParamDefineTable()->getAssetParamDefaultValueInt(7);
+            param_value = this->mpSystem->getParamDefineTable()->getAssetParamDefaultValueInt(7);
         else
             param_value = this->getResParamValueInt_(*asset_param);
 
