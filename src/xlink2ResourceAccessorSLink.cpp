@@ -104,6 +104,11 @@ f32 ResourceAccessorSLink::getDelay(const ResAssetCallTable& asset_ctb, const Us
     return this->getResParamValueFloatWithLowerLimit("getDelay", asset_ctb, 11, 0.0, user_instance);
 }
 
+f32 ResourceAccessorSLink::getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloatWithLowerLimit("getDuration", asset_ctb, 12, 0.0, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
