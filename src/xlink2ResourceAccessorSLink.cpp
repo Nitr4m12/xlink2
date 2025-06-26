@@ -46,6 +46,18 @@ bool ResourceAccessorSLink::isUserNoPos() const
     return false;
 }
 
+f32 ResourceAccessorSLink::getUserDopplerFactor() const
+{
+    if (mpUserResource != nullptr) {
+        UserResourceParamSLink* user_resource_param {static_cast<UserResourceParamSLink*>(mpUserResource->getParamWithSetupCheck())};
+        if (user_resource_param != nullptr)
+            return user_resource_param->dopplerFactor;
+    }
+
+    return 0.0;
+}
+
+
 bool ResourceAccessorSLink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
 {
     const char* param_name;

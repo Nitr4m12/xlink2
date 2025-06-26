@@ -20,7 +20,7 @@ public:
     s32 getUserPlayableLimitNum() const;
     f32 getUserPriority() const;
     bool isUserNoPos() const;
-    s32 getUserDopplerFactor() const;
+    f32 getUserDopplerFactor() const;
 
     bool isBlankAsset(const ResAssetCallTable& asset_ctb) const override;
     const char* getAssetName(const ResAssetCallTable& asset_ctb) const;
