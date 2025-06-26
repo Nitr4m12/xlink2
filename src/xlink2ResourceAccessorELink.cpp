@@ -251,5 +251,13 @@ f32 ResourceAccessorELink::getOverwriteEmissionRate(u32 idx, const UserInstance*
 {
     return this->getResOverwriteParamValueFloat_(idx, 23, user_instance);
 }
+
+f32 ResourceAccessorELink::getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 5))
+        return getOverwriteDelay(idx, user_instance);
+
+    return getDelay(asset_ctb, user_instance);
+}
 }
 }  // namespace xlink2
