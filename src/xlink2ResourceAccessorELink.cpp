@@ -259,5 +259,13 @@ f32 ResourceAccessorELink::getDelayWithOverwrite(const ResAssetCallTable& asset_
 
     return getDelay(asset_ctb, user_instance);
 }
+
+const char* ResourceAccessorELink::getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx) const
+{
+    if (this->isParamOverwritten(idx, 11))
+        return getOverwriteBoneName(idx);
+
+    return getBoneName(asset_ctb);
+}
 }
 }  // namespace xlink2
