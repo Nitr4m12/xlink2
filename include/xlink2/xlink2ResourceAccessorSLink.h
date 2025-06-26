@@ -7,7 +7,6 @@
 
 namespace xlink2 {
 class ResourceAccessorSLink : ResourceAccessor {
-
 public:
     ~ResourceAccessorSLink() override;
 

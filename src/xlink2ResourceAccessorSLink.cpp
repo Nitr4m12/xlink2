@@ -66,7 +66,7 @@ bool ResourceAccessorSLink::isForceLoopAsset(const ResAssetCallTable& asset_ctb)
 
 f32 ResourceAccessorSLink::getVolume(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return this->getResParamValueFloatWithLimit("getVolume", asset_ctb, 3, 0.0, user_instance);
+    return this->getResParamValueFloatWithLowerLimit("getVolume", asset_ctb, 3, 0.0, user_instance);
 }
 
 f32 ResourceAccessorSLink::getVolumeTv(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
@@ -81,7 +81,7 @@ f32 ResourceAccessorSLink::getVolumeDrc(const ResAssetCallTable& asset_ctb, cons
 
 f32 ResourceAccessorSLink::getPitch(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return this->getResParamValueFloatWithLimit("getPitch", asset_ctb, 6, 1.0, user_instance);
+    return this->getResParamValueFloatWithLowerLimit("getPitch", asset_ctb, 6, 1.0, user_instance);
 }
 
 f32 ResourceAccessorSLink::getLpf(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
@@ -97,6 +97,11 @@ f32 ResourceAccessorSLink::getStopFrame(const ResAssetCallTable& asset_ctb, cons
 f32 ResourceAccessorSLink::getFadeInTime(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
     return this->getResParamValueFloat("getFadeInTime", asset_ctb, 9, 0.0, user_instance);
+}
+
+f32 ResourceAccessorSLink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloatWithLowerLimit("getDelay", asset_ctb, 11, 0.0, user_instance);
 }
 
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {

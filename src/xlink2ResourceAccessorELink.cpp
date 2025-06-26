@@ -88,12 +88,12 @@ bool ResourceAccessorELink::isUseOneEmitter(const ResAssetCallTable& asset_ctb) 
 
 f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return this->getResParamValueFloatWithLimit("getDelay", asset_ctb, 5, 0.0, user_instance);
+    return this->getResParamValueFloatWithLowerLimit("getDelay", asset_ctb, 5, 0.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    return this->getResParamValueFloatWithLimit("getDuration", asset_ctb, 6, 0.0, user_instance);
+    return this->getResParamValueFloatWithLowerLimit("getDuration", asset_ctb, 6, 0.0, user_instance);
 }
 
 const char* ResourceAccessorELink::getBoneName(const ResAssetCallTable& asset_ctb) const

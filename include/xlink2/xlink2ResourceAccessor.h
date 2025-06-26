@@ -2,6 +2,7 @@
 
 #include <prim/seadBitFlag.h>
 
+#include "math/seadMathCalcCommon.h"
 #include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ParamValueType.h"
@@ -173,7 +174,7 @@ protected:
         return mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
     }
     
-    f32 getResParamValueFloatWithLimit(const char* func_name, const ResAssetCallTable& asset_ctb, 
+    f32 getResParamValueFloatWithLowerLimit(const char* func_name, const ResAssetCallTable& asset_ctb, 
                                        s32 param_idx, f32 fallback, const UserInstance* user_instance) const
     {
         f32 param_value {fallback};
@@ -186,9 +187,7 @@ protected:
         else
             param_value = mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
 
-        if (param_value < 0.0)
-            return 0.0;
-        return param_value;
+        return sead::MathCalcCommon<f32>::max(param_value, 0.0);
     }
 
     f32 getResOverwriteParamValueFloatWithLimit(u32 idx, u32 define_idx, const UserInstance* user_instance) const
