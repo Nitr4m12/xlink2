@@ -31,7 +31,7 @@ public:
     virtual f32 getDelayWithOverwrite(const ResAssetCallTable&, u32, UserInstance const*) const = 0;
     virtual f32 getDuration(const ResAssetCallTable&, UserInstance const*) const = 0;
     virtual s32 getTriggerOverwriteParamId_(u32) const = 0;
-    virtual sead::BitFlag32 getAssetBitFlag(const ResAssetCallTable&) const = 0;
+    virtual sead::BitFlag32 getAssetBitFlag_(const ResAssetCallTable&) const = 0;
 
     const ResAssetCallTable* searchCallTable(char const*) const;
     void searchCallTable(Locator*, char const*) const;

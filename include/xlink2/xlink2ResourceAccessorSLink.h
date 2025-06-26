@@ -68,7 +68,7 @@ public:
 
     s32 getTriggerOverwriteParamId_(u32) const override;
 
-    u32 getAssetBitFlag_(ResAssetCallTable const&) const;
+    sead::BitFlag32 getAssetBitFlag_(ResAssetCallTable const&) const override;
 
     bool isBoneNameOverwritten(u32) const override;
 };
