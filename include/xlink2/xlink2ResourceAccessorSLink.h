@@ -56,7 +56,7 @@ public:
 
     f32 getVolumeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
     f32 getPitchWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getLpfWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance);
+    f32 getLpfWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
     f32 getStopFrameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
     f32 getFadeInTimeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, UserInstance*) const;
     f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const override;
