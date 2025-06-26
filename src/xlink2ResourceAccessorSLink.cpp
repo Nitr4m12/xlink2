@@ -34,6 +34,11 @@ bool ResourceAccessorSLink::isFollow(const ResAssetCallTable& asset_ctb) const
     return getAssetBitFlag_(asset_ctb).isOnBit(0);
 }
 
+bool ResourceAccessorSLink::isNoParamUpdate(const ResAssetCallTable& asset_ctb) const
+{
+    return getAssetBitFlag_(asset_ctb).isOnBit(1);
+}
+
 
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
