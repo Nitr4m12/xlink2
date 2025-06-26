@@ -69,6 +69,11 @@ f32 ResourceAccessorSLink::getVolume(const ResAssetCallTable& asset_ctb, const U
     return this->getResParamValueFloatWithLimit("getVolume", asset_ctb, 3, 0.0, user_instance);
 }
 
+f32 ResourceAccessorSLink::getVolumeTv(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloat("getVolumeTv", asset_ctb, 4, -1.0, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }

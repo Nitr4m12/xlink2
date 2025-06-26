@@ -136,10 +136,10 @@ protected:
     UserResource* mpUserResource {nullptr};
     System* mpSystem {nullptr};
 
-    const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* default_value) const
+    const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* fallback) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
-            return default_value;
+            return fallback;
 
         const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
         if (asset_param != nullptr)
@@ -148,10 +148,10 @@ protected:
         return mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(param_idx);
     }
 
-    s32 getResParamValueInt(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, s32 default_value) const
+    s32 getResParamValueInt(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, s32 fallback) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
-            return default_value;
+            return fallback;
     
         const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
         if (asset_param != nullptr)
@@ -161,10 +161,10 @@ protected:
     }
 
     f32 getResParamValueFloat(const char* func_name, const ResAssetCallTable& asset_ctb, 
-                              s32 param_idx, f32 default_value, const UserInstance* user_instance) const
+                              s32 param_idx, f32 fallback, const UserInstance* user_instance) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
-            return default_value;
+            return fallback;
     
         const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
         if (asset_param != nullptr)
@@ -174,9 +174,9 @@ protected:
     }
     
     f32 getResParamValueFloatWithLimit(const char* func_name, const ResAssetCallTable& asset_ctb, 
-                                       s32 param_idx, f32 default_value, const UserInstance* user_instance) const
+                                       s32 param_idx, f32 fallback, const UserInstance* user_instance) const
     {
-        f32 param_value {default_value};
+        f32 param_value {fallback};
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return param_value;
         
