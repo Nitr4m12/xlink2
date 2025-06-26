@@ -89,6 +89,12 @@ f32 ResourceAccessorSLink::getLpf(const ResAssetCallTable& asset_ctb, const User
     return this->getResParamValueFloat("getLpf", asset_ctb, 7, 0.0, user_instance);
 }
 
+f32 ResourceAccessorSLink::getStopFrame(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloat("getStopFrame", asset_ctb, 8, 0.0, user_instance);
+}
+
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
