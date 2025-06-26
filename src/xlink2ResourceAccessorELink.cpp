@@ -196,6 +196,10 @@ f32 ResourceAccessorELink::getOverwriteScale(u32 idx, const UserInstance* user_i
 {
     return this->getResOverwriteParamValueFloat_(idx, 12, user_instance);
 }
+
+f32 ResourceAccessorELink::getOverwritePositionX(u32 idx, const UserInstance* user_instance) const
+{
+    return this->getResOverwriteParamValueFloat_(idx, 13, user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteColorBlue(u32 p1, const UserInstance* p2) const {
