@@ -19,6 +19,11 @@ bool ResourceAccessorSLink::isBlankAsset(const ResAssetCallTable& asset_ctb) con
     return false;
 }
 
+const char* ResourceAccessorSLink::getAssetName(const ResAssetCallTable& asset_ctb) const
+{
+    return this->getResParamValueString("getAssetName", asset_ctb, 1, "");
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }

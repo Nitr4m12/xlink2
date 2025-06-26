@@ -22,7 +22,6 @@ bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) con
 const char* ResourceAccessorELink::getAssetName(const ResAssetCallTable& asset_ctb) const
 {
     return this->getResParamValueString("getAssetName", asset_ctb, 1, "");
-    
 }
 
 const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_ctb) const
