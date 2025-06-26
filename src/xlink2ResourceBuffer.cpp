@@ -1,14 +1,15 @@
 #include <xlink2/xlink2ResourceBuffer.h>
+#include "xlink2/xlink2ResourceParamCreator.h"
 
 namespace xlink2 {
 ResourceBuffer::~ResourceBuffer() = default;
 
-// void ResourceBuffer::applyGlobalPropertyDefinition(System* system) {
-//     if (_20 != 0) {
-//         return ResourceParamCreator::solveAboutGlobalProperty(&mRomResourceParam, &mParamDefineTable,
-//                                                               system);
-//     }
-// }
+void ResourceBuffer::applyGlobalPropertyDefinition(System* system) {
+    if (mRomResourceParam.isInitialized) {
+        ResourceParamCreator::solveAboutGlobalProperty(&mRomResourceParam, &mParamDefineTable,
+                                                              system);
+    }
+}
 
 RomResourceParam ResourceBuffer::getEmptyRomResourceParam() {
     static RomResourceParam sDummy{};

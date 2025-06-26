@@ -15,6 +15,7 @@ namespace xlink2 {
 class System;
 
 class ResourceParamCreator {
+public:
     class BinAccessor {
     public:
         BinAccessor(ResourceHeader*, ParamDefineTable const*);
