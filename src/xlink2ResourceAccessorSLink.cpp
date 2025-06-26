@@ -24,6 +24,11 @@ const char* ResourceAccessorSLink::getAssetName(const ResAssetCallTable& asset_c
     return this->getResParamValueString("getAssetName", asset_ctb, 1, "");
 }
 
+const char* ResourceAccessorSLink::getGroupName(const ResAssetCallTable& asset_ctb) const
+{
+    return this->getResParamValueString("getGroupName", asset_ctb, 2, "");
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
