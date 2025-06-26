@@ -217,6 +217,15 @@ f32 ResourceAccessorSLink::getDelayWithOverwrite(const ResAssetCallTable& asset_
     return getDelay(asset_ctb, user_instance);
 }
 
+f32 ResourceAccessorSLink::getPriorityWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 13))
+        return getOverwritePriority(idx, user_instance);
+
+    return getPriority(asset_ctb, user_instance);
+}
+
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
