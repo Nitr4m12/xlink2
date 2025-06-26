@@ -169,6 +169,14 @@ char const* ResourceAccessorSLink::getOverwriteBoneName(u32 idx) const
     return this->getResOverwriteParamValueString_(idx, 15);
 }
 
+f32 ResourceAccessorSLink::getVolumeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+{
+    if (this->isParamOverwritten(idx, 3))
+        return getOverwriteVolume(idx, user_instance);
+
+    return getVolume(asset_ctb, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
