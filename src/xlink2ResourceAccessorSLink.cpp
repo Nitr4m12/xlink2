@@ -114,6 +114,11 @@ f32 ResourceAccessorSLink::getPriority(const ResAssetCallTable& asset_ctb, const
     return this->getResParamValueFloat("getPriority", asset_ctb, 13, 0.0, user_instance);
 }
 
+f32 ResourceAccessorSLink::getDopplerFactor(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    return this->getResParamValueFloat("getDopplerFactor", asset_ctb, 14, 0.0, user_instance);
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
