@@ -24,6 +24,17 @@ s32 ResourceAccessorSLink::getUserPlayableLimitNum() const
     return 0;
 }
 
+f32 ResourceAccessorSLink::getUserPriority() const
+{
+    if (mpUserResource != nullptr) {
+        UserResourceParamSLink* user_resource_param {static_cast<UserResourceParamSLink*>(mpUserResource->getParamWithSetupCheck())};
+        if (user_resource_param != nullptr)
+            return user_resource_param->priority;
+    }
+
+    return 0.0;
+}
+
 bool ResourceAccessorSLink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
 {
     const char* param_name;

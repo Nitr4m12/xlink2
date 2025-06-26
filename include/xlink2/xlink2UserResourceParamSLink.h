@@ -9,7 +9,7 @@ public:
     char* distanceParamSetName;
     s32 limitType;
     s32 playableLimitNum;
-    s32 priority;
+    f32 priority;
     bool isNoPos;
     f32 dopplerFactor;
 };

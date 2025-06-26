@@ -18,7 +18,7 @@ public:
     const char* getUserDistanceParamSetName() const;
     s32 getUserLimitType() const;
     s32 getUserPlayableLimitNum() const;
-    s32 getUserPriority() const;
+    f32 getUserPriority() const;
     bool isUserNoPos() const;
     s32 getUserDopplerFactor() const;
 
