@@ -54,12 +54,12 @@ ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAsse
 
 bool ResourceAccessorELink::isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const
 {
-    return getAssetBitFlag(asset_ctb).isOnBit(0);
+    return getAssetBitFlag_(asset_ctb).isOnBit(0);
 }
 
 bool ResourceAccessorELink::isForceLoopAsset(const ResAssetCallTable& asset_ctb) const
 {
-    return getAssetBitFlag(asset_ctb).isOnBit(3);
+    return getAssetBitFlag_(asset_ctb).isOnBit(3);
 }
 
 s32 ResourceAccessorELink::getForceCalc(const ResAssetCallTable& asset_ctb) const
@@ -79,12 +79,12 @@ s32 ResourceAccessorELink::getRotateSourceType(const ResAssetCallTable& asset_ct
 
 bool ResourceAccessorELink::isFollow(const ResAssetCallTable& asset_ctb) const
 {
-    return getAssetBitFlag(asset_ctb).isOnBit(1);
+    return getAssetBitFlag_(asset_ctb).isOnBit(1);
 }
 
 bool ResourceAccessorELink::isUseOneEmitter(const ResAssetCallTable& asset_ctb) const
 {
-    return getAssetBitFlag(asset_ctb).isOnBit(2);
+    return getAssetBitFlag_(asset_ctb).isOnBit(2);
 }
 
 f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const

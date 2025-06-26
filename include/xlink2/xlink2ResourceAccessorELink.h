@@ -118,7 +118,7 @@ public:
 private:
     const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* default_value) const
     {
-        if (!checkAndErrorIsAsset_(asset_ctb, "getGroupName"))
+        if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return default_value;
 
         const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
