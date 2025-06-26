@@ -1,9 +1,14 @@
 #pragma once
 
-#include "basis/seadTypes.h"
+#include <basis/seadTypes.h>
+#include <prim/seadEnum.h>
 #include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
+
+namespace aal {
+SEAD_ENUM(FadeCurveType, Linear, Square, Sqrt, Sin);
+}
 
 namespace xlink2 {
 class ResourceAccessorSLink : ResourceAccessor {
@@ -37,7 +42,7 @@ public:
     f32 getLpf(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getStopFrame(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getFadeInTime(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    f32 getFadeCurveType(const ResAssetCallTable& asset_ctb);
+    aal::FadeCurveType getFadeCurveType(const ResAssetCallTable& asset_ctb) const;
     f32 getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const override;
     f32 getPriority(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;

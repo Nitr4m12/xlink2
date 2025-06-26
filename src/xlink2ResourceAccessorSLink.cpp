@@ -99,6 +99,11 @@ f32 ResourceAccessorSLink::getFadeInTime(const ResAssetCallTable& asset_ctb, con
     return this->getResParamValueFloat("getFadeInTime", asset_ctb, 9, 0.0, user_instance);
 }
 
+aal::FadeCurveType ResourceAccessorSLink::getFadeCurveType(const ResAssetCallTable& asset_ctb) const
+{
+    return static_cast<aal::FadeCurveType>(this->getResParamValueInt("getFadeCurveType", asset_ctb, 10, 0));
+}
+
 f32 ResourceAccessorSLink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
     return this->getResParamValueFloatWithLowerLimit("getDelay", asset_ctb, 11, 0.0, user_instance);
@@ -248,7 +253,8 @@ sead::BitFlag32 ResourceAccessorSLink::getAssetBitFlag_(const ResAssetCallTable&
     return this->getResParamValueInt("getAssetBitFlag_", asset_ctb, 17, 0);
 }
 
-bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
-    return isParamOverwritten(p1, 0xf);
+bool ResourceAccessorSLink::isBoneNameOverwritten(u32 idx) const
+{
+    return this->isParamOverwritten(idx, 15);
 }
 }

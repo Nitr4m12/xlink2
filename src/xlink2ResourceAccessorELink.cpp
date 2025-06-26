@@ -48,7 +48,6 @@ ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAsse
     }
 
     return static_cast<ClipType>(param_value);
-
 }
 
 bool ResourceAccessorELink::isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const
