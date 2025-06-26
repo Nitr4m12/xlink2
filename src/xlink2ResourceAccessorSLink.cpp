@@ -124,6 +124,11 @@ const char* ResourceAccessorSLink::getBoneName(const ResAssetCallTable& asset_ct
     return this->getResParamValueString("getBoneName", asset_ctb, 15, "");
 }
 
+const char* ResourceAccessorSLink::getDistanceParamSetName(const ResAssetCallTable& asset_ctb) const
+{
+    return this->getResParamValueString("getDistanceParamSetName", asset_ctb, 16, "");
+}
+
 bool ResourceAccessorSLink::isBoneNameOverwritten(u32 p1) const {
     return isParamOverwritten(p1, 0xf);
 }
