@@ -539,12 +539,19 @@ bool ResourceAccessor::isCustomParamFloat(const char* name) const
     
     return param_define_table->getAssetParamType(id) == ParamValueType::Float;
 }
+
+bool ResourceAccessor::isParamTypeEqual(ValueReferenceType ref_type, const ResAssetCallTable& asset_ctb, u32 idx) const
+{
+    return static_cast<ParamValueType>(ref_type) == getParamType(asset_ctb, idx);
+}
+
 ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
 {
     if (checkAndErrorIsAsset_(asset_ctb, "")) {
         const ResParam* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, idx)};
         if (res_param != nullptr)
             return static_cast<ParamValueType>(res_param->getRefType());
+        
         ParamValueType value_type {mpSystem->getParamDefineTable()->getAssetParamType(idx)};
         if (value_type != ParamValueType::String)
             return static_cast<ParamValueType>((value_type == ParamValueType::Unknown) * 4);
