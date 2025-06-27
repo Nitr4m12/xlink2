@@ -112,24 +112,47 @@ bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const
     return asset_ctb.flag.isOnBit(0);
 }
 
-// WIP
 const char* ResourceAccessor::getCustomParamValueString(u32 idx,
                                                         const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define {mpSystem->getParamDefineTable()};
-    u32 id = param_define->getNumCustomParam() + idx;
-    if (id < param_define->getNumAssetParam()) {
-        ParamValueType value_type {param_define->getAssetParamType(id)};
-        if (value_type == ParamValueType::String) {
-            auto is_asset {checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx)};
-            if (is_asset) {
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    u32 id = param_define_table->getNumCustomParam() + idx;
+    const char* error_msg {};
+    User* user {};
+    System* system {};
+
+    if (id < param_define_table->getNumAssetParam()) {
+        // ParamValueType value_type {param_define->getAssetParamType(id)};
+        if (param_define_table->getAssetParamType(id) == ParamValueType::String) {
+            // auto is_asset {checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx)};
+            if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx)) {
                 auto* mask = calcOffset<sead::BitFlag64>(asset_ctb.paramStartPos);
-                if (mask->countOnBit()) {
-                    
+                if (mask->isOnBit(id)) {
+                    s32 param_idx {mask->countRightOnBit(id) - 1};
+                    ResParam* default_param {&reinterpret_cast<ResParam*>(mask + 1)[param_idx]};
+                    if (default_param != nullptr)
+                        return getResParamValueString_(*default_param);
                 }
+
+                return param_define_table->getAssetParamDefaultValueString(id);
             }
+            return "";
         }
+        system = mpSystem;
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+        error_msg = " idx=%d is not string type";
     }
+    else {
+        system = mpSystem;
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+
+        error_msg = "customParamIdx[%d] is not found";
+    }
+
+    system->addError(Error::Type::CustomParamAccessFailed, user, error_msg, idx);
+    return "";
 }
 
 bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_ctb,
@@ -160,11 +183,6 @@ const char* ResourceAccessor::getResParamValueString_(const ResParam& param) con
     return calcOffset<char>(value_string_pos);
 }
 
-bool ResourceAccessor::getCustomParamValueBool(u32 custom_param_idx, const ResAssetCallTable& asset_ctb) const
-{
-
-}
-
 s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 {
     UserResourceParam* user_resource_param {mpUserResource->getParam()};
@@ -173,19 +191,15 @@ s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 base) const
 {
-    f32 random_value {random_ctb.maxValue - random_ctb.minValue};
-    random_value = random_value > 0.0f ? random_value : -random_value;
+    f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue) / 2};
 
-    f32 random_value2 {mpSystem->getRandom()->getF32()};
-    f32 random_value3 {(random_value2 * 2) - 1.0f};
-    random_value2 = random_value3 > 0.0f ? random_value3 : -random_value3;
+    f32 random_f32 {mpSystem->getRandom()->getF32() * 2};
+    f32 random_value {random_f32 - 1.0f};
+    random_f32 = sead::MathCalcCommon<f32>::abs(random_f32 - 1.0f);
 
-    f32 random_value4 {std::powf(random_value2, base)};
-    random_value = random_value * 0.5f;
-
-    f32 random_value5 {random_value * random_value4};
-    f32 random_value6 = {random_ctb.minValue + random_value + (random_value3 >= 0.0f ? random_value5 : -random_value5)};
-    return random_value6;
+    f32 power_range {sead::MathCalcCommon<f32>::pow(random_f32, base) * range};
+    f32 result = {random_ctb.minValue + range + (random_value >= 0.0f ? power_range : -power_range)};
+    return result;
 }
 
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb) const

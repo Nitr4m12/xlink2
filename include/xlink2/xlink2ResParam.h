@@ -1,7 +1,8 @@
 #pragma once
 
 #include <basis/seadTypes.h>
-#include <xlink2/xlink2ValueReferenceType.h>
+
+#include "xlink2/xlink2ValueReferenceType.h"
 
 namespace xlink2 {
 struct ResParam {

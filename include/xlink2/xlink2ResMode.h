@@ -4,7 +4,7 @@
 
 namespace xlink2 {
 enum class ResMode : u32 {
-    Rom=0,
+    Rom,
     Editor
 };
 }
