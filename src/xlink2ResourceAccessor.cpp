@@ -393,6 +393,41 @@ s32 ResourceAccessor::getCustomParamValueInt(const char* name, const ResAssetCal
     return 0;
 }
 
+f32 ResourceAccessor::getCustomParamValueFloat(const char* name, const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
+
+    if (id < 0) {
+        System* system = mpSystem;
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+
+        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found", name);
+    }
+    else {
+        if (param_define_table->getAssetParamType(id) != ParamValueType::Float) {
+            System* system = mpSystem;
+            User* user {};
+            if (mpUserResource != nullptr)
+                user = mpUserResource->getUser();
+
+            system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not float type", name);
+        }
+        else {
+            if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueFloat(%s)", name)) {
+                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
+                return res_param != nullptr ? getResParamValueFloat_(*res_param, user_instance) : param_define_table->getAssetParamDefaultValueFloat(id);
+            }
+            return 0.0f;
+        }
+
+    }
+
+    return 0.0f;
+}
+
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 base) const
 {
     f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue) / 2};
