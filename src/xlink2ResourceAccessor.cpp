@@ -455,6 +455,23 @@ bool ResourceAccessor::isCustomParamString(const char* name) const
     return param_define_table->getAssetParamType(id) == ParamValueType::String;
 }
 
+bool ResourceAccessor::isCustomParamBool(u32 custom_param_idx) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
+
+    if (id >= param_define_table->getNumAssetParam()) {
+        System* system = mpSystem;
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
+        return false;
+    }
+
+    return param_define_table->getAssetParamType(id) == ParamValueType::Bool;
+}
+
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 base) const
 {
     f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue) / 2};
