@@ -171,6 +171,23 @@ s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
     return user_resource_param->commonResourceParam->directValueTable[param.getValue()];
 }
 
+f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 base) const
+{
+    f32 random_value {random_ctb.maxValue - random_ctb.minValue};
+    random_value = random_value > 0.0f ? random_value : -random_value;
+
+    f32 random_value2 {mpSystem->getRandom()->getF32()};
+    f32 random_value3 {(random_value2 * 2) - 1.0f};
+    random_value2 = random_value3 > 0.0f ? random_value3 : -random_value3;
+
+    f32 random_value4 {std::powf(random_value2, base)};
+    random_value = random_value * 0.5f;
+
+    f32 random_value5 {random_value * random_value4};
+    f32 random_value6 = {random_ctb.minValue + random_value + (random_value3 >= 0.0f ? random_value5 : -random_value5)};
+    return random_value6;
+}
+
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb) const
 {
    return mpSystem->getRandom()->getF32Range(random_ctb.minValue, random_ctb.maxValue);

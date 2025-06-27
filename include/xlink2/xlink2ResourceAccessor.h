@@ -63,6 +63,7 @@ public:
 
     s32 getResParamValueInt_(const ResParam&) const;
     s32 getCustomParamValueInt(u32, const ResAssetCallTable&) const;
+    
     f32 getCustomParamValueFloat(u32, const ResAssetCallTable&, const UserInstance*) const;
     f32 getResParamValueFloat_(const ResParam&, const UserInstance*) const;
 
@@ -111,7 +112,7 @@ public:
     const ResCurveCallTable* getCurveCallTable(const ResAssetCallTable&, u32) const;
     const ResRandomCallTable* getRandomCallTable(const ResAssetCallTable&, u32) const;
 
-    f32 getCurveValue(const ResCurveCallTable&, const UserInstance*);
+    f32 getCurveValue(const ResCurveCallTable&, const UserInstance*) const;
 
     f32 getRandomValue(const ResRandomCallTable&) const;
     f32 getRandomValue(const ResRandomCallTable&, f32) const;
