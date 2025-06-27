@@ -193,4 +193,15 @@ f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb) const
    return mpSystem->getRandom()->getF32Range(random_ctb.minValue, random_ctb.maxValue);
 }
 
+f32 ResourceAccessor::getRandomValueWeightMin(const ResRandomCallTable& random_ctb, f32 base) const
+{
+    f32 random_value {random_ctb.maxValue - random_ctb.minValue};
+    random_value = random_value > 0.0f ? random_value : -random_value;
+
+    f32 random_value2 {mpSystem->getRandom()->getF32()};
+    f32 random_value3 {std::powf(random_value2 + 0.0f, base)};
+    f32 random_value4 {random_value3 * random_value};
+    return random_ctb.minValue + random_value4;
+}
+
 }  // namespace xlink2
