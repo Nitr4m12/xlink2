@@ -67,7 +67,7 @@ public:
     f32 getCustomParamValueFloat(u32, const ResAssetCallTable&, const UserInstance*) const;
     f32 getResParamValueFloat_(const ResParam&, const UserInstance*) const;
 
-    char* getCustomParamValueString(const char*, const ResAssetCallTable&) const;
+    const char* getCustomParamValueString(const char*, const ResAssetCallTable&) const;
     bool getCustomParamValueBool(const char*, const ResAssetCallTable&) const;
     s32 getCustomParamValueInt(const char*, const ResAssetCallTable&) const;
     f32 getCustomParamValueFloat(const char*, const ResAssetCallTable&, const UserInstance*) const;
