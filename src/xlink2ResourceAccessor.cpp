@@ -442,7 +442,17 @@ bool ResourceAccessor::isCustomParamString(u32 custom_param_idx) const
     }
 
     return param_define_table->getAssetParamType(id) == ParamValueType::String;
+}
 
+bool ResourceAccessor::isCustomParamString(const char* name) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    s32 id = static_cast<s32>(param_define_table->searchAssetParamIdxFromCustomParamName(name));
+
+    if (id < 0)
+        return false;
+    
+    return param_define_table->getAssetParamType(id) == ParamValueType::String;
 }
 
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 base) const
