@@ -126,13 +126,9 @@ const char* ResourceAccessor::getCustomParamValueString(u32 idx,
         if (param_define_table->getAssetParamType(id) == ParamValueType::String) {
             // auto is_asset {checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx)};
             if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx)) {
-                auto* mask = calcOffset<sead::BitFlag64>(asset_ctb.paramStartPos);
-                if (mask->isOnBit(id)) {
-                    s32 param_idx {mask->countRightOnBit(id) - 1};
-                    ResParam* default_param {&reinterpret_cast<ResParam*>(mask + 1)[param_idx]};
-                    if (default_param != nullptr)
-                        return getResParamValueString_(*default_param);
-                }
+                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
+                if (res_param != nullptr)
+                    return getResParamValueString_(*res_param);
 
                 return param_define_table->getAssetParamDefaultValueString(id);
             }
@@ -153,6 +149,17 @@ const char* ResourceAccessor::getCustomParamValueString(u32 idx,
 
     system->addError(Error::Type::CustomParamAccessFailed, user, error_msg, idx);
     return "";
+}
+
+const ResParam* ResourceAccessor::getResParamFromAssetParamPos(u32 param_start_pos, u32 idx) const
+{
+    auto* mask = calcOffset<sead::BitFlag64>(param_start_pos);
+    if (mask->isOnBit(idx)) {
+        s32 param_idx {mask->countRightOnBit(idx) - 1};
+        return &reinterpret_cast<ResParam*>(mask + 1)[param_idx];
+    }
+
+    return nullptr;
 }
 
 bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_ctb,
