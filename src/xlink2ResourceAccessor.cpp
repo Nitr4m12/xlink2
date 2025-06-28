@@ -701,17 +701,21 @@ s32 ResourceAccessor::getContainerChildNum(const ResAssetCallTable& asset_ctb) c
         return 0;
     
     auto* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
-    if (container_param != nullptr) {
-        if (container_param->childrenStartIndex >= 0 && 
-            container_param->childrenEndIndex >= 0 && 
-            container_param->childrenEndIndex >= container_param->childrenStartIndex)
-            return (1 - container_param->childrenStartIndex) + container_param->childrenEndIndex;
+    if (container_param != nullptr)
+        return getContainerChildNum(*container_param);
 
-        setError_("invalid children num (start=%d, end=%d)", container_param->childrenStartIndex, container_param->childrenEndIndex);
-    }
-    else {
-        mpSystem->addError(Error::Type::ResourceAccessFailed, mpUserResource->getUser(), "getContainer error");
-    }
+    mpSystem->addError(Error::Type::ResourceAccessFailed, mpUserResource->getUser(), "getContainer error");
+    return 0;
+}
+
+s32 ResourceAccessor::getContainerChildNum(const ResContainerParam& container_param) const
+{
+   
+    if (container_param.childrenStartIndex >= 0 && container_param.childrenEndIndex >= 0 && 
+        container_param.childrenEndIndex >= container_param.childrenStartIndex)
+            return (1 - container_param.childrenStartIndex) + container_param.childrenEndIndex;
+
+    setError_("invalid children num (start=%d, end=%d)", container_param.childrenStartIndex, container_param.childrenEndIndex);
 
     return 0;
 }
