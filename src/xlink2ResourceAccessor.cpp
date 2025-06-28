@@ -286,7 +286,115 @@ f32 ResourceAccessor::getCustomParamValueFloat(u32 idx, const ResAssetCallTable&
     return 0.0f;
 }
 
+// NON-MATCHING: missing instructions
+f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param, const UserInstance* user_instance) const
+{
+    switch (res_param.getRefType()) {
+    case ValueReferenceType::Direct:
+        return static_cast<f32>(getResParamValueInt_(res_param));
     
+    case ValueReferenceType::Curve: {
+        ResCurveCallTable* curve_ctb {mpUserResource->getParam()->commonResourceParam->curveCallTable};
+        if (&curve_ctb[res_param.getValue()] != nullptr)
+            return getCurveValue(curve_ctb[res_param.getValue()], user_instance);
+        break;
+    }
+    case ValueReferenceType::Random: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValue(*random_ctb_item);
+        break;
+    }
+    case ValueReferenceType::Random2Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValue(*random_ctb_item, 2.0f);
+        break;
+    }
+    case ValueReferenceType::Random3Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValue(*random_ctb_item, 3.0f);
+        break;
+    }
+    case ValueReferenceType::Random4Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValue(*random_ctb_item, 4.0f);
+        break;
+    }
+    case ValueReferenceType::Random1Point5Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValue(*random_ctb_item, 1.5f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMin2Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMin(*random_ctb_item, 2.0f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMin3Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMin(*random_ctb_item, 3.0f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMin4Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMin(*random_ctb_item, 4.0f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMin1Point5Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMin(*random_ctb_item, 1.5f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMax2Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMax(*random_ctb_item, 2.0f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMax3Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMax(*random_ctb_item, 3.0f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMax4Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMax(*random_ctb_item, 4.0f);
+        break;
+    }
+    case ValueReferenceType::RandomWeightMax1Point5Pow: {
+        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
+        if (random_ctb != nullptr && random_ctb_item != nullptr)
+            return getRandomValueWeightMax(*random_ctb_item, 1.5f);
+        break;
+    }
+    default:
+        setError_("getFloat_: invalid referenceType(%d)", res_param.getRefType());
+        break;
+    }
+
     return 0.0f;
 }
 
@@ -465,12 +573,12 @@ bool ResourceAccessor::isCustomParamBool(u32 custom_param_idx) const
     if (id < param_define_table->getNumAssetParam())
         return param_define_table->getAssetParamType(id) == ParamValueType::Bool;
     
-        System* system = mpSystem;
-        User* user {};
-        if (mpUserResource != nullptr)
-            user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
-        return false;
+    System* system = mpSystem;
+    User* user {};
+    if (mpUserResource != nullptr)
+        user = mpUserResource->getUser();
+    system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
+    return false;
 }
 
 bool ResourceAccessor::isCustomParamBool(const char* name) const
@@ -659,6 +767,22 @@ ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb
     return ParamValueType::UInt32;
 }
 
+// NON-MATCHING: swapped registers
+const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallTable& asset_ctb, u32 idx) const
+{
+    if (checkAndErrorIsAsset_(asset_ctb, "") && getParamType(asset_ctb, idx) == ParamValueType::Bool) {
+        if (mpUserResource != nullptr) {
+            ResParam* param {calcOffset<ResParam>(asset_ctb.paramStartPos)};
+            ResCurveCallTable* curve_ctb {mpUserResource->getParam()->commonResourceParam->curveCallTable};
+            return curve_ctb != nullptr ? 
+                   &curve_ctb[param[idx].getValue()] : 
+                   nullptr;
+        }
+    }
+
+    return nullptr;
+}
+
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 base) const
 {
     f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue) / 2};
@@ -750,13 +874,13 @@ bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type, const 
             return reinterpret_cast<ResParam*>(mask)[param_idx].getRefType() == type;
         }
     }
-
+    
     return false;
 }
 
-const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_start_pos, u32 idx) const
+const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_start_pos, u32 overwrite_idx) const
 {
-    s32 overwrite_id {getTriggerOverwriteParamId_(idx)};
+    s32 overwrite_id {getTriggerOverwriteParamId_(overwrite_idx)};
     
     if (param_start_pos != 0 && overwrite_id >= 0) {
         auto* mask = calcOffset<sead::BitFlag32>(param_start_pos);
