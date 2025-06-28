@@ -633,6 +633,14 @@ s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
     return direct_value;
 }
 
+f32 ResourceAccessor::getUserCustomParamValueFloat(const char* name, const UserInstance* user_instance) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
+
+    return getResParamValueFloat_(mpUserResource->getParam()->userParamArray[idx], user_instance);
+}
+
 ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
 {
     if (checkAndErrorIsAsset_(asset_ctb, "")) {
