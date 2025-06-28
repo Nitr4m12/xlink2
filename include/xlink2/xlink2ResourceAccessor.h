@@ -124,7 +124,7 @@ public:
     const ResAssetCallTable* getContainerChildCallTable(const ResContainerParam&, u32) const;
 
     bool isParamOverwritten(u32, u32) const;
-    bool isOverwriteParamTypeEqual(ValueReferenceType, ResTriggerOverwriteParam const&, u32) const;
+    bool isOverwriteParamTypeEqual(ValueReferenceType, const ResTriggerOverwriteParam&, u32) const;
 
     const ResParam* getResParamFromOverwriteParamPos_(u32, u32) const;
 

@@ -1,6 +1,7 @@
 #include <cstdarg>
 
 #include "xlink2/xlink2ResourceAccessor.h"
+#include "math/seadMathCalcCommon.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -734,6 +735,22 @@ bool ResourceAccessor::isParamOverwritten(u32 param_pos, u32 trigger_idx) const
     }
 
     return false;
+}
+
+const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_start_pos, u32 idx) const
+{
+    s32 overwrite_id {getTriggerOverwriteParamId_(idx)};
+    
+    if (param_start_pos != 0 && overwrite_id >= 0) {
+        auto* mask = calcOffset<sead::BitFlag32>(param_start_pos);
+        if (mask->isOnBit(overwrite_id)) {
+            s32 param_idx {mask->countRightOnBit(overwrite_id) - 1};
+            return &reinterpret_cast<ResParam*>(mask + 1)[param_idx];
+        }
+    }
+
+
+    return nullptr;
 }
 
 }  // namespace xlink2

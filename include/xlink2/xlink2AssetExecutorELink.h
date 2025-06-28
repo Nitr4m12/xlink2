@@ -6,7 +6,6 @@
 #include "xlink2/xlink2ELinkEventParam.h"
 #include "xlink2/xlink2EventELink.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResTriggerOverwriteParam.h"
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {

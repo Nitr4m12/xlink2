@@ -4,7 +4,7 @@
 
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResTriggerOverwriteParam.h"
+#include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2TriggerType.h"
 
 namespace xlink2 {
