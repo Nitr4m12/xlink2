@@ -695,4 +695,25 @@ f32 ResourceAccessor::getRandomValueWeightMax(const ResRandomCallTable& random_c
     return random_ctb.minValue + random_value;
 }
 
+s32 ResourceAccessor::getContainerChildNum(const ResAssetCallTable& asset_ctb) const
+{
+    if (!asset_ctb.flag.isOnBit(0)) 
+        return 0;
+    
+    auto* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
+    if (container_param != nullptr) {
+        if (container_param->childrenStartIndex >= 0 && 
+            container_param->childrenEndIndex >= 0 && 
+            container_param->childrenEndIndex >= container_param->childrenStartIndex)
+            return (1 - container_param->childrenStartIndex) + container_param->childrenEndIndex;
+
+        setError_("invalid children num (start=%d, end=%d)", container_param->childrenStartIndex, container_param->childrenEndIndex);
+    }
+    else {
+        mpSystem->addError(Error::Type::ResourceAccessFailed, mpUserResource->getUser(), "getContainer error");
+    }
+
+    return 0;
+}
+
 }  // namespace xlink2
