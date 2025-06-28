@@ -778,4 +778,13 @@ const ResRandomCallTable* ResourceAccessor::getResRandomCallTable_(const ResPara
     return nullptr;
 }
 
+f32 ResourceAccessor::getResOverwriteParamValueFloat_(u32 param_idx, u32 overwrite_idx, const UserInstance* user_instance) const
+{
+    const ResParam* res_param {getResParamFromOverwriteParamPos_(param_idx, overwrite_idx)};
+    if (res_param != nullptr)
+        return getResParamValueFloat_(*res_param, user_instance);
+
+    return 0.0f;
+}
+
 }  // namespace xlink2
