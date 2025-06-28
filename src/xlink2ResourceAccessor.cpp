@@ -574,10 +574,18 @@ s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
     u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
 
-    u32 param_value {mpUserResource->getParam()->userParamArray[idx + num_custom_user_param].getValue()};
+    u32 param_value {mpUserResource->getParam()->userParamArray[num_custom_user_param + idx].getValue()};
     s32 direct_value {mpUserResource->getParam()->commonResourceParam->directValueTable[param_value]};
 
     return direct_value;
+}
+
+f32 ResourceAccessor::getUserCustomParamValueFloat(s32 idx, const UserInstance* user_instance) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
+
+    return getResParamValueFloat_(mpUserResource->getParam()->userParamArray[num_custom_user_param + idx], user_instance);
 }
 
 bool ResourceAccessor::isOutOfRangeUserCustom_(const char* /*unused*/) const { return false; }
@@ -595,7 +603,6 @@ ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb
             return static_cast<ParamValueType>((value_type == ParamValueType::Unknown) * 4);
         
         return ParamValueType::Float;
-
     }
 
     return ParamValueType::UInt32;
