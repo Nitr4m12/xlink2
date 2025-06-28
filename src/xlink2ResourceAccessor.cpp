@@ -566,6 +566,11 @@ bool ResourceAccessor::isMismatchTypeUserCustom_(u32 /*unused*/, ParamValueType 
 
 bool ResourceAccessor::getUserCustomParamValueBool(s32 idx) const
 {
+    return getUserCustomParamValueInt(idx);
+}
+
+s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
+{
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
     u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
 
