@@ -461,16 +461,15 @@ bool ResourceAccessor::isCustomParamBool(u32 custom_param_idx) const
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
-    if (id >= param_define_table->getNumAssetParam()) {
+    if (id < param_define_table->getNumAssetParam())
+        return param_define_table->getAssetParamType(id) == ParamValueType::Bool;
+    
         System* system = mpSystem;
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
         system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
         return false;
-    }
-
-    return param_define_table->getAssetParamType(id) == ParamValueType::Bool;
 }
 
 bool ResourceAccessor::isCustomParamBool(const char* name) const
@@ -538,6 +537,23 @@ bool ResourceAccessor::isCustomParamFloat(const char* name) const
         return false;
     
     return param_define_table->getAssetParamType(id) == ParamValueType::Float;
+}
+
+bool ResourceAccessor::isCustomParamValueUsingCurve(u32 idx, const ResAssetCallTable& asset_ctb) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    u32 id {param_define_table->getNumCustomParam() + idx};
+
+    if (id < param_define_table->getNumAssetParam())
+        return isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, id);
+    
+    System* system = mpSystem;
+    User* user {};
+    if (mpUserResource != nullptr)
+        user = mpUserResource->getUser();
+    system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", idx);
+
+    return false;
 }
 
 bool ResourceAccessor::isParamTypeEqual(ValueReferenceType ref_type, const ResAssetCallTable& asset_ctb, u32 idx) const

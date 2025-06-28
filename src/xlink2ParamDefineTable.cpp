@@ -25,7 +25,7 @@ void ParamDefineTable::setup(unsigned char* bin, u32 num_non_user_param, bool /*
         u32 num_user_param = *(u32*)(&bin[4]);
         mNumUserParam = num_user_param;
         mNumStandardAssetParam = num_user_param - num_non_user_param;
-        mNumNonUserParam = num_non_user_param;
+        mNumCustomUserParam = num_non_user_param;
         mNumAssetParam = *(u32*)(&bin[8]);
         _0 = *(u32*)(&bin[0xC]);
         mNumCustomParam = mNumAssetParam - _0;
@@ -114,8 +114,8 @@ u32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_
 // NON-MATCHING / WIP
 u32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const {
     if (custom_param_name) {
-        u32 user_param_idx = mNumNonUserParam;
-        if (user_param_idx <= mNumUserParam && mNumUserParam - mNumNonUserParam > 0) {
+        u32 user_param_idx = mNumCustomUserParam;
+        if (user_param_idx <= mNumUserParam && mNumUserParam - mNumCustomUserParam > 0) {
             if (mUserParams) {
                 while (true) {
                     char* user_param_name = calcOffset<char>(mUserParams[user_param_idx].namePos);
@@ -130,8 +130,8 @@ u32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_p
             return user_param_idx;
         }
         u32 i = 0;
-        if (6 < (mNumUserParam - 1) - mNumNonUserParam) {
-            i = mNumUserParam - mNumNonUserParam & 7;
+        if (6 < (mNumUserParam - 1) - mNumCustomUserParam) {
+            i = mNumUserParam - mNumCustomUserParam & 7;
             for (;i < 0; i += 8) {}
         }
         if (i != 0) {

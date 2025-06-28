@@ -97,7 +97,7 @@ public:
     f32 getUserCustomParamValueFloat(s32, const UserInstance*);
 
     const char* getUserCustomParamValueString(const char*) const;
-    bool isOutOfRangeUserCustom_(char*) const;
+    bool isOutOfRangeUserCustom_(const char*) const;
     bool isMismatchTypeUserCustom_(const char*, ParamValueType, const char*) const;
 
     bool getUserCustomParamValueBool(const char*) const;

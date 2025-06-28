@@ -40,6 +40,7 @@ public:
     u32 get0() const { return _0; }
     u32 getNumCustomParam() const { return mNumCustomParam; }
     bool isInitilized() const { return mIsInitialized; }
+    u32 getNumCustomUserParam() const { return mNumCustomUserParam; }
 
 private:
     u32 mNumUserParam;
@@ -52,7 +53,7 @@ private:
     u32 _0;
     s32 mNumCustomParam;
     u32 mNumStandardAssetParam;
-    u32 mNumNonUserParam;
+    u32 mNumCustomUserParam;
     u32 mSize;
     bool mIsInitialized;
 };
