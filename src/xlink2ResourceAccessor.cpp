@@ -787,4 +787,22 @@ f32 ResourceAccessor::getResOverwriteParamValueFloat_(u32 param_idx, u32 overwri
     return 0.0f;
 }
 
+const char* ResourceAccessor::getResOverwriteParamValueString_(u32 param_idx, u32 overwrite_idx) const
+{
+    s32 overwrite_id {getTriggerOverwriteParamId_(overwrite_idx)};
+    
+    if (param_idx != 0 && overwrite_id >= 0) {
+        auto* mask = calcOffset<sead::BitFlag32>(param_idx);
+        if (mask->isOnBit(overwrite_id)) {
+            s32 param_idx {mask->countRightOnBit(overwrite_id)};
+            auto* res_param = &reinterpret_cast<ResParam*>(mask)[param_idx];
+            return getResParamValueString_(*res_param);
+        }
+    }
+
+
+    return "";
+}
+
+
 }  // namespace xlink2
