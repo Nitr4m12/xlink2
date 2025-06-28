@@ -561,6 +561,23 @@ bool ResourceAccessor::isParamTypeEqual(ValueReferenceType ref_type, const ResAs
     return static_cast<ParamValueType>(ref_type) == getParamType(asset_ctb, idx);
 }
 
+bool ResourceAccessor::isOutOfRangeUserCustom_(u32 /*unused*/) const { return false; }
+bool ResourceAccessor::isMismatchTypeUserCustom_(u32 /*unused*/, ParamValueType /*unused*/, const char* /*unused*/) const { return false; }
+
+bool ResourceAccessor::getUserCustomParamValueBool(s32 idx) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
+
+    u32 param_value {mpUserResource->getParam()->userParamArray[idx + num_custom_user_param].getValue()};
+    s32 direct_value {mpUserResource->getParam()->commonResourceParam->directValueTable[param_value]};
+
+    return direct_value;
+}
+
+bool ResourceAccessor::isOutOfRangeUserCustom_(const char* /*unused*/) const { return false; }
+bool ResourceAccessor::isMismatchTypeUserCustom_(const char* /*unused*/, ParamValueType /*unused*/, const char* /*unused*/) const { return false; }
+
 ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
 {
     if (checkAndErrorIsAsset_(asset_ctb, "")) {
