@@ -101,7 +101,7 @@ public:
     bool isMismatchTypeUserCustom_(const char*, ParamValueType, const char*) const;
 
     bool getUserCustomParamValueBool(const char*) const;
-    u32 getUserCustomParamValueInt(const char*) const;
+    s32 getUserCustomParamValueInt(const char*) const;
     f32 getUserCustomParamValueFloat(const char*, const UserInstance*) const;
 
     bool isLoopAsset(const ResAssetCallTable&) const;

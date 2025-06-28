@@ -448,7 +448,7 @@ bool ResourceAccessor::isCustomParamString(u32 custom_param_idx) const
 bool ResourceAccessor::isCustomParamString(const char* name) const
 {
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = static_cast<s32>(param_define_table->searchAssetParamIdxFromCustomParamName(name));
+    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
         return false;
@@ -475,7 +475,7 @@ bool ResourceAccessor::isCustomParamBool(u32 custom_param_idx) const
 bool ResourceAccessor::isCustomParamBool(const char* name) const
 {
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = static_cast<s32>(param_define_table->searchAssetParamIdxFromCustomParamName(name));
+    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
         return false;
@@ -503,7 +503,7 @@ bool ResourceAccessor::isCustomParamInt(u32 custom_param_idx) const
 bool ResourceAccessor::isCustomParamInt(const char* name) const
 {
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = static_cast<s32>(param_define_table->searchAssetParamIdxFromCustomParamName(name));
+    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
         return false;
@@ -531,7 +531,7 @@ bool ResourceAccessor::isCustomParamFloat(u32 custom_param_idx) const
 bool ResourceAccessor::isCustomParamFloat(const char* name) const
 {
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = static_cast<s32>(param_define_table->searchAssetParamIdxFromCustomParamName(name));
+    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
         return false;
@@ -676,15 +676,23 @@ f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb) const
    return mpSystem->getRandom()->getF32Range(random_ctb.minValue, random_ctb.maxValue);
 }
 
-f32 ResourceAccessor::getRandomValueWeightMin(const ResRandomCallTable& random_ctb, f32 base) const
+f32 ResourceAccessor::getRandomValueWeightMin(const ResRandomCallTable& random_ctb, f32 exp) const
 {
-    f32 random_value {random_ctb.maxValue - random_ctb.minValue};
-    random_value = random_value > 0.0f ? random_value : -random_value;
+    f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue)};
 
-    f32 random_value2 {mpSystem->getRandom()->getF32()};
-    f32 random_value3 {std::powf(random_value2 + 0.0f, base)};
-    f32 random_value4 {random_value3 * random_value};
-    return random_ctb.minValue + random_value4;
+    f32 random_f32 {mpSystem->getRandom()->getF32() + 0.0f};
+    f32 random_value {sead::MathCalcCommon<f32>::pow(random_f32, exp) * range};
+    return random_ctb.minValue + random_value;
+}
+
+// NON-MATCHING: swapped register
+f32 ResourceAccessor::getRandomValueWeightMax(const ResRandomCallTable& random_ctb, f32 exp) const
+{
+    f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue)};
+
+    f32 random_f32 {mpSystem->getRandom()->getF32() + 0.0f};
+    f32 random_value {(1 - sead::MathCalcCommon<f32>::pow(random_f32, exp)) * range};
+    return random_ctb.minValue + random_value;
 }
 
 }  // namespace xlink2
