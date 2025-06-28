@@ -2,6 +2,19 @@
 #include "xlink2/xlink2UserResourceParamSLink.h"
 
 namespace xlink2 {
+const char* ResourceAccessorSLink::getUserDistanceParamSetName() const
+{
+    if (mpUserResource != nullptr) {
+        UserResourceParamSLink* user_resource_param {static_cast<UserResourceParamSLink*>(mpUserResource->getParamWithSetupCheck())};
+        if (user_resource_param != nullptr) {
+            const char* set_name {user_resource_param->distanceParamSetName};
+            return set_name != nullptr ? set_name : "";
+        }
+    }
+
+    return "";
+}
+
 s32 ResourceAccessorSLink::getUserLimitType() const
 {
     if (mpUserResource != nullptr) {
