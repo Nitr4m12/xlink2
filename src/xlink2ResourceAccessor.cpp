@@ -617,6 +617,11 @@ const char* ResourceAccessor::getUserCustomParamValueString(const char* name) co
 bool ResourceAccessor::isOutOfRangeUserCustom_(const char* /*unused*/) const { return false; }
 bool ResourceAccessor::isMismatchTypeUserCustom_(const char* /*unused*/, ParamValueType /*unused*/, const char* /*unused*/) const { return false; }
 
+bool ResourceAccessor::getUserCustomParamValueBool(const char* name) const
+{
+    return getUserCustomParamValueInt(name);
+}
+
 s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
 {
     ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
