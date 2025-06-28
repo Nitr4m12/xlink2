@@ -720,4 +720,9 @@ s32 ResourceAccessor::getContainerChildNum(const ResContainerParam& container_pa
     return 0;
 }
 
+const ResAssetCallTable* ResourceAccessor::getContainerChildCallTable(const ResContainerParam& container_param, u32 idx) const
+{
+    return getCallTable(container_param.childrenStartIndex + idx);
+}
+
 }  // namespace xlink2

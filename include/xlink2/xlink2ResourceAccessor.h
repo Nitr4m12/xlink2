@@ -121,7 +121,7 @@ public:
 
     s32 getContainerChildNum(const ResAssetCallTable&) const;
     s32 getContainerChildNum(const ResContainerParam&) const;
-    u64 getContainerChildCallTable(const ResContainerParam&, u32) const;
+    const ResAssetCallTable* getContainerChildCallTable(const ResContainerParam&, u32) const;
 
     bool isParamOverwritten(u32, u32) const;
     bool isOverwriteParamTypeEqual(ValueReferenceType, ResTriggerOverwriteParam const&, u32) const;
