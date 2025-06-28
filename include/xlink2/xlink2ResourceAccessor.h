@@ -93,8 +93,8 @@ public:
     bool isMismatchTypeUserCustom_(u32, ParamValueType, const char*) const;
 
     bool getUserCustomParamValueBool(s32) const;
-    u32 getUserCustomParamValueInt(s32) const;
-    f32 getUserCustomParamValueFloat(s32, const UserInstance*);
+    s32 getUserCustomParamValueInt(s32) const;
+    f32 getUserCustomParamValueFloat(s32, const UserInstance*) const;
 
     const char* getUserCustomParamValueString(const char*) const;
     bool isOutOfRangeUserCustom_(const char*) const;
@@ -102,7 +102,7 @@ public:
 
     bool getUserCustomParamValueBool(const char*) const;
     u32 getUserCustomParamValueInt(const char*) const;
-    f32 getUserCustomParamValueFloat(const char*, const UserInstance*);
+    f32 getUserCustomParamValueFloat(const char*, const UserInstance*) const;
 
     bool isLoopAsset(const ResAssetCallTable&) const;
     bool isNeedObserve(const ResAssetCallTable&) const;

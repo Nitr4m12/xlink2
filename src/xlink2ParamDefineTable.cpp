@@ -32,9 +32,9 @@ void ParamDefineTable::setup(unsigned char* bin, u32 num_non_user_param, bool /*
         mNumTriggerParam = *(u32*)(&bin[0x10]);
 
 
-        auto* user_params = (ResAssetParam*)(&bin[0x14]);
-        ResAssetParam* asset_params = &user_params[*(u32*)(&bin[4])];
-        ResAssetParam* trigger_params = &asset_params[*(u32*)(&bin[8])];
+        auto* user_params = (ResParamDefine*)(&bin[0x14]);
+        ResParamDefine* asset_params = &user_params[*(u32*)(&bin[4])];
+        ResParamDefine* trigger_params = &asset_params[*(u32*)(&bin[8])];
         u64 string_table_pos = (long)(trigger_params + *(u32*)(&bin[0x10]));
 
         mStringTablePos = string_table_pos;
@@ -92,7 +92,7 @@ const char* ParamDefineTable::getTriggerParamName(u32 idx) const {
     return nullptr;
 }
 
-u32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_param_name) const {
+s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_param_name) const {
     if (custom_param_name) {
         u32 asset_param_idx = mNumCustomParam;
         if (asset_param_idx < mNumAssetParam) {
@@ -112,7 +112,7 @@ u32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_
 }
 
 // NON-MATCHING / WIP
-u32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const {
+s32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const {
     if (custom_param_name) {
         u32 user_param_idx = mNumCustomUserParam;
         if (user_param_idx <= mNumUserParam && mNumUserParam - mNumCustomUserParam > 0) {
@@ -126,17 +126,8 @@ u32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_p
                         return -1;
                     user_param_idx = next_idx;
                 }
+                return user_param_idx;
             }
-            return user_param_idx;
-        }
-        u32 i = 0;
-        if (6 < (mNumUserParam - 1) - mNumCustomUserParam) {
-            i = mNumUserParam - mNumCustomUserParam & 7;
-            for (;i < 0; i += 8) {}
-        }
-        if (i != 0) {
-            i = -i;
-            for (;i < 0; ++i) {}
         }
 
     }

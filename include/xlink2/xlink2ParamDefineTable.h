@@ -2,7 +2,7 @@
 
 #include <basis/seadTypes.h>
 
-#include "xlink2/xlink2ResAssetParam.h"
+#include "xlink2/xlink2ResParamDefine.h"
 
 namespace xlink2 {
 class ParamDefineTable {
@@ -15,8 +15,8 @@ public:
     const char* getAssetParamName(u32) const;
     const char* getTriggerParamName(u32) const;
 
-    u32 searchAssetParamIdxFromCustomParamName(char const*) const;
-    u32 searchUserParamIdxFromCustomParamName(char const*) const;
+    s32 searchAssetParamIdxFromCustomParamName(char const*) const;
+    s32 searchUserParamIdxFromCustomParamName(char const*) const;
 
     ParamValueType getUserParamType(u32) const;
     ParamValueType getAssetParamType(u32) const;
@@ -46,9 +46,9 @@ private:
     u32 mNumUserParam;
     u32 mNumAssetParam;
     u32 mNumTriggerParam;
-    ResAssetParam* mUserParams;
-    ResAssetParam* mAssetParams;
-    ResAssetParam* mTriggerParams;
+    ResParamDefine* mUserParams;
+    ResParamDefine* mAssetParams;
+    ResParamDefine* mTriggerParams;
     u32 mStringTablePos;
     u32 _0;
     s32 mNumCustomParam;

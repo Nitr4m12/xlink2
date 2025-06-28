@@ -5,7 +5,7 @@
 #include "xlink2/xlink2ParamValueType.h"
 
 namespace xlink2 {
-struct ResAssetParam {
+struct ResParamDefine {
     u32 namePos;
     ParamValueType type;
     union {
