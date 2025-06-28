@@ -725,4 +725,15 @@ const ResAssetCallTable* ResourceAccessor::getContainerChildCallTable(const ResC
     return getCallTable(container_param.childrenStartIndex + idx);
 }
 
+bool ResourceAccessor::isParamOverwritten(u32 param_pos, u32 trigger_idx) const
+{
+    s32 trigger_ow_id {getTriggerOverwriteParamId_(trigger_idx)};
+    if (param_pos != 0 && trigger_ow_id >= 0) {
+        sead::BitFlag32* mask {calcOffset<sead::BitFlag32>(param_pos)};
+        return mask->isOnBit(trigger_ow_id);
+    }
+
+    return false;
+}
+
 }  // namespace xlink2
