@@ -728,10 +728,27 @@ const ResAssetCallTable* ResourceAccessor::getContainerChildCallTable(const ResC
 
 bool ResourceAccessor::isParamOverwritten(u32 param_pos, u32 trigger_idx) const
 {
-    s32 trigger_ow_id {getTriggerOverwriteParamId_(trigger_idx)};
-    if (param_pos != 0 && trigger_ow_id >= 0) {
+    s32 overwrite_id {getTriggerOverwriteParamId_(trigger_idx)};
+
+    if (param_pos != 0 && overwrite_id >= 0) {
         sead::BitFlag32* mask {calcOffset<sead::BitFlag32>(param_pos)};
-        return mask->isOnBit(trigger_ow_id);
+        return mask->isOnBit(overwrite_id);
+    }
+
+    return false;
+}
+
+// NON-MATCHING: missing two instructions
+bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type, const ResTriggerOverwriteParam& overwrite_param, u32 idx) const
+{
+    s32 overwrite_id {getTriggerOverwriteParamId_(idx)};
+    
+    if (&overwrite_param != 0 && overwrite_id >= 0) {
+        auto* mask = calcOffset<sead::BitFlag32>(reinterpret_cast<u64>(&overwrite_param));
+        if (mask->isOnBit(overwrite_id)) {
+            s32 param_idx {mask->countRightOnBit(overwrite_id)};
+            return reinterpret_cast<ResParam*>(mask)[param_idx].getRefType() == type;
+        }
     }
 
     return false;
@@ -749,6 +766,14 @@ const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_st
         }
     }
 
+    return nullptr;
+}
+
+const ResRandomCallTable* ResourceAccessor::getResRandomCallTable_(const ResParam& res_param) const 
+{
+    ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+    if (random_ctb != nullptr)
+        return &random_ctb[res_param.getValue()];
 
     return nullptr;
 }

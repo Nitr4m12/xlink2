@@ -14,7 +14,9 @@ struct ResParam {
 };
 
 struct ResTriggerOverwriteParam {
-    sead::BitFlag32 mask;
-    ResParam params[0];
+    u32 paramPos;
+    explicit operator u32() const { return paramPos;}
+
+
 };
 }  // namespace xlink2
