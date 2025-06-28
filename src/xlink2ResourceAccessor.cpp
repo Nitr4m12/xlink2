@@ -617,6 +617,17 @@ const char* ResourceAccessor::getUserCustomParamValueString(const char* name) co
 bool ResourceAccessor::isOutOfRangeUserCustom_(const char* /*unused*/) const { return false; }
 bool ResourceAccessor::isMismatchTypeUserCustom_(const char* /*unused*/, ParamValueType /*unused*/, const char* /*unused*/) const { return false; }
 
+s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
+{
+    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
+
+    u32 param_value {mpUserResource->getParam()->userParamArray[idx].getValue()};
+    s32 direct_value {mpUserResource->getParam()->commonResourceParam->directValueTable[param_value]};
+
+    return direct_value;
+}
+
 ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
 {
     if (checkAndErrorIsAsset_(asset_ctb, "")) {
