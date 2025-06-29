@@ -12,4 +12,20 @@ void EnumPropertyDefinition::setEntries_(s32 entry_num, const char** key_buffer)
         }
     }
 }
+
+void EnumPropertyDefinition::entry(s32 value, const char* key)
+{
+    Entry* buffer {mEntryBuffer};
+    if (mTotalEntryNum > 0) {
+        for (s64 i {0}; i < mTotalEntryNum; ++i, ++buffer) {
+            if (strcmp(buffer->key, key) == 0)
+                return;
+        }
+    }
+    mEntryBuffer[mTotalEntryNum].key = key;
+    mEntryBuffer[mTotalEntryNum].value = value;
+    ++mTotalEntryNum;
+
+}
+
 }

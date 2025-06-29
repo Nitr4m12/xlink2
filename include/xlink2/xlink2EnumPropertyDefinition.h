@@ -12,20 +12,20 @@ public:
         s32 value;
     };
 
-    EnumPropertyDefinition(const char*, int, sead::Heap*, bool);
-    EnumPropertyDefinition(const char*, int, bool, sead::Heap*, ...);
-    EnumPropertyDefinition(const char*, int, char const**, bool, sead::Heap*);
+    EnumPropertyDefinition(const char*, s32, sead::Heap*, bool);
+    EnumPropertyDefinition(const char*, s32, bool, sead::Heap*, ...);
+    EnumPropertyDefinition(const char*, s32, char const**, bool, sead::Heap*);
     EnumPropertyDefinition(const char*, bool);
-    void setEntries_(int, char const**);
+    void setEntries_(s32, char const**);
 
     ~EnumPropertyDefinition() override;
 
-    void entry(int, char const*);
+    void entry(s32, const char*);
 
     u64 getEntryKeyLength(u32) const;
 
-    u32 searchEntryValueByKey(char const*) const;
-    const char* searchEntryKeyByValue(int) const;
+    u32 searchEntryValueByKey(const char*) const;
+    const char* searchEntryKeyByValue(s32) const;
 
     void setEntryBuf_(s32, Entry*);
 
