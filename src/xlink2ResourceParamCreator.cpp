@@ -225,44 +225,41 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     dumpCommonResourceRear_(rom_res, bin_accessor, res_header->dataSize, heap, false, buffered_str);
 }
 
-// NON-MATCHING
 void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_resource,
                                                const BinAccessor* bin_accessor,
                                                const ParamDefineTable* param_define,
                                                sead::Heap* heap)
 {
-    sead::BufferedSafeString* buffered_str{nullptr};
-
-    dumpLine_(buffered_str, "[XLink2] EditorBuffer dump\n");
+    dumpLine_(nullptr, "[XLink2] EditorBuffer dump\n");
 
     EditorHeader* editor_header{editor_resource->pEditorHeader};
-    sead::FixedSafeString<64> editor_name{editor_resource->editorName};
+    sead::FixedSafeString<64>* editor_name{&editor_resource->editorName};
 
-    dumpLine_(buffered_str, "<< EditorHeader[%s] (addr:0x%x, size:%@) >>\n",
-              editor_resource->editorName.getBuffer(), editor_header, 0x44);
-    dumpLine_(buffered_str, "  numResParam: %@\n", editor_header->numResParam);
-    dumpLine_(buffered_str, "  numResAssetParam: %@\n", editor_header->numResAssetParam);
-    dumpLine_(buffered_str, "  numResTriggerOverwriteParam: %@\n",
+    dumpLine_(nullptr, "<< EditorHeader[%s] (addr:0x%x, size:%@) >>\n",
+              editor_resource->editorName.getBuffer(), editor_header, sizeof(EditorHeader));
+    dumpLine_(nullptr, "  numResParam: %@\n", editor_header->numResParam);
+    dumpLine_(nullptr, "  numResAssetParam: %@\n", editor_header->numResAssetParam);
+    dumpLine_(nullptr, "  numResTriggerOverwriteParam: %@\n",
               editor_header->numResTriggerOverwriteParam);
-    dumpLine_(buffered_str, "  numLocalPropertyNameRefTable: %@\n",
+    dumpLine_(nullptr, "  numLocalPropertyNameRefTable: %@\n",
               editor_header->numLocalPropertyNameRefTable);
-    dumpLine_(buffered_str, "  numLocalPropertyEnumNameRefTable: %@\n",
+    dumpLine_(nullptr, "  numLocalPropertyEnumNameRefTable: %@\n",
               editor_header->numLocalPropertyEnumNameRefTable);
-    dumpLine_(buffered_str, "  numDirectValueTable: %@\n", editor_header->numDirectValueTable);
-    dumpLine_(buffered_str, "  numRandomTable: %@\n", editor_header->numRandomTable);
-    dumpLine_(buffered_str, "  numCurveTable: %@\n", editor_header->numCurveTable);
-    dumpLine_(buffered_str, "  numCurvePointTable: %@\n", editor_header->numCurvePointTable);
-    dumpLine_(buffered_str, "  exDataRegionPos: %@\n", editor_header->exDataRegionPos);
-    dumpLine_(buffered_str, "  userNamePos: %@\n", editor_header->userNamePos);
-    dumpLine_(buffered_str, "  userBinPos: %@\n", editor_header->userBinPos);
-    dumpLine_(buffered_str, "  conditionTablePos: %@\n", editor_header->conditionTablePos);
-    dumpLine_(buffered_str, "  nameTablePos: %@\n", editor_header->nameTablePos);
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(nullptr, "  numDirectValueTable: %@\n", editor_header->numDirectValueTable);
+    dumpLine_(nullptr, "  numRandomTable: %@\n", editor_header->numRandomTable);
+    dumpLine_(nullptr, "  numCurveTable: %@\n", editor_header->numCurveTable);
+    dumpLine_(nullptr, "  numCurvePointTable: %@\n", editor_header->numCurvePointTable);
+    dumpLine_(nullptr, "  exDataRegionPos: %@\n", editor_header->exDataRegionPos);
+    dumpLine_(nullptr, "  userNamePos: %@\n", editor_header->userNamePos);
+    dumpLine_(nullptr, "  userBinPos: %@\n", editor_header->userBinPos);
+    dumpLine_(nullptr, "  conditionTablePos: %@\n", editor_header->conditionTablePos);
+    dumpLine_(nullptr, "  nameTablePos: %@\n", editor_header->nameTablePos);
+    dumpLine_(nullptr, "\n");
 
-    dumpCommonResourceFront_(editor_resource, bin_accessor, true, buffered_str);
-    dumpUserBin_(0, editor_name, editor_resource->pResUserHeader, param_define, buffered_str);
+    dumpCommonResourceFront_(editor_resource, bin_accessor, true, nullptr);
+    dumpUserBin_(0, *editor_name, editor_resource->pResUserHeader, param_define, nullptr);
     dumpCommonResourceRear_(editor_resource, bin_accessor, editor_resource->_0, heap, false,
-                            buffered_str);
+                            nullptr);
 }
 
 // WIP
