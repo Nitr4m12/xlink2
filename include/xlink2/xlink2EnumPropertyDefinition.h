@@ -22,9 +22,9 @@ public:
 
     void entry(s32, const char*);
 
-    u64 getEntryKeyLength(u32) const;
+    s32 getEntryKeyLength(u32) const;
 
-    u32 searchEntryValueByKey(const char*) const;
+    s32 searchEntryValueByKey(const char*) const;
     const char* searchEntryKeyByValue(s32) const;
 
     void setEntryBuf_(s32, Entry*);

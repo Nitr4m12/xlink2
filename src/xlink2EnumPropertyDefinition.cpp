@@ -28,4 +28,15 @@ void EnumPropertyDefinition::entry(s32 value, const char* key)
 
 }
 
+s32 EnumPropertyDefinition::searchEntryValueByKey(const char* key) const
+{
+    if (mEntryBufferSize > 0) {
+        for (s64 i {0}; i < mEntryBufferSize; ++i) {
+            if (mEntryBuffer[i].key != nullptr && strcmp(mEntryBuffer[i].key, key) == 0)
+                return mEntryBuffer[i].value;
+        }
+    }
+    return -1;
+}
+
 }
