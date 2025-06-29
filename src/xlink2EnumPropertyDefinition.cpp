@@ -50,4 +50,10 @@ const char* EnumPropertyDefinition::searchEntryKeyByValue(s32 value) const
     return "";
 }
 
+void EnumPropertyDefinition::setEntryBuf_(s32 buffer_size, Entry* buffer)
+{
+    mEntryBufferSize = buffer_size;
+    mEntryBuffer = buffer;
+}
+
 }
