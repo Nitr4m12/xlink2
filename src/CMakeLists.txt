@@ -8,6 +8,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ContainerBase.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}DebugOperationParam.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}EditorBuffer.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}EnumPropertyDefinition.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ErrorMgr.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}Event.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}IEventCallbackELink.cpp

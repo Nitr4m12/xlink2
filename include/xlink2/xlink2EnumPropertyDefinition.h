@@ -7,31 +7,32 @@
 namespace xlink2 {
 class EnumPropertyDefinition : PropertyDefinition {
 public:
-    class Entry {};
+    struct Entry {
+        const char* key; 
+        s32 value;
+    };
 
-    EnumPropertyDefinition(char const*, int, sead::Heap*, bool);
-    EnumPropertyDefinition(char const*, int, bool, sead::Heap*, ...);
-    EnumPropertyDefinition(char const*, int, char const**, bool, sead::Heap*);
-    EnumPropertyDefinition(char const*, bool);
-
-    ~EnumPropertyDefinition() override;
-
+    EnumPropertyDefinition(const char*, int, sead::Heap*, bool);
+    EnumPropertyDefinition(const char*, int, bool, sead::Heap*, ...);
+    EnumPropertyDefinition(const char*, int, char const**, bool, sead::Heap*);
+    EnumPropertyDefinition(const char*, bool);
     void setEntries_(int, char const**);
 
+    ~EnumPropertyDefinition() override;
 
     void entry(int, char const*);
 
     u64 getEntryKeyLength(u32) const;
 
-    void* searchEntryValueByKey(char const*) const;
-    void* searchEntryKeyByValue(int) const;
+    u32 searchEntryValueByKey(char const*) const;
+    const char* searchEntryKeyByValue(int) const;
 
     void setEntryBuf_(s32, Entry*);
 
 private:
-    u32 _10;
-    s32 _11;
-    Entry* mEntry;
+    s32 mTotalEntryNum;
+    s32 mEntryBufferSize;
+    Entry* mEntryBuffer;
 };
 static_assert(sizeof(EnumPropertyDefinition) == 0x78, "Wrong size for 'xlink2::EnumPropertyDefinition'");
 
