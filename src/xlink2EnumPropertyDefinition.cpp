@@ -39,4 +39,15 @@ s32 EnumPropertyDefinition::searchEntryValueByKey(const char* key) const
     return -1;
 }
 
+const char* EnumPropertyDefinition::searchEntryKeyByValue(s32 value) const
+{
+    if (mEntryBufferSize > 0) {
+        for (s64 i {0}; i < mEntryBufferSize; ++i) {
+            if (mEntryBuffer[i].key != nullptr && mEntryBuffer[i].value == value)
+                return mEntryBuffer[i].key;
+        }
+    }
+    return "";
+}
+
 }
