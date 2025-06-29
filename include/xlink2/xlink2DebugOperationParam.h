@@ -1,32 +1,37 @@
 #pragma once
 
 #include <basis/seadTypes.h>
-#include <math/seadVector.h>
 #include <prim/seadSafeString.h>
+#include <prim/seadBitFlag.h>
+#include "math/seadVector.h"
 
+namespace xlink2 {
 class DebugOperationParam {
 public:
-    DebugOperationParam() = default;
+    DebugOperationParam();
 
-    u32 get0() const { return _0; }
-    u32 get258() const { return _0x258; }
-    bool get258Check() const { return _0x258 & 1; }
+    u32 get0() const { return mDebugFlag; }
+    u32 get258() const { return mPrintFlag; }
+    bool get258Check() const { return mPrintFlag & 1; }
 
 private:
-    //u8 _0[0x358];
-    u32 _0;
-    float _0x08;
-    float _0x0c;
-    void* _0x10;
-    void* _0x18;
-    sead::FixedSafeString<64> _0x20;
-    sead::FixedSafeString<64> _0x78;
-    sead::FixedSafeString<64> _0xd0;
-    sead::FixedSafeString<128> _0x128;
-    sead::FixedSafeString<128> _0x1c0;
-    u32 _0x258;
-    sead::FixedSafeString<64> _0x260;
-    u32 _0x2b8;
-    u16 _0x2bc;
-    sead::FixedSafeString<128> _0x2c0;
+    sead::BitFlag32 mDebugFlag;
+    f32 mAxisScale;
+    f32 mTextScale;
+    sead::Vector2f mCharacterDisplayOffsetUser;
+    sead::Vector2f mCharacterDisplayOffsetSystem;
+    sead::FixedSafeString<64> mDebugUser;
+    sead::FixedSafeString<64> mDebugAction;
+    sead::FixedSafeString<64> mDebugLocalProperty;
+    sead::FixedSafeString<128> mDebugEvent;
+    sead::FixedSafeString<128> mKeyName;
+    sead::BitFlag32 mPrintFlag;
+    sead::FixedSafeString<64> mDebugGlobalProperty;
+    f32 mFixedGlobalProperty;
+    bool mBreakWhenEmit;
+    bool mBreakTargetOnly;
+    sead::FixedSafeString<128> mDebugKeyName;
+
 };
+static_assert(sizeof(DebugOperationParam) == 0x358, "xlink2::DebugOperationParam size mismatch");
+} // namespace xlink2

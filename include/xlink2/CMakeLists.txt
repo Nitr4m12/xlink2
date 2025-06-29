@@ -76,7 +76,6 @@ target_sources(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResProperty.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResPropertyTrigger.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResRandomCallTable.h
-    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResTriggerOverwriteParam.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResUserHeader.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResUserInfo.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}RomResourceParam.h
