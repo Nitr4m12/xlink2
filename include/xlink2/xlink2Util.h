@@ -10,7 +10,7 @@ void setMinLargeAddressMask(u64);
 
 template <typename T, u64 MinAddress = 0x100000000>
 T* calcOffset(const u32& offset) {
-    return (T*)((offset >= sMinAddressLow) ? (offset | sMinAddressHigh) :
+    return reinterpret_cast<T*>((offset >= sMinAddressLow) ? (offset | sMinAddressHigh) :
                                         (offset | sMinAddressHigh) + MinAddress);
 }
 

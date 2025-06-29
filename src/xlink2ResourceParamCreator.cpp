@@ -162,8 +162,6 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     common_res_param->nameTablePos = *ptr + bin_accessor->mBinStart;
 }
 
-// TWO UNMATCHING
-// add     x2, x8, w26, uxtw  ->  add     x2, x8, w26, uxtw #2
 void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
                                             const BinAccessor* bin_accessor,
                                             const ParamDefineTable* param_define, sead::Heap* heap,
@@ -209,7 +207,7 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     }
     dumpLine_(buffered_str, "\n");
 
-    dumpLine_(buffered_str, "<< ParamDefineTable (addr:0x%x, size:%@) >>\n", rom_res->offsetTable + offset_table_size,
+    dumpLine_(buffered_str, "<< ParamDefineTable (addr:0x%x, size:%@) >>\n", reinterpret_cast<u64>(rom_res->offsetTable) + offset_table_size,
               param_define->getSize());
     dumpLine_(buffered_str, "  ...no content print.\n\n");
 
@@ -217,8 +215,10 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     if (p1 && res_header->numUser != 0) {
         for (u32 i{0}; i < res_header->numUser; ++i) {
             u64 user_offset = rom_res->offsetTable[i] + bin_accessor->mBinStart;
-            auto* solved_offset = calcOffset<ResUserHeader>(user_offset);
-            dumpUserBin_(i, "", solved_offset, param_define,
+            auto* user_header = reinterpret_cast<ResUserHeader*>((user_offset >= sMinAddressLow) ? 
+                                        (user_offset | sMinAddressHigh) :
+                                        (user_offset | sMinAddressHigh) + 0x100000000);
+            dumpUserBin_(i, "", user_header, param_define,
                          buffered_str);
         }
     }
