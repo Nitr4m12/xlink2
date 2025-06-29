@@ -8,7 +8,7 @@ struct ResCurveCallTable {
     u16 curveType;
     u16 isPropGlobal;
     u32 propName;
-    u32 propIdx;
+    s32 propIdx;
     s16 localPropertyNameIdx;
 };
 static_assert(sizeof(ResCurveCallTable) == 0x14, "Incorrect size of 'xlink2::ResCurveCallTable'");

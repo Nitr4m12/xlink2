@@ -14,8 +14,8 @@ struct ResParam {
 };
 
 struct ResTriggerOverwriteParam {
-    u32 paramPos;
-    explicit operator u32() const { return paramPos;}
+    sead::BitFlag32 mask;
+    ResParam* rawValues;
 
 
 };

@@ -8,6 +8,10 @@
 namespace xlink2 {
 class PropertyDefinition {
 public:
+    PropertyDefinition() = default;
+    PropertyDefinition(const char* name, PropertyType type, u8 unk)
+        : mPropertyName(name), mType(type), _0(unk) {}
+
     virtual ~PropertyDefinition();
 
     PropertyType getType() const { return mType; }

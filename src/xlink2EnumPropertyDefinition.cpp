@@ -1,14 +1,16 @@
 #include "xlink2/xlink2EnumPropertyDefinition.h"
-#include "xlink2/xlink2PropertyType.h"
 
 namespace xlink2 {
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, bool)
+    : PropertyDefinition(name, PropertyType::Enum, 0) {}
+
 void EnumPropertyDefinition::setEntries_(s32 entry_num, const char** key_buffer)
 {
     if (entry_num > 0) {
         for (u32 i{0}, j{0}; i != entry_num; ++i, ++j) {
             mEntryBuffer[i].value = j;
             mEntryBuffer[i].key = key_buffer[j];
-            ++mTotalEntryNum;
+            ++mCurrentIdx;
         }
     }
 }
@@ -16,22 +18,34 @@ void EnumPropertyDefinition::setEntries_(s32 entry_num, const char** key_buffer)
 void EnumPropertyDefinition::entry(s32 value, const char* key)
 {
     Entry* buffer {mEntryBuffer};
-    if (mTotalEntryNum > 0) {
-        for (s64 i {0}; i < mTotalEntryNum; ++i, ++buffer) {
+    if (mCurrentIdx > 0) {
+        for (s64 i {0}; i < mCurrentIdx; ++i, ++buffer) {
             if (strcmp(buffer->key, key) == 0)
                 return;
         }
     }
-    mEntryBuffer[mTotalEntryNum].key = key;
-    mEntryBuffer[mTotalEntryNum].value = value;
-    ++mTotalEntryNum;
+    mEntryBuffer[mCurrentIdx].key = key;
+    mEntryBuffer[mCurrentIdx].value = value;
+    ++mCurrentIdx;
 
+}
+
+s32 EnumPropertyDefinition::getEntryKeyLength(u32 entry_idx) const
+{
+    const char* key {mEntryBuffer[entry_idx].key};
+    s64 i {0};
+    while (i < 64) {
+        if (key[i] == '\0') return i;
+        if (key[i + 1] == '\0') return i + 1;
+        i += 2;
+    }
+    return -1;
 }
 
 s32 EnumPropertyDefinition::searchEntryValueByKey(const char* key) const
 {
-    if (mEntryBufferSize > 0) {
-        for (s64 i {0}; i < mEntryBufferSize; ++i) {
+    if (mNumEntry > 0) {
+        for (s64 i {0}; i < mNumEntry; ++i) {
             if (mEntryBuffer[i].key != nullptr && strcmp(mEntryBuffer[i].key, key) == 0)
                 return mEntryBuffer[i].value;
         }
@@ -41,8 +55,8 @@ s32 EnumPropertyDefinition::searchEntryValueByKey(const char* key) const
 
 const char* EnumPropertyDefinition::searchEntryKeyByValue(s32 value) const
 {
-    if (mEntryBufferSize > 0) {
-        for (s64 i {0}; i < mEntryBufferSize; ++i) {
+    if (mNumEntry > 0) {
+        for (s64 i {0}; i < mNumEntry; ++i) {
             if (mEntryBuffer[i].key != nullptr && mEntryBuffer[i].value == value)
                 return mEntryBuffer[i].key;
         }
@@ -52,7 +66,7 @@ const char* EnumPropertyDefinition::searchEntryKeyByValue(s32 value) const
 
 void EnumPropertyDefinition::setEntryBuf_(s32 buffer_size, Entry* buffer)
 {
-    mEntryBufferSize = buffer_size;
+    mNumEntry = buffer_size;
     mEntryBuffer = buffer;
 }
 

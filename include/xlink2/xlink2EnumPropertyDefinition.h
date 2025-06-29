@@ -5,7 +5,7 @@
 #include "xlink2/xlink2PropertyDefinition.h"
 
 namespace xlink2 {
-class EnumPropertyDefinition : PropertyDefinition {
+class EnumPropertyDefinition : public PropertyDefinition {
 public:
     struct Entry {
         const char* key; 
@@ -30,10 +30,10 @@ public:
     void setEntryBuf_(s32, Entry*);
 
 private:
-    s32 mTotalEntryNum;
-    s32 mEntryBufferSize;
-    Entry* mEntryBuffer;
+    s32 mCurrentIdx {};
+    s32 mNumEntry {};
+    Entry* mEntryBuffer {};
 };
-static_assert(sizeof(EnumPropertyDefinition) == 0x78, "Wrong size for 'xlink2::EnumPropertyDefinition'");
+static_assert(sizeof(EnumPropertyDefinition) == 0x78, "xlink2::EnumPropertyDefinition size mismatch");
 
 }  // namespace xlink2

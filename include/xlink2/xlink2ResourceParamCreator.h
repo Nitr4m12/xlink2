@@ -25,8 +25,8 @@ public:
         EditorHeader* mEditorHeader;
         u32 mBinStart;
         u32 mAssetsStart;
-        u32 mNumUserParam;
         u32 mNumAssetParam;
+        u32 mNumUserParam;
     };
 
     static void createParamAndSolveResource(RomResourceParam*, void*, ParamDefineTable const*,
