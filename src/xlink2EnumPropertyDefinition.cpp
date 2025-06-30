@@ -67,6 +67,7 @@ void EnumPropertyDefinition::entry(s32 value, const char* key)
 
 }
 
+// NON-MATCHING
 s32 EnumPropertyDefinition::getEntryKeyLength(u32 entry_idx) const
 {
     const char* key {mEntryBuffer[entry_idx].key};
