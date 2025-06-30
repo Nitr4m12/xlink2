@@ -1,6 +1,17 @@
 #include "xlink2/xlink2System.h"
 
 namespace xlink2 {
+void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 p3)
+{
+    mPrimaryHeap = primary_heap;
+    mResourceBuffer = new (heap) ResourceBuffer;
+    _15 = p3;
+    _16 = 0;
+    mGlobalPropertyTriggerUserList.allocBuffer(0x60, heap);
+    mErrorMgr = new (heap) ErrorMgr(this);
+    mHoldMgr = new (heap) HoldMgr(this, heap);
+}
+
 ResUserHeader* System::getResUserHeader(const char* user_name) 
 {
     return mResourceBuffer->searchResUserHeader(user_name);
@@ -44,6 +55,8 @@ s32 System::incrementEventCreateId_() {
     return event_id;
 }
 
+void System::updateContainerCount(ContainerType type, s32) {}
+
 // bool System::isDrawTargetInstance(UserInstance* draw_target_instance) const {
 //     if (mUserInstance == nullptr)
 //         return mUserInstance->getSortKey();
@@ -58,7 +71,5 @@ bool System::isServerConnecting() const {
 //         mUserInstance = nullptr;
 //     }
 // }
-
-void System::updateContainerCount(ContainerType type, s32) {}
 
 }  // namespace xlink2
