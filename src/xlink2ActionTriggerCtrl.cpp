@@ -5,7 +5,6 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-
 ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
                                      sead::Buffer<ModelTriggerConnection>* connection_buffer,
                                      const ResActionSlot* action_slot)
@@ -81,24 +80,19 @@ void ActionTriggerCtrl::changeAction(const char* name, s32 p2)
 // NON-MATCHING
 ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot, const char* name, s32* idx)  const
 {
-    if (action_slot->actionStartIdx > -1) {
-        UserResource* user_resource {getUserResource()};
-        UserResourceParam* user_param {user_resource->getParam()};
+    if (action_slot->actionStartIdx >= 0) {
+        UserResourceParam* user_res_param {getUserResource()->getParam()};
 
-        if (action_slot->actionStartIdx <= action_slot->actionStartIdx >> 0x10) {
-            for (int i {action_slot->actionStartIdx}; i < (((long)action_slot->actionStartIdx << 0x20) >> 0x30); ++i) {
-                ResAction* action {&user_param->resActionTable[i]};
-                char* action_name {calcOffset<char>(action->namePos)};
-                if (strcmp(action_name, name) == 0) {
-                    if (idx == nullptr)
-                        return action;
-                    *idx += 1;
-                    return action;
-                }
+        for (s32 i{action_slot->actionStartIdx - 1}; i < action_slot->actionEndIdx; ++i) {
+            ResAction* action {&user_res_param->resActionTable[i]};
+            const char* action_name {calcOffset<const char>(action->namePos)};
+            if (strcmp(action_name, name) == 0) {
+                if (idx != nullptr)
+                    *idx = i + 1;
+                return action;
             }
         }
     }
-
     return nullptr;
 }
 
@@ -144,4 +138,6 @@ s32 ActionTriggerCtrl::getCurrentResActionIdx() const
 
     return -1;
 }
+
+ActionTriggerCtrl::~ActionTriggerCtrl() = default;
 }  // namespace xlink2

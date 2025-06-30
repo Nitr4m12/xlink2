@@ -27,7 +27,7 @@ public:
     void* getIsDebugBreakEnablePtr();
 
 private:
-    u32 _0;
+    bool mIsNotThrown;
     Error mErrorEntries[32];
     u32 mErrorDispFrame;
     u32 _2;
@@ -36,6 +36,6 @@ private:
     u8 p[0xb0];
     sead::CriticalSection mCriticalSection;
 };
-static_assert(sizeof(ErrorMgr) == 0x5110, "Wrong size for 'xlink2::ErrorMgr'");
+static_assert(sizeof(ErrorMgr) == 0x5110, "xlink2::ErrorMgr size mismatch");
 
 }  // namespace xlink2

@@ -10,6 +10,7 @@ EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries
     mEntryBuffer = buffer;
 }
 
+// NON-MATCHING
 EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, bool b1, sead::Heap* heap, ...)
     : EnumPropertyDefinition(name, num_entries, heap, b1)
 {
