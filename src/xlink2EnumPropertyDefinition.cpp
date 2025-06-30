@@ -9,6 +9,13 @@ EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries
     auto* buffer = new (heap) Entry[num_entries];
     mEntryBuffer = buffer;
 }
+
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, const char** key_buffer, bool b1, sead::Heap* heap)
+    : EnumPropertyDefinition(name, num_entries, heap, b1)
+{
+    setEntries_(num_entries, key_buffer);
+}
+
 EnumPropertyDefinition::EnumPropertyDefinition(const char* name, bool)
     : PropertyDefinition(name, PropertyType::Enum, 0) 
 {
