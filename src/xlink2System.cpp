@@ -36,7 +36,7 @@ void System::addError(Error::Type /*unused*/, const User* /*unused*/, const char
 s32 System::incrementEventCreateId_() {
     s32 event_id {mEventCreateId};
     s32 create_id {1};
-    
+
     if (event_id != -1)
         create_id = event_id + 1;
 
@@ -59,8 +59,6 @@ bool System::isServerConnecting() const {
 //     }
 // }
 
-ContainerType System::updateContainerCount(ContainerType p1, s32 p2) {
-    return p1;
-}
+void System::updateContainerCount(ContainerType type, s32) {}
 
 }  // namespace xlink2

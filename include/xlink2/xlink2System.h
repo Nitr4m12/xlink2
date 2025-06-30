@@ -130,7 +130,7 @@ public:
 
     void* getAnyone();
 
-    ContainerType updateContainerCount(ContainerType, s32);
+    void updateContainerCount(ContainerType, s32);
 
     void freeAssetExecutor(AssetExecutor*);
 
