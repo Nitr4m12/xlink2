@@ -93,7 +93,7 @@ public:
     void setGlobalPropertyValue(u32, f32);
     u32 searchGlobalPropertyIndex(const char*) const;
 
-    void incrementEventCreateId_();
+    s32 incrementEventCreateId_();
     Event allocEvent();
     void freeEvent(Event*, sead::OffsetList<Event>*);
     void freeAllEvent(sead::OffsetList<Event>*);
@@ -180,9 +180,9 @@ protected:
     u32 _0;
     u32 _15;
     u32 _16;
+    s32 mEventCreateId; // mNumGlobalProperty
     u32 _17;
     u32 _18;
-    s32 mCurrentEventId; // mNumGlobalProperty
     const PropertyDefinition** mGlobalPropertyDefinitions;
     float* mGlobalPropertyValues;
     void* _19;

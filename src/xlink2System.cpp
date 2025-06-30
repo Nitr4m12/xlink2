@@ -1,16 +1,23 @@
 #include "xlink2/xlink2System.h"
 
 namespace xlink2 {
-void System::addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...) {
+ResUserHeader* System::getResUserHeader(const char* user_name) 
+{
+    return mResourceBuffer->searchResUserHeader(user_name);
 }
 
-void System::fixGlobalPropertyDefinition() {
+void System::fixGlobalPropertyDefinition() 
+{
     mResourceBuffer->applyGlobalPropertyDefinition(this);
     if (mEditorBuffer != nullptr) {
         mEditorBuffer->applyGlobalPropertyDefinition();
     }
     mIsGlobalPropFixed = true;
 }
+
+void System::addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...) {
+}
+
 
 // ParamDefineTable* System::getParamDefineTable() const {
 //     return mResourceBuffer->getParamDefineTable();
@@ -26,15 +33,15 @@ void System::fixGlobalPropertyDefinition() {
 //     return nullptr;
 // }
 
-ResUserHeader* System::getResUserHeader(const char* p1) {
-    return mResourceBuffer->searchResUserHeader(p1);
-}
+s32 System::incrementEventCreateId_() {
+    s32 event_id {mEventCreateId};
+    s32 create_id {1};
+    
+    if (event_id != -1)
+        create_id = event_id + 1;
 
-void System::incrementEventCreateId_() {
-    if (mCurrentEventId != -1)
-        mCurrentEventId += 1;
-    else
-        mCurrentEventId = 1;
+    mEventCreateId = create_id;
+    return event_id;
 }
 
 // bool System::isDrawTargetInstance(UserInstance* draw_target_instance) const {
