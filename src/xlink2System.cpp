@@ -9,7 +9,7 @@ void System::fixGlobalPropertyDefinition() {
     if (mEditorBuffer != nullptr) {
         mEditorBuffer->applyGlobalPropertyDefinition();
     }
-    _10 = 0;
+    mIsGlobalPropFixed = true;
 }
 
 // ParamDefineTable* System::getParamDefineTable() const {
@@ -26,7 +26,7 @@ void System::fixGlobalPropertyDefinition() {
 //     return nullptr;
 // }
 
-void* System::getResUserHeader(const char* p1) {
+ResUserHeader* System::getResUserHeader(const char* p1) {
     return mResourceBuffer->searchResUserHeader(p1);
 }
 

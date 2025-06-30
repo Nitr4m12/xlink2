@@ -35,7 +35,6 @@ class EditorBuffer;
 class ErrorMgr;
 class HoldMgr;
 class ResourceBuffer;
-class UserInstance;
 
 class System : sead::hostio::Node {
     //SEAD_SINGLETON_DISPOSER(System)
@@ -67,14 +66,14 @@ public:
     void initSystem_(sead::Heap*, sead::Heap*, u32);
     void calc();
 
-    System* searchUser(char const*, sead::Heap*, u32) const;
-    s32 searchUserIgnoreHeap(char const*, User**, s32) const;
+    System* searchUser(const char*, sead::Heap*, u32) const;
+    s32 searchUserIgnoreHeap(const char*, User**, s32) const;
 
-    void makeDebugStringGlobalProperty(sead::BufferedSafeString*, sead::SafeString const&) const;
+    void makeDebugStringGlobalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;
 
     u32 loadResource(void*);
 
-    void* getResUserHeader(char const*);
+    ResUserHeader* getResUserHeader(const char*);
 
     void removeUserInstance(UserInstance*);
 
@@ -83,8 +82,8 @@ public:
     void unregistUserForGlobalPropertyTrigger_(User*);
 
     void allocGlobalProperty(u32, sead::Heap*);
-    void createGlobalPropertyDefinitionTable(u32, PropertyDefinition const**, sead::Heap*);
-    void setGlobalPropertyDefinition(u32, PropertyDefinition const*);
+    void createGlobalPropertyDefinitionTable(u32, const PropertyDefinition**, sead::Heap*);
+    void setGlobalPropertyDefinition(u32, const PropertyDefinition*);
     void fixGlobalPropertyDefinition();
     void freeGlobalProperty();
 
@@ -92,7 +91,7 @@ public:
 
     void setGlobalPropertyValue(u32, s32);
     void setGlobalPropertyValue(u32, f32);
-    u32 searchGlobalPropertyIndex(char const*) const;
+    u32 searchGlobalPropertyIndex(const char*) const;
 
     void incrementEventCreateId_();
     Event allocEvent();
@@ -105,7 +104,7 @@ public:
     ParamDefineTable* getParamDefineTable() const;
     ParamDefineTable* getParamDefineTable(ResMode) const;
 
-    // System* searchUserOrCreate_(UserInstance::CreateArg const&, sead::Heap*, u32);
+    // System* searchUserOrCreate_(const UserInstance::CreateArg&, sead::Heap*, u32);
 
     void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
 
@@ -127,7 +126,7 @@ public:
 
     f32 calcDebugDrawSortKeyThreshold_() const;
 
-    void clearError(User const*);
+    void clearError(const User*);
 
     void* getAnyone();
 
@@ -147,7 +146,7 @@ public:
     void dumpActiveEvents() const;
     void dumpUsers() const;
 
-    void requestSendPickedUserName(sead::SafeString const& /*unused*/){};
+    void requestSendPickedUserName(const sead::SafeString& /*unused*/){};
 
     void resetOtameshiRequest();
 
@@ -187,8 +186,9 @@ protected:
     const PropertyDefinition** mGlobalPropertyDefinitions;
     float* mGlobalPropertyValues;
     void* _19;
+    bool mIsGlobalPropFixed;
     ErrorMgr* mErrorMgr;
-    HoldMgr* mHoldMgr[2];
+    HoldMgr* mHoldMgr;
     u32 _5;
     bool mIsCallEnabled;
     sead::Heap* mUserCreateHeap;
@@ -204,7 +204,7 @@ protected:
     sead::OffsetList<User>* mDebugDrawUserList;
     float mUserSortKey;
     sead::SafeString* mDebugString;
-    void* _10;
+    u8 _10;
     u32 _20;
     u32 _21;
     s32 _22;
