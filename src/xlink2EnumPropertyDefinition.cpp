@@ -10,6 +10,23 @@ EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries
     mEntryBuffer = buffer;
 }
 
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, bool b1, sead::Heap* heap, ...)
+    : EnumPropertyDefinition(name, num_entries, heap, b1)
+{
+    va_list args;
+    va_start(args, heap);
+    if (num_entries > 0) {
+        // const char** key_buffer {va_arg(args, const char**)};
+        for (u32 i{0}; i != num_entries; ++i) {
+            mEntryBuffer[i].value = i;
+            mEntryBuffer[i].key = va_arg(args, const char*);
+            ++mCurrentIdx;
+        }
+    }
+    va_end(args);
+}
+
+
 EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, const char** key_buffer, bool b1, sead::Heap* heap)
     : EnumPropertyDefinition(name, num_entries, heap, b1)
 {
