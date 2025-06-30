@@ -1,8 +1,21 @@
 #include "xlink2/xlink2EnumPropertyDefinition.h"
 
 namespace xlink2 {
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, sead::Heap* heap, bool)
+    : PropertyDefinition(name, PropertyType::Enum, 0)
+{
+    mCurrentIdx = 0;
+    mNumEntry = num_entries;
+    auto* buffer = new (heap) Entry[num_entries];
+    mEntryBuffer = buffer;
+}
 EnumPropertyDefinition::EnumPropertyDefinition(const char* name, bool)
-    : PropertyDefinition(name, PropertyType::Enum, 0) {}
+    : PropertyDefinition(name, PropertyType::Enum, 0) 
+{
+    mCurrentIdx = 0;
+    mNumEntry = 0;
+    mEntryBuffer = nullptr;
+}
 
 void EnumPropertyDefinition::setEntries_(s32 entry_num, const char** key_buffer)
 {

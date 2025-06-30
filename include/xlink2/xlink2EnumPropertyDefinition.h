@@ -8,13 +8,13 @@ namespace xlink2 {
 class EnumPropertyDefinition : public PropertyDefinition {
 public:
     struct Entry {
-        const char* key; 
-        s32 value;
+        const char* key {}; 
+        s32 value {-1};
     };
 
     EnumPropertyDefinition(const char*, s32, sead::Heap*, bool);
     EnumPropertyDefinition(const char*, s32, bool, sead::Heap*, ...);
-    EnumPropertyDefinition(const char*, s32, char const**, bool, sead::Heap*);
+    EnumPropertyDefinition(const char*, s32, const char**, bool, sead::Heap*);
     EnumPropertyDefinition(const char*, bool);
     void setEntries_(s32, char const**);
 
@@ -30,9 +30,9 @@ public:
     void setEntryBuf_(s32, Entry*);
 
 private:
-    s32 mCurrentIdx {};
-    s32 mNumEntry {};
-    Entry* mEntryBuffer {};
+    s32 mCurrentIdx;
+    s32 mNumEntry;
+    Entry* mEntryBuffer;
 };
 static_assert(sizeof(EnumPropertyDefinition) == 0x78, "xlink2::EnumPropertyDefinition size mismatch");
 
