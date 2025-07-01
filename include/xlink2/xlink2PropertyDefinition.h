@@ -15,7 +15,7 @@ public:
     virtual ~PropertyDefinition() = default;
 
     PropertyType getType() const { return mType; }
-    sead::FixedSafeString<64>* getPropertyName() { return &mPropertyName; }
+    const sead::FixedSafeString<64>* getPropertyName() const { return &mPropertyName; }
 
 protected:
     sead::FixedSafeString<64> mPropertyName;

@@ -53,10 +53,36 @@ void System::unregistUserForGlobalPropertyTrigger_(User* user)
 // WIP
 void System::allocGlobalProperty(u32 num_global_prop, sead::Heap* heap)
 {
-    mGlobalPropertyDefinitions = new (heap) PropertyDefinition*[num_global_prop];
+    mGlobalPropertyDefinitions = new (heap) const PropertyDefinition*[num_global_prop];
     mGlobalPropertyValues = new (heap) PropertyValueType[num_global_prop];
     mNumGlobalProperty = num_global_prop;
 }
+
+void System::setGlobalPropertyDefinition(u32 prop_idx, const PropertyDefinition* prop_define)
+{
+    if (prop_define != nullptr && mNumGlobalProperty != 0 && prop_idx < mNumGlobalProperty) {
+        for (u32 i {0}; i < mNumGlobalProperty; ++i) {
+            if (mGlobalPropertyDefinitions[i] != nullptr) {
+                auto* new_prop_name {prop_define->getPropertyName()};
+                if (mGlobalPropertyDefinitions[i]->getPropertyName()->isEqual(*new_prop_name)) {
+                    new_prop_name->cstr();
+                    return;
+                }
+            }
+        }
+        mGlobalPropertyDefinitions[prop_idx] = prop_define;
+        switch (prop_define->getType()) {
+            case PropertyType::Enum:
+            case PropertyType::S32:
+                mGlobalPropertyValues[prop_idx].valueInt = 0;
+                break;
+            case PropertyType::F32:
+                mGlobalPropertyValues[prop_idx].valueFloat = 0.0;
+                break;
+        }
+    }
+}
+
 
 void System::fixGlobalPropertyDefinition() 
 {

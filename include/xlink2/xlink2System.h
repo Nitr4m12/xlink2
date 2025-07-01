@@ -188,7 +188,7 @@ protected:
     s32 mEventCreateId;
     u32 _17;
     u32 mNumGlobalProperty;
-    PropertyDefinition** mGlobalPropertyDefinitions;
+    const PropertyDefinition** mGlobalPropertyDefinitions;
     PropertyValueType* mGlobalPropertyValues;
     sead::BitFlag64 mGlobalPropertyBitfield;
     bool mIsGlobalPropFixed;

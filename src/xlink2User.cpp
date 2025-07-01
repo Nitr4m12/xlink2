@@ -45,7 +45,7 @@ u32 User::searchPropertyIndex(const char* name) const
         for (u32 i{0}; i < mLocalPropNum; ++i) {
             PropertyDefinition* property_definition = mpPropertyDefinitionTable[i];
             if (property_definition != nullptr) {
-                sead::FixedSafeString<64>* prop_name = property_definition->getPropertyName();
+                const sead::FixedSafeString<64>* prop_name = property_definition->getPropertyName();
                 if (strcmp(name, prop_name->cstr()) == 0)
                     return i;
             }
