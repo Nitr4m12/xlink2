@@ -3,7 +3,7 @@
 namespace xlink2 {
 class ILockProxy {
 public:
-    virtual ~ILockProxy();
+    virtual ~ILockProxy() = default;
     virtual void lock() = 0;
     virtual void unlock() = 0;
 };

@@ -16,7 +16,7 @@ class UserInstance;
 
 class AssetExecutor {
 public:
-    virtual ~AssetExecutor();
+    virtual ~AssetExecutor() = default;
 
     virtual u32 calc() = 0;
 

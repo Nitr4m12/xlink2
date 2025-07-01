@@ -28,4 +28,7 @@ template <>
 void OuterLockProxy<sead::Mutex>::unlock() {
     mLock->unlock();
 };
+
+template <>
+OuterLockProxy<sead::Mutex>::~OuterLockProxy() = default;
 }  // namespace xlink2

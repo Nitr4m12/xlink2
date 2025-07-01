@@ -9,37 +9,44 @@
 namespace xlink2 {
 class EventSLink;
 class AssetExecutorSLink : AssetExecutor {
+public:
     ~AssetExecutorSLink() override;
 
-public:
-    void _applyParam(sead::BitFlag32);
-    void _updateParam();
-    void _updateParamFirst();
-
-    void activateImpl_() override;
-    void appendAalInfoStr(sead::BufferedSafeString*);
-    void applyParam(bool);
     u32 calc() override;
     void* emitSound();
+    
+    void _updateParam();
+    void updateParam();
+
+    bool isLoopEvent() const override;
+
     void fade(s32) override;
+    void kill() override;
     void fadeBySystem() override;
 
-    f32 getPlayingTime() const;
     s32 getPriority() const;
     s32 getPriority_Spatial() const;
 
-    bool isAssetValid() const override;
-    bool isLoopEvent() const override;
-    bool isRequestReEmit() const override;
+    f32 getPlayingTime() const;
 
-    void kill() override;
-    void onFinalize_() override;
+    void activateImpl_() override;
+    
+    void _updateParamFirst();
+    void updateParamFirst();
+
+    void _applyParam(sead::BitFlag32);
+    void applyParam(bool);
+
     void onResetOverwriteParam_() override;
 
-    void requestReEmit(bool) override;
+    void appendAalInfoStr(sead::BufferedSafeString*);
 
-    void updateParam();
-    void updateParamFirst();
+    bool isAssetValid() const override;
+
+    void requestReEmit(bool) override;
+    bool isRequestReEmit() const override;
+
+    void onFinalize_() override;
 
 private:
     u8 _7;
@@ -60,5 +67,5 @@ private:
     f32 mVelocityZ;
     u8 p[0x8];
 };
-static_assert(sizeof(AssetExecutorSLink) == 0xa8, "Wrong size of 'xlink2::AssetExecutorELink'");
+static_assert(sizeof(AssetExecutorSLink) == 0xa8, "xlink2::AssetExecutorELink size mismatch");
 }  // namespace xlink2

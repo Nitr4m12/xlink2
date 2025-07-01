@@ -1,6 +1,8 @@
 #include "xlink2/xlink2AssetExecutorELink.h"
 
 namespace xlink2 {
+AssetExecutorELink::~AssetExecutorELink() = default;
+
 ResourceAccessorELink* AssetExecutorELink::getResourceAccessor_() const {
     return ((UserInstanceELink*)mpUserInstance)->getResourceAccessor();
 }

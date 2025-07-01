@@ -15,9 +15,4 @@ void LockProxy<T>::unlock()
 {
     mLock.unlock();
 }
-
-// NON-MATCHING: unknown reason
-template <>
-LockProxy<sead::SpinLock>::~LockProxy() = default;
-
 }  // namespace xlink2

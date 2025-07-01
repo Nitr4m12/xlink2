@@ -17,4 +17,7 @@ void AlwaysTriggerCtrl::emitByTrigger_(s32 param1) {
 void AlwaysTriggerCtrl::notifyActive() {
     mIsActive = true;
 }
+
+AlwaysTriggerCtrl::~AlwaysTriggerCtrl() = default;
+
 }  // namespace xlink2

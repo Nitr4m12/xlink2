@@ -2,11 +2,10 @@
 #include "xlink2/xlink2ResourceAccessor.h"
 
 namespace xlink2 {
-bool AssetExecutorSLink::isRequestReEmit() const {
-    return _7 & 1;
-}
+AssetExecutorSLink::~AssetExecutorSLink() = default;
 
-bool AssetExecutorSLink::isLoopEvent() const {
+bool AssetExecutorSLink::isLoopEvent() const 
+{
     if (!mpAssetCallTable)
         return false;
 
@@ -14,14 +13,20 @@ bool AssetExecutorSLink::isLoopEvent() const {
     return res_accessor->isLoopAsset(*mpAssetCallTable);
 }
 
-void AssetExecutorSLink::onFinalize_() {
-    _9 = nullptr;
-}
-
-void AssetExecutorSLink::requestReEmit(bool check) {
+void AssetExecutorSLink::requestReEmit(bool check) 
+{
     if (!check)
         _7 &= 0xfe;
     else
         _7 |= 1;
+}
+
+bool AssetExecutorSLink::isRequestReEmit() const 
+{
+    return _7 & 1;
+}
+
+void AssetExecutorSLink::onFinalize_() {
+    _9 = nullptr;
 }
 }  // namespace xlink2
