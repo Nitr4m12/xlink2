@@ -46,32 +46,19 @@ public:
 
     System() = default;
 
-    virtual void drawInformation(sead::DrawContext*, sead::TextWriter*) const;
-    virtual void drawInformation3D(sead::DrawContext*, sead::Camera const&, sead::Projection const&,
-                                   sead::Viewport const&, f32) const;
-    virtual void createUserResource(User*, sead::Heap*) = 0;
-    virtual void allocHandle(sead::Heap*) = 0;
-    virtual u32 getUserParamNum() const = 0;
-    virtual sead::SafeString* getModuleName() const = 0;
-    virtual void allocAssetExecutor(Event*) = 0;
-    virtual ILockProxy* getModuleLockObj() const = 0;
-    virtual u64 getResourceVersion() const = 0;
-    virtual ~System();
-    virtual u64 getEventFromPool_(u32) const = 0;
-    virtual void preDrawInformation_(sead::TextWriter*) const;
-    virtual void postDrawInformation_(sead::TextWriter*) const;
-    virtual void drawInformationSystemDetail_(sead::TextWriter*) const = 0;
-    virtual void drawInformationEvent_(sead::TextWriter*) const = 0;
-
     void initSystem_(sead::Heap*, sead::Heap*, u32);
     void calc();
 
     User* searchUser(const char*, sead::Heap*, u32) const;
     s32 searchUserIgnoreHeap(const char*, User**, s32) const;
 
+    virtual void drawInformation(sead::DrawContext*, sead::TextWriter*) const;
+    virtual void drawInformation3D(sead::DrawContext*, sead::Camera const&, sead::Projection const&,
+                                   sead::Viewport const&, f32) const;
+
     void makeDebugStringGlobalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;
 
-    u32 loadResource(void*);
+    s32 loadResource(void*);
 
     ResUserHeader* getResUserHeader(const char*);
 
@@ -173,6 +160,22 @@ public:
     ResourceBuffer* getResourceBuffer() { return mResourceBuffer; }
 
     sead::Random* getRandom() { return &mRandom; }
+
+    virtual void createUserResource(User*, sead::Heap*) = 0;
+    virtual void allocHandle(sead::Heap*) = 0;
+    virtual u32 getUserParamNum() const = 0;
+    virtual sead::SafeString* getModuleName() const = 0;
+    virtual void allocAssetExecutor(Event*) = 0;
+    virtual ILockProxy* getModuleLockObj() const = 0;
+    virtual u64 getResourceVersion() const = 0;
+
+    virtual ~System();
+
+    virtual u64 getEventFromPool_(u32) const = 0;
+    virtual void preDrawInformation_(sead::TextWriter*) const;
+    virtual void postDrawInformation_(sead::TextWriter*) const;
+    virtual void drawInformationSystemDetail_(sead::TextWriter*) const = 0;
+    virtual void drawInformationEvent_(sead::TextWriter*) const = 0;
 
 protected:
     ResourceBuffer* mResourceBuffer;

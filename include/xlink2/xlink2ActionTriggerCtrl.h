@@ -46,6 +46,6 @@ private:
     ResAction* mAction{nullptr};
     bool mIsActive{false};
 };
-static_assert(sizeof(ActionTriggerCtrl) == 0x40, "Wrong size for 'xlink2::ActionTriggerCtrl'");
+static_assert(sizeof(ActionTriggerCtrl) == 0x40, "xlink2::ActionTriggerCtrl size mismatch");
 
 }  // namespace xlink2

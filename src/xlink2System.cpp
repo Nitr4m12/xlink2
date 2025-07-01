@@ -1,4 +1,5 @@
 #include "xlink2/xlink2System.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 p3)
@@ -10,6 +11,12 @@ void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 p3)
     mGlobalPropertyTriggerUserList.allocBuffer(0x60, heap);
     mErrorMgr = new (heap) ErrorMgr(this);
     mHoldMgr = new (heap) HoldMgr(this, heap);
+}
+
+s32 System::loadResource(void* bin)
+{
+    setMinLargeAddressMask(reinterpret_cast<u64>(bin));
+    return mResourceBuffer->load(bin, this);
 }
 
 ResUserHeader* System::getResUserHeader(const char* user_name) 
