@@ -1,3 +1,5 @@
+#include <prim/seadScopedLock.h>
+
 #include "xlink2/xlink2System.h"
 #include "math/seadMathCalcCommon.h"
 #include "xlink2/xlink2Util.h"
@@ -258,6 +260,15 @@ void System::setErrorDispFrame(s32 disp_frame)
 {
     if (mErrorMgr != nullptr)
         mErrorMgr->setDispFrame(disp_frame);
+}
+
+void System::killAll()
+{
+    {
+        auto lock {sead::makeScopedLock(*getModuleLockObj())};
+        for (auto& user : mUserList)
+            user.killAll();
+    }
 }
 
 bool System::isServerConnecting() const {
