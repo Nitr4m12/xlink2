@@ -17,7 +17,7 @@ public:
     static RomResourceParam getEmptyRomResourceParam();
     static ResUserHeader getEmptyUserHeader();
     
-    ParamDefineTable getParamDefineTable() { return mParamDefineTable; }
+    const ParamDefineTable* getParamDefineTable() { return &mParamDefineTable; }
     RomResourceParam getRomResourceParam() { return mRomResourceParam; }
 
 private:

@@ -167,6 +167,11 @@ void System::updateUserForGlobalPropertyTrigger(User* user)
 
 }
 
+const ParamDefineTable* System::getParamDefineTable() const
+{
+    return mResourceBuffer->getParamDefineTable();
+}
+
 void System::updateContainerCount(ContainerType type, s32) {}
 
 // bool System::isDrawTargetInstance(UserInstance* draw_target_instance) const {

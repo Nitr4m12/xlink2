@@ -116,7 +116,7 @@ bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const
 const char* ResourceAccessor::getCustomParamValueString(u32 idx,
                                                         const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id = param_define_table->getNumCustomParam() + idx;
 
     if (id < param_define_table->getNumAssetParam()) {
@@ -186,7 +186,7 @@ const char* ResourceAccessor::getResParamValueString_(const ResParam& param) con
 
 bool ResourceAccessor::getCustomParamValueBool(u32 idx, const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id = idx + param_define_table->getNumCustomParam();
 
     if (id < param_define_table->getNumAssetParam()) {
@@ -224,7 +224,7 @@ s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 
 s32 ResourceAccessor::getCustomParamValueInt(u32 idx, const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id = idx + param_define_table->getNumCustomParam();
 
     if (id < param_define_table->getNumAssetParam()) {
@@ -256,7 +256,7 @@ s32 ResourceAccessor::getCustomParamValueInt(u32 idx, const ResAssetCallTable& a
 
 f32 ResourceAccessor::getCustomParamValueFloat(u32 idx, const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id = idx + param_define_table->getNumCustomParam();
 
     if (id < param_define_table->getNumAssetParam()) {
@@ -400,7 +400,7 @@ f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param, const Us
 
 const char* ResourceAccessor::getCustomParamValueString(const char* name, const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0) {
@@ -434,7 +434,7 @@ const char* ResourceAccessor::getCustomParamValueString(const char* name, const 
 
 bool ResourceAccessor::getCustomParamValueBool(const char* name, const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0) {
@@ -469,7 +469,7 @@ bool ResourceAccessor::getCustomParamValueBool(const char* name, const ResAssetC
 
 s32 ResourceAccessor::getCustomParamValueInt(const char* name, const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0) {
@@ -504,7 +504,7 @@ s32 ResourceAccessor::getCustomParamValueInt(const char* name, const ResAssetCal
 
 f32 ResourceAccessor::getCustomParamValueFloat(const char* name, const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0) {
@@ -539,7 +539,7 @@ f32 ResourceAccessor::getCustomParamValueFloat(const char* name, const ResAssetC
 
 bool ResourceAccessor::isCustomParamString(u32 custom_param_idx) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
     if (id >= param_define_table->getNumAssetParam()) {
@@ -556,7 +556,7 @@ bool ResourceAccessor::isCustomParamString(u32 custom_param_idx) const
 
 bool ResourceAccessor::isCustomParamString(const char* name) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
@@ -567,7 +567,7 @@ bool ResourceAccessor::isCustomParamString(const char* name) const
 
 bool ResourceAccessor::isCustomParamBool(u32 custom_param_idx) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
     if (id < param_define_table->getNumAssetParam())
@@ -583,7 +583,7 @@ bool ResourceAccessor::isCustomParamBool(u32 custom_param_idx) const
 
 bool ResourceAccessor::isCustomParamBool(const char* name) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
@@ -594,7 +594,7 @@ bool ResourceAccessor::isCustomParamBool(const char* name) const
 
 bool ResourceAccessor::isCustomParamInt(u32 custom_param_idx) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
     if (id >= param_define_table->getNumAssetParam()) {
@@ -611,7 +611,7 @@ bool ResourceAccessor::isCustomParamInt(u32 custom_param_idx) const
 
 bool ResourceAccessor::isCustomParamInt(const char* name) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
@@ -622,7 +622,7 @@ bool ResourceAccessor::isCustomParamInt(const char* name) const
 
 bool ResourceAccessor::isCustomParamFloat(u32 custom_param_idx) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
     if (id >= param_define_table->getNumAssetParam()) {
@@ -639,7 +639,7 @@ bool ResourceAccessor::isCustomParamFloat(u32 custom_param_idx) const
 
 bool ResourceAccessor::isCustomParamFloat(const char* name) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
     if (id < 0)
@@ -650,7 +650,7 @@ bool ResourceAccessor::isCustomParamFloat(const char* name) const
 
 bool ResourceAccessor::isCustomParamValueUsingCurve(u32 idx, const ResAssetCallTable& asset_ctb) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + idx};
 
     if (id < param_define_table->getNumAssetParam())
@@ -693,7 +693,7 @@ bool ResourceAccessor::getUserCustomParamValueBool(s32 idx) const
 
 s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
 
     u32 param_value {mpUserResource->getParam()->userParamArray[num_custom_user_param + idx].getValue()};
@@ -704,7 +704,7 @@ s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
 
 f32 ResourceAccessor::getUserCustomParamValueFloat(s32 idx, const UserInstance* user_instance) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
 
     return getResParamValueFloat_(mpUserResource->getParam()->userParamArray[num_custom_user_param + idx], user_instance);
@@ -733,7 +733,7 @@ bool ResourceAccessor::getUserCustomParamValueBool(const char* name) const
 
 s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
     u32 param_value {mpUserResource->getParam()->userParamArray[idx].getValue()};
@@ -744,7 +744,7 @@ s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
 
 f32 ResourceAccessor::getUserCustomParamValueFloat(const char* name, const UserInstance* user_instance) const
 {
-    ParamDefineTable* param_define_table {mpSystem->getParamDefineTable()};
+    auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
     return getResParamValueFloat_(mpUserResource->getParam()->userParamArray[idx], user_instance);

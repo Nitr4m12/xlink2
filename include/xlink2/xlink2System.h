@@ -90,7 +90,7 @@ public:
     void registUserForGlobalPropertyTrigger(User*);
     void updateUserForGlobalPropertyTrigger(User*);
 
-    ParamDefineTable* getParamDefineTable() const;
+    const ParamDefineTable* getParamDefineTable() const;
     ParamDefineTable* getParamDefineTable(ResMode) const;
 
     // System* searchUserOrCreate_(const UserInstance::CreateArg&, sead::Heap*, u32);
