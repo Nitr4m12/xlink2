@@ -113,6 +113,18 @@ void System::setGlobalPropertyValue(u32 prop_idx, s32 value)
         }
 }
 
+void System::setGlobalPropertyValue(u32 prop_idx, f32 value)
+{
+    if (isCallEnabled() && 
+        mGlobalPropertyValues != nullptr && 
+        prop_idx < mNumGlobalProperty && 
+        mGlobalPropertyDefinitions[prop_idx]->getType() == PropertyType::F32 &&
+        mGlobalPropertyValues[prop_idx].valueFloat != value) {
+            mGlobalPropertyValues[prop_idx].valueFloat = value;
+            mGlobalPropertyBitfield.setBit(prop_idx);
+        }
+}
+
 // ParamDefineTable* System::getParamDefineTable() const {
 //     return mResourceBuffer->getParamDefineTable();
 // }
