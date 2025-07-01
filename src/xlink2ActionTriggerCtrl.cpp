@@ -77,20 +77,19 @@ void ActionTriggerCtrl::changeAction(const char* name, s32 p2)
     mUserInfo.mNameHash = sead::HashCRC32::calcStringHash(name);
 }
 
-// NON-MATCHING
 ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot, const char* name, s32* idx)  const
 {
-    if (action_slot->actionStartIdx >= 0) {
-        UserResourceParam* user_res_param {getUserResource()->getParam()};
+    if (action_slot->actionStartIdx < 0)
+        return nullptr;
+    
+    UserResourceParam* user_res_param = getUserResource()->getParam();
 
-        for (s32 i{action_slot->actionStartIdx - 1}; i < action_slot->actionEndIdx; ++i) {
-            ResAction* action {&user_res_param->resActionTable[i]};
-            const char* action_name {calcOffset<const char>(action->namePos)};
-            if (strcmp(action_name, name) == 0) {
-                if (idx != nullptr)
-                    *idx = i + 1;
-                return action;
-            }
+    ResAction* actionTable = user_res_param->resActionTable;
+    for (s32 i = action_slot->actionStartIdx; i <= action_slot->actionEndIdx; ++i) {
+        if (strcmp(calcOffset<const char>(actionTable[i].namePos), name) == 0) {
+            if (idx != nullptr)
+                *idx = i;
+            return actionTable + i;
         }
     }
     return nullptr;

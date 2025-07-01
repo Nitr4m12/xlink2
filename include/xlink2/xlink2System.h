@@ -66,7 +66,7 @@ public:
     void initSystem_(sead::Heap*, sead::Heap*, u32);
     void calc();
 
-    System* searchUser(const char*, sead::Heap*, u32) const;
+    User* searchUser(const char*, sead::Heap*, u32) const;
     s32 searchUserIgnoreHeap(const char*, User**, s32) const;
 
     void makeDebugStringGlobalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;

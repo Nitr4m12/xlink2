@@ -53,6 +53,10 @@ public:
     u16 getNumLocalProp() const { return mLocalPropNum; }
     PropertyDefinition* getPropertyDefinitionEntry(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
 
+    sead::Heap* getHeap() const { return mpHeap; }
+
+    u32 get8() { return _8; }
+
 private:
     void* _0;
     void* _1;
