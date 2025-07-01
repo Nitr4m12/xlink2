@@ -33,7 +33,7 @@ public:
     
     s32 getCurrentResActionIdx() const;
     void changeActionImpl_old_(ResAction const*, s32, UserResource const*);
-    void restartAction(char const*, int);
+    void restartAction(const char*, s32);
 
     ~ActionTriggerCtrl() override;
 

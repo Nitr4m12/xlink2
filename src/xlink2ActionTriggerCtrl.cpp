@@ -137,5 +137,18 @@ s32 ActionTriggerCtrl::getCurrentResActionIdx() const
     return -1;
 }
 
+void ActionTriggerCtrl::restartAction(char const* name, s32 idx) 
+{
+    if (mActionSlot != nullptr) {
+        ResAction* action {searchResAction_(mActionSlot, name, nullptr)};
+        if (action) {
+            mAction = action;
+            mUserInfo.mOffset = idx;
+            mUserBinPos = idx;
+        }
+    }
+}
+
+
 ActionTriggerCtrl::~ActionTriggerCtrl() = default;
 }  // namespace xlink2
