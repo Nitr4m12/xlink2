@@ -50,6 +50,14 @@ void System::unregistUserForGlobalPropertyTrigger_(User* user)
         mGlobalPropertyTriggerUserList.erase(user_idx);
 }
 
+// WIP
+void System::allocGlobalProperty(u32 num_global_prop, sead::Heap* heap)
+{
+    mGlobalPropertyDefinitions = new (heap) PropertyDefinition*[num_global_prop];
+    mGlobalPropertyValues = new (heap) PropertyValueType[num_global_prop];
+    mNumGlobalProperty = num_global_prop;
+}
+
 void System::fixGlobalPropertyDefinition() 
 {
     mResourceBuffer->applyGlobalPropertyDefinition(this);

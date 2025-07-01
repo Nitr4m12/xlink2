@@ -9,6 +9,7 @@
 #include <hostio/seadHostIOReflexible.h>
 #include <prim/seadSafeString.h>
 
+#include "prim/seadBitFlag.h"
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2ContainerType.h"
@@ -22,6 +23,7 @@
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2ResourceBuffer.h"
 #include "xlink2/xlink2User.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace sead {
 class DrawContext;
@@ -183,12 +185,12 @@ protected:
     u32 _0;
     u32 _15;
     u32 _16;
-    s32 mEventCreateId; // mNumGlobalProperty
+    s32 mEventCreateId;
     u32 _17;
-    u32 _18;
-    const PropertyDefinition** mGlobalPropertyDefinitions;
-    float* mGlobalPropertyValues;
-    void* _19;
+    u32 mNumGlobalProperty;
+    PropertyDefinition** mGlobalPropertyDefinitions;
+    PropertyValueType* mGlobalPropertyValues;
+    sead::BitFlag64 mGlobalPropertyBitfield;
     bool mIsGlobalPropFixed;
     ErrorMgr* mErrorMgr;
     HoldMgr* mHoldMgr;
