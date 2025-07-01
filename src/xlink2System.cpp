@@ -1,4 +1,5 @@
 #include "xlink2/xlink2System.h"
+#include "math/seadMathCalcCommon.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -218,8 +219,39 @@ bool System::isDrawTargetInstance_(UserInstance* target_instance) const
         return mDrawInstance == target_instance;
     return target_instance->getSortKey() <= mUserSortKey;
 }
-             
-void System::updateContainerCount(ContainerType type, s32) {}
+
+void System::clearError(const User* user)
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void* System::getAnyone()
+{
+    return nullptr;
+}
+
+void System::updateContainerCount(ContainerType type, s32) 
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void System::freeAssetExecutor(AssetExecutor* asset_executor)
+{
+    asset_executor->onDestroy_();
+    if ((static_cast<s32>(asset_executor->getContainerType()) & -2) != static_cast<s32>(ContainerType::Sequence))
+        asset_executor->fadeBySystem();
+
+    asset_executor->setAssetCallTable(nullptr);
+    asset_executor->setContainerType(ContainerType::Switch);
+    asset_executor->set34(0);
+    asset_executor->setUserInstance(nullptr);
+
+    auto* heap {mAssetExecutorHeap};
+    asset_executor->~AssetExecutor();
+    heap->free(asset_executor);
+}
 
 bool System::isServerConnecting() const {
     return false;

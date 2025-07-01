@@ -111,9 +111,7 @@ public:
     void writeLines_(sead::SafeString const&, sead::TextWriter*) const;
 
     bool isDrawTargetInstance_(UserInstance*) const;
-
     void updateDebugDrawUserList_() const;
-
     f32 calcDebugDrawSortKeyThreshold_() const;
 
     void clearError(const User*);
@@ -217,7 +215,7 @@ protected:
     s32 _22;
     DebugOperationParam mDebugOperationParamOR;
     DebugOperationParam mDebugOperationParamEditor;
-    void* _0x7b8;
+    bool mIsEditor;
     sead::Buffer<u32> mOtameshiBuffer; // TODO: implement xlink2::OtameshiRequest
     UserInstance* mDrawInstance;
     u8 _11;

@@ -10,8 +10,8 @@ class DebugOperationParam {
 public:
     DebugOperationParam();
 
-    u32 get0() const { return mDebugFlag; }
-    u32 get258() const { return mPrintFlag; }
+    sead::BitFlag32 getDebugFlag() const { return mDebugFlag; }
+    sead::BitFlag32 getPrintFlag() const { return mPrintFlag; }
     bool get258Check() const { return mPrintFlag & 1; }
 
 private:

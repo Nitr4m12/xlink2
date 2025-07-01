@@ -49,6 +49,17 @@ public:
     ResTriggerOverwriteParam* triggerOverwriteParam() { return mpTriggerOverwriteParam; }
     void triggerOverwriteParam(ResTriggerOverwriteParam* new_param) { mpTriggerOverwriteParam = new_param; }
 
+    ContainerType getContainerType() const { return mContainerType; }
+    void setContainerType(ContainerType new_type) { mContainerType = new_type; }
+
+    ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
+    void setAssetCallTable(ResAssetCallTable* asset_ctb) { mpAssetCallTable = asset_ctb; }
+
+    void set34(f32 new_val) { _0x34 = new_val; }
+
+    void setUserInstance(UserInstance* new_instance) { mpUserInstance = new_instance; }
+
+
 protected:
     u8 _0x08[0x10];
     class Event* mpEvent;
