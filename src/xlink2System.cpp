@@ -172,6 +172,17 @@ const ParamDefineTable* System::getParamDefineTable() const
     return mResourceBuffer->getParamDefineTable();
 }
 
+const ParamDefineTable* System::getParamDefineTable(ResMode res_mode) const
+{
+    if (res_mode != ResMode::Editor)
+        return mResourceBuffer->getParamDefineTable();
+    
+    if (mEditorBuffer != nullptr)
+        return mEditorBuffer->getParamDefineTable();
+
+    return nullptr;
+}
+
 void System::updateContainerCount(ContainerType type, s32) {}
 
 // bool System::isDrawTargetInstance(UserInstance* draw_target_instance) const {
