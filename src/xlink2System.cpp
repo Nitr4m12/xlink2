@@ -158,6 +158,14 @@ void System::registUserForGlobalPropertyTrigger(User* user)
     }
 }
 
+void System::updateUserForGlobalPropertyTrigger(User* user)
+{
+    if (user->getUserResource()->hasGlobalPropertyTrigger())
+        registUserForGlobalPropertyTrigger(user);
+    else 
+        unregistUserForGlobalPropertyTrigger_(user);
+
+}
 
 void System::updateContainerCount(ContainerType type, s32) {}
 
