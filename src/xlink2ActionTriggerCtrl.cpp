@@ -65,7 +65,6 @@ void ActionTriggerCtrl::notifyActive()
     }
 }
 
-// NON-MATCHING / WIP
 void ActionTriggerCtrl::changeAction(const char* name, s32 p2) 
 {
     ResAction* action {searchResAction_(mActionSlot, name, nullptr)};
