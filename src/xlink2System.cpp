@@ -271,6 +271,16 @@ void System::killAll()
     }
 }
 
+void System::killAllOneTimeEvent()
+{
+    {
+        auto lock {sead::makeScopedLock(*getModuleLockObj())};
+        for (auto& user : mUserList)
+            for (auto& instance : *user.getUserInstanceList())
+                instance.killAllOneTimeEvent();
+    }
+}
+
 bool System::isServerConnecting() const {
     return false;
 }
