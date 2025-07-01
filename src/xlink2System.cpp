@@ -240,6 +240,7 @@ void System::updateContainerCount(ContainerType type, s32)
 void System::freeAssetExecutor(AssetExecutor* asset_executor)
 {
     asset_executor->onDestroy_();
+    // TODO: revisit this function to see if this check can be made simpler
     if ((static_cast<s32>(asset_executor->getContainerType()) & -2) != static_cast<s32>(ContainerType::Sequence))
         asset_executor->fadeBySystem();
 
@@ -251,6 +252,12 @@ void System::freeAssetExecutor(AssetExecutor* asset_executor)
     auto* heap {mAssetExecutorHeap};
     asset_executor->~AssetExecutor();
     heap->free(asset_executor);
+}
+
+void System::setErrorDispFrame(s32 disp_frame)
+{
+    if (mErrorMgr != nullptr)
+        mErrorMgr->setDispFrame(disp_frame);
 }
 
 bool System::isServerConnecting() const {

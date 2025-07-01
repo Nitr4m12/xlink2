@@ -26,10 +26,13 @@ public:
 
     void* getIsDebugBreakEnablePtr();
 
+    s32 getDispFrame() { return mDispFrame; }
+    void setDispFrame(s32 frame) { mDispFrame = frame; }
+
 private:
     bool mIsNotThrown;
     Error mErrorEntries[32];
-    u32 mErrorDispFrame;
+    s32 mDispFrame;
     u32 _2;
     void* _3;
     System* mSystem;

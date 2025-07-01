@@ -215,7 +215,7 @@ protected:
     s32 _22;
     DebugOperationParam mDebugOperationParamOR;
     DebugOperationParam mDebugOperationParamEditor;
-    bool mIsEditor;
+    bool _0x7b0;
     sead::Buffer<u32> mOtameshiBuffer; // TODO: implement xlink2::OtameshiRequest
     UserInstance* mDrawInstance;
     u8 _11;
