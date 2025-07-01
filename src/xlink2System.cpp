@@ -138,20 +138,6 @@ s32 System::searchGlobalPropertyIndex(const char* prop_name) const
     return -1;
 }
 
-// ParamDefineTable* System::getParamDefineTable() const {
-//     return mResourceBuffer->getParamDefineTable();
-// }
-
-// ParamDefineTable* System::getParamDefineTable(ResMode mode) const {
-//     if (mode != (ResMode)1)
-//         return mResourceBuffer->getParamDefineTable();
-
-//     if (mEditorBuffer != nullptr)
-//         return mEditorBuffer->getParamDefineTable();
-
-//     return nullptr;
-// }
-
 s32 System::incrementEventCreateId_() {
     s32 event_id {mEventCreateId};
     s32 create_id {1};
@@ -162,6 +148,16 @@ s32 System::incrementEventCreateId_() {
     mEventCreateId = create_id;
     return event_id;
 }
+
+void System::registUserForGlobalPropertyTrigger(User* user)
+{
+    if (user->getUserResource()->hasGlobalPropertyTrigger()) {
+        if (mGlobalPropertyTriggerUserList.search(user) == -1) {
+            mGlobalPropertyTriggerUserList.pushBack(user);
+        }
+    }
+}
+
 
 void System::updateContainerCount(ContainerType type, s32) {}
 
