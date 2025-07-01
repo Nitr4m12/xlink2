@@ -24,6 +24,17 @@ ResUserHeader* System::getResUserHeader(const char* user_name)
     return mResourceBuffer->searchResUserHeader(user_name);
 }
 
+void System::removeUserInstance(UserInstance* user_instance)
+{
+}
+
+void System::unfixDrawInst_(UserInstance* user_instance)
+{
+    if (mDrawInstance == user_instance)
+        mDrawInstance = nullptr;
+}
+
+
 void System::fixGlobalPropertyDefinition() 
 {
     mResourceBuffer->applyGlobalPropertyDefinition(this);

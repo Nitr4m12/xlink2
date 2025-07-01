@@ -1,5 +1,6 @@
 #pragma once
 
+#include <container/seadBuffer.h>
 #include <container/seadOffsetList.h>
 #include <container/seadPtrArray.h>
 #include <gfx/seadCamera.h>
@@ -63,7 +64,6 @@ public:
     ResUserHeader* getResUserHeader(const char*);
 
     void removeUserInstance(UserInstance*);
-
     void unfixDrawInst_(UserInstance*);
 
     void unregistUserForGlobalPropertyTrigger_(User*);
@@ -207,13 +207,15 @@ protected:
     sead::OffsetList<User>* mDebugDrawUserList;
     float mUserSortKey;
     sead::SafeString* mDebugString;
+    void* _0xe8;
     u8 _10;
     u32 _20;
     u32 _21;
     s32 _22;
     DebugOperationParam mDebugOperationParamOR;
     DebugOperationParam mDebugOperationParamEditor;
-    void* _12;
+    void* _0x7b8;
+    sead::Buffer<u32> mOtameshiBuffer; // TODO: implement xlink2::OtameshiRequest
     UserInstance* mDrawInstance;
     u8 _11;
 
