@@ -1,6 +1,7 @@
 #include "xlink2/xlink2ActionTriggerCtrl.h"
 #include <cstring>
 #include "codec/seadHashCRC32.h"
+#include "xlink2/xlink2ResActionTrigger.h"
 #include "xlink2/xlink2UserResourceParam.h"
 #include "xlink2/xlink2Util.h"
 
@@ -83,33 +84,33 @@ ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot,
     
     UserResourceParam* user_res_param = getUserResource()->getParam();
 
-    ResAction* actionTable = user_res_param->resActionTable;
+    ResAction* action_table = user_res_param->resActionTable;
     for (s32 i = action_slot->actionStartIdx; i <= action_slot->actionEndIdx; ++i) {
-        if (strcmp(calcOffset<const char>(actionTable[i].namePos), name) == 0) {
+        if (strcmp(calcOffset<const char>(action_table[i].namePos), name) == 0) {
             if (idx != nullptr)
                 *idx = i;
-            return actionTable + i;
+            return action_table + i;
         }
     }
     return nullptr;
 }
 
-// NON-MATCHING
 void ActionTriggerCtrl::stopAction() 
 {
-    if (mAction != nullptr) {
-        UserResourceParam* user_res_param {getUserResource()->getParam()};
-        if (mAction->triggerStartIdx <= mAction->triggerEndIdx) {
-            for (int i {mAction->triggerStartIdx - 1}; i < mAction->triggerEndIdx; ++i) {
-                sead::BitFlag16 action_flag {user_res_param->resActionTriggerTable[i].flag};
-                fadeByTrigger_(i);
-                if ((action_flag - 4) == -1 || (action_flag & 12) == 8)
-                    emitByTrigger_(i);
-            }
-        }
-        mAction = nullptr;
-        mIsActive = false;
+    if (mAction == nullptr)
+        return;
+
+    UserResourceParam* user_res_param {getUserResource()->getParam()};
+    
+    ResActionTrigger* action_trigger_table {user_res_param->resActionTriggerTable};
+    for (s32 i {mAction->triggerStartIdx}; i <= mAction->triggerEndIdx; ++i) {
+        // sead::BitFlag16 action_flag {action_trigger_table[i].flag};
+        fadeByTrigger_(i);
+        if (action_trigger_table[i].startFrame == -1 || (action_trigger_table[i].flag & 12) == 8)
+            emitByTrigger_(i);
     }
+    mAction = nullptr;
+    mIsActive = false;
 }
 
 void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2) 
