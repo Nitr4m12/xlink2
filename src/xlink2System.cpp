@@ -281,6 +281,11 @@ void System::killAllOneTimeEvent()
     }
 }
 
+bool System::isServerConnecting() const
+{
+    return false;
+}
+
 void System::changeDebugOperationType(bool b1)
 {
 #ifdef SEAD_DEBUG
@@ -322,8 +327,9 @@ void System::dumpUsers() const
     }
 }
 
-bool System::isServerConnecting() const {
-    return false;
+void System::requestSendPickedUserName(const sead::SafeString& /*unused*/)
+{
+#ifdef SEAD_DEBUG
+#endif
 }
-
 }  // namespace xlink2

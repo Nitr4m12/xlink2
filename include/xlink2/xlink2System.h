@@ -134,7 +134,7 @@ public:
     void dumpActiveEvents() const;
     void dumpUsers() const;
 
-    void requestSendPickedUserName(const sead::SafeString& /*unused*/){};
+    void requestSendPickedUserName(const sead::SafeString& /*unused*/);
 
     void resetOtameshiRequest();
 
@@ -179,6 +179,8 @@ public:
     virtual void drawInformationEvent_(sead::TextWriter*) const = 0;
 
 protected:
+    struct OtameshiRequest;
+
     ResourceBuffer* mResourceBuffer;
     sead::OffsetList<User> mUserList;
     u32 _0;
@@ -216,7 +218,8 @@ protected:
     DebugOperationParam mDebugOperationParamOR;
     DebugOperationParam mDebugOperationParamEditor;
     bool _0x7b0;
-    sead::Buffer<u32> mOtameshiBuffer; // TODO: implement xlink2::OtameshiRequest
+    u32 _0x7b4;
+    sead::Buffer<OtameshiRequest> mOtameshiBuffer;
     UserInstance* mDrawInstance;
     u8 _11;
 
