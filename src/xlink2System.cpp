@@ -83,7 +83,6 @@ void System::setGlobalPropertyDefinition(u32 prop_idx, const PropertyDefinition*
     }
 }
 
-
 void System::fixGlobalPropertyDefinition() 
 {
     mResourceBuffer->applyGlobalPropertyDefinition(this);
@@ -91,6 +90,13 @@ void System::fixGlobalPropertyDefinition()
         mEditorBuffer->applyGlobalPropertyDefinition();
     }
     mIsGlobalPropFixed = true;
+}
+
+void System::freeGlobalProperty()
+{
+    delete[] mGlobalPropertyDefinitions;
+    delete[] mGlobalPropertyValues;
+    mNumGlobalProperty = 0; 
 }
 
 void System::addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...) {
