@@ -80,7 +80,7 @@ public:
 
     void setGlobalPropertyValue(u32, s32);
     void setGlobalPropertyValue(u32, f32);
-    u32 searchGlobalPropertyIndex(const char*) const;
+    s32 searchGlobalPropertyIndex(const char*) const;
 
     s32 incrementEventCreateId_();
     Event allocEvent();

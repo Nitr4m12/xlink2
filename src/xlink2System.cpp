@@ -125,6 +125,19 @@ void System::setGlobalPropertyValue(u32 prop_idx, f32 value)
         }
 }
 
+s32 System::searchGlobalPropertyIndex(const char* prop_name) const
+{
+    for (u32 i {0}; i < mNumGlobalProperty; ++i) {
+        if (mGlobalPropertyDefinitions[i] != nullptr) {
+            auto* global_prop_name {mGlobalPropertyDefinitions[i]->getPropertyName()};
+            if (strcmp(prop_name, global_prop_name->cstr()) == 0)
+                return i;
+        }
+    }
+
+    return -1;
+}
+
 // ParamDefineTable* System::getParamDefineTable() const {
 //     return mResourceBuffer->getParamDefineTable();
 // }
