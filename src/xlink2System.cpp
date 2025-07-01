@@ -28,13 +28,11 @@ void System::removeUserInstance(UserInstance* user_instance)
 {
     unfixDrawInst_(user_instance);
     User* user {user_instance->getUser()};
-    
+
     user->getUserInstanceList()->erase(user_instance);
     if (user->getUserInstanceList()->isEmpty()) {
         mUserList.erase(user);
-        auto user_idx {mGlobalPropertyTriggerUserList.indexOf(user)};
-        if (user_idx >= 0)
-            mGlobalPropertyTriggerUserList.erase(user_idx);
+        unregistUserForGlobalPropertyTrigger_(user);
         delete user;
     }
 }
@@ -45,6 +43,12 @@ void System::unfixDrawInst_(UserInstance* user_instance)
         mDrawInstance = nullptr;
 }
 
+void System::unregistUserForGlobalPropertyTrigger_(User* user)
+{
+    auto user_idx {mGlobalPropertyTriggerUserList.search(user)};
+    if (user_idx >= 0)
+        mGlobalPropertyTriggerUserList.erase(user_idx);
+}
 
 void System::fixGlobalPropertyDefinition() 
 {
