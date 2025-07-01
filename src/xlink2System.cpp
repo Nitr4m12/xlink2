@@ -183,21 +183,46 @@ const ParamDefineTable* System::getParamDefineTable(ResMode res_mode) const
     return nullptr;
 }
 
+void System::drawInformationInstance3D_(UserInstance* user_instance, sead::DrawContext*, sead::TextWriter*) const
+{
+    user_instance->getIUser()->getDebugDrawCamera();
+    user_instance->getIUser()->getDebugDrawProjection();
+}
+
+void System::drawInformationInstance3D_(UserInstance* user_instance, sead::DrawContext*, sead::TextWriter*,
+                                const sead::Camera&, const sead::Projection&,
+                                const sead::Viewport&) const 
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void System::drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
+                const sead::SafeString&, sead::TextWriter*, IUser*) const 
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void System::drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
+                sead::SafeString const&, sead::TextWriter*, sead::Camera const&,
+                sead::Projection const&, sead::Viewport const&) const 
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+bool System::isDrawTargetInstance_(UserInstance* target_instance) const 
+{
+    if (mDrawInstance != nullptr)
+        return mDrawInstance == target_instance;
+    return target_instance->getSortKey() <= mUserSortKey;
+}
+             
 void System::updateContainerCount(ContainerType type, s32) {}
 
-// bool System::isDrawTargetInstance(UserInstance* draw_target_instance) const {
-//     if (mUserInstance == nullptr)
-//         return mUserInstance->getSortKey();
-//     return mUserInstance == draw_target_instance;
-// }
 bool System::isServerConnecting() const {
     return false;
 }
-
-// void System::unfixDrawInst(UserInstance * draw_instance) {
-//     if (mUserInstance == draw_instance) {
-//         mUserInstance = nullptr;
-//     }
-// }
 
 }  // namespace xlink2

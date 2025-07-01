@@ -163,6 +163,9 @@ public:
     sead::BitFlag8 getBitFlag() const { return mBitFlag; };
     UserInstanceParam* getParam() const { return mParams[mBitFlag & 1]; };
 
+    const IUser* getIUser() const { return mIUser; };
+
+
     bool unkCheck();
 
 protected:

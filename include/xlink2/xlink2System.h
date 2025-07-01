@@ -100,12 +100,13 @@ public:
     void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*,
                                    sead::Camera const&, sead::Projection const&,
                                    sead::Viewport const&) const;
+
     void drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
                     sead::SafeString const&, sead::TextWriter*, IUser*) const;
-
     void drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
                     sead::SafeString const&, sead::TextWriter*, sead::Camera const&,
                     sead::Projection const&, sead::Viewport const&) const;
+
     void writeBlinkText_(sead::SafeString const&, sead::TextWriter*) const;
     void writeLines_(sead::SafeString const&, sead::TextWriter*) const;
 
@@ -204,7 +205,7 @@ protected:
     sead::Heap* mAssetExecutorHeap;
     sead::Heap* mPrimaryHeap;
     EditorBuffer* mEditorBuffer;
-    float mTick;
+    s32 mTick;
     float _7;
     sead::OffsetList<User>* mDebugDrawUserList;
     float mUserSortKey;
