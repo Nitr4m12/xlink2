@@ -165,8 +165,7 @@ public:
 
     const IUser* getIUser() const { return mIUser; };
 
-
-    bool unkCheck();
+    const sead::OffsetList<Event>* getEventList() const { return &mEventList; }
 
 protected:
     sead::OffsetList<Event> mEventList;

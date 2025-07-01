@@ -6,7 +6,7 @@ namespace xlink2 {
 Event::Event()
 {
     mAliveAssetExecutors.initOffset(8);
-    mFadeBySystemAssetExecutors.initOffset(8);
+    mFadeBySystemList.initOffset(8);
 }
 
 Event::~Event() = default;
@@ -41,8 +41,8 @@ void Event::destroyAllContainerAndAssetExecutor_()
     if (mpRootContainer != nullptr)
         mpRootContainer->destroy();
 
-    for (auto& executor : mFadeBySystemAssetExecutors.robustRange()) {
-        mFadeBySystemAssetExecutors.erase(&executor);
+    for (auto& executor : mFadeBySystemList.robustRange()) {
+        mFadeBySystemList.erase(&executor);
         mpUserInstance->getUser()->getSystem()->freeAssetExecutor(&executor);
     }
 }
@@ -70,7 +70,7 @@ void Event::kill()
             if (mpRootContainer != nullptr)
                 mpRootContainer->kill();
 
-            for (auto& executor : mFadeBySystemAssetExecutors)
+            for (auto& executor : mFadeBySystemList)
                 executor.kill();
         }
     }
@@ -85,7 +85,7 @@ void Event::killOneTimeEvent()
             if (mpRootContainer != nullptr)
                 mpRootContainer->killOneTimeEvent();
 
-            for (auto& executor : mFadeBySystemAssetExecutors)
+            for (auto& executor : mFadeBySystemList)
                 if (!executor.isLoopEvent())    
                     executor.kill();
         }
@@ -134,15 +134,15 @@ bool Event::calc()
         }
     }
 
-    bool is_empty {mFadeBySystemAssetExecutors.isEmpty()};
+    bool is_empty {mFadeBySystemList.isEmpty()};
     if (!is_empty) {
-        for (auto& executor : mFadeBySystemAssetExecutors.robustRange()) {
+        for (auto& executor : mFadeBySystemList.robustRange()) {
             if (executor.calc()) {
-                mFadeBySystemAssetExecutors.erase(&executor);
+                mFadeBySystemList.erase(&executor);
                 mpUserInstance->getUser()->getSystem()->freeAssetExecutor(&executor);
             }
         }
-        is_empty = mFadeBySystemAssetExecutors.isEmpty();
+        is_empty = mFadeBySystemList.isEmpty();
     }
 
     return is_empty && container_done;
@@ -161,7 +161,7 @@ s32 Event::getAliveAssetNum() const
 s32 Event::getFadeBySystemListAssetNum() const 
 {
     int asset_num {0};
-    for (auto& executor : mFadeBySystemAssetExecutors)
+    for (auto& executor : mFadeBySystemList)
         if (executor.isAssetValid())
             ++asset_num;
 

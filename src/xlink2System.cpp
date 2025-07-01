@@ -281,6 +281,34 @@ void System::killAllOneTimeEvent()
     }
 }
 
+void System::changeDebugOperationType(bool b1)
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void System::dumpActiveEvents() const
+{
+    {
+        auto lock {sead::makeScopedLock(*getModuleLockObj())};
+        for (auto& user : mUserList) {
+            for (auto& instance : *user.getUserInstanceList()) {
+                for (auto& event : *instance.getEventList()) {
+                    s32 asset_num {event.getAliveAssetNum()};
+                    asset_num = event.getFadeBySystemListAssetNum();
+                    for (auto& executor : event.getAliveAssetExecutors())
+                        executor.dumpDebugPrint();
+
+                    if (asset_num != 0) {
+                        for (auto& executor : event.getFadeBySystemExecutors())
+                            executor.dumpDebugPrint();
+                    }
+                }
+            }
+        }
+    }
+}
+
 bool System::isServerConnecting() const {
     return false;
 }

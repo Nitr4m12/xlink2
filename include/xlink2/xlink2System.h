@@ -8,8 +8,8 @@
 #include <hostio/seadHostIONode.h>
 #include <hostio/seadHostIOReflexible.h>
 #include <prim/seadSafeString.h>
+#include <prim/seadBitFlag.h>
 
-#include "prim/seadBitFlag.h"
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2ContainerType.h"
@@ -129,7 +129,7 @@ public:
 
     bool isServerConnecting() const;
 
-    bool changeDebugOperationType(bool);
+    void changeDebugOperationType(bool);
 
     void dumpActiveEvents() const;
     void dumpUsers() const;

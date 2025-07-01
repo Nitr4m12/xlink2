@@ -520,10 +520,4 @@ bool UserInstance::doEventActivatingCallback_(const Locator& /*unused*/)
     return false;
 }
 void UserInstance::doEventActivatedCallback_(const Locator& /*unused*/, Event* /*unused*/) {}
-
-bool UserInstance::unkCheck() 
-{
-    return mBitFlag.isOffBit(1) && mUser->getSystem()->isCallEnabled();
-}
-
 }  // namespace xlink2

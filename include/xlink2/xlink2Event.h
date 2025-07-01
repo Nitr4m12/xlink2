@@ -55,6 +55,9 @@ public:
     TriggerType& getTriggerType() { return mTriggerType; }
     sead::BitFlag32 getBitFlag() { return mBitFlag; }
 
+    const sead::OffsetList<xlink2::AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
+    const sead::OffsetList<xlink2::AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemList; }
+
 private:
     sead::BitFlag32 mBitFlag{0};
     void* _0x10{nullptr};
@@ -63,12 +66,12 @@ private:
     UserInstance* mpUserInstance;
     const ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;
-    ResTriggerOverwriteParam* mpTriggerOverwriteParam{nullptr};
-    BoneMtx* mpBoneMtx{nullptr};
-    bool _0x50{true};
-    ContainerBase* mpRootContainer{nullptr};
+    ResTriggerOverwriteParam* mpTriggerOverwriteParam {nullptr};
+    BoneMtx* mpBoneMtx {nullptr};
+    bool _0x50 {true};
+    ContainerBase* mpRootContainer {nullptr};
     sead::OffsetList<xlink2::AssetExecutor> mAliveAssetExecutors;
-    sead::OffsetList<xlink2::AssetExecutor> mFadeBySystemAssetExecutors;
+    sead::OffsetList<xlink2::AssetExecutor> mFadeBySystemList;
     float _0x90;
     u8 mGroupId{0xff};
 };
