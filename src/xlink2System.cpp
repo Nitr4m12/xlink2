@@ -26,6 +26,17 @@ ResUserHeader* System::getResUserHeader(const char* user_name)
 
 void System::removeUserInstance(UserInstance* user_instance)
 {
+    unfixDrawInst_(user_instance);
+    User* user {user_instance->getUser()};
+    
+    user->getUserInstanceList()->erase(user_instance);
+    if (user->getUserInstanceList()->isEmpty()) {
+        mUserList.erase(user);
+        auto user_idx {mGlobalPropertyTriggerUserList.indexOf(user)};
+        if (user_idx >= 0)
+            mGlobalPropertyTriggerUserList.erase(user_idx);
+        delete user;
+    }
 }
 
 void System::unfixDrawInst_(UserInstance* user_instance)

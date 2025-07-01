@@ -55,6 +55,8 @@ public:
 
     sead::Heap* getHeap() const { return mpHeap; }
 
+    sead::OffsetList<UserInstance>* getUserInstanceList() { return &mUserInstanceList; }
+
     u32 get8() { return _8; }
 
 private:

@@ -196,7 +196,7 @@ protected:
     bool mIsCallEnabled;
     sead::Heap* mUserCreateHeap;
     float _6;
-    sead::PtrArrayImpl mGlobalPropertyTriggerUserList;
+    sead::PtrArray<User> mGlobalPropertyTriggerUserList;
     sead::Random mRandom;
     sead::Heap* mContainerHeap;
     sead::Heap* mAssetExecutorHeap;
