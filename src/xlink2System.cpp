@@ -332,4 +332,26 @@ void System::requestSendPickedUserName(const sead::SafeString& /*unused*/)
 #ifdef SEAD_DEBUG
 #endif
 }
+
+System::~System()
+{
+    if (mResourceBuffer) {
+        mResourceBuffer->~ResourceBuffer();
+        mResourceBuffer = nullptr;
+    }
+
+    auto* error_mgr {mErrorMgr};
+    if (error_mgr) {
+        // delete error_mgr;
+        mErrorMgr->~ErrorMgr();
+        // delete error_mgr;
+        mErrorMgr = nullptr;
+    }
+
+    if (mHoldMgr) {
+        mHoldMgr->~HoldMgr();
+        mHoldMgr = nullptr;
+    }
+}
+
 }  // namespace xlink2

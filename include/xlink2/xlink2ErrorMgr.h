@@ -12,7 +12,7 @@ class ErrorMgr {
 
 public:
     explicit ErrorMgr(System const*);
-    ~ErrorMgr();
+    ~ErrorMgr() = default;
 
     void add(Error::Type, User const*, char const*);
     void clear(User const*);
@@ -28,6 +28,8 @@ public:
 
     s32 getDispFrame() { return mDispFrame; }
     void setDispFrame(s32 frame) { mDispFrame = frame; }
+
+    const sead::CriticalSection* getCriticalSection() const { return &mCriticalSection; }
 
 private:
     bool mIsNotThrown;
