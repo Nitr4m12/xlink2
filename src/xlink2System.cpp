@@ -309,6 +309,19 @@ void System::dumpActiveEvents() const
     }
 }
 
+void System::dumpUsers() const
+{
+    {
+        auto lock {sead::makeScopedLock(*getModuleLockObj())};
+        for (auto& user : mUserList) {
+            for (auto& instance : *user.getUserInstanceList()) {
+#ifdef SEAD_DEBUG
+#endif
+            }
+        }
+    }
+}
+
 bool System::isServerConnecting() const {
     return false;
 }
