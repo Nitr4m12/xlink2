@@ -12,7 +12,7 @@ namespace xlink2 {
 class TriggerCtrl {
 public:
     virtual void calc() = 0;
-    virtual ~TriggerCtrl() = 0;
+    virtual ~TriggerCtrl() = default;
 
     void emitByTriggerImpl(TriggerType, s32, u32, ResAssetCallTable const*);
     void fadeByTrigger_(s32);

@@ -12,7 +12,7 @@ public:
     PropertyDefinition(const char* name, PropertyType type, u8 unk)
         : mPropertyName(name), mType(type), _0(unk) {}
 
-    virtual ~PropertyDefinition();
+    virtual ~PropertyDefinition() = default;
 
     PropertyType getType() const { return mType; }
     sead::FixedSafeString<64>* getPropertyName() { return &mPropertyName; }

@@ -53,6 +53,15 @@ void EnumPropertyDefinition::setEntries_(s32 entry_num, const char** key_buffer)
     }
 }
 
+EnumPropertyDefinition::~EnumPropertyDefinition()
+{
+    if (mEntryBuffer == nullptr)
+        return;
+
+    delete[] mEntryBuffer;
+    mEntryBuffer = nullptr;
+}
+
 void EnumPropertyDefinition::entry(s32 value, const char* key)
 {
     Entry* buffer {mEntryBuffer};

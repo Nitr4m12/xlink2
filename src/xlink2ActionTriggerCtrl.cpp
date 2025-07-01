@@ -1,6 +1,7 @@
-#include "xlink2/xlink2ActionTriggerCtrl.h"
 #include <cstring>
-#include "codec/seadHashCRC32.h"
+#include <codec/seadHashCRC32.h>
+
+#include "xlink2/xlink2ActionTriggerCtrl.h"
 #include "xlink2/xlink2ResActionTrigger.h"
 #include "xlink2/xlink2UserResourceParam.h"
 #include "xlink2/xlink2Util.h"
