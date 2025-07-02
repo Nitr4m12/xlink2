@@ -41,4 +41,13 @@ s32 GroupTable::getKeyLength(u32 idx) const
     return -1;
 }
 
+const char* GroupTable::searchKey(s32 id) const
+{
+    for (s64 i {0}; i < mCurrentIdx; ++i) {
+        if (mEntryBuffer[i].id == id)
+            return mEntryBuffer[i].key;
+    }
+    return "";
+}
+
 } // namespace xlink2
