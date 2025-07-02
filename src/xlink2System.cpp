@@ -50,6 +50,21 @@ void System::calc()
     }
 }
 
+User* System::searchUser(const char* user_name, sead::Heap* heap, u32 idx) const
+{
+    {
+        auto lock {sead::makeScopedLock(*getModuleLockObj())};
+        if (mUserList.size() != 0)
+            for (auto& user : mUserList) {
+                if ((user.isHeapEqual(heap) || user.isHeapEqual(mUserCreateHeap)) && 
+                    user.get8() == idx && strcmp(user.getUserName(), user_name) == 0) {
+                    return &user;
+                }
+            }
+    }
+    return nullptr;
+}
+
 s32 System::loadResource(void* bin)
 {
     setMinLargeAddressMask(reinterpret_cast<u64>(bin));

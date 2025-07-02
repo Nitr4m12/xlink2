@@ -53,13 +53,13 @@ public:
     u16 getNumLocalProp() const { return mLocalPropNum; }
     PropertyDefinition* getPropertyDefinitionEntry(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
 
-    sead::Heap* getHeap() const { return mpHeap; }
-
     const sead::OffsetList<UserInstance>& getUserInstanceList() const { return mUserInstanceList; }
 
-    u32 get8() { return _8; }
+    u32 get8() { return _0x40; }
 
     void removeInstance(UserInstance* instance) { mUserInstanceList.erase(instance); }
+    
+    bool isHeapEqual(sead::Heap* heap) const { return mpHeap == heap; }
 
 private:
     void* _0;
@@ -68,7 +68,7 @@ private:
     UserResource* mpUserResource;
     sead::OffsetList<UserInstance> mUserInstanceList;
     sead::Heap* mpHeap;
-    u32 _8;
+    u32 _0x40;
     u16 mLocalPropNum;
     s16 mActionSlotNum;
     PropertyDefinition** mpPropertyDefinitionTable;
