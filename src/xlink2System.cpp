@@ -117,10 +117,15 @@ void System::unregistUserForGlobalPropertyTrigger_(User* user)
         mGlobalPropertyTriggerUserList.erase(user_idx);
 }
 
-// WIP
 void System::allocGlobalProperty(u32 num_global_prop, sead::Heap* heap)
 {
-    mGlobalPropertyDefinitions = new (heap) const PropertyDefinition*[num_global_prop];
+    auto* prop_define = new (heap) const PropertyDefinition*[num_global_prop];
+    mGlobalPropertyDefinitions = prop_define;
+    if (num_global_prop != 0) {
+        for (s32 i {0}; i < num_global_prop; ++i) {
+            mGlobalPropertyDefinitions[i] = nullptr;
+        } 
+    }
     mGlobalPropertyValues = new (heap) PropertyValueType[num_global_prop];
     mNumGlobalProperty = num_global_prop;
 }
