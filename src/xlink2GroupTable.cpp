@@ -13,12 +13,21 @@ void GroupTable::batchEntry(s32 num_entries, ...)
     va_start(args, num_entries);
     if (num_entries > 0) {
         for (u32 i{0}; i != num_entries; ++i) {
-            mEntryBuffer[i].value = i;
+            mEntryBuffer[i].id = i;
             mEntryBuffer[i].key = va_arg(args, const char*);
         }
     }
     va_end(args);
     mCurrentIdx = num_entries;
+}
+
+s32 GroupTable::getId(const char* key) const
+{
+    for (s64 i {0}; i < mCurrentIdx; ++i) {
+        if (strcmp(mEntryBuffer[i].key, key) == 0)
+            return mEntryBuffer[i].id;
+    }
+    return -1;
 }
 
 } // namespace xlink2

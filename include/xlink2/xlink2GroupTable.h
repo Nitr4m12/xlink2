@@ -7,17 +7,17 @@ class GroupTable {
 public:
     struct Entry {
         const char* key;
-        s32 value;
+        s32 id;
     };
 
     GroupTable(s32, sead::Heap*);
 
     void batchEntry(s32, ...);
 
-    u32 getId(const char*) const;
+    s32 getId(const char*) const;
     u64 getKeyLength(u32) const;
 
-    void* searchKey(s32) const;
+    const char* searchKey(s32) const;
 
 private:
     s32 mCurrentIdx;
