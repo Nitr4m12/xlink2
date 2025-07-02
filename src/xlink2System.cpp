@@ -81,56 +81,6 @@ s32 System::searchUserIgnoreHeap(const char* user_name, User** user_ptrs, s32 id
     return user_idx;
 }
 
-s32 System::loadResource(void* bin)
-{
-    setMinLargeAddressMask(reinterpret_cast<u64>(bin));
-    return mResourceBuffer->load(bin, this);
-}
-
-ResUserHeader* System::getResUserHeader(const char* user_name) 
-{
-    return mResourceBuffer->searchResUserHeader(user_name);
-}
-
-void System::removeUserInstance(UserInstance* user_instance)
-{
-    unfixDrawInst_(user_instance);
-    User* user {user_instance->getUser()};
-
-    user->removeInstance(user_instance);
-    if (user->getUserInstanceList().isEmpty()) {
-        mUserList.erase(user);
-        unregistUserForGlobalPropertyTrigger_(user);
-        delete user;
-    }
-}
-
-void System::unfixDrawInst_(UserInstance* user_instance)
-{
-    if (mDrawInstance == user_instance)
-        mDrawInstance = nullptr;
-}
-
-void System::unregistUserForGlobalPropertyTrigger_(User* user)
-{
-    auto user_idx {mGlobalPropertyTriggerUserList.search(user)};
-    if (user_idx >= 0)
-        mGlobalPropertyTriggerUserList.erase(user_idx);
-}
-
-void System::allocGlobalProperty(u32 num_global_prop, sead::Heap* heap)
-{
-    auto* prop_define = new (heap) const PropertyDefinition*[num_global_prop];
-    mGlobalPropertyDefinitions = prop_define;
-    if (num_global_prop != 0) {
-        for (s32 i {0}; i < num_global_prop; ++i) {
-            mGlobalPropertyDefinitions[i] = nullptr;
-        } 
-    }
-    mGlobalPropertyValues = new (heap) PropertyValueType[num_global_prop];
-    mNumGlobalProperty = num_global_prop;
-}
-
 void System::makeDebugStringGlobalProperty(sead::BufferedSafeString* dump_str, const sead::SafeString& filter) const
 {
     if (dump_str != nullptr) {
@@ -178,6 +128,68 @@ void System::makeDebugStringGlobalProperty(sead::BufferedSafeString* dump_str, c
     }
 }
 
+s32 System::loadResource(void* bin)
+{
+    setMinLargeAddressMask(reinterpret_cast<u64>(bin));
+    return mResourceBuffer->load(bin, this);
+}
+
+ResUserHeader* System::getResUserHeader(const char* user_name) 
+{
+    return mResourceBuffer->searchResUserHeader(user_name);
+}
+
+void System::removeUserInstance(UserInstance* user_instance)
+{
+    unfixDrawInst_(user_instance);
+    User* user {user_instance->getUser()};
+
+    user->removeInstance(user_instance);
+    if (user->getUserInstanceList().isEmpty()) {
+        mUserList.erase(user);
+        unregistUserForGlobalPropertyTrigger_(user);
+        delete user;
+    }
+}
+
+void System::unfixDrawInst_(UserInstance* user_instance)
+{
+    if (mDrawInstance == user_instance)
+        mDrawInstance = nullptr;
+}
+
+void System::unregistUserForGlobalPropertyTrigger_(User* user)
+{
+    auto user_idx {mGlobalPropertyTriggerUserList.search(user)};
+    if (user_idx >= 0)
+        mGlobalPropertyTriggerUserList.erase(user_idx);
+}
+
+void System::allocGlobalProperty(u32 num_property, sead::Heap* heap)
+{
+    auto* prop_define = new (heap) const PropertyDefinition*[num_property];
+    mGlobalPropertyDefinitions = prop_define;
+    if (num_property != 0) {
+        for (s32 i {0}; i < num_property; ++i) {
+            mGlobalPropertyDefinitions[i] = nullptr;
+        } 
+    }
+    mGlobalPropertyValues = new (heap) PropertyValueType[num_property];
+    mNumGlobalProperty = num_property;
+}
+
+void System::createGlobalPropertyDefinitionTable(u32 num_property, const PropertyDefinition** buffer, sead::Heap* heap)
+{
+    allocGlobalProperty(num_property, heap);
+    for (s32 i {0}; i != num_property; ++i)
+        setGlobalPropertyDefinition(i, buffer[i]);
+
+    mResourceBuffer->applyGlobalPropertyDefinition(this);
+    if (mEditorBuffer != nullptr)
+        mEditorBuffer->applyGlobalPropertyDefinition();
+
+    mIsGlobalPropFixed = true;
+}
 
 void System::setGlobalPropertyDefinition(u32 prop_idx, const PropertyDefinition* prop_define)
 {
