@@ -309,7 +309,6 @@ void System::freeAllEvent(sead::OffsetList<Event>* event_list)
     event_list->clear();
 }
 
-
 void System::registUserForGlobalPropertyTrigger(User* user)
 {
     if (user->getUserResource()->hasGlobalPropertyTrigger()) {

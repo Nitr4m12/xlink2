@@ -115,5 +115,4 @@ void EnumPropertyDefinition::setEntryBuf_(s32 buffer_size, Entry* buffer)
     mNumEntry = buffer_size;
     mEntryBuffer = buffer;
 }
-
-}
+} // namespace xlink2

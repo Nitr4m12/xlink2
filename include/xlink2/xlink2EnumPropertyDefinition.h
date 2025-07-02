@@ -2,6 +2,7 @@
 
 #include <heap/seadHeap.h>
 
+#include "xlink2/xlink2.h"
 #include "xlink2/xlink2PropertyDefinition.h"
 
 namespace xlink2 {
@@ -35,5 +36,20 @@ private:
     Entry* mEntryBuffer;
 };
 static_assert(sizeof(EnumPropertyDefinition) == 0x78, "xlink2::EnumPropertyDefinition size mismatch");
+
+template <s32 N>
+class FixedEnumPropertyDefinition : public EnumPropertyDefinition {
+public:
+    FixedEnumPropertyDefinition(const char* name, bool b1)
+        : EnumPropertyDefinition(name, b1) 
+    {
+        setEntryBuf_(N, mEntries);
+    }
+
+    ~FixedEnumPropertyDefinition() override = default;
+
+private:
+    Entry mEntries[N];
+};
 
 }  // namespace xlink2

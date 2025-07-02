@@ -91,6 +91,7 @@ public:
     const ParamDefineTable* getParamDefineTable() const;
     const ParamDefineTable* getParamDefineTable(ResMode) const;
 
+    // TODO: fix compiling error: "incomplete type 'xlink2::UserInstance' named in nested name specifier"
     // System* searchUserOrCreate_(const UserInstance::CreateArg&, sead::Heap*, u32);
 
     void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;

@@ -1,13 +1,15 @@
 #pragma once
 
+#include <basis/seadTypes.h>
+
 namespace xlink2 {
 class Handle {
 public:
-    void* get0() { return _0; }
-    int get8() { return _8; }
+    void* get0() { return mpResource; }
+    int get8() { return mCreateId; }
 
 private:
-    void* _0 = nullptr;
-    int _8 = 0;
+    void* mpResource = nullptr;
+    u32 mCreateId = 0;
 };
 }  // namespace xlink2
