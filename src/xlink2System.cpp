@@ -2,6 +2,7 @@
 
 #include "xlink2/xlink2System.h"
 #include "math/seadMathCalcCommon.h"
+#include "xlink2/xlink2EnumPropertyDefinition.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -129,6 +130,54 @@ void System::allocGlobalProperty(u32 num_global_prop, sead::Heap* heap)
     mGlobalPropertyValues = new (heap) PropertyValueType[num_global_prop];
     mNumGlobalProperty = num_global_prop;
 }
+
+void System::makeDebugStringGlobalProperty(sead::BufferedSafeString* dump_str, const sead::SafeString& filter) const
+{
+    if (dump_str != nullptr) {
+        if (filter.isEmpty())
+            dump_str->appendWithFormat("-- Global Property --\n");
+        else
+            dump_str->appendWithFormat("-- Global Property (filter [%s]) --\n", filter.cstr());
+
+        if (mNumGlobalProperty != 0) {
+            for (u32 i {0}; i < mNumGlobalProperty; ++i) {
+                const PropertyDefinition* global_prop_define {mGlobalPropertyDefinitions[i]};
+
+                if (global_prop_define != nullptr) {
+                    PropertyValueType* values {mGlobalPropertyValues};
+                    const char* property_name {global_prop_define->getPropertyName()->cstr()};
+
+                    if (*property_name != '\0') {
+                        if (!filter.isEmpty()) {
+                            sead::FixedSafeString<64> property_string {property_name};
+                            if (!property_string.include(filter.cstr())) 
+                                continue;
+                        }
+
+                        switch (global_prop_define->getType()) {
+                            case PropertyType::Enum: {
+                                const char* value_name {static_cast<const EnumPropertyDefinition*>(global_prop_define)->searchEntryKeyByValue(values[i].valueInt)};
+                                dump_str->appendWithFormat("[%s] %s (%d)\n", property_name, value_name, values[i].valueInt);
+                                break;
+                            }
+                            case PropertyType::S32: {
+                                const char* empty {values[i].valueInt < 0 ? "" : " "};
+                                dump_str->appendWithFormat("[%s] %s%d\n", property_name, empty, values[i].valueInt);
+                                break;
+                            }
+                            case PropertyType::F32: {
+                                const char* empty {values[i].valueFloat < 0.0f ? "" : " "};
+                                dump_str->appendWithFormat("[%s] %s%f\n", property_name, empty, values[i].valueFloat);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 
 void System::setGlobalPropertyDefinition(u32 prop_idx, const PropertyDefinition* prop_define)
 {
