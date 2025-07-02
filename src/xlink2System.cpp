@@ -5,12 +5,18 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+System::System()
+{
+    mUserList.initOffset(0);
+    setMinLargeAddressMask(reinterpret_cast<u64>(this));
+}
+
 void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 p3)
 {
     mPrimaryHeap = primary_heap;
     mResourceBuffer = new (heap) ResourceBuffer;
-    _15 = p3;
-    _16 = 0;
+    mMaxNumEventPool = p3;
+    mNumEventPool = 0;
     mGlobalPropertyTriggerUserList.allocBuffer(0x60, heap);
     mErrorMgr = new (heap) ErrorMgr(this);
     mHoldMgr = new (heap) HoldMgr(this, heap);

@@ -40,14 +40,12 @@ class HoldMgr;
 class ResourceBuffer;
 
 class System : sead::hostio::Node {
-    //SEAD_SINGLETON_DISPOSER(System)
-
 public:
     void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
                                 sead::Camera const&, sead::Projection const&,
                                 sead::Viewport const&) const;
 
-    System() = default;
+    System();
 
     void initSystem_(sead::Heap*, sead::Heap*, u32);
     void calc();
@@ -172,7 +170,7 @@ public:
 
     virtual ~System();
 
-    virtual u64 getEventFromPool_(u32) const = 0;
+    virtual Event* getEventFromPool_(u32) const = 0;
     virtual void preDrawInformation_(sead::TextWriter*) const;
     virtual void postDrawInformation_(sead::TextWriter*) const;
     virtual void drawInformationSystemDetail_(sead::TextWriter*) const = 0;
@@ -181,48 +179,44 @@ public:
 protected:
     struct OtameshiRequest;
 
-    ResourceBuffer* mResourceBuffer;
+    ResourceBuffer* mResourceBuffer {};
     sead::OffsetList<User> mUserList;
-    u32 _0;
-    u32 _15;
-    u32 _16;
-    s32 mEventCreateId;
-    u32 _17;
-    u32 mNumGlobalProperty;
-    const PropertyDefinition** mGlobalPropertyDefinitions;
-    PropertyValueType* mGlobalPropertyValues;
+    s32 _0x28 {};
+    u32 mMaxNumEventPool {};
+    u32 mNumEventPool {};
+    s32 mEventCreateId {1};
+    bool _0x38 {};
+    u32 mNumGlobalProperty {};
+    const PropertyDefinition** mGlobalPropertyDefinitions {};
+    PropertyValueType* mGlobalPropertyValues {};
     sead::BitFlag64 mGlobalPropertyBitfield;
-    bool mIsGlobalPropFixed;
-    ErrorMgr* mErrorMgr;
-    HoldMgr* mHoldMgr;
-    u32 _5;
-    bool mIsCallEnabled;
-    sead::Heap* mUserCreateHeap;
-    float _6;
+    bool mIsGlobalPropFixed {};
+    ErrorMgr* mErrorMgr {};
+    HoldMgr* mHoldMgr {};
+    s32 _0x70 {-1};
+    bool mIsCallEnabled {true};
+    sead::Heap* mUserCreateHeap {};
+    f32 _0x80 {1.0f};
     sead::PtrArray<User> mGlobalPropertyTriggerUserList;
     sead::Random mRandom;
     sead::Heap* mContainerHeap;
     sead::Heap* mAssetExecutorHeap;
-    sead::Heap* mPrimaryHeap;
-    EditorBuffer* mEditorBuffer;
-    s32 mTick;
-    float _7;
-    sead::OffsetList<User>* mDebugDrawUserList;
-    float mUserSortKey;
-    sead::SafeString* mDebugString;
-    void* _0xe8;
-    u8 _10;
-    u32 _20;
-    u32 _21;
-    s32 _22;
+    sead::Heap* mPrimaryHeap {};
+    EditorBuffer* mEditorBuffer {};
+    s32 mTick {};
+    f32 _0xcc {1.0f};
+    sead::OffsetList<User>* mDebugDrawUserList {};
+    f32 mUserSortKey {-1.0f};
+    sead::SafeString* mDebugString {};
+    sead::PtrArray<char> mDebugUserNameList;
+    s32 _0xf8 {-1};
     DebugOperationParam mDebugOperationParamOR;
     DebugOperationParam mDebugOperationParamEditor;
-    bool _0x7b0;
-    u32 _0x7b4;
+    bool mIsOperationOREnabled {true};
     sead::Buffer<OtameshiRequest> mOtameshiBuffer;
-    UserInstance* mDrawInstance;
-    u8 _11;
-
-    SEAD_SINGLETON_DISPOSER(System);
+    UserInstance* mDrawInstance {};
+    bool mShowAalInfo {};
 };
+static_assert(sizeof(System) == 0x7d8, "xlink2::System size mismatch");
+
 }  // namespace xlink2

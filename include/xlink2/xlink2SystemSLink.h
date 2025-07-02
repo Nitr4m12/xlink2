@@ -43,7 +43,7 @@ public:
 
     sead::SafeString* getORIconString();
 
-    u64 getEventFromPool_(u32) const override;
+    Event* getEventFromPool_(u32) const override;
 
     void drawInformationSystemDetail_(sead::TextWriter*) const override;
     void drawInformationEvent_(sead::TextWriter*) const override;
