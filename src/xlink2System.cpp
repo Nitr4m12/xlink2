@@ -342,20 +342,17 @@ void System::requestSendPickedUserName(const sead::SafeString& /*unused*/)
 System::~System()
 {
     if (mResourceBuffer) {
-        mResourceBuffer->~ResourceBuffer();
+        delete mResourceBuffer;
         mResourceBuffer = nullptr;
     }
 
-    auto* error_mgr {mErrorMgr};
-    if (error_mgr) {
-        // delete error_mgr;
-        mErrorMgr->~ErrorMgr();
-        // delete error_mgr;
+    if (mErrorMgr) {
+        delete mErrorMgr;
         mErrorMgr = nullptr;
     }
 
     if (mHoldMgr) {
-        mHoldMgr->~HoldMgr();
+        delete mHoldMgr;
         mHoldMgr = nullptr;
     }
 }
