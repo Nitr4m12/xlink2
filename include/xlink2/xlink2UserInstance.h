@@ -167,6 +167,12 @@ public:
 
     const sead::OffsetList<Event>* getEventList() const { return &mEventList; }
 
+    void updateGlobalPropertyTriggerCtrl() 
+    {
+        if (mBitFlag.isOffBit(1))
+            mTriggerCtrlMgr.updateGlobalPropertyTriggerCtrl();
+    }
+
 protected:
     sead::OffsetList<Event> mEventList;
     sead::SafeArray<UserInstanceParam*, 2> mParams;

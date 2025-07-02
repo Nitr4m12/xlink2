@@ -177,6 +177,8 @@ public:
     virtual void drawInformationEvent_(sead::TextWriter*) const = 0;
 
 protected:
+    const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
+
     struct OtameshiRequest;
 
     ResourceBuffer* mResourceBuffer {};

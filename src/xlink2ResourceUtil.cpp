@@ -27,18 +27,4 @@ ResContainerParam* ResourceUtil::getResSequenceContainerParam(const ResAssetCall
     
     return nullptr;
 }
-
-TriggerType ResourceUtil::getActionTriggerType(const ResActionTrigger& action_trigger) 
-{
-    if (action_trigger.flag.isOnBit(2))
-        return TriggerType::Property;
-
-    if (action_trigger.flag.isOnBit(3))
-        return TriggerType::Always;
-
-    if (action_trigger.flag.isOnBit(4))
-        return TriggerType::None;
-
-    return TriggerType::Action;
-}
-}  // namespace xlink2::ResourceUtil
+}  // namespace xlink2

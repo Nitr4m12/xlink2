@@ -55,9 +55,11 @@ public:
 
     sead::Heap* getHeap() const { return mpHeap; }
 
-    sead::OffsetList<UserInstance>* getUserInstanceList() { return &mUserInstanceList; }
+    const sead::OffsetList<UserInstance>& getUserInstanceList() const { return mUserInstanceList; }
 
     u32 get8() { return _8; }
+
+    void removeInstance(UserInstance* instance) { mUserInstanceList.erase(instance); }
 
 private:
     void* _0;

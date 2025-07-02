@@ -22,6 +22,34 @@ void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 p3)
     mHoldMgr = new (heap) HoldMgr(this, heap);
 }
 
+void System::calc()
+{
+    if (mIsCallEnabled) {
+        if (getDebugOperationParam().getDebugFlag().isOn(0b100000000000010011101111)) {
+            {
+                auto lock {sead::makeScopedLock(*getModuleLockObj())};
+                for (auto& user : mUserList)
+                    user.updateSortKey();
+            }
+        }
+        {
+            auto lock {sead::makeScopedLock(*getModuleLockObj())};
+            for (auto& user : mGlobalPropertyTriggerUserList)
+                for (auto& user_instance : user.getUserInstanceList())
+                    user_instance.updateGlobalPropertyTriggerCtrl();
+            
+        }
+
+        if (mErrorMgr != nullptr)
+            mErrorMgr->calc();
+
+        if (mHoldMgr != nullptr)
+            mHoldMgr->calc();
+
+        ++mTick;
+    }
+}
+
 s32 System::loadResource(void* bin)
 {
     setMinLargeAddressMask(reinterpret_cast<u64>(bin));
@@ -38,8 +66,8 @@ void System::removeUserInstance(UserInstance* user_instance)
     unfixDrawInst_(user_instance);
     User* user {user_instance->getUser()};
 
-    user->getUserInstanceList()->erase(user_instance);
-    if (user->getUserInstanceList()->isEmpty()) {
+    user->removeInstance(user_instance);
+    if (user->getUserInstanceList().isEmpty()) {
         mUserList.erase(user);
         unregistUserForGlobalPropertyTrigger_(user);
         delete user;
@@ -282,7 +310,7 @@ void System::killAllOneTimeEvent()
     {
         auto lock {sead::makeScopedLock(*getModuleLockObj())};
         for (auto& user : mUserList)
-            for (auto& instance : *user.getUserInstanceList())
+            for (auto& instance : user.getUserInstanceList())
                 instance.killAllOneTimeEvent();
     }
 }
@@ -303,7 +331,7 @@ void System::dumpActiveEvents() const
     {
         auto lock {sead::makeScopedLock(*getModuleLockObj())};
         for (auto& user : mUserList) {
-            for (auto& instance : *user.getUserInstanceList()) {
+            for (auto& instance : user.getUserInstanceList()) {
                 for (auto& event : *instance.getEventList()) {
                     s32 asset_num {event.getAliveAssetNum()};
                     asset_num = event.getFadeBySystemListAssetNum();
@@ -325,7 +353,7 @@ void System::dumpUsers() const
     {
         auto lock {sead::makeScopedLock(*getModuleLockObj())};
         for (auto& user : mUserList) {
-            for (auto& instance : *user.getUserInstanceList()) {
+            for (auto& instance : user.getUserInstanceList()) {
 #ifdef SEAD_DEBUG
 #endif
             }
@@ -341,17 +369,17 @@ void System::requestSendPickedUserName(const sead::SafeString& /*unused*/)
 
 System::~System()
 {
-    if (mResourceBuffer) {
+    if (mResourceBuffer != nullptr) {
         delete mResourceBuffer;
         mResourceBuffer = nullptr;
     }
 
-    if (mErrorMgr) {
+    if (mErrorMgr != nullptr) {
         delete mErrorMgr;
         mErrorMgr = nullptr;
     }
 
-    if (mHoldMgr) {
+    if (mHoldMgr != nullptr) {
         delete mHoldMgr;
         mHoldMgr = nullptr;
     }

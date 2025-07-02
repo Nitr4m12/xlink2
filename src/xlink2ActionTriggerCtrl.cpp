@@ -3,6 +3,7 @@
 
 #include "xlink2/xlink2ActionTriggerCtrl.h"
 #include "xlink2/xlink2ResActionTrigger.h"
+#include "xlink2/xlink2ResourceUtil.h"
 #include "xlink2/xlink2UserResourceParam.h"
 #include "xlink2/xlink2Util.h"
 
@@ -34,16 +35,7 @@ void ActionTriggerCtrl::calc() {}
 
 TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& action_trigger) 
 {
-    if (action_trigger.flag.isOnBit(2))
-        return TriggerType::Property;
-
-    if (action_trigger.flag.isOnBit(3))
-        return TriggerType::Always;
-
-    if (action_trigger.flag.isOnBit(4))
-        return TriggerType::None;
-
-    return TriggerType::Action;
+    return ResourceUtil::getActionTriggerType(action_trigger);
 }
 
 void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx) 
