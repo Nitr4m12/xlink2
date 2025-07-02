@@ -1,8 +1,8 @@
 #include <prim/seadScopedLock.h>
+#include <math/seadMathCalcCommon.h>
 
-#include "xlink2/xlink2System.h"
-#include "math/seadMathCalcCommon.h"
 #include "xlink2/xlink2EnumPropertyDefinition.h"
+#include "xlink2/xlink2System.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -300,6 +300,15 @@ void System::freeEvent(Event* event, sead::OffsetList<Event>* event_list)
         event_list->erase(event);
     event->finalize();
 }
+
+void System::freeAllEvent(sead::OffsetList<Event>* event_list)
+{
+    for (auto& event : *event_list)
+        event.finalize();
+
+    event_list->clear();
+}
+
 
 void System::registUserForGlobalPropertyTrigger(User* user)
 {
