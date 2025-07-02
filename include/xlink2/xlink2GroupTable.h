@@ -1,6 +1,6 @@
 #pragma once
 
-#include "heap/seadHeap.h"
+#include <heap/seadHeap.h>
 
 namespace xlink2 {
 class GroupTable {
@@ -10,14 +10,14 @@ public:
         s32 value;
     };
 
-    GroupTable(int, sead::Heap*);
+    GroupTable(s32, sead::Heap*);
 
-    void batchEntry(int, ...);
+    void batchEntry(s32, ...);
 
-    u32 getId(char const*) const;
+    u32 getId(const char*) const;
     u64 getKeyLength(u32) const;
 
-    void* searchKey(int) const;
+    void* searchKey(s32) const;
 
 private:
     s32 mCurrentIdx;
