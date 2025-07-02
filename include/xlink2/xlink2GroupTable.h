@@ -15,7 +15,7 @@ public:
     void batchEntry(s32, ...);
 
     s32 getId(const char*) const;
-    u64 getKeyLength(u32) const;
+    s32 getKeyLength(u32) const;
 
     const char* searchKey(s32) const;
 
