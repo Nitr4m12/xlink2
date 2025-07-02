@@ -51,7 +51,7 @@ public:
 
     UserInstance* getUserInstance() const { return mpUserInstance; }
 
-    u32& get0x20() { return _0x20; }
+    const s32& get0x20() const { return _0x20; }
     TriggerType& getTriggerType() { return mTriggerType; }
     sead::BitFlag32 getBitFlag() { return mBitFlag; }
 
@@ -62,7 +62,7 @@ private:
     sead::BitFlag32 mBitFlag{0};
     void* _0x10{nullptr};
     void* _0x18{nullptr};
-    u32 _0x20{0};
+    s32 _0x20{0};
     UserInstance* mpUserInstance;
     const ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;

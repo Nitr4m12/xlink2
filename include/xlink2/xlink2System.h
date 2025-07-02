@@ -81,7 +81,7 @@ public:
     s32 searchGlobalPropertyIndex(const char*) const;
 
     s32 incrementEventCreateId_();
-    Event allocEvent();
+    const Event* allocEvent();
     void freeEvent(Event*, sead::OffsetList<Event>*);
     void freeAllEvent(sead::OffsetList<Event>*);
 

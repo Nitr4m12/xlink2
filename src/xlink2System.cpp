@@ -271,15 +271,27 @@ s32 System::searchGlobalPropertyIndex(const char* prop_name) const
     return -1;
 }
 
-s32 System::incrementEventCreateId_() {
+s32 System::incrementEventCreateId_() 
+{
     s32 event_id {mEventCreateId};
-    s32 create_id {1};
-
-    if (event_id != -1)
-        create_id = event_id + 1;
-
-    mEventCreateId = create_id;
+    mEventCreateId = mEventCreateId != -1 ? mEventCreateId + 1 : 1;
+    
     return event_id;
+}
+
+const Event* System::allocEvent()
+{
+    for (u32 i {0}; i < mMaxNumEventPool; ++i) {
+        auto* event {getEventFromPool_(mNumEventPool)};
+        mNumEventPool = mNumEventPool + 1 < mMaxNumEventPool ? mNumEventPool + 1 : 0;
+
+        if (event->get0x20() == 0) {
+            event->initialize(incrementEventCreateId_());
+            return event;
+        }
+    }
+    
+    return nullptr;
 }
 
 void System::registUserForGlobalPropertyTrigger(User* user)
