@@ -294,6 +294,13 @@ const Event* System::allocEvent()
     return nullptr;
 }
 
+void System::freeEvent(Event* event, sead::OffsetList<Event>* event_list)
+{
+    if (event_list != nullptr)
+        event_list->erase(event);
+    event->finalize();
+}
+
 void System::registUserForGlobalPropertyTrigger(User* user)
 {
     if (user->getUserResource()->hasGlobalPropertyTrigger()) {
