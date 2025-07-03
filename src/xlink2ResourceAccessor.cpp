@@ -5,8 +5,6 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-ResourceAccessor::~ResourceAccessor() = default;
-
 const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) const
 {
     if (mpUserResource && mpSystem->isCallEnabled()) {

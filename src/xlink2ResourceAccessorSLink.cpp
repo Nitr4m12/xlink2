@@ -2,6 +2,8 @@
 #include "xlink2/xlink2UserResourceParamSLink.h"
 
 namespace xlink2 {
+ResourceAccessorSLink::~ResourceAccessorSLink() = default;
+
 const char* ResourceAccessorSLink::getUserDistanceParamSetName() const
 {
     if (mpUserResource != nullptr) {

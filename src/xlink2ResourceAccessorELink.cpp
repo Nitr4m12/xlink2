@@ -2,6 +2,8 @@
 #include <xlink2/xlink2ResourceUtil.h>
 
 namespace xlink2 {
+ResourceAccessorELink::~ResourceAccessorELink() = default;
+
 bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
 {
     const char* param_name;

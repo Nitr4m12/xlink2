@@ -22,7 +22,7 @@ class ContainerBase;
 
 class ResourceAccessor {
 public:
-    virtual ~ResourceAccessor() = 0;
+    virtual ~ResourceAccessor() = default;
     virtual bool isBlankAsset(const ResAssetCallTable&) const = 0;
     virtual const char* getBoneName(const ResAssetCallTable&) const = 0;
     virtual bool isBoneNameOverwritten(u32) const = 0;
