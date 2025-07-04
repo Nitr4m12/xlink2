@@ -14,10 +14,13 @@ public:
     virtual void calc() = 0;
     virtual ~TriggerCtrl() = default;
 
-    void emitByTriggerImpl(TriggerType, s32, u32, ResAssetCallTable const*);
+    void emitByTriggerImpl_(TriggerType, s32, u32, ResAssetCallTable const*);
     void fadeByTrigger_(s32);
-    ModelTriggerConnection* getModelTriggerConnection(s32 index);
+
+    ModelTriggerConnection* getModelTriggerConnection_(s32 idx);
+
     void resetIsOnceCheck_();
+
     void setBoneMatrixToConnection(u32, ModelTriggerConnection*);
 
 protected:

@@ -11,7 +11,7 @@ AlwaysTriggerCtrl::AlwaysTriggerCtrl(UserInstance* user_instance,
 void AlwaysTriggerCtrl::emitByTrigger_(s32 param1) {
     ResAlwaysTrigger* always_trigger {mUserInstance->getUser()->getUserResource()->getAlwaysTriggerTableItem(param1)};
     ResAssetCallTable* call_table {calcOffset<ResAssetCallTable>(always_trigger->assetCtbPos)};
-    emitByTriggerImpl(TriggerType::Always, param1, always_trigger->overwriteParamPos, call_table);
+    emitByTriggerImpl_(TriggerType::Always, param1, always_trigger->overwriteParamPos, call_table);
 }
 
 void AlwaysTriggerCtrl::notifyActive() {

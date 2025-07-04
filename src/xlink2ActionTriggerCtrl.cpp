@@ -42,11 +42,11 @@ void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx)
 {
     ResActionTrigger* action_trigger {getUserResource()->getActionTriggerTableItem(action_trigger_idx)};
 
-    if (!(action_trigger->flag & 1) || !getModelTriggerConnection(action_trigger_idx)->isActive) {
+    if (!(action_trigger->flag & 1) || !getModelTriggerConnection_(action_trigger_idx)->isActive) {
         u32 ow_param_pos {action_trigger->overwriteParamPos};
         ResAssetCallTable* asset_ctb {calcOffset<ResAssetCallTable>(action_trigger->assetCtbPos)};
-        emitByTriggerImpl(TriggerType::Action, action_trigger_idx, ow_param_pos, asset_ctb);
-        getModelTriggerConnection(action_trigger_idx)->isActive = true;
+        emitByTriggerImpl_(TriggerType::Action, action_trigger_idx, ow_param_pos, asset_ctb);
+        getModelTriggerConnection_(action_trigger_idx)->isActive = true;
     }
 }
 
@@ -54,7 +54,7 @@ void ActionTriggerCtrl::notifyActive()
 {
     if (mAction != nullptr) {
         for (int i {mAction->triggerStartIdx}; i <= mAction->triggerEndIdx; i++) {
-            getModelTriggerConnection(i)->isActive = false;
+            getModelTriggerConnection_(i)->isActive = false;
         }
     }
 }
