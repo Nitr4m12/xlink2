@@ -21,7 +21,7 @@ public:
     Event();
     virtual ~Event();
 
-    void initialize(u32 param_int);
+    void initialize(u32 create_id);
     virtual void initializeImpl_();
 
     void finalize();
@@ -51,7 +51,9 @@ public:
 
     UserInstance* getUserInstance() const { return mpUserInstance; }
 
-    const s32& get0x20() const { return _0x20; }
+    const s32& getCreateId() const { return mCreateId; }
+    void set0x20(s32 value) { mCreateId = value; }
+
     TriggerType& getTriggerType() { return mTriggerType; }
     sead::BitFlag32 getBitFlag() { return mBitFlag; }
 
@@ -62,7 +64,7 @@ private:
     sead::BitFlag32 mBitFlag{0};
     void* _0x10{nullptr};
     void* _0x18{nullptr};
-    s32 _0x20{0};
+    s32 mCreateId{0};
     UserInstance* mpUserInstance;
     const ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;

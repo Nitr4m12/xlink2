@@ -11,14 +11,14 @@ Event::Event()
 
 Event::~Event() = default;
 
-void Event::initialize(u32 param_int)
+void Event::initialize(u32 create_id)
 {
     mBitFlag = 2;
     mpUserInstance = nullptr;
     mpAssetCallTable = nullptr;
     mTriggerType = TriggerType::Invalid;
     _0x90 = 1;
-    _0x20 = param_int;
+    mCreateId = create_id;
     mpRootContainer = nullptr;
     mpTriggerOverwriteParam = nullptr;
     mpBoneMtx = nullptr;
@@ -31,7 +31,7 @@ void Event::finalize()
 {
     doFinalize_();
     destroyAllContainerAndAssetExecutor_();
-    _0x20 = 0;
+    mCreateId = 0;
 }
 
 void Event::doFinalize_() {}

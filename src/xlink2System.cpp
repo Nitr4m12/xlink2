@@ -285,7 +285,7 @@ const Event* System::allocEvent()
         auto* event {getEventFromPool_(mNumEventPool)};
         mNumEventPool = mNumEventPool + 1 < mMaxNumEventPool ? mNumEventPool + 1 : 0;
 
-        if (event->get0x20() == 0) {
+        if (event->getCreateId() == 0) {
             event->initialize(incrementEventCreateId_());
             return event;
         }
