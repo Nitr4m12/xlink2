@@ -2,6 +2,7 @@
 
 #include <basis/seadTypes.h>
 #include <heap/seadHeap.h>
+#include <prim/seadBitFlag.h>
 
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2TriggerCtrlParam.h"
@@ -52,13 +53,13 @@ public:
     ResMode getResMode() { return mResMode; }
     void setResMode(ResMode mode) { mResMode = mode; }
 
-    u32 get1() const { return _1; };
+    u32 get1() const { return mActionNeedToCalcFlag; };
 
     TriggerCtrlParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; };
 
 private:
     ResMode mResMode {};
     sead::SafeArray<TriggerCtrlParam*, 2> mParams {};
-    u32 _1 {};
+    sead::BitFlag32 mActionNeedToCalcFlag;
 };
 }  // namespace xlink2
