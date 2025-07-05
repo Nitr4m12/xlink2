@@ -39,9 +39,13 @@ public:
 
     UserResource* getUserResource() const { return mUserInstance->getUser()->getUserResource(); }
 
+    void setActionFrame(s32 frame) { mActionFrame = frame; }
+
 private:
     const ResActionSlot* mActionSlot {nullptr};
-    ResUserInfo mUserInfo {};
+    u32 mNameHash;
+    s32 mActionFrame;
+    // ResUserInfo mUserInfo {};
     s32 mUserBinPos {0};
     ResAction* mAction{nullptr};
     bool mIsActive{false};

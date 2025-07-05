@@ -13,4 +13,5 @@ struct ModelTriggerConnection {
     ~ModelTriggerConnection() {}
 };
 static_assert(sizeof(ModelTriggerConnection) == 0x28, "xlink2::ModelTriggerConnection size mismatch");
+
 }  // namespace xlink2

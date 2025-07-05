@@ -15,8 +15,8 @@ ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
     mConnectionBuffer = connection_buffer;
     mActionSlot = action_slot;
     mUserInstance = user_instance;
-    mUserInfo.mOffset = 0;
-    mUserInfo.mNameHash = 0;
+    mActionFrame = 0;
+    mNameHash = 0;
     mUserBinPos = 0;
     mAction = nullptr;
     mIsActive = false;
@@ -25,8 +25,8 @@ ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
 void ActionTriggerCtrl::reset() 
 {
     mAction = nullptr;
-    mUserInfo.mNameHash = 0;
-    mUserInfo.mOffset = 0;
+    mNameHash = 0;
+    mActionFrame = 0;
     mUserBinPos = 0;
     mIsActive = false;
 }
@@ -67,7 +67,7 @@ void ActionTriggerCtrl::changeAction(const char* name, s32 p2)
     else if (mAction != action)
         changeActionImpl_(action, p2, getUserResource());
 
-    mUserInfo.mNameHash = sead::HashCRC32::calcStringHash(name);
+    mNameHash = sead::HashCRC32::calcStringHash(name);
 }
 
 ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot, const char* name, s32* idx)  const
@@ -137,7 +137,7 @@ void ActionTriggerCtrl::restartAction(char const* name, s32 idx)
         ResAction* action {searchResAction_(mActionSlot, name, nullptr)};
         if (action) {
             mAction = action;
-            mUserInfo.mOffset = idx;
+            mActionFrame = idx;
             mUserBinPos = idx;
         }
     }

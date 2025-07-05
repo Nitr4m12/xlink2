@@ -101,6 +101,20 @@ const UserInstance* TriggerCtrlMgr::getUserInstance_() const
 
 void TriggerCtrlMgr::postChangeResource() {}
 
+void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
+{
+    const UserInstance* user_instance {getUserInstance_()};
+
+    if (action_trigger_idx >= 0 && user_instance->getUser()->getActionSlotNum() > action_trigger_idx) {
+        TriggerCtrlParam* param {getParam()};
+        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
+            ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+            if (action_trigger_ctrl != nullptr)
+                action_trigger_ctrl->setActionFrame(frame);
+        }
+    }
+}
+
 s32 TriggerCtrlMgr::getCurrentActionFrame(s32 action_idx) const 
 {
     return -1;

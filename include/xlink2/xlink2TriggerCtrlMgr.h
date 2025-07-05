@@ -32,7 +32,7 @@ public:
     void postChangeResource();
 
     void changeAction(const char*, s32, s32);
-    void updateActionNeedToCalcFlag(s32);
+    void updateActionNeedToCalcFlag_(s32);
     void changeAction(s32, s32, s32);
     void setActionFrame(s32, s32);
     void stopAction(s32);
