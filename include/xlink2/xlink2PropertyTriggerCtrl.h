@@ -9,9 +9,9 @@
 
 namespace xlink2 {
 class PropertyTriggerCtrl : TriggerCtrl {
-    ~PropertyTriggerCtrl() override;
-
+    
 public:
+    ~PropertyTriggerCtrl() override;
     PropertyTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*, s32, bool,
                         ResProperty const*, ResMode);
     void calc() override;

@@ -9,6 +9,7 @@
 
 namespace xlink2 {
 class UserInstance;
+struct TriggerCtrlParam;
 
 class TriggerCtrlMgr {
 public:
@@ -43,8 +44,8 @@ public:
 
     u64 getOverwriteBoneMtx(TriggerType, s32) const;
 
-    u64 getCurrentActionName(s32) const;
-    u64 getCurrentActionFrame(s32) const;
+    const char* getCurrentActionName(s32) const;
+    s32 getCurrentActionFrame(s32) const;
 
     void resetAllModelTriggerConnection();
 
@@ -53,9 +54,11 @@ public:
 
     u32 get1() const { return _1; };
 
+    TriggerCtrlParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; };
+
 private:
-    ResMode mResMode;
-    sead::SafeArray<TriggerCtrlParam*, 2> mParams;
-    u32 _1;
+    ResMode mResMode {};
+    sead::SafeArray<TriggerCtrlParam*, 2> mParams {};
+    u32 _1 {};
 };
 }  // namespace xlink2
