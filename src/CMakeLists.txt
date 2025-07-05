@@ -34,6 +34,7 @@ target_sources(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}System.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}SystemELink.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}SystemSLink.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ToolConnectionContext.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}TriggerCtrl.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}TriggerCtrlMgr.cpp
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}TriggerLocator.cpp

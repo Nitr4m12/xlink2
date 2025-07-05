@@ -3,6 +3,9 @@
 namespace xlink2 {
 class ToolConnectionContext {
 public:
-    void addLabel(char const*);
+    void addLabel(const char*);
+
+private:
+    char* mLabel;
 };
 }  // namespace xlink2
