@@ -174,6 +174,8 @@ public:
     }
 
 protected:
+    friend TriggerCtrlMgr;
+
     sead::OffsetList<Event> mEventList;
     sead::SafeArray<UserInstanceParam*, 2> mParams;
     User* mUser;

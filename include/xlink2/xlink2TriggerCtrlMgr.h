@@ -8,6 +8,8 @@
 #include "xlink2/xlink2TriggerType.h"
 
 namespace xlink2 {
+class UserInstance;
+
 class TriggerCtrlMgr {
 public:
     TriggerCtrlMgr();
@@ -23,7 +25,7 @@ public:
 
     void allocAndSetupCtrlParam(ResMode, sead::Heap*);
 
-    u64 getUserInstance_() const;
+    const UserInstance* getUserInstance_() const;
 
     void postChangeResource(){};
 
