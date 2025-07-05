@@ -10,7 +10,6 @@
 namespace xlink2 {
 TriggerCtrlMgr::TriggerCtrlMgr() = default;
 
-// WIP
 void TriggerCtrlMgr::destroy()
 {
     for (auto& param : mParams) {
@@ -23,7 +22,6 @@ void TriggerCtrlMgr::destroy()
 
 void TriggerCtrlMgr::initialize(s32 /*unused*/, s32 /*unused*/, sead::Heap* /*unused*/) {}
 
-// WIP
 void TriggerCtrlMgr::freeCtrlParam_(TriggerCtrlParam* param)
 {
     param->_0x0.freeBuffer();
@@ -100,6 +98,8 @@ const UserInstance* TriggerCtrlMgr::getUserInstance_() const
 {
     return static_cast<UserInstance*>(sead::PtrUtil::addOffset(this, -offsetof(UserInstance, mTriggerCtrlMgr)));
 }
+
+void TriggerCtrlMgr::postChangeResource() {}
 
 s32 TriggerCtrlMgr::getCurrentActionFrame(s32 action_idx) const 
 {

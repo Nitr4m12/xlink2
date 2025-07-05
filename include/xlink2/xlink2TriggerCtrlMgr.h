@@ -29,9 +29,9 @@ public:
 
     const UserInstance* getUserInstance_() const;
 
-    void postChangeResource(){};
+    void postChangeResource();
 
-    void changeAction(char const*, s32, s32);
+    void changeAction(const char*, s32, s32);
     void updateActionNeedToCalcFlag(s32);
     void changeAction(s32, s32, s32);
     void setActionFrame(s32, s32);

@@ -9,6 +9,8 @@ struct ModelTriggerConnection {
     Handle handle;
     s16 entryValue;
     bool isActive;
+
+    ~ModelTriggerConnection() {}
 };
 static_assert(sizeof(ModelTriggerConnection) == 0x28, "xlink2::ModelTriggerConnection size mismatch");
 }  // namespace xlink2
