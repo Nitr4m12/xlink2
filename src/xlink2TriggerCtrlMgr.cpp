@@ -115,6 +115,19 @@ void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
     }
 }
 
+s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
+{
+    if (action_trigger_idx >= 0 && getUserInstance_()->getUser()->getActionSlotNum() > action_trigger_idx) {
+        TriggerCtrlParam* param {getParam()};
+        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
+            ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+            if (param->actionTriggerCtrlBuffer[action_trigger_idx] != nullptr)
+                return action_trigger_ctrl->getCurrentResActionIdx();
+        }
+    }
+    return -1;
+}
+
 s32 TriggerCtrlMgr::getCurrentActionFrame(s32 action_idx) const 
 {
     return -1;

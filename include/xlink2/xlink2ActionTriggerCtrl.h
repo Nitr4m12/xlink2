@@ -41,6 +41,8 @@ public:
 
     void setActionFrame(s32 frame) { mActionFrame = frame; }
 
+    bool isActive() { return mIsActive; }
+
 private:
     const ResActionSlot* mActionSlot {nullptr};
     u32 mNameHash;
