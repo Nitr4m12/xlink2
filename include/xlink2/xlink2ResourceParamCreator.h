@@ -18,8 +18,8 @@ class ResourceParamCreator {
 public:
     class BinAccessor {
     public:
-        BinAccessor(ResourceHeader*, ParamDefineTable const*);
-        BinAccessor(EditorHeader*, ParamDefineTable const*);
+        BinAccessor(ResourceHeader*, const ParamDefineTable*);
+        BinAccessor(EditorHeader*, const ParamDefineTable*);
 
         ResourceHeader* mResourceHeader;
         EditorHeader* mEditorHeader;
@@ -29,34 +29,33 @@ public:
         u32 mNumUserParam;
     };
 
-    static void createParamAndSolveResource(RomResourceParam*, void*, ParamDefineTable const*,
+    static void createParamAndSolveResource(RomResourceParam*, void*, const ParamDefineTable*,
                                             System*);
     static void createCommonResourceParam_(CommonResourceParam*, BinAccessor*);
-    static void dumpRomResource_(ResourceHeader*, RomResourceParam*, BinAccessor const*,
-                                 ParamDefineTable const*, sead::Heap*, bool,
+    static void dumpRomResource_(ResourceHeader*, RomResourceParam*, const BinAccessor*,
+                                 const ParamDefineTable*, sead::Heap*, bool,
                                  sead::BufferedSafeString*);
 
     static void solveCommonResource_(CommonResourceParam*, BinAccessor*);
-    static void solveUserBin_(ResUserHeader*, CommonResourceParam*, ParamDefineTable const*);
-    static void solveAboutGlobalProperty(RomResourceParam*, ParamDefineTable const*, System*);
+    static void solveUserBin_(ResUserHeader*, CommonResourceParam*, const ParamDefineTable*);
+    static void solveAboutGlobalProperty(RomResourceParam*, const ParamDefineTable*, System*);
 
-    static void createParamAndSolveResource(EditorResourceParam*, sead::SafeString const&, u8*, u32,
-                                            ParamDefineTable const*, System*);
-    static void dumpEditorResource_(EditorResourceParam*, BinAccessor const*,
-                                    ParamDefineTable const*, sead::Heap*);
-    static void solveAboutGlobalProperty(EditorResourceParam*, ParamDefineTable const*, System*);
+    static void createParamAndSolveResource(EditorResourceParam*, const sead::SafeString&, u8*, u32, const ParamDefineTable*, System*);
+    static void dumpEditorResource_(EditorResourceParam*, const BinAccessor*,
+                                    const ParamDefineTable*, sead::Heap*);
+    static void solveAboutGlobalProperty(EditorResourceParam*, const ParamDefineTable*, System*);
 
-    static void createUserBinParam(UserBinParam*, ResUserHeader*, ParamDefineTable const*);
+    static void createUserBinParam(UserBinParam*, ResUserHeader*, const ParamDefineTable*);
     static void solveCommonResourceAboutGlobalProperty_(CommonResourceParam*, System*);
-    static void solveUserBinAboutGlobalProperty(ResUserHeader*, ParamDefineTable const*, System*);
+    static void solveUserBinAboutGlobalProperty(ResUserHeader*, const ParamDefineTable*, System*);
 
     static void dumpLine_(sead::BufferedSafeString*, const char*, ...);
 
-    static void dumpCommonResourceFront_(CommonResourceParam*, BinAccessor const*, bool,
+    static void dumpCommonResourceFront_(CommonResourceParam*, const BinAccessor*, bool,
                                          sead::BufferedSafeString*);
-    static void dumpUserBin_(u32, sead::SafeString const&, ResUserHeader*, ParamDefineTable const*,
+    static void dumpUserBin_(u32, const sead::SafeString&, ResUserHeader*, const ParamDefineTable*,
                              sead::BufferedSafeString*);
-    static void dumpCommonResourceRear_(CommonResourceParam*, BinAccessor const*, u32, sead::Heap*,
+    static void dumpCommonResourceRear_(CommonResourceParam*, const BinAccessor*, u32, sead::Heap*,
                                         bool, sead::BufferedSafeString*);
 };
 }  // namespace xlink2

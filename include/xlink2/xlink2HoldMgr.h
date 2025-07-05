@@ -24,9 +24,9 @@ public:
 
     u32 searchAndHold(char const*, Handle*, UserInstance*);
 
-    void fade(char const*, UserInstance*, int);
-    void fade_(HoldAssetInfo*, int);
-    void fade(UserInstance*, int);
+    void fade(const char*, UserInstance*, s32);
+    void fade_(HoldAssetInfo*, s32);
+    void fade(UserInstance*, s32);
     void fadeAll();
 
     void calc();
@@ -41,6 +41,6 @@ private:
     HoldAssetInfo mHoldAssetInfos[128];
     u8 _0;
 };
-static_assert(sizeof(HoldMgr) == 0x1888, "Wrong size for 'xlink2::HoldMgr'");
+static_assert(sizeof(HoldMgr) == 0x1888, "xlink2::HoldMgr size mismatch");
 
 }  // namespace xlink2

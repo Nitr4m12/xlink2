@@ -5,9 +5,9 @@
 
 namespace xlink2 {
 class OneEmitterInstance {
-    virtual ~OneEmitterInstance();
-
 public:
+    virtual ~OneEmitterInstance();
+    
     void* initialize(char const*, u8);
 
     void emitParticle(sead::Vector3f const&, sead::Vector4f const&, sead::Vector2f const&);

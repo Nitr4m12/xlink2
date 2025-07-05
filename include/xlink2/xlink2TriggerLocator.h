@@ -3,28 +3,25 @@
 #include <basis/seadTypes.h>
 
 #include "xlink2/xlink2BoneMtx.h"
+#include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2TriggerType.h"
 
 namespace xlink2 {
-class TriggerLocator {
-    virtual ~TriggerLocator();
-
+class TriggerLocator : Locator {
 public:
-    BoneMtx* getOverwriteBoneMtx() const;
-    ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
-    TriggerType getTriggerType() const;
+    void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx) override;
 
-    void reset();
+    void reset() override;
 
-    void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx, u8);
+    TriggerType getTriggerType() const override;
+    ResTriggerOverwriteParam* getTriggerOverwriteParam() const override;
+    
+    BoneMtx getOverwriteBoneMtx() const override;
 
 private:
-    void* _0;
-    u8 _1;
     TriggerType mTriggerType;
-    ResTriggerOverwriteParam* mResTriggerOverwriteParam;
-    BoneMtx* mBoneMtx;
-    u8 _2;
+    ResTriggerOverwriteParam* mpResTriggerOverwriteParam;
+    BoneMtx mBoneMtx;
 };
 }  // namespace xlink2

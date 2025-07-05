@@ -4,14 +4,15 @@
 
 namespace xlink2 {
 class MonoContainer : public ContainerBase {
-    ~MonoContainer() override;
-
 public:
-    u32 calc() override;
+    ~MonoContainer() override;
+    
+    CalcResult calc() override;
+
     bool killOneTimeEvent() override;
     void kill() override;
 
-    void fade(int) override;
+    void fade(s32) override;
     void destroy() override;
     void fadeBySystem() override;
 

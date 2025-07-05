@@ -197,4 +197,31 @@ protected:
         return sead::MathCalcCommon<float>::max(param_value, 0.0);
     }
 };
+
+class ResourceAccessor2 : public ResourceAccessor {
+public:
+    ResourceAccessor2(const UserInstance*, const ResAssetCallTable&, s32, u64);
+
+    ResRandomCallTable* getResRandomCallTable_(const ResParam&) const;
+
+    f32 getRandomValue_(const ResRandomCallTable&) const;
+    f32 getRandomValue_(const ResRandomCallTable&, f32) const;
+    f32 getRandomValueWeightMin_(const ResRandomCallTable&, f32) const;
+    f32 getRandomValueWeightMax_(const ResRandomCallTable&, f32) const;
+
+    f32 getCurveValue_(const ResParam&) const;
+
+    s32 getValue_(const ResParam&) const;
+
+private:
+    UserInstance* mUserInstance;
+    UserResource* mUserResource;
+    ResAssetCallTable* mResAssetCallTable;
+    void* _0;
+    u32 _1;
+    u8 _2;
+    void* _3;
+    User* mUser;
+};
+
 }  // namespace xlink2

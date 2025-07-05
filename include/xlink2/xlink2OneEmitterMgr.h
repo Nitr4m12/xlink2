@@ -1,22 +1,24 @@
 #pragma once
 
-#include "math/seadVectorFwd.h"
+#include <gfx/seadTextWriter.h>
+
 #include "xlink2/xlink2OneEmitterInstance.h"
 #include "xlink2/xlink2OneEmitterInstanceHandle.h"
 
 namespace xlink2 {
 class OneEmitterMgr {
 public:
-    void* createOneEmitterInstance(char const*, u8);
-    s32 createOneEmitterInstanceImpl(char const*, u8);
-    // void drawDebugInformation(sead::TextWriter);
+    void* createOneEmitterInstance(const char*, u8);
+    void* searchOneEmitterInstanceHandle(const char*);
 
-    OneEmitterMgr* getFreeOneEmitterInstance();
+    s32 createOneEmitterInstanceImpl(const char*, u8);
+    
+    void releaseOneEmitterInstance(const char*);
+
     OneEmitterInstance* getOneEmitterInstance(OneEmitterInstanceHandle);
+    OneEmitterMgr* getFreeOneEmitterInstance();
 
-    void releaseOneEmitterInstance(char const*);
-
-    void* searchOneEmitterInstanceHandle(char const*);
+    void drawDebugInformation(sead::TextWriter*);
 
 private:
 };

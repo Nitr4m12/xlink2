@@ -10,4 +10,12 @@ public:
     CalcResult calc() override;
     bool start() override;
 };
+
+class RandomContainer2 : public RandomContainer {
+public:
+    ~RandomContainer2() override;
+
+    bool start() override;
+};
+
 }  // namespace xlink2

@@ -11,11 +11,12 @@ namespace xlink2 {
 class PropertyTriggerCtrl : TriggerCtrl {
     
 public:
-    ~PropertyTriggerCtrl() override;
     PropertyTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*, s32, bool,
                         ResProperty const*, ResMode);
-    void calc() override;
+    ~PropertyTriggerCtrl() override;
+
     void reset();
+    void calc() override;
 
 private:
     ResProperty* mResProperty;
@@ -24,6 +25,6 @@ private:
     u8 _2;
     bool _3;
 };
-static_assert(sizeof(PropertyTriggerCtrl) == 0x30, "Wrong size for 'xlink2::PropertyTriggerCtrl'");
+static_assert(sizeof(PropertyTriggerCtrl) == 0x30, "xlink2::PropertyTriggerCtrl size mismatch");
 
 }  // namespace xlink2

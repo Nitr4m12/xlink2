@@ -298,93 +298,80 @@ f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param, const Us
         break;
     }
     case ValueReferenceType::Random: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValue(*random_ctb_item);
         break;
     }
     case ValueReferenceType::Random2Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValue(*random_ctb_item, 2.0f);
         break;
     }
     case ValueReferenceType::Random3Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValue(*random_ctb_item, 3.0f);
         break;
     }
     case ValueReferenceType::Random4Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValue(*random_ctb_item, 4.0f);
         break;
     }
     case ValueReferenceType::Random1Point5Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValue(*random_ctb_item, 1.5f);
         break;
     }
     case ValueReferenceType::RandomWeightMin2Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 2.0f);
         break;
     }
     case ValueReferenceType::RandomWeightMin3Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 3.0f);
         break;
     }
     case ValueReferenceType::RandomWeightMin4Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 4.0f);
         break;
     }
     case ValueReferenceType::RandomWeightMin1Point5Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 1.5f);
         break;
     }
     case ValueReferenceType::RandomWeightMax2Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 2.0f);
         break;
     }
     case ValueReferenceType::RandomWeightMax3Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 3.0f);
         break;
     }
     case ValueReferenceType::RandomWeightMax4Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 4.0f);
         break;
     }
     case ValueReferenceType::RandomWeightMax1Point5Pow: {
-        ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
-        ResRandomCallTable* random_ctb_item {&random_ctb[res_param.getValue()]};
-        if (random_ctb != nullptr && random_ctb_item != nullptr)
+        const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
+        if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 1.5f);
         break;
     }

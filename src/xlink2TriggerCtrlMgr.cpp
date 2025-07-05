@@ -121,7 +121,7 @@ s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
         TriggerCtrlParam* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
             ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
-            if (param->actionTriggerCtrlBuffer[action_trigger_idx] != nullptr)
+            if (action_trigger_ctrl != nullptr)
                 return action_trigger_ctrl->getCurrentResActionIdx();
         }
     }

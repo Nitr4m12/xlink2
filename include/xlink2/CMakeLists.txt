@@ -52,7 +52,6 @@ target_sources(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PropertyValueType.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}PtclResourceAccessorELink.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}RandomContainer.h
-    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}RandomContainer2.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResAction.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResActionSlot.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResActionTrigger.h
@@ -64,7 +63,6 @@ target_sources(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResEset.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResMode.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceAccessor.h
-    ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceAccessor2.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceAccessorELink.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceAccessorSLink.h
     ${CMAKE_CURRENT_LIST_DIR}/${PROJECT_NAME}ResourceBuffer.h

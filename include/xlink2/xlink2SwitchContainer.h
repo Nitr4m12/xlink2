@@ -1,6 +1,7 @@
 #pragma once
 
-#include "basis/seadTypes.h"
+#include <basis/seadTypes.h>
+
 #include "xlink2/xlink2ContainerBase.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
 
@@ -11,7 +12,7 @@ public:
 
     CalcResult calc() override;
 
-    u64 getConditionMatchChildTable_();
+    const ResAssetCallTable* getConditionMatchChildCallTable_();
 
     bool start_(ResAssetCallTable const*);
 
