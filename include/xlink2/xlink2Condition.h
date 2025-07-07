@@ -1,14 +1,24 @@
 #pragma once
 
 #include "xlink2/xlink2ContainerType.h"
+#include "xlink2/xlink2PropertyType.h"
 
 namespace xlink2 {
+enum class CompareType : s32 {
+    NotEqual,
+    LessThanEqual,
+    LessThan,
+    GreaterThanEqual,
+    GreaterThan,
+    Equal,
+};
+
 struct ResCondition {
     ContainerType parentContainerType;
-    u32 propertyType;
-    u32 compareType;
-    u32 value;
-    u16 localPropertyEnumNameIdx;
+    PropertyType propertyType;
+    CompareType compareType;
+    s32 value;
+    s16 localPropertyEnumNameIdx;
     bool isSolved;
     bool isGlobal;
 };
