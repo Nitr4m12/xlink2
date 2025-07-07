@@ -1,8 +1,11 @@
 #pragma once
 
-#include "basis/seadTypes.h"
-#include "heap/seadHeap.h"
+#include <basis/seadTypes.h>
+#include <container/seadPtrArray.h>
+#include <heap/seadHeap.h>
+
 #include "xlink2/xlink2ArrangeGroupParam.h"
+#include "xlink2/xlink2AssetExecutorSLink.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2HandleSLink.h"
 #include "xlink2/xlink2IEventCallbackSLink.h"
@@ -32,18 +35,27 @@ public:
     };
 
     class AssetLimiter {
-
     public:
-        ~AssetLimiter() = default;
+        struct AssetLimiterParam {
+            sead::FixedPtrArray<AssetExecutorSLink, 16> assetExecutorPtrs;
+            const char* name {};
+            s32 unkEnum {1};
+            s32 limitThreshold {-1};
+            bool _0xa0 {true};
+        };
+        static_assert(sizeof(AssetLimiterParam) == 0xa8, "xlink2::UserInstanceSLink::AssetLimiter::AssetLimiterParam size mismatch");
+
+        virtual ~AssetLimiter() = default;
         AssetLimiter(s32, sead::Heap*);
 
         void clear();
-        void append(Event const&, ResourceAccessorSLink const&, User*);
+        void append(const Event&, const ResourceAccessorSLink&, User*);
 
         void limit();
-        void initialize(s32, char const*, ArrangeGroupParam const&);
+        void initialize(s32, const char*, const ArrangeGroupParam&);
 
     private:
+        sead::Buffer<AssetLimiterParam> mParamBuffer;
     };
 
     ~UserInstanceSLink() override = default;
@@ -102,6 +114,6 @@ private:
     IEventCallbackSLink* mEventCallback;
     sead::SafeArray<AssetLimiter*, 2> mAssetLimiters;
 };
-static_assert(sizeof(UserInstanceSLink) == 0x128, "Wrong size for 'xlink2::UserInstanceSLink'");
+static_assert(sizeof(UserInstanceSLink) == 0x128, "xlink2::UserInstanceSLink size mismatch");
 
 }  // namespace xlink2
