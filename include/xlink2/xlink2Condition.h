@@ -1,7 +1,7 @@
 #pragma once
 
-#include "xlink2/xlink2ContainerType.h"
 #include "xlink2/xlink2PropertyType.h"
+#include "xlink2/xlink2ResContainerParam.h"
 
 namespace xlink2 {
 enum class CompareType : s32 {

@@ -5,6 +5,7 @@
 namespace xlink2 {
 SequenceContainer::~SequenceContainer() = default;
 
+// WIP
 ContainerBase::CalcResult SequenceContainer::calc()
 {
     if (mpChild->calc() & CalcResult::Success) {

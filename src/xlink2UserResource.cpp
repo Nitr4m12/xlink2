@@ -92,7 +92,7 @@ ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerT
             return nullptr;
 
         s32 a {0};
-        s32 b {param->resUserHeader->numCallTable - 1};
+        s32 b = static_cast<s32>(param->resUserHeader->numCallTable) - 1;
 #ifdef MATCHING_HACK_NX_CLANG
         asm("");
 #endif
@@ -140,7 +140,7 @@ ResAssetCallTable* UserResource::getAssetCallTableItem(s32 idx) const
     UserResourceParam* param = getParamWithSetupCheck();
     
     if (param && param->isSetup) {
-        if (idx >= 0 && param->resUserHeader->numCallTable > idx)
+        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numCallTable) > idx)
             return &param->resAssetCallTable[idx];
     }
     return nullptr;
@@ -151,7 +151,7 @@ ResActionTrigger* UserResource::getActionTriggerTableItem(s32 idx) const
     UserResourceParam* param = getParamWithSetupCheck();
     
     if (param != nullptr && param->isSetup) {
-        if (idx >= 0 && param->resUserHeader->numResActionTrigger > idx)
+        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResActionTrigger) > idx)
             return &param->resActionTriggerTable[idx];
     }
     return nullptr;
@@ -162,7 +162,7 @@ ResPropertyTrigger* UserResource::getPropertyTriggerTableItem(s32 idx) const
     UserResourceParam* param = getParamWithSetupCheck();
     
     if (param != nullptr && param->isSetup) {
-        if (idx >= 0 && param->resUserHeader->numResPropertyTrigger > idx)
+        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResPropertyTrigger) > idx)
             return &param->resPropertyTriggerTable[idx];
     }
     return nullptr;
@@ -173,7 +173,7 @@ ResAlwaysTrigger* UserResource::getAlwaysTriggerTableItem(s32 idx) const
     UserResourceParam* param = getParamWithSetupCheck();
     
     if (param != nullptr && param->isSetup) {
-        if (idx >= 0 && param->resUserHeader->numResAlwaysTrigger > idx)
+        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResAlwaysTrigger) > idx)
             return &param->resAlwaysTriggerTable[idx];
     }
     return nullptr;

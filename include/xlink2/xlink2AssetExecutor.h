@@ -4,9 +4,9 @@
 #include <prim/seadBitFlag.h>
 
 #include "xlink2/xlink2BoneMtx.h"
-#include "xlink2/xlink2ContainerType.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2ResContainerParam.h"
 #include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2UserInstance.h"
 

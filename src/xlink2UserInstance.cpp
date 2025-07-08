@@ -301,7 +301,7 @@ bool UserInstance::isDebugLogEnable(DebugLogFlag /*unused*/) const
 
 void UserInstance::checkAndBreakWhenEmit_(const char* /*unused*/) {}
 
-u64 UserInstance::getCurrentResActionIdx(s32 idx) const 
+s32 UserInstance::getCurrentResActionIdx(s32 idx) const 
 {
     return mTriggerCtrlMgr.getCurrentResActionIdx(idx);
 }

@@ -98,7 +98,7 @@ public:
     
     void freeEventIfFadeOrKillCalled();
 
-    u64 getCurrentResActionIdx(s32) const;
+    s32 getCurrentResActionIdx(s32) const;
 
     bool searchAsset(Locator*, char const*);
     bool searchAsset(Locator*, u32);

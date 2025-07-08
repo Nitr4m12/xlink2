@@ -91,19 +91,19 @@ const ContainerBase* ResourceAccessor::getContainer(const ResAssetCallTable& ass
 // WIP
 const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const 
 {
-    if (isContainer(asset_ctb)) {
-        ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
-        if (container_param != nullptr) {
-            if (container_param->type > ContainerType::Sequence) {
-                setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb));
-                return &sContainerNames[6];
-            }
-            return &sContainerNames[(s8)container_param->type];
+    // if (isContainer(asset_ctb)) {
+    //     ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
+    //     if (container_param != nullptr) {
+    //         if (container_param->type > ContainerType::Sequence) {
+    //             setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb));
+    //             return &sContainerNames[6];
+    //         }
+    //         return &sContainerNames[(s8)container_param->type];
 
-        }
-    }
+    //     }
+    // }
 
-    return &sContainerNames[5];
+    // return &sContainerNames[5];
 }
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const
@@ -661,7 +661,7 @@ const char* ResourceAccessor::getUserCustomParamValueString(s32 idx) const
 
     ResParam* user_params {mpUserResource->getParam()->userParamArray};
     u32 name_table_pos {mpUserResource->getParam()->commonResourceParam->nameTablePos};
-    u32 param_raw_value {user_params[id].getValue()};
+    s32 param_raw_value {user_params[id].getValue()};
 
     u32 value_pos {name_table_pos + param_raw_value};
     const char* value_str {calcOffset<const char>(value_pos)};
@@ -681,7 +681,7 @@ s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
     auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
 
-    u32 param_value {mpUserResource->getParam()->userParamArray[num_custom_user_param + idx].getValue()};
+    s32 param_value {mpUserResource->getParam()->userParamArray[num_custom_user_param + idx].getValue()};
     s32 direct_value {mpUserResource->getParam()->commonResourceParam->directValueTable[param_value]};
 
     return direct_value;
@@ -701,7 +701,7 @@ const char* ResourceAccessor::getUserCustomParamValueString(const char* name) co
 
     ResParam* user_params {mpUserResource->getParam()->userParamArray};
     u32 name_table_pos {mpUserResource->getParam()->commonResourceParam->nameTablePos};
-    u32 param_raw_value {user_params[id].getValue()};
+    s32 param_raw_value {user_params[id].getValue()};
 
     u32 value_pos {name_table_pos + param_raw_value};
     const char* value_str {calcOffset<const char>(value_pos)};
@@ -721,7 +721,7 @@ s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
     auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
-    u32 param_value {mpUserResource->getParam()->userParamArray[idx].getValue()};
+    s32 param_value {mpUserResource->getParam()->userParamArray[idx].getValue()};
     s32 direct_value {mpUserResource->getParam()->commonResourceParam->directValueTable[param_value]};
 
     return direct_value;

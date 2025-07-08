@@ -12,7 +12,6 @@
 
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2ContainerBase.h"
-#include "xlink2/xlink2ContainerType.h"
 #include "xlink2/xlink2EditorBuffer.h"
 #include "xlink2/xlink2Error.h"
 #include "xlink2/xlink2ErrorMgr.h"
@@ -38,6 +37,7 @@ class EditorBuffer;
 class ErrorMgr;
 class HoldMgr;
 class ResourceBuffer;
+enum class ContainerType;
 
 class System : sead::hostio::Node {
 public:

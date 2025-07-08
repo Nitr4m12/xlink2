@@ -11,7 +11,7 @@ namespace xlink2 {
 class Locator {
 public:
     Locator() : mpAssetCallTable{nullptr}, _1{0} {};
-    virtual ~Locator() = default;
+    ~Locator() = default;
 
     static u32 sDataLoadedCount;
 

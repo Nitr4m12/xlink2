@@ -3,7 +3,6 @@
 #include "prim/seadBitFlag.h"
 #include "prim/seadSafeString.h"
 #include "xlink2/xlink2Condition.h"
-#include "xlink2/xlink2ContainerType.h"
 #include "xlink2/xlink2ResContainerParam.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2ResParam.h"
@@ -513,240 +512,195 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     dumpLine_(dump_str, "\n");
 }
 
-// WIP
-void ResourceParamCreator::dumpUserBin_(u32 p1, const sead::SafeString& user_name,
+void ResourceParamCreator::dumpUserBin_(u32 user_index, const sead::SafeString& user_name,
                                         ResUserHeader* user_header,
                                         const ParamDefineTable* param_define,
-                                        sead::BufferedSafeString* buffered_str)
+                                        sead::BufferedSafeString* dump_str)
 {
     // ------------------------------------- ResUserHeader -----------------------------------------
-    dumpLine_(buffered_str, "<< ResUserHeader[%d] (addr:0x%x, name=%s) >>\n", p1, user_header,
+    dumpLine_(dump_str, "<< ResUserHeader[%d] (addr:0x%x, name=%s) >>\n", user_index, reinterpret_cast<u64>(user_header),
               user_name.cstr());
-    dumpLine_(buffered_str, "    isSetup: %u\n", user_header->isSetup);
-    dumpLine_(buffered_str, "    numLocalProperty: %u\n", user_header->numLocalProperty);
-    dumpLine_(buffered_str, "    numCallTable: %u\n", user_header->numCallTable);
-    dumpLine_(buffered_str, "    numAsset: %u\n", user_header->numAsset);
-    dumpLine_(buffered_str, "    numRandomContainer2: %u\n", user_header->numRandomContainer2);
-    dumpLine_(buffered_str, "    numResActionSlot: %u\n", user_header->numResActionSlot);
-    dumpLine_(buffered_str, "    numResAction: %u\n", user_header->numResAction);
-    dumpLine_(buffered_str, "    numResActionTrigger: %u\n", user_header->numResActionTrigger);
-    dumpLine_(buffered_str, "    numResProperty: %u\n", user_header->numResProperty);
-    dumpLine_(buffered_str, "    numResPropertyTrigger: %u\n", user_header->numResPropertyTrigger);
-    dumpLine_(buffered_str, "    numResAlwaysTrigger: %u\n", user_header->numResAlwaysTrigger);
-    dumpLine_(buffered_str, "    triggerTablePos: %u\n", user_header->triggerTablePos);
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(dump_str, "    isSetup: %u\n", user_header->isSetup);
+    dumpLine_(dump_str, "    numLocalProperty: %u\n", user_header->numLocalProperty);
+    dumpLine_(dump_str, "    numCallTable: %u\n", user_header->numCallTable);
+    dumpLine_(dump_str, "    numAsset: %u\n", user_header->numAsset);
+    dumpLine_(dump_str, "    numRandomContainer2: %u\n", user_header->numRandomContainer2);
+    dumpLine_(dump_str, "    numResActionSlot: %u\n", user_header->numResActionSlot);
+    dumpLine_(dump_str, "    numResAction: %u\n", user_header->numResAction);
+    dumpLine_(dump_str, "    numResActionTrigger: %u\n", user_header->numResActionTrigger);
+    dumpLine_(dump_str, "    numResProperty: %u\n", user_header->numResProperty);
+    dumpLine_(dump_str, "    numResPropertyTrigger: %u\n", user_header->numResPropertyTrigger);
+    dumpLine_(dump_str, "    numResAlwaysTrigger: %u\n", user_header->numResAlwaysTrigger);
+    dumpLine_(dump_str, "    triggerTablePos: %u\n", user_header->triggerTablePos);
+    dumpLine_(dump_str, "\n");
 
-    u64 pos{(u64)user_header + 1};
 
     // ------------------------------- LocalPropertyNameRefTable -----------------------------------
-    dumpLine_(buffered_str, "    << LocalPropertyNameRefTable (addr:0x%x, num=%d) >>\n", pos,
-              user_header->numLocalProperty);
-    if (user_header->numLocalProperty != 0)
-        for (int i{0}; i < user_header->numLocalProperty; ++i)
-            dumpLine_(buffered_str, "        [%d]: namePos=%d\n", pos + i * sizeof(u32));
-    dumpLine_(buffered_str, "\n");
+    
+    s32* name_ref_table {reinterpret_cast<s32*>(user_header + 1)};
+
+    dumpLine_(dump_str, "    << LocalPropertyNameRefTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(name_ref_table), user_header->numLocalProperty);
+    
+    for (u32 i {0}; i < user_header->numLocalProperty; ++i)
+        dumpLine_(dump_str, "        [%d]: namePos=%d\n", i, name_ref_table[i]);
+
+    dumpLine_(dump_str, "\n");
 
     // --------------------------------------- UserParamTable --------------------------------------
-    u32 num_property{user_header->numLocalProperty};
-    u32 user_param_num{param_define->getNumUserParam()};
-    u64 pos2{pos + num_property * sizeof(u32)};
-    dumpLine_(buffered_str, "    << UserParamTable (addr:0x%x, num=%d) >>\n", pos2, user_param_num);
-
-    if (user_param_num != 0) {
-        for (int i{0}; i < user_param_num; ++i) {
-            // TODO: This looks weird. Take a look later
-            u32* raw_value{&user_header->triggerTablePos};
-            raw_value = &raw_value[num_property + i];
-            dumpLine_(buffered_str, "        [%d] rawValue: %u (type: %d, value: %d)\n",
-                      i & 0xffffffff, *raw_value >> 0x18, *raw_value & 0xffffff);
-        }
+    
+    ResParam* user_param_table {reinterpret_cast<ResParam*>(name_ref_table + user_header->numLocalProperty)};
+    u32 num_user_param {param_define->getNumUserParam()};
+    
+    dumpLine_(dump_str, "    << UserParamTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(user_param_table), num_user_param);
+    for (u32 i {0}; i < num_user_param; ++i) {
+        dumpLine_(dump_str, "        [%d] rawValue: %u (type: %d, value: %d)\n", i,
+                    user_param_table[i].rawValue, user_param_table[i].getRefType(), user_param_table[i].getValue());
     }
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(dump_str, "\n");
 
     // ------------------------------------- SortedAssetIdTable ------------------------------------
-    pos2 += user_param_num * sizeof(u32);
-    dumpLine_(buffered_str, "    << SortedAssetIdTable (addr:0x%x, num=%d) >>\n", pos2,
-              user_header->numCallTable);
-    if (user_header->numCallTable != 0)
-        for (int i{0}; i < user_header->numCallTable; ++i)
-            dumpLine_(buffered_str, "        [%d]: %hu\n", i, pos2 + i * sizeof(u16));
-    dumpLine_(buffered_str, "\n");
+    
+    u16* sorted_asset_id_table {reinterpret_cast<u16*>(user_param_table + num_user_param)};
+    dumpLine_(dump_str, "    << SortedAssetIdTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(sorted_asset_id_table), user_header->numCallTable);
+    
+    for (u32 i {0}; i < user_header->numCallTable; ++i)
+        dumpLine_(dump_str, "        [%d]: %hu\n", i, sorted_asset_id_table[i]);
+
+    dumpLine_(dump_str, "\n");
 
     // --------------------------------------- AssetCallTable --------------------------------------
-    pos2 += user_header->numCallTable * sizeof(u16);
-    if ((user_header->numCallTable & 1) != 0)
-        pos2 += 2;
-    dumpLine_(buffered_str, "    << AssetCallTable (addr:0x%x, num=%d) >>\n", pos2);
-    if (user_header->numCallTable != 0) {
-        for (int i{0}; i < user_header->numCallTable; ++i) {
-            ResAssetCallTable* asset_call_table{
-                (ResAssetCallTable*)(pos2 + i * sizeof(ResAssetCallTable))};
-            dumpLine_(buffered_str, "        [%d].keyNamePos: %u\n", i,
-                      asset_call_table->keyNamePos);
-            dumpLine_(buffered_str, "        [%d].assetId: %hd\n", i, asset_call_table->assetId);
-            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, asset_call_table->flag);
-            dumpLine_(buffered_str, "        [%d].parentIndex: %d\n", i,
-                      asset_call_table->parentIndex);
-            dumpLine_(buffered_str, "        [%d].paramStartPos: %u\n", i,
-                      asset_call_table->paramStartPos);
-            dumpLine_(buffered_str, "        [%d].conditionPos: %u\n", i,
-                      asset_call_table->conditionPos);
-        }
+    
+    ResAssetCallTable* asset_call_table {reinterpret_cast<ResAssetCallTable*>(sorted_asset_id_table + user_header->numCallTable)};
+    if (user_header->numCallTable & 1)
+        asset_call_table  = reinterpret_cast<ResAssetCallTable*>(sorted_asset_id_table + user_header->numCallTable + 1);
+
+    dumpLine_(dump_str, "    << AssetCallTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(asset_call_table), user_header->numCallTable);
+    for (u32 i {0}; i < user_header->numCallTable; ++i) {
+        dumpLine_(dump_str, "        [%d].keyNamePos: %u\n", i, asset_call_table[i].keyNamePos);
+        dumpLine_(dump_str, "        [%d].assetId: %hd\n", i, asset_call_table[i].assetId);
+        dumpLine_(dump_str, "        [%d].flag: %hu\n", i, asset_call_table[i].flag);
+        dumpLine_(dump_str, "        [%d].parentIndex: %d\n", i, asset_call_table[i].parentIndex);
+        dumpLine_(dump_str, "        [%d].paramStartPos: %u\n", i, asset_call_table[i].paramStartPos);
+        dumpLine_(dump_str, "        [%d].conditionPos: %u\n", i, asset_call_table[i].conditionPos);
     }
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(dump_str, "\n");
 
     // --------------------------------------- ContainerTable --------------------------------------
-    ResContainerParam* container_param{
-        (ResContainerParam*)(pos2 + user_header->numCallTable * sizeof(ResAssetCallTable))};
-    u32 num_container{user_header->numCallTable - user_header->numAsset};
-    dumpLine_(buffered_str, "    << ContainerTable (addr:0x%x, num=%d) >>\n", container_param,
-              num_container);
-    if (num_container != 0) {
-        for (int i{0}; i < num_container; ++i) {
-            if (container_param->type == ContainerType::Switch) {
-                dumpLine_(buffered_str, "        [%d].type: %d\n", i, container_param->type);
-                dumpLine_(buffered_str, "        [%d].childrenStartIndex: %d\n", i,
-                          container_param->childrenStartIndex);
-                dumpLine_(buffered_str, "        [%d].childrenEndIndex: %d\n", i,
-                          container_param->childrenEndIndex);
-                dumpLine_(buffered_str, "        [%d].watchPropertyNamePos: %u\n", i,
-                          container_param->watchPropertyNamePos);
-                dumpLine_(buffered_str, "        [%d].watchPropertyId: %d\n", i,
-                          container_param->watchPropertyId);
-                dumpLine_(buffered_str, "        [%d].localPropertyNameIdx: %hd\n", i,
-                          container_param->localPropertyNameIdx);
-                dumpLine_(buffered_str, "        [%d].isGlobal: %d\n", i,
-                          container_param->isGlobal);
-                container_param += 1;
-            }
-            else {
-                dumpLine_(buffered_str, "        [%d].type: %d\n", i, container_param->type);
-                dumpLine_(buffered_str, "        [%d].childrenStartIndex: %d\n", i,
-                          container_param->childrenStartIndex);
-                dumpLine_(buffered_str, "        [%d].childrenEndIndex: %d\n", i,
-                          container_param->childrenEndIndex);
-                container_param = (ResContainerParam*)container_param->watchPropertyNamePos;
-            }
+    
+    ResContainerParam* container {reinterpret_cast<ResContainerParam*>(asset_call_table + user_header->numCallTable)};
+    u32 num_container {user_header->numCallTable - user_header->numAsset};
+
+    dumpLine_(dump_str, "    << ContainerTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(container), num_container);
+    for (u32 i {0}; i < num_container; ++i) {
+        switch (container->type) {
+        case ContainerType::Switch: {
+            auto* switch_container {static_cast<ResSwitchContainerParam*>(container)};
+            volatile ContainerType* type {&switch_container->type};
+
+            dumpLine_(dump_str, "        [%d].type: %d\n",                  i,  *type);
+            dumpLine_(dump_str, "        [%d].childrenStartIndex: %d\n",    i,  switch_container->childrenStartIndex);
+            dumpLine_(dump_str, "        [%d].childrenEndIndex: %d\n",      i,  switch_container->childrenEndIndex);
+            dumpLine_(dump_str, "        [%d].watchPropertyNamePos: %u\n",  i,  switch_container->watchPropertyNamePos);
+            dumpLine_(dump_str, "        [%d].watchPropertyId: %d\n",       i,  switch_container->watchPropertyId);
+            dumpLine_(dump_str, "        [%d].localPropertyNameIdx: %hd\n", i,  switch_container->localPropertyNameIdx);
+            dumpLine_(dump_str, "        [%d].isGlobal: %d\n",              i,  switch_container->isGlobal);
+            
+            container = static_cast<ResContainerParam*>(switch_container + 1);
+            break;
+        }
+        default:
+            dumpLine_(dump_str, "        [%d].type: %d\n",                  i,  container->type);
+            dumpLine_(dump_str, "        [%d].childrenStartIndex: %d\n",    i,  container->childrenStartIndex);
+            dumpLine_(dump_str, "        [%d].childrenEndIndex: %d\n",      i,  container->childrenEndIndex);
+            
+            container += 1;
+            break;
         }
     }
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(dump_str, "\n");
 
     // ------------------------------------- ResActionSlotTable ------------------------------------
-    u64 action_slot_table_abs_pos{user_header->triggerTablePos + (u64)user_header};
-    u64 pos3{action_slot_table_abs_pos | sMinAddressHigh};
-    if (action_slot_table_abs_pos < sMinAddressLow)
-        pos3 += 0x100000000;
+    
+    ResActionSlot* action_slot_table {calcOffset<ResActionSlot>(reinterpret_cast<u64>(user_header) + user_header->triggerTablePos)};
 
-    dumpLine_(buffered_str, "    << ResActionSlotTable (addr:0x%x, num=%d) >>\n", pos3,
-              user_header->numResActionSlot);
-    if (user_header->numResActionSlot != 0) {
-        ResActionSlot* action_slot;
-        for (int i{0}; i < user_header->numResActionSlot; ++i) {
-            action_slot = (ResActionSlot*)(pos3 + i * sizeof(ResActionSlot));
-            dumpLine_(buffered_str,
-                      "        [%d] namePos: %u, actionStartIdx: %hd, actionEndIdx: %hd\n", i,
-                      action_slot->namePos, action_slot->actionStartIdx, action_slot->actionEndIdx);
-        }
+    dumpLine_(dump_str, "    << ResActionSlotTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(action_slot_table), user_header->numResActionSlot);
+    for (u32 i{0}; i < user_header->numResActionSlot; ++i) {
+        dumpLine_(dump_str,
+                    "        [%d] namePos: %u, actionStartIdx: %hd, actionEndIdx: %hd\n", i,
+                    action_slot_table[i].namePos, action_slot_table[i].actionStartIdx, action_slot_table[i].actionEndIdx);
     }
-    dumpLine_(buffered_str, "\n");
-    pos2 = pos3 + user_header->numResActionSlot * sizeof(ResActionSlot);
+    dumpLine_(dump_str, "\n");
 
     // --------------------------------------- ResActionTable --------------------------------------
-    dumpLine_(buffered_str, "    << ResActionTable (addr:0x%x, num=%d) >>\n", pos2,
-              user_header->numResAction);
-    if (user_header->numResAction != 0) {
-        ResAction* res_action;
-        for (int i{0}; i < user_header->numResAction; ++i) {
-            res_action = (ResAction*)(pos2 + i * sizeof(ResAction));
-            dumpLine_(buffered_str,
-                      "        [%d] namePos: %u, triggerStartIdx: %d, triggerEndIdx: %d\n", i,
-                      res_action->namePos, res_action->triggerStartIdx, res_action->triggerEndIdx);
-        }
+    
+    ResAction* action_table {reinterpret_cast<ResAction*>(action_slot_table + user_header->numResActionSlot)};
+
+    dumpLine_(dump_str, "    << ResActionTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(action_table), user_header->numResAction);
+    for (u32 i {0}; i < user_header->numResAction; ++i) {
+        dumpLine_(dump_str,
+                    "        [%d] namePos: %u, triggerStartIdx: %d, triggerEndIdx: %d\n", i,
+                    action_table[i].namePos, action_table[i].triggerStartIdx, action_table[i].triggerEndIdx);
     }
-    dumpLine_(buffered_str, "\n");
-    pos2 += user_header->numResAction * sizeof(ResAction);
+    dumpLine_(dump_str, "\n");
 
     // ----------------------------------- ResActionTriggerTable ----------------------------------
-    dumpLine_(buffered_str, "    << ResActionTriggerTable (addr:0x%x, num=%d) >>\n", pos2,
-              user_header->numResActionTrigger);
-    if (user_header->numResActionTrigger != 0) {
-        ResActionTrigger* res_action_trigger;
-        for (int i{0}; i < user_header->numResActionTrigger; ++i) {
-            res_action_trigger = (ResActionTrigger*)(pos2 + i * sizeof(ResActionTrigger));
-            dumpLine_(buffered_str, "        [%d].guId: %d\n", i, res_action_trigger->guId);
-            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n", i,
-                      res_action_trigger->assetCtbPos);
-            dumpLine_(buffered_str, "        [%d].startFrame: %d\n", i,
-                      res_action_trigger->startFrame);
-            dumpLine_(buffered_str, "        [%d].endFrame: %d\n", i, res_action_trigger->endFrame);
-            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, res_action_trigger->flag);
-            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n", i,
-                      res_action_trigger->overwriteHash);
-            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n", i,
-                      res_action_trigger->overwriteParamPos);
-        }
+    
+    ResActionTrigger* action_trigger_table {reinterpret_cast<ResActionTrigger*>(action_table + user_header->numResAction)};
+
+    dumpLine_(dump_str, "    << ResActionTriggerTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(action_trigger_table), user_header->numResActionTrigger);
+    for (u32 i {0}; i < user_header->numResActionTrigger; ++i) {
+        dumpLine_(dump_str, "        [%d].guId: %d\n", i, action_trigger_table[i].guId);
+        dumpLine_(dump_str, "        [%d].assetCtbPos: %u\n", i, action_trigger_table[i].assetCtbPos);
+        dumpLine_(dump_str, "        [%d].startFrame: %d\n", i, action_trigger_table[i].startFrame);
+        dumpLine_(dump_str, "        [%d].endFrame: %d\n", i, action_trigger_table[i].endFrame);
+        dumpLine_(dump_str, "        [%d].flag: %hu\n", i, action_trigger_table[i].flag);
+        dumpLine_(dump_str, "        [%d].overwriteHash: %hd\n", i, action_trigger_table[i].overwriteHash);
+        dumpLine_(dump_str, "        [%d].overwriteParamPos: %u\n", i, action_trigger_table[i].overwriteParamPos);
     }
-    dumpLine_(buffered_str, "\n");
-    pos2 += user_header->numResActionTrigger * sizeof(ResActionTrigger);
+    dumpLine_(dump_str, "\n");
 
     // -------------------------------------- ResPropertyTable -------------------------------------
-    dumpLine_(buffered_str, "    << ResPropertyTable (addr:0x%x, num=%d) >>\n", pos2,
-              user_header->numResProperty);
-    if (user_header->numResProperty != 0) {
-        ResProperty* res_property;
-        for (int i{0}; i < user_header->numResProperty; ++i) {
-            res_property = (ResProperty*)(pos2 + i * sizeof(ResProperty));
-            dumpLine_(buffered_str,
-                      "        [%d] watchPropertyNamePos: %u, isGlobal: %d, triggerStartIdx: %d, "
-                      "triggerEndIdx: %d\n",
-                      i, res_property->watchPropertyNamePos, res_property->isGlobal,
-                      res_property->triggerStartIdx, res_property->triggerEndIdx);
-        }
+    
+    ResProperty* property_table {reinterpret_cast<ResProperty*>(action_trigger_table + user_header->numResActionTrigger)};
+
+    dumpLine_(dump_str, "    << ResPropertyTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(property_table), user_header->numResProperty);
+    for (u32 i {0}; i < user_header->numResProperty; ++i) {
+        dumpLine_(dump_str,
+                    "        [%d] watchPropertyNamePos: %u, isGlobal: %d, triggerStartIdx: %d, triggerEndIdx: %d\n", i,
+                    property_table[i].watchPropertyNamePos, property_table[i].isGlobal,
+                    property_table[i].triggerStartIdx, property_table[i].triggerEndIdx);
     }
-    dumpLine_(buffered_str, "\n");
-    pos2 += user_header->numResProperty * sizeof(ResProperty);
+    dumpLine_(dump_str, "\n");
 
     // ---------------------------------- ResPropertyTriggerTable ---------------------------------
-    dumpLine_(buffered_str, "    << ResPropertyTriggerTable (addr:0x%x, num=%d) >>\n", pos2,
-              user_header->numResPropertyTrigger);
-    if (user_header->numResPropertyTrigger != 0) {
-        ResPropertyTrigger* res_property_trigger;
-        for (int i{0}; i < user_header->numResPropertyTrigger; ++i) {
-            res_property_trigger = (ResPropertyTrigger*)(pos3 + i * sizeof(ResPropertyTrigger));
-            dumpLine_(buffered_str, "        [%d].guId: %d\n", i, res_property_trigger->guId);
-            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n", i,
-                      res_property_trigger->assetCtbPos);
-            dumpLine_(buffered_str, "        [%d].condition: %u\n", i,
-                      res_property_trigger->condition);
-            dumpLine_(buffered_str, "        [%d].flag: %hu\n", i, res_property_trigger->flag);
-            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n", i,
-                      res_property_trigger->overwriteHash);
-            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n", i,
-                      res_property_trigger->overwriteParamPos);
-        }
+    
+    ResPropertyTrigger* property_trigger_table {reinterpret_cast<ResPropertyTrigger*>(property_table + user_header->numResProperty)};
+    
+    dumpLine_(dump_str, "    << ResPropertyTriggerTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(property_trigger_table), user_header->numResPropertyTrigger);
+    for (u32 i {0}; i < user_header->numResPropertyTrigger; ++i) {
+        dumpLine_(dump_str, "        [%d].guId: %d\n", i, property_trigger_table[i].guId);
+        dumpLine_(dump_str, "        [%d].assetCtbPos: %u\n", i, property_trigger_table[i].assetCtbPos);
+        dumpLine_(dump_str, "        [%d].condition: %u\n", i, property_trigger_table[i].condition);
+        dumpLine_(dump_str, "        [%d].flag: %hu\n", i, property_trigger_table[i].flag);
+        dumpLine_(dump_str, "        [%d].overwriteHash: %hd\n", i, property_trigger_table[i].overwriteHash);
+        dumpLine_(dump_str, "        [%d].overwriteParamPos: %u\n", i, property_trigger_table[i].overwriteParamPos);
     }
-    dumpLine_(buffered_str, "\n");
-    pos2 += user_header->numResPropertyTrigger * sizeof(ResPropertyTrigger);
+    dumpLine_(dump_str, "\n");
 
     // ----------------------------------- ResAlwaysTriggerTable ----------------------------------
-    dumpLine_(buffered_str, "    << ResAlwaysTriggerTable (addr:0x%x, num=%d) >>\n", pos2,
-              user_header->numResAlwaysTrigger);
-    if (user_header->numResAlwaysTrigger != 0) {
-        ResAlwaysTrigger* res_always_trigger;
-        for (int i{0}; i < user_header->numResAlwaysTrigger; ++i) {
-            res_always_trigger = (ResAlwaysTrigger*)(pos2 + i * sizeof(ResAlwaysTrigger));
-            dumpLine_(buffered_str, "        [%d].guId: %d\n", res_always_trigger->guId);
-            dumpLine_(buffered_str, "        [%d].assetCtbPos: %u\n",
-                      res_always_trigger->assetCtbPos);
-            dumpLine_(buffered_str, "        [%d].flag: %hu\n", res_always_trigger->flag);
-            dumpLine_(buffered_str, "        [%d].overwriteHash: %hd\n",
-                      res_always_trigger->overwriteHash);
-            dumpLine_(buffered_str, "        [%d].overwriteParamPos: %u\n",
-                      res_always_trigger->overwriteParamPos);
-        }
+    
+    ResAlwaysTrigger* always_trigger_table {reinterpret_cast<ResAlwaysTrigger*>(property_trigger_table + user_header->numResPropertyTrigger)};
+
+    dumpLine_(dump_str, "    << ResAlwaysTriggerTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(always_trigger_table), user_header->numResAlwaysTrigger);
+    for (u32 i {0}; i < user_header->numResAlwaysTrigger; ++i) {
+        dumpLine_(dump_str, "        [%d].guId: %d\n", i, always_trigger_table[i].guId);
+        dumpLine_(dump_str, "        [%d].assetCtbPos: %u\n", i, always_trigger_table[i].assetCtbPos);
+        dumpLine_(dump_str, "        [%d].flag: %hu\n", i, always_trigger_table[i].flag);
+        dumpLine_(dump_str, "        [%d].overwriteHash: %hd\n", i, always_trigger_table[i].overwriteHash);
+        dumpLine_(dump_str, "        [%d].overwriteParamPos: %u\n", i, always_trigger_table[i].overwriteParamPos);
     }
-    dumpLine_(buffered_str, "\n");
-};
+    dumpLine_(dump_str, "\n");
+}
 
 void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_res_param,
                                                    const BinAccessor* bin_accessor, u32 data_size,
