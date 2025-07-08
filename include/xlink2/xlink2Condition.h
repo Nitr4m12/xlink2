@@ -15,6 +15,9 @@ enum class CompareType : s32 {
 
 struct ResCondition {
     ContainerType parentContainerType;
+};
+
+struct SwitchCondition : public ResCondition {
     PropertyType propertyType;
     CompareType compareType;
     s32 value;
@@ -23,8 +26,7 @@ struct ResCondition {
     bool isGlobal;
 };
 
-struct RandomCondition {
-    ContainerType parentContainerType;
+struct RandomCondition : public ResCondition {
     f32 weight;
 };
 }  // namespace xlink2

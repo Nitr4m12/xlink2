@@ -8,7 +8,7 @@
 
 namespace xlink2 {
 struct UserResourceParam : public UserBinParam {
-    sead::Buffer<ResCondition> conditionTableBuffer;
+    sead::Buffer<SwitchCondition> conditionTableBuffer;
     sead::Buffer<ResAssetCallTable> callTableBuffer;
     sead::Buffer<ResAction> actionBuffer;
     sead::BitFlag64 bitFlag;

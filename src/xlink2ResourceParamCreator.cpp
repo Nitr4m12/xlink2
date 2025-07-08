@@ -3,7 +3,7 @@
 #include "prim/seadBitFlag.h"
 #include "prim/seadSafeString.h"
 #include "xlink2/xlink2Condition.h"
-#include "xlink2/xlink2ResAssetParamTable.h"
+#include "xlink2/xlink2ContainerType.h"
 #include "xlink2/xlink2ResContainerParam.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
 #include "xlink2/xlink2ResParam.h"
@@ -16,25 +16,25 @@ namespace xlink2 {
 ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header,
                                                ParamDefineTable const* param_define)
 {
-    mResourceHeader = res_header;
-    mEditorHeader = nullptr;
-    mBinStart = (long)res_header;
-    auto num_user = mResourceHeader->numUser * 8;
+    resourceHeader = res_header;
+    editorHeader = nullptr;
+    binStart = (long)res_header;
+    auto num_user = resourceHeader->numUser * 8;
     auto num_user_params = param_define->getSize();
-    mAssetsStart = mBinStart + num_user + num_user_params + sizeof(ResourceHeader);
-    mNumUserParam = param_define->get0();
-    mNumAssetParam = param_define->getNumAssetParam();
+    assetsStart = binStart + num_user + num_user_params + sizeof(ResourceHeader);
+    numTriggerParam = param_define->get0();
+    numAssetParam = param_define->getNumAssetParam();
 }
 
 ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header,
                                                ParamDefineTable const* param_define)
 {
-    mResourceHeader = nullptr;
-    mEditorHeader = editor_header;
-    mBinStart = (long)editor_header;
-    mAssetsStart = (long)editor_header + sizeof(EditorHeader);
-    mNumUserParam = param_define->get0();
-    mNumAssetParam = param_define->getNumAssetParam();
+    resourceHeader = nullptr;
+    editorHeader = editor_header;
+    binStart = (long)editor_header;
+    assetsStart = (long)editor_header + sizeof(EditorHeader);
+    numTriggerParam = param_define->get0();
+    numAssetParam = param_define->getNumAssetParam();
 }
 
 // NON-MATCHING
@@ -74,52 +74,52 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     // EditorHeader* editor_header{bin_accessor->mEditorHeader};
     u32* ptr;
 
-    common_res_param->numResParam = bin_accessor->mResourceHeader ?
-                                        bin_accessor->mResourceHeader->numResParam :
-                                        bin_accessor->mEditorHeader->numResParam;
-    common_res_param->numResAssetParam = bin_accessor->mResourceHeader ?
-                                             bin_accessor->mResourceHeader->numResAssetParam :
-                                             bin_accessor->mEditorHeader->numResAssetParam;
+    common_res_param->numResParam = bin_accessor->resourceHeader ?
+                                        bin_accessor->resourceHeader->numResParam :
+                                        bin_accessor->editorHeader->numResParam;
+    common_res_param->numResAssetParam = bin_accessor->resourceHeader ?
+                                             bin_accessor->resourceHeader->numResAssetParam :
+                                             bin_accessor->editorHeader->numResAssetParam;
     common_res_param->numResTriggerOverwriteParam =
-        bin_accessor->mResourceHeader ? bin_accessor->mResourceHeader->numResTriggerOverwriteParam :
-                                        bin_accessor->mEditorHeader->numResTriggerOverwriteParam;
+        bin_accessor->resourceHeader ? bin_accessor->resourceHeader->numResTriggerOverwriteParam :
+                                        bin_accessor->editorHeader->numResTriggerOverwriteParam;
     common_res_param->numLocalPropertyNameRefTable =
-        bin_accessor->mResourceHeader ?
-            bin_accessor->mResourceHeader->numLocalPropertyNameRefTable :
-            bin_accessor->mEditorHeader->numLocalPropertyNameRefTable;
+        bin_accessor->resourceHeader ?
+            bin_accessor->resourceHeader->numLocalPropertyNameRefTable :
+            bin_accessor->editorHeader->numLocalPropertyNameRefTable;
     common_res_param->numLocalPropertyEnumNameRefTable =
-        bin_accessor->mResourceHeader ?
-            bin_accessor->mResourceHeader->numLocalPropertyEnumNameRefTable :
-            bin_accessor->mEditorHeader->numLocalPropertyEnumNameRefTable;
-    common_res_param->numDirectValueTable = bin_accessor->mResourceHeader ?
-                                                bin_accessor->mResourceHeader->numDirectValueTable :
-                                                bin_accessor->mEditorHeader->numDirectValueTable;
-    common_res_param->numRandomTable = bin_accessor->mResourceHeader ?
-                                           bin_accessor->mResourceHeader->numRandomTable :
-                                           bin_accessor->mEditorHeader->numRandomTable;
-    common_res_param->numCurveTable = bin_accessor->mResourceHeader ?
-                                          bin_accessor->mResourceHeader->numCurveTable :
-                                          bin_accessor->mEditorHeader->numCurveTable;
-    common_res_param->numCurvePointTable = bin_accessor->mResourceHeader ?
-                                               bin_accessor->mResourceHeader->numCurvePointTable :
-                                               bin_accessor->mEditorHeader->numCurvePointTable;
+        bin_accessor->resourceHeader ?
+            bin_accessor->resourceHeader->numLocalPropertyEnumNameRefTable :
+            bin_accessor->editorHeader->numLocalPropertyEnumNameRefTable;
+    common_res_param->numDirectValueTable = bin_accessor->resourceHeader ?
+                                                bin_accessor->resourceHeader->numDirectValueTable :
+                                                bin_accessor->editorHeader->numDirectValueTable;
+    common_res_param->numRandomTable = bin_accessor->resourceHeader ?
+                                           bin_accessor->resourceHeader->numRandomTable :
+                                           bin_accessor->editorHeader->numRandomTable;
+    common_res_param->numCurveTable = bin_accessor->resourceHeader ?
+                                          bin_accessor->resourceHeader->numCurveTable :
+                                          bin_accessor->editorHeader->numCurveTable;
+    common_res_param->numCurvePointTable = bin_accessor->resourceHeader ?
+                                               bin_accessor->resourceHeader->numCurvePointTable :
+                                               bin_accessor->editorHeader->numCurvePointTable;
 
     if (common_res_param->numResAssetParam > 0)
         common_res_param->assetParamTable =
-            calcOffset<ResAssetParamTable>(bin_accessor->mAssetsStart);
+            calcOffset<ResAssetParam>(bin_accessor->assetsStart);
 
     common_res_param->triggerOverwriteParamTablePos =
-        bin_accessor->mResourceHeader ?
-            bin_accessor->mResourceHeader->triggerOverwriteParamTablePos :
-            bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
+        bin_accessor->resourceHeader ?
+            bin_accessor->resourceHeader->triggerOverwriteParamTablePos :
+            bin_accessor->editorHeader->triggerOverwriteParamTablePos;
     if (common_res_param->numResTriggerOverwriteParam > 0)
-        common_res_param->triggerOverwriteParamTablePos += bin_accessor->mBinStart;
+        common_res_param->triggerOverwriteParamTablePos += bin_accessor->binStart;
 
-    if (bin_accessor->mResourceHeader)
-        ptr = &bin_accessor->mResourceHeader->localPropertyNameRefTablePos;
+    if (bin_accessor->resourceHeader)
+        ptr = &bin_accessor->resourceHeader->localPropertyNameRefTablePos;
     else
-        ptr = &bin_accessor->mEditorHeader->localPropertyNameRefTablePos;
-    auto* local_property_name_ref_table = calcOffset<u32>(bin_accessor->mBinStart + *ptr);
+        ptr = &bin_accessor->editorHeader->localPropertyNameRefTablePos;
+    auto* local_property_name_ref_table = calcOffset<u32>(bin_accessor->binStart + *ptr);
     if (common_res_param->numLocalPropertyNameRefTable > 0)
         common_res_param->localPropertyNameRefTable = local_property_name_ref_table;
 
@@ -145,23 +145,23 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     if (common_res_param->numCurvePointTable > 0)
         common_res_param->curvePointTable = cpt_ptr;
 
-    if (bin_accessor->mResourceHeader)
-        ptr = &bin_accessor->mResourceHeader->exRegionPos;
+    if (bin_accessor->resourceHeader)
+        ptr = &bin_accessor->resourceHeader->exRegionPos;
     else
-        ptr = &bin_accessor->mEditorHeader->exDataRegionPos;
-    common_res_param->exRegionPos = *ptr + bin_accessor->mBinStart;
+        ptr = &bin_accessor->editorHeader->exDataRegionPos;
+    common_res_param->exRegionPos = *ptr + bin_accessor->binStart;
 
-    if (bin_accessor->mResourceHeader)
-        ptr = &bin_accessor->mResourceHeader->conditionTablePos;
+    if (bin_accessor->resourceHeader)
+        ptr = &bin_accessor->resourceHeader->conditionTablePos;
     else
-        ptr = &bin_accessor->mEditorHeader->conditionTablePos;
-    common_res_param->conditionTablePos = *ptr + bin_accessor->mBinStart;
+        ptr = &bin_accessor->editorHeader->conditionTablePos;
+    common_res_param->conditionTablePos = *ptr + bin_accessor->binStart;
 
-    if (bin_accessor->mResourceHeader)
-        ptr = &bin_accessor->mResourceHeader->nameTablePos;
+    if (bin_accessor->resourceHeader)
+        ptr = &bin_accessor->resourceHeader->nameTablePos;
     else
-        ptr = &bin_accessor->mEditorHeader->nameTablePos;
-    common_res_param->nameTablePos = *ptr + bin_accessor->mBinStart;
+        ptr = &bin_accessor->editorHeader->nameTablePos;
+    common_res_param->nameTablePos = *ptr + bin_accessor->binStart;
 }
 
 void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResourceParam* rom_res,
@@ -216,7 +216,7 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     dumpCommonResourceFront_(rom_res, bin_accessor, p1, buffered_str);
     if (p1 && res_header->numUser != 0) {
         for (u32 i{0}; i < res_header->numUser; ++i) {
-            u64 user_offset = rom_res->offsetTable[i] + bin_accessor->mBinStart;
+            u64 user_offset = rom_res->offsetTable[i] + bin_accessor->binStart;
             auto* user_header = reinterpret_cast<ResUserHeader*>((user_offset >= sMinAddressLow) ? 
                                         (user_offset | sMinAddressHigh) :
                                         (user_offset | sMinAddressHigh) + 0x100000000);
@@ -270,52 +270,57 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
                                                     bool param_bool1,
                                                     sead::BufferedSafeString* dump_str)
 {
+    ResAssetParam* asset_param_table_start {common_res_param->assetParamTable};
+    dumpLine_(dump_str, "<< ResAssetParamTable (addr:0x%x, size:print later) >>\n", 
+            reinterpret_cast<u64>(asset_param_table_start));
+
     s32 all_param_num {0};
     s32 not_default_param_num {0};
-    s32 overwrite_param_num {0};
-    ResAssetParamTable* asset_param_table {common_res_param->assetParamTable};
-    u64 asset_param_table_end {reinterpret_cast<u64>(asset_param_table)};
-    ResParam* res_param {asset_param_table->rawValues};
+    
+    u64 asset_param_table_pos {reinterpret_cast<u64>(common_res_param->assetParamTable)};
 
-    dumpLine_(dump_str, "<< ResAssetParamTable (addr:0x%x, size:print later) >>\n",
-              reinterpret_cast<u64>(asset_param_table));
     if (common_res_param->numResAssetParam == 0) {
         all_param_num = 0;
         not_default_param_num = 0;
     }
     else if (param_bool1) {
         for (s32 i {0}; i < common_res_param->numResAssetParam; ++i) {
-            // res_param = {asset_param_table->rawValues};
-            // ResAssetParamTable* param_table {common_res_param->assetParamTable};
-            dumpLine_(dump_str, "  [%d] mask: %lu\n", i, asset_param_table->mask.getDirect());
-            for (s32 j {0}; j < bin_accessor->mNumAssetParam; ++j) {
-                if (asset_param_table->mask.isOnBit(j)) {
+            sead::BitFlag64* mask {reinterpret_cast<sead::BitFlag64*>(asset_param_table_pos)};
+            dumpLine_(dump_str, "  [%d] mask: %lu\n", i, mask->getDirect());
+            
+            asset_param_table_pos += 8;
+            
+            s32 j {0};
+            while (j < bin_accessor->numAssetParam) {
+                ResParam* param {reinterpret_cast<ResParam*>(asset_param_table_pos)};
+                if (mask->isOnBit(j)) {
                     dumpLine_(dump_str, "  [%d] param of bit[%d]: rawValue: %u (referenceType: %d, value: %d)\n", i, j, 
-                            res_param->rawValue, res_param->getRefType(), res_param->getValue());
-                        ++not_default_param_num;
-                        ++res_param;
+                            param->rawValue, param->getRefType(), param->getValue());
+                    // ++param;
+                    ++not_default_param_num;
+                    asset_param_table_pos += 4;
                 }
                 else {
                     dumpLine_(dump_str, "  [%d] param of bit[%d]: not exist(default value)\n", i, j);
                 }
-                all_param_num = j;
+                ++j;
             }
-            asset_param_table_end = reinterpret_cast<u64>(res_param);
+            all_param_num += j;
         }
     }
     else {
         for (s32 i {0}; i < common_res_param->numResAssetParam; ++i) {
-            // res_param = {asset_param_table->rawValues};
-            // ResAssetParamTable* param_table {common_res_param->assetParamTable};
-            // ResParam* res_param {reinterpret_cast<ResParam*>(mask + 1)};
-            for (s32 j {0}; j < bin_accessor->mNumAssetParam; ++j) {
-                if (asset_param_table->mask.isOnBit(j)) {
-                    ++res_param;
+            sead::BitFlag64* mask {reinterpret_cast<sead::BitFlag64*>(asset_param_table_pos)};
+            asset_param_table_pos += 8;
+            s32 j {0};
+            while (j < bin_accessor->numAssetParam) {
+                if (mask->isOnBit(j)) {
                     ++not_default_param_num;
+                    asset_param_table_pos += 4;
                 }
-                all_param_num = j;
+                ++j;
             }
-            asset_param_table_end = reinterpret_cast<u64>(res_param);
+            all_param_num += j;
         }
     }
 
@@ -324,65 +329,65 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
 
     dumpLine_(dump_str,
               "<< ResAssetParamTable finished(size:%d, allParamNum=%d, notDefaultParamNum=%d) >>\n",
-              asset_param_table_end - reinterpret_cast<u64>(asset_param_table), all_param_num,
-              not_default_param_num);
+              asset_param_table_pos - reinterpret_cast<u64>(asset_param_table_start), all_param_num, not_default_param_num);
     dumpLine_(dump_str, "\n");
 
-    u32* trigger_ow_param_table_pos;
-    if (bin_accessor->mResourceHeader)
-        trigger_ow_param_table_pos = (u32*)bin_accessor->mResourceHeader->triggerOverwriteParamTablePos;
+    all_param_num = 0;
+    u32 overwrite_param_num {0};
+    u32 ow_param_table_pos;
+    if (bin_accessor->resourceHeader != nullptr)
+        ow_param_table_pos = bin_accessor->resourceHeader->triggerOverwriteParamTablePos;
     else
-        trigger_ow_param_table_pos = (u32*)bin_accessor->mEditorHeader->triggerOverwriteParamTablePos;
+        ow_param_table_pos = bin_accessor->editorHeader->triggerOverwriteParamTablePos;
 
     dumpLine_(dump_str, "<< ResTriggerOverwriteParamTable (addr:0x%x, size:print later) >>\n",
-              reinterpret_cast<u64>(trigger_ow_param_table_pos));
+              ow_param_table_pos);
 
-    ResTriggerOverwriteParam* trigger_overwrite_param;
-    u64 pos = (u64)trigger_ow_param_table_pos;
-    u32 ow_param_table_end{0};
-    sead::BitFlag32 ow_mask;
+    ow_param_table_pos = common_res_param->triggerOverwriteParamTablePos;
     if (common_res_param->numResTriggerOverwriteParam == 0) {
-        all_param_num = 0;
         overwrite_param_num = 0;
-        ow_param_table_end = common_res_param->triggerOverwriteParamTablePos;
+        all_param_num = 0;
     }
     else if (param_bool1) {
-        all_param_num = 0;
-        for (u32 i {0}; i < common_res_param->numResTriggerOverwriteParam; ++i) {
-            // ResAssetParamTable* param_table {common_res_param->assetParamTable};
-            trigger_overwrite_param = calcOffset<ResTriggerOverwriteParam>(pos);
-            dumpLine_(dump_str, "  [%d] mask: %lu\n", i, trigger_overwrite_param->mask.getDirect());
-            if (bin_accessor->mNumAssetParam != 0) {
-                for (u32 j {0}; j < bin_accessor->mNumAssetParam; ++j) {
-                    if (trigger_overwrite_param->mask.isOn(j)) {
-                        dumpLine_(dump_str, "  [%d] param of bit[%d]: rawValue: %u (referenceType: %d, value: %d)\n", i, j, 
-                                trigger_overwrite_param->rawValues->rawValue, trigger_overwrite_param->rawValues->getValue(), trigger_overwrite_param->rawValues->getRefType());
-                        ++trigger_overwrite_param->rawValues;
-                        ++overwrite_param_num;
-                        ow_param_table_end += 4;
-                    }
-                    else {
-                        dumpLine_(dump_str, "  [%d] param of bit[%d]: not exist(not overwritten)\n", i, j);
-                    }
-                    all_param_num += j;
+        for (s32 i {0}; i < common_res_param->numResTriggerOverwriteParam; ++i) {
+            sead::BitFlag32* mask {reinterpret_cast<sead::BitFlag32*>(calcOffset<u8>(ow_param_table_pos))};
+            dumpLine_(dump_str, "  [%d] mask: %lu\n", i, mask->getDirect());
+            
+            ResParam* param {reinterpret_cast<ResParam*>(mask + 1)};
+            ow_param_table_pos += 4;
+
+            s32 j {0};
+            while (j < bin_accessor->numTriggerParam) {
+                if (mask->isOnBit(j)) {
+                    dumpLine_(dump_str, "  [%d] param of bit[%d]: rawValue: %u (referenceType: %d, value: %d)\n", i, j, 
+                            param->rawValue, param->getValue(), param->getRefType());
+                    ++overwrite_param_num;
+                    ++param;
+                    ow_param_table_pos += 4;
                 }
+                else {
+                        dumpLine_(dump_str, "  [%d] param of bit[%d]: not exist(not overwritten)\n", i, j);
+                }
+                ++j;
             }
+            all_param_num += j;
         }
     }
     else {
-        all_param_num = 0;
-        u32 param_value = pos + 4;
-        trigger_overwrite_param = calcOffset<ResTriggerOverwriteParam>(pos);
-        for (u32 i{0}; common_res_param->numResTriggerOverwriteParam; ++i) {
-            if (bin_accessor->mNumUserParam != 0) {
-                for (u32 j{0}; j < bin_accessor->mNumUserParam; ++j) {
-                    if (!trigger_overwrite_param->mask.isOn(j)) {
-                        overwrite_param_num += 1;
-                        ow_param_table_end += 4;
-                    }
-                    all_param_num += j;
+        for (s32 i {0}; i < common_res_param->numResTriggerOverwriteParam; ++i) {
+            sead::BitFlag32* mask {reinterpret_cast<sead::BitFlag32*>(calcOffset<u8>(ow_param_table_pos))};
+            ow_param_table_pos += 4;
+            
+            s32 j {0};
+            while (j < bin_accessor->numTriggerParam) {
+                if (mask->isOnBit(j)) {
+                    ++overwrite_param_num;
+                    ow_param_table_pos += 4;
                 }
+                ++j;
             }
+
+            all_param_num += j;
         }
     }
 
@@ -392,7 +397,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     dumpLine_(
         dump_str,
         "<< ResTriggerOverwriteParamTable finished(size:%d, allParamNum=%d, overwriteNum=%d) >>\n",
-        pos - ow_param_table_end, all_param_num, overwrite_param_num);
+        ow_param_table_pos - common_res_param->triggerOverwriteParamTablePos, all_param_num, overwrite_param_num);
     dumpLine_(dump_str, "\n");
 
     dumpLine_(dump_str, "<< LocalPropertyNameRefTable (addr:0x%x, size:%d*%u=%u) >>\n",
@@ -743,97 +748,74 @@ void ResourceParamCreator::dumpUserBin_(u32 p1, const sead::SafeString& user_nam
     dumpLine_(buffered_str, "\n");
 };
 
-// WIP
 void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_res_param,
-                                                   const BinAccessor* bin_accessor, u32 p1,
+                                                   const BinAccessor* bin_accessor, u32 data_size,
                                                    sead::Heap* heap, bool p2,
-                                                   sead::BufferedSafeString* buffered_str)
+                                                   sead::BufferedSafeString* dump_str)
 {
     // --------------------------------------- ConditionTable --------------------------------------
-    dumpLine_(buffered_str, "<< ConditionTable (addr:0x%x, size:%d) >>\n",
+    dumpLine_(dump_str, "<< ConditionTable (addr:0x%x, size:%d) >>\n",
               common_res_param->conditionTablePos,
-              common_res_param->nameTablePos - common_res_param->conditionTablePos, p2);
+              common_res_param->nameTablePos - common_res_param->conditionTablePos);
 
-    u32 pos1{common_res_param->conditionTablePos};
-    u32 condition_size;
-    ResCondition* res_condition;
-    for (int i{0}; pos1 < common_res_param->nameTablePos; ++i) {
-        res_condition = (ResCondition*)(sMinAddressHigh | pos1);
-        if (pos1 < sMinAddressLow)
-            res_condition += 0x40000000;
+    u32 pos {common_res_param->conditionTablePos};
+    for (s32 i {0}, condition_size {0}; pos < common_res_param->nameTablePos; ++i, pos += condition_size) {
+        auto* res_condition {reinterpret_cast<ResCondition*>((pos >= sMinAddressLow) ? 
+                                                             (pos | sMinAddressHigh) :
+                                                             (pos | sMinAddressHigh) + 0x100000000)};
 
-        if (res_condition->parentContainerType < ContainerType::Random2) {
-            RandomCondition* condition{(RandomCondition*)res_condition};
-            dumpLine_(buffered_str, "  [%d].parentContainerType: %d\n", i,
-                      condition->parentContainerType);
-            dumpLine_(buffered_str, "  [%d].weight: %.4f\n", i, condition->weight);
+
+        switch (res_condition->parentContainerType) {
+        case ContainerType::Switch: {
+            SwitchCondition* condition {static_cast<SwitchCondition*>(res_condition)};
+            dumpLine_(dump_str, "  [%d].parentContainerType: %d\n", i, condition->parentContainerType);
+            dumpLine_(dump_str, "  [%d].propertyType: %d\n", i, condition->propertyType);
+            dumpLine_(dump_str, "  [%d].compareType: %d\n", i, condition->compareType);
+            dumpLine_(dump_str, "  [%d].value: %d\n", i, condition->value);
+            dumpLine_(dump_str, "  [%d].localPropertyEnumNameIdx: %d\n", i, condition->localPropertyEnumNameIdx);
+            dumpLine_(dump_str, "  [%d].isSolved: %d\n", i, condition->isSolved);
+            dumpLine_(dump_str, "  [%d].isGlobal: %d\n", i, condition->isGlobal);
+            
+            condition_size = sizeof(SwitchCondition);
+            break;
+        }
+        case ContainerType::Random:
+        case ContainerType::Random2: {
+            RandomCondition* condition {static_cast<RandomCondition*>(res_condition)};
+            dumpLine_(dump_str, "  [%d].parentContainerType: %d\n", i, condition->parentContainerType);
+            dumpLine_(dump_str, "  [%d].weight: %.4f\n", i, condition->weight);
+            
             condition_size = sizeof(RandomCondition);
+            break;
         }
-        else {
+        default:
             condition_size = 0;
-            if (res_condition->parentContainerType == ContainerType::Switch) {
-                dumpLine_(buffered_str, "  [%d].parentContainerType: %d\n", i,
-                          res_condition->parentContainerType);
-                dumpLine_(buffered_str, "  [%d].propertyType: %d\n", i,
-                          res_condition->propertyType);
-                dumpLine_(buffered_str, "  [%d].compareType: %d\n", i, res_condition->compareType);
-                dumpLine_(buffered_str, "  [%d].value: %d\n", i, res_condition->value);
-                dumpLine_(buffered_str, "  [%d].localPropertyEnumNameIdx: %d\n", i,
-                          res_condition->localPropertyEnumNameIdx);
-                dumpLine_(buffered_str, "  [%d].isSolved: %d\n", i, res_condition->isSolved);
-                dumpLine_(buffered_str, "  [%d].isGlobal: %d\n", i, res_condition->isGlobal);
-                condition_size = sizeof(ResCondition);
-            }
+            break;
         }
-        pos1 += condition_size;
     }
-    dumpLine_(buffered_str, "\n");
+    dumpLine_(dump_str, "\n");
 
     // ----------------------------------------- NameTable -----------------------------------------
-    u32* name_table_pos;
-    if (!bin_accessor->mResourceHeader)
-        name_table_pos = &bin_accessor->mEditorHeader->nameTablePos;
-    else
-        name_table_pos = &bin_accessor->mResourceHeader->nameTablePos;
+    u32 name_table_pos {bin_accessor->resourceHeader ? bin_accessor->resourceHeader->nameTablePos : bin_accessor->editorHeader->nameTablePos};
+    u32 name_table_size = data_size - name_table_pos;
 
-    u32 name_table_size = p1 - *name_table_pos;
-
-    dumpLine_(buffered_str, "<< NameTable (addr:0x%x, size:%d) >>\n",
+    dumpLine_(dump_str, "<< NameTable (addr:0x%x, size:%d) >>\n",
               common_res_param->nameTablePos, name_table_size);
     if (name_table_size != 0) {
-        char* dest = new (heap, 8) char;
-        char* src = (char*)(sMinAddressHigh | common_res_param->nameTablePos);
-        if (common_res_param->nameTablePos < sMinAddressLow)
-            src += 0x100000000;
+        char* dest = new (heap) char[name_table_size];
+        char* src = calcOffset<char>(common_res_param->nameTablePos);
         memcpy(dest, src, name_table_size);
-        pos1 = name_table_size - 1;
-        if (pos1 == 0) {
-            u32 ivar3{0};
-            dumpLine_(buffered_str, "  {%s}\n", dest);
-            if (!dest) {
-                dumpLine_(buffered_str, "\n");
-                return;
-            }
-            if (p1 - 2 == *name_table_pos)
-                ivar3 = 0;
-            else {
-                do {
-                    if (dest[ivar3] == '\0')
-                        dest[ivar3] = ' ';
-                    if (dest[ivar3 + 1] == '\0')
-                        dest[ivar3 + 1] = ' ';
-                    ivar3 += 2;
-                } while (pos1 - (pos1 & 1) != ivar3);
-                if ((pos1 & 1) != 0 && dest[ivar3] == '\0')
-                    dest[ivar3] = ' ';
-                dumpLine_(buffered_str, "  {%s}\n", dest);
-            }
 
-            delete dest;
-            return;
+        for (s32 i {0}; i < name_table_size - 1; ++i) {
+            if (dest[i] == '\0')
+                dest[i] = ' ';
         }
+
+        dumpLine_(dump_str, "  {%s}\n", dest);
+        delete[] dest;
     }
-};
+    dumpLine_(dump_str, "\n");
+}
 
 void ResourceParamCreator::dumpLine_(sead::BufferedSafeString* dump_str, const char* fmt, ...)
 {

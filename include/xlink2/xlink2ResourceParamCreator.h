@@ -21,12 +21,12 @@ public:
         BinAccessor(ResourceHeader*, const ParamDefineTable*);
         BinAccessor(EditorHeader*, const ParamDefineTable*);
 
-        ResourceHeader* mResourceHeader;
-        EditorHeader* mEditorHeader;
-        u32 mBinStart;
-        u32 mAssetsStart;
-        u32 mNumAssetParam;
-        u32 mNumUserParam;
+        ResourceHeader* resourceHeader;
+        EditorHeader* editorHeader;
+        u32 binStart;
+        u32 assetsStart;
+        u32 numAssetParam;
+        u32 numTriggerParam;
     };
 
     static void createParamAndSolveResource(RomResourceParam*, void*, const ParamDefineTable*,

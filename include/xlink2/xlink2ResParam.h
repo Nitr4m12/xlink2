@@ -13,9 +13,14 @@ struct ResParam {
     ValueReferenceType getRefType() const { return static_cast<ValueReferenceType>(rawValue >> 0x18); }
 };
 
+struct ResAssetParam {
+    sead::BitFlag64 mask;
+    ResParam rawValues[0];
+};
+
 struct ResTriggerOverwriteParam {
     sead::BitFlag32 mask;
-    ResParam* rawValues;
+    ResParam* rawValues{};
 
 
 };

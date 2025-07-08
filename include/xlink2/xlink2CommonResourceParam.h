@@ -2,8 +2,8 @@
 
 #include <basis/seadTypes.h>
 
-#include "xlink2/xlink2ResAssetParamTable.h"
 #include "xlink2/xlink2ResCurveCallTable.h"
+#include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2ResRandomCallTable.h"
 
 namespace xlink2 {
@@ -22,7 +22,7 @@ struct CommonResourceParam {
     u32 numRandomTable;
     u32 numCurveTable;
     u32 numCurvePointTable;
-    ResAssetParamTable* assetParamTable;
+    ResAssetParam* assetParamTable;
     u32 triggerOverwriteParamTablePos;
     u32 _0;
     u32* localPropertyNameRefTable;
