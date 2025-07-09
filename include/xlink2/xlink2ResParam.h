@@ -8,19 +8,19 @@
 namespace xlink2 {
 struct ResParam {
     u32 rawValue;
-
+    
     s32 getValue() const { return rawValue & 0xffffff; }
     ValueReferenceType getRefType() const { return static_cast<ValueReferenceType>(rawValue >> 0x18); }
 };
 
 struct ResAssetParam {
     sead::BitFlag64 mask;
-    ResParam rawValues[0];
+    ResParam params[0];
 };
 
 struct ResTriggerOverwriteParam {
     sead::BitFlag32 mask;
-    ResParam* rawValues{};
+    ResParam params[0];
 
 
 };

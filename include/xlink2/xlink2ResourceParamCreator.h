@@ -27,6 +27,16 @@ public:
         u32 assetsStart;
         u32 numAssetParam;
         u32 numTriggerParam;
+
+        u32 getTriggerOverwriteParamPos() const
+        {
+            return resourceHeader != nullptr ? resourceHeader->triggerOverwriteParamTablePos : editorHeader->triggerOverwriteParamTablePos;
+        }
+
+        u32 getNameTablePos() const
+        {
+            return resourceHeader != nullptr ? resourceHeader->nameTablePos : editorHeader->nameTablePos;
+        }
     };
 
     static void createParamAndSolveResource(RomResourceParam*, void*, const ParamDefineTable*,

@@ -24,7 +24,6 @@ struct CommonResourceParam {
     u32 numCurvePointTable;
     ResAssetParam* assetParamTable;
     u32 triggerOverwriteParamTablePos;
-    u32 _0;
     u32* localPropertyNameRefTable;
     u32* localPropertyEnumNameRefTable;
     s32* directValueTable;

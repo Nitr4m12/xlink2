@@ -37,6 +37,7 @@ public:
     u32 getSize() const { return mSize; }
     u32 getNumAssetParam() const { return mNumAssetParam; }
     u32 getNumUserParam() const { return mNumUserParam; }
+    u32 getNumTriggerParam() const { return mNumTriggerParam; }
     u32 get0() const { return _0; }
     u32 getNumCustomParam() const { return mNumCustomParam; }
     bool isInitilized() const { return mIsInitialized; }
