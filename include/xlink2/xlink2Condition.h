@@ -6,9 +6,9 @@
 namespace xlink2 {
 enum class CompareType : s32 {
     NotEqual,
-    LessThanEqual,
+    LessThanOrEqual,
     LessThan,
-    GreaterThanEqual,
+    GreaterThanOrEqual,
     GreaterThan,
     Equal,
 };

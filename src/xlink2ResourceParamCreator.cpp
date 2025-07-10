@@ -11,13 +11,12 @@ ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header,
     pResourceHeader = res_header;
     binStart = reinterpret_cast<u64>(pResourceHeader);
 
-    u32* bin = reinterpret_cast<u32*>(binStart);
-    bin += pResourceHeader->numUser;
-    bin += pResourceHeader->numUser;
+    u8* param_define_start = reinterpret_cast<u8*>(pResourceHeader)
+                            + sizeof(ResourceHeader)                    // header
+                            + pResourceHeader->numUser * sizeof(u32)    // user hashes
+                            + pResourceHeader->numUser * sizeof(u32);   // user offsets
 
-    u32 param_define_start = sizeof(ResourceHeader) + static_cast<u32>(u64(bin));
-
-    assetsStart = param_define_start + param_define->getSize();
+    assetsStart = static_cast<u32>(reinterpret_cast<uintptr_t>(param_define_start)) + param_define->getSize();
     numAssetParam = param_define->getNumAssetParam();
     numTriggerParam = param_define->getNumTriggerParam();
 }
@@ -32,7 +31,6 @@ ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header,
     numTriggerParam = param_define->getNumTriggerParam();
 }
 
-// NON-MATCHING
 void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res_param, void* bin,
                                                        ParamDefineTable const* param_define,
                                                        System* system)
@@ -40,33 +38,32 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
     *rom_res_param = {};
     rom_res_param->_0 = reinterpret_cast<u64>(bin);
     
-    u8* ptr {reinterpret_cast<u8*>(bin)};
-    u32 num_user {};
+    ResourceHeader* header {reinterpret_cast<ResourceHeader*>(bin)};
+    u32* name_hash_table {reinterpret_cast<u32*>(header + 1)};
     
-    if (*(u32*)(ptr + 60) != 0) {
-        rom_res_param->nameHashTable = reinterpret_cast<u32*>(ptr + 72);
-        num_user = *reinterpret_cast<u32*>(ptr + 60);
-        if (*(u32*)(ptr + 60) != 0)
-            rom_res_param->offsetTable = rom_res_param->nameHashTable + num_user;
+    if (header->numUser != 0) {
+        rom_res_param->nameHashTable = name_hash_table;
+        if (header->numUser != 0)
+            rom_res_param->offsetTable = rom_res_param->nameHashTable + header->numUser;
     }
-    rom_res_param->numUser = num_user;
+    rom_res_param->numUser = header->numUser;
 
 
-    BinAccessor bin_accessor {reinterpret_cast<ResourceHeader*>(bin), param_define};
+    BinAccessor bin_accessor {header, param_define};
 
     createCommonResourceParam_(rom_res_param, &bin_accessor);
 
-    if (system->debugOperationParamOR().getPrintFlag().isOnBit(0)) {
-        dumpRomResource_(reinterpret_cast<ResourceHeader*>(bin), rom_res_param, &bin_accessor, param_define, system->getPrimaryHeap(), false, nullptr);
-    }
+    if (system->debugOperationParamOR().getPrintFlag().isOnBit(0))
+        dumpRomResource_(header, rom_res_param, &bin_accessor, param_define, system->getPrimaryHeap(), false, nullptr);
 
     solveCommonResource_(rom_res_param, &bin_accessor);
 
     for (u32 i {0}; i < rom_res_param->numUser; ++i) {
-        rom_res_param->offsetTable[i] += reinterpret_cast<u64>(bin);
-
-        auto* user_header {calcOffset<ResUserHeader>(rom_res_param->offsetTable[i])};
-        if (user_header == nullptr)
+        u32 user_bin = rom_res_param->offsetTable[i] + static_cast<u32>(reinterpret_cast<u64>(bin));
+        rom_res_param->offsetTable[i] = user_bin;
+        
+        auto* user_header {calcOffset<ResUserHeader>(user_bin)};
+        if (user_header->isSetup == 0)
             solveUserBin_(user_header, rom_res_param, param_define);
     }
 
@@ -74,7 +71,6 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
         solveAboutGlobalProperty(rom_res_param, param_define, system);
 
     rom_res_param->isInitialized = true;
-    
 }
 
 // WIP
@@ -230,6 +226,41 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
         }
     }
     dumpCommonResourceRear_(rom_res_param, bin_accessor, res_header->dataSize, heap, false, buffered_str);
+}
+
+void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res_param, BinAccessor * bin_accessor)
+{
+    for (u32 i {0}; i < common_res_param->numLocalPropertyNameRefTable; ++i)
+        common_res_param->localPropertyNameRefTable[i] += common_res_param->nameTablePos;
+
+    for (u32 i {0}; i < common_res_param->numLocalPropertyEnumNameRefTable; ++i)
+        common_res_param->localPropertyEnumNameRefTable[i] += common_res_param->nameTablePos;
+
+    for (u32 i {0}; i < common_res_param->numCurveTable; ++i)
+        common_res_param->curveCallTable[i].propName += common_res_param->nameTablePos;
+
+    for (u32 i {common_res_param->conditionTablePos}, condition_size {0}; i < common_res_param->nameTablePos; i += condition_size) {
+        auto* res_condition {calcOffset<ResCondition>(i)};
+
+        switch (res_condition->parentContainerType) {
+        case ContainerType::Switch: {
+            SwitchCondition* condition {static_cast<SwitchCondition*>(res_condition)};
+
+            if (condition->propertyType == PropertyType::Enum)
+                condition->value += common_res_param->nameTablePos;
+            
+            condition_size = sizeof(SwitchCondition);
+            break;
+        }
+        case ContainerType::Random:
+        case ContainerType::Random2:
+            condition_size = sizeof(RandomCondition);
+            break;
+        default:
+            condition_size = 0;
+            break;
+        }
+    }
 }
 
 void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_res_param,
