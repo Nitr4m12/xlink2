@@ -117,7 +117,7 @@ public:
 
     static void createUserBinParam(UserBinParam*, ResUserHeader*, const ParamDefineTable*);
     static void solveCommonResourceAboutGlobalProperty_(CommonResourceParam*, System*);
-    static void solveUserBinAboutGlobalProperty(ResUserHeader*, const ParamDefineTable*, System*);
+    static void solveUserBinAboutGlobalProperty_(ResUserHeader*, const ParamDefineTable*, System*);
 
     static void dumpLine_(sead::BufferedSafeString*, const char*, ...);
 

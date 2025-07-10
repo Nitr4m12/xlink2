@@ -224,7 +224,7 @@ void ResourceParamCreator::solveAboutGlobalProperty(RomResourceParam* rom_res_pa
     solveCommonResourceAboutGlobalProperty_(rom_res_param, system);
     
     for (u32 i {0}; i < rom_res_param->numUser; ++i)
-        solveUserBinAboutGlobalProperty(calcOffset<ResUserHeader>(rom_res_param->offsetTable[i]), param_define, system);
+        solveUserBinAboutGlobalProperty_(calcOffset<ResUserHeader>(rom_res_param->offsetTable[i]), param_define, system);
 }
 
 void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_res_param,
@@ -262,6 +262,12 @@ void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_res_p
     dumpUserBin_(0, *editor_name, editor_res_param->pResUserHeader, param_define, nullptr);
     dumpCommonResourceRear_(editor_res_param, bin_accessor, editor_res_param->_0, heap, false,
                             nullptr);
+}
+
+void ResourceParamCreator::solveAboutGlobalProperty(EditorResourceParam* editor_res_param, const ParamDefineTable* param_define, System* system)
+{
+    solveCommonResourceAboutGlobalProperty_(editor_res_param, system);
+    solveUserBinAboutGlobalProperty_(editor_res_param->pResUserHeader, param_define, system);
 }
 
 void ResourceParamCreator::solveCommonResourceAboutGlobalProperty_(CommonResourceParam* common_res_param, System* system)
