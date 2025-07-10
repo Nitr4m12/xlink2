@@ -28,9 +28,69 @@ public:
         u32 numAssetParam;
         u32 numTriggerParam;
 
-        u32 getTriggerOverwriteParamPos() const
+        u32 getNumResParam() const 
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numResParam : pEditorHeader->numResParam;
+        }
+
+        u32 getNumResAssetParam() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numResAssetParam : pEditorHeader->numResAssetParam;
+        }
+
+        u32 getNumResTriggerOverwriteParam() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numResTriggerOverwriteParam : pEditorHeader->numResTriggerOverwriteParam;
+        }
+
+        u32 getNumLocalPropertyNameRefTable() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numLocalPropertyNameRefTable : pEditorHeader->numLocalPropertyNameRefTable;
+        }
+
+        u32 getNumLocalPropertyEnumNameRefTable() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numLocalPropertyEnumNameRefTable : pEditorHeader->numLocalPropertyEnumNameRefTable;
+        }
+
+        u32 getNumDirectValueTable() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numDirectValueTable : pEditorHeader->numDirectValueTable;
+        }
+
+        u32 getNumRandomTable() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numRandomTable : pEditorHeader->numRandomTable;
+        }
+
+        u32 getNumCurveTable() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numCurveTable : pEditorHeader->numCurveTable;
+        }
+
+        u32 getNumCurvePointTable() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->numCurvePointTable : pEditorHeader->numCurvePointTable;
+        }
+
+        u32 getTriggerOverwriteParamTablePos() const
         {
             return pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos : pEditorHeader->triggerOverwriteParamTablePos;
+        }
+
+        u32 getLocalPropertyNameRefTablePos() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->localPropertyNameRefTablePos : pEditorHeader->localPropertyNameRefTablePos;
+        }
+
+        u32 getExRegionPos() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->exRegionPos : pEditorHeader->exDataRegionPos;
+        }
+
+        u32 getConditionTablePos() const
+        {
+            return pResourceHeader != nullptr ? pResourceHeader->conditionTablePos : pEditorHeader->conditionTablePos;
         }
 
         u32 getNameTablePos() const
