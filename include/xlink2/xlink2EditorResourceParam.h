@@ -7,11 +7,11 @@
 
 namespace xlink2 {
 struct EditorResourceParam : CommonResourceParam {
-    EditorHeader* pEditorHeader;
-    u32 _0;
+    u8* binBuffer;
+    u32 binBufferSize;
     ResUserHeader* pResUserHeader;
     sead::FixedSafeString<64> editorName;
-    u32 _1;
+    bool isInitialized;
     void* _2;
     void* _3;
 };

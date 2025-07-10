@@ -227,6 +227,44 @@ void ResourceParamCreator::solveAboutGlobalProperty(RomResourceParam* rom_res_pa
         solveUserBinAboutGlobalProperty_(calcOffset<ResUserHeader>(rom_res_param->offsetTable[i]), param_define, system);
 }
 
+void ResourceParamCreator::createParamAndSolveResource(EditorResourceParam* editor_res_param, const sead::SafeString& editor_name, 
+                                                       u8* buffer, u32 data_size, const ParamDefineTable* param_define, System* system)
+{
+    u8* dest {editor_res_param->binBuffer}; // UNUSED
+
+    if (!editor_res_param->isInitialized) {
+        editor_res_param->editorName.copy(editor_name);
+        editor_res_param->binBuffer = new (system->getPrimaryHeap()) u8[data_size];
+        editor_res_param->binBufferSize = data_size;
+    }
+    else if (editor_res_param->binBufferSize != data_size) {
+        delete[] editor_res_param->binBuffer;
+        editor_res_param->binBuffer = new (system->getPrimaryHeap()) u8[data_size];
+        editor_res_param->binBufferSize = data_size;
+    }
+
+    sead::MemUtil::copy(editor_res_param->binBuffer, buffer, data_size);
+    
+    EditorHeader* header {reinterpret_cast<EditorHeader*>(editor_res_param->binBuffer)};
+    u32 user_bin_pos = reinterpret_cast<u64>(header) + header->userBinPos;
+    editor_res_param->pResUserHeader = calcOffset<ResUserHeader>(user_bin_pos);
+
+    BinAccessor bin_accessor {header, param_define};
+    
+    createCommonResourceParam_(editor_res_param, &bin_accessor);
+
+    if (system->debugOperationParamOR().getPrintFlag().isOnBit(0))
+        dumpEditorResource_(editor_res_param, &bin_accessor, param_define, system->getPrimaryHeap());
+
+    solveCommonResource_(editor_res_param, &bin_accessor);
+    solveUserBin_(editor_res_param->pResUserHeader, editor_res_param, param_define);
+    
+    if (system->isGlobalPropFixed())
+        solveAboutGlobalProperty(editor_res_param, param_define, system);
+
+    editor_res_param->isInitialized = true;
+}
+
 void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_res_param,
                                                const BinAccessor* bin_accessor,
                                                const ParamDefineTable* param_define,
@@ -234,7 +272,7 @@ void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_res_p
 {
     dumpLine_(nullptr, "[XLink2] EditorBuffer dump\n");
 
-    EditorHeader* editor_header{editor_res_param->pEditorHeader};
+    EditorHeader* editor_header{reinterpret_cast<EditorHeader*>(editor_res_param->binBuffer)};
     sead::FixedSafeString<64>* editor_name{&editor_res_param->editorName};
 
     dumpLine_(nullptr, "<< EditorHeader[%s] (addr:0x%x, size:%@) >>\n",
@@ -260,7 +298,7 @@ void ResourceParamCreator::dumpEditorResource_(EditorResourceParam* editor_res_p
 
     dumpCommonResourceFront_(editor_res_param, bin_accessor, true, nullptr);
     dumpUserBin_(0, *editor_name, editor_res_param->pResUserHeader, param_define, nullptr);
-    dumpCommonResourceRear_(editor_res_param, bin_accessor, editor_res_param->_0, heap, false,
+    dumpCommonResourceRear_(editor_res_param, bin_accessor, editor_res_param->binBufferSize, heap, false,
                             nullptr);
 }
 
