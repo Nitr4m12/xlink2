@@ -161,6 +161,9 @@ public:
 
     sead::Random* getRandom() { return &mRandom; }
 
+    bool isGlobalPropFixed() { return mIsGlobalPropFixed; }
+
+
     virtual void createUserResource(User*, sead::Heap*) = 0;
     virtual void allocHandle(sead::Heap*) = 0;
     virtual u32 getUserParamNum() const = 0;

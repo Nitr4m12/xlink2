@@ -6,12 +6,12 @@
 
 namespace xlink2 {
 struct RomResourceParam : CommonResourceParam {
-    void* _0;
-    u32* nameHashTable;
-    u32* offsetTable;
-    u32 numUser;
-    bool isInitialized;
+    u64 _0 {};
+    u32* nameHashTable {};
+    u32* offsetTable {};
+    u32 numUser {};
+    bool isInitialized {};
 };
-static_assert(sizeof(RomResourceParam) == 0x98, "Wrong size for 'xlink2::RomResourceParam'");
+static_assert(sizeof(RomResourceParam) == 0x98, "xlink2::RomResourceParam size mismatch");
 
 }  // namespace xlink2

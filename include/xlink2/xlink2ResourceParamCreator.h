@@ -21,8 +21,8 @@ public:
         BinAccessor(ResourceHeader*, const ParamDefineTable*);
         BinAccessor(EditorHeader*, const ParamDefineTable*);
 
-        ResourceHeader* resourceHeader;
-        EditorHeader* editorHeader;
+        ResourceHeader* pResourceHeader {};
+        EditorHeader* pEditorHeader {};
         u32 binStart;
         u32 assetsStart;
         u32 numAssetParam;
@@ -30,12 +30,12 @@ public:
 
         u32 getTriggerOverwriteParamPos() const
         {
-            return resourceHeader != nullptr ? resourceHeader->triggerOverwriteParamTablePos : editorHeader->triggerOverwriteParamTablePos;
+            return pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos : pEditorHeader->triggerOverwriteParamTablePos;
         }
 
         u32 getNameTablePos() const
         {
-            return resourceHeader != nullptr ? resourceHeader->nameTablePos : editorHeader->nameTablePos;
+            return pResourceHeader != nullptr ? pResourceHeader->nameTablePos : pEditorHeader->nameTablePos;
         }
     };
 
