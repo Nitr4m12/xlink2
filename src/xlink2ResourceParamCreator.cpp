@@ -87,40 +87,37 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     common_res_param->numCurveTable = bin_accessor->getNumCurveTable();
     common_res_param->numCurvePointTable = bin_accessor->getNumCurvePointTable();
 
-    ResAssetParam* asset_param_table {calcOffset<ResAssetParam>(bin_accessor->assetsStart)};
+    auto* asset_param_table {calcOffset<ResAssetParam>(bin_accessor->assetsStart)};
     if (common_res_param->numResAssetParam > 0)
         common_res_param->assetParamTable = asset_param_table;
 
-    u32 trigger_overwrite_param_table_pos = bin_accessor->getTriggerOverwriteParamTablePos();
-    if (common_res_param->numResTriggerOverwriteParam > 0) {
-        common_res_param->triggerOverwriteParamTablePos = trigger_overwrite_param_table_pos + bin_accessor->binStart;
-    }
+    u32 table_pos = bin_accessor->getTriggerOverwriteParamTablePos();
+    if (common_res_param->numResTriggerOverwriteParam > 0)
+        common_res_param->triggerOverwriteParamTablePos = bin_accessor->getTriggerOverwriteParamTablePos() + bin_accessor->binStart;
 
-    u32 local_property_name_ref_pos {bin_accessor->getLocalPropertyNameRefTablePos()};
-    auto* ptr = calcOffset<u8>(bin_accessor->binStart + local_property_name_ref_pos);
-    
+    u32* local_prop_name_refs = calcOffset<u32>(bin_accessor->getLocalPropertyNameRefTablePos() + bin_accessor->binStart);
     if (common_res_param->numLocalPropertyNameRefTable > 0)
-        common_res_param->localPropertyNameRefTable = reinterpret_cast<u32*>(ptr);
-    ptr += common_res_param->numLocalPropertyNameRefTable * sizeof(u32);
-
+        common_res_param->localPropertyNameRefTable = local_prop_name_refs;
+    
+    u32* local_prop_enum_name_refs = local_prop_name_refs + common_res_param->numLocalPropertyNameRefTable;
     if (common_res_param->numLocalPropertyEnumNameRefTable > 0)
-        common_res_param->localPropertyEnumNameRefTable = reinterpret_cast<u32*>(ptr);
-    ptr += common_res_param->numLocalPropertyEnumNameRefTable * sizeof(u32);
-
+        common_res_param->localPropertyEnumNameRefTable = local_prop_enum_name_refs;
+    
+    s32* direct_value_table = reinterpret_cast<s32*>(local_prop_enum_name_refs + common_res_param->numLocalPropertyEnumNameRefTable);
     if (common_res_param->numDirectValueTable > 0)
-        common_res_param->directValueTable = reinterpret_cast<s32*>(ptr);
-    ptr += common_res_param->numDirectValueTable * sizeof(s32);
-
+        common_res_param->directValueTable = direct_value_table;
+    
+    auto* random_call_table = reinterpret_cast<ResRandomCallTable*>(direct_value_table + common_res_param->numDirectValueTable);
     if (common_res_param->numRandomTable > 0)
-        common_res_param->randomCallTable = reinterpret_cast<ResRandomCallTable*>(ptr);
-    ptr += common_res_param->numRandomTable * sizeof(ResRandomCallTable);
-
+        common_res_param->randomCallTable = random_call_table;
+    
+    auto* curve_call_table = reinterpret_cast<ResCurveCallTable*>(random_call_table + common_res_param->numRandomTable);
     if (common_res_param->numCurveTable > 0)
-        common_res_param->curveCallTable = reinterpret_cast<ResCurveCallTable*>(ptr);
-    ptr += common_res_param->numCurveTable * sizeof(ResCurveCallTable);
-
+        common_res_param->curveCallTable = curve_call_table;
+    
+    auto* curve_point_table = reinterpret_cast<sead::Vector2f*>(curve_call_table + common_res_param->numCurveTable);
     if (common_res_param->numCurvePointTable > 0)
-        common_res_param->curvePointTable = reinterpret_cast<CurvePoint*>(ptr);;
+        common_res_param->curvePointTable = curve_point_table;
 
     common_res_param->exRegionPos = bin_accessor->getExRegionPos() + bin_accessor->binStart;
     common_res_param->conditionTablePos = bin_accessor->getConditionTablePos() + bin_accessor->binStart;
@@ -219,6 +216,85 @@ void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res
     }
 }
 
+void ResourceParamCreator::solveUserBin_(ResUserHeader * user_header, CommonResourceParam * common_res_param, const ParamDefineTable* param_define)
+{
+    UserBinParam bin_param {};
+    createUserBinParam(&bin_param, user_header, param_define);
+
+    u32* local_prop_name_refs {bin_param.pLocalPropertyNameRefTable};
+    for (u32 i{0}; i < user_header->numLocalProperty; ++i)
+        local_prop_name_refs[i] += common_res_param->nameTablePos;
+
+    for (u32 i {0}; i < user_header->numCallTable; ++i) {
+        ResAssetCallTable* asset_ctb_item {&bin_param.pResAssetCallTable[i]};
+        asset_ctb_item->keyNamePos += common_res_param->nameTablePos;
+        const char* key_name {calcOffset<char>(asset_ctb_item->keyNamePos)};
+        asset_ctb_item->keyNameHash = sead::HashCRC32::calcHash(key_name, strnlen(key_name, 256));
+
+        if (asset_ctb_item->flag.isOffBit(0)) {
+            asset_ctb_item->paramStartPos += reinterpret_cast<u64>(common_res_param->assetParamTable);
+        }
+        else {
+            s32 param_start_pos {asset_ctb_item->paramStartPos};
+            if (asset_ctb_item->paramStartPos == -1) {
+                asset_ctb_item->paramStartPos = 0;
+            }
+            else {
+                asset_ctb_item->paramStartPos += bin_param.containerTablePos;
+                ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb_item->paramStartPos)};
+                if (container_param->type == ContainerType::Switch)
+                    static_cast<ResSwitchContainerParam*>(container_param)->watchPropertyNamePos += common_res_param->nameTablePos;
+            }
+        }
+        asset_ctb_item->conditionPos = asset_ctb_item->conditionPos != -1 ? asset_ctb_item->conditionPos + common_res_param->conditionTablePos : 0;
+    }
+
+    ResActionSlot* action_slot_table {bin_param.pResActionSlotTable};
+    for (u32 i {0}; i < user_header->numResActionSlot; ++i)
+        action_slot_table[i].namePos += common_res_param->nameTablePos;
+
+    ResAction* action_table {bin_param.pResActionTable};
+    for (u32 i {0}; i < user_header->numResAction; ++i)
+        action_table[i].namePos += common_res_param->nameTablePos;
+
+    ResActionTrigger* action_trigger_table {bin_param.pResActionTriggerTable};
+    ResAssetCallTable* asset_ctb {bin_param.pResAssetCallTable};
+    for (u32 i {0}; i < user_header->numResActionTrigger; ++i) {
+        ResActionTrigger* action_trigger {&action_trigger_table[i]};
+        action_trigger->assetCtbPos += reinterpret_cast<u64>(asset_ctb);
+        action_trigger->overwriteParamPos = action_trigger->overwriteParamPos != -1 ? action_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
+
+        if (ActionTriggerCtrl::getActionTriggerType_(*action_trigger) == TriggerType::None)
+            action_trigger->startFrame += common_res_param->nameTablePos;
+    }
+
+    ResProperty* property_table {bin_param.pResPropertyTable};
+    for (u32 i {0}; i < user_header->numResProperty; ++i)
+        property_table[i].watchPropertyNamePos += common_res_param->nameTablePos;
+    
+    ResPropertyTrigger* property_trigger_table {bin_param.pResPropertyTriggerTable};
+    u64 pos {reinterpret_cast<u64>(bin_param.pResAssetCallTable)};
+    for (u32 i {0}; i < user_header->numResPropertyTrigger; ++i) {
+        ResPropertyTrigger* property_trigger {&property_trigger_table[i]};
+        property_trigger->assetCtbPos += pos;
+        property_trigger->condition = property_trigger->condition != -1 ? property_trigger->condition + common_res_param->conditionTablePos : 0;
+        property_trigger->overwriteParamPos = property_trigger->overwriteParamPos != -1 ? property_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
+    }
+#ifdef MATCHING_HACK_NX_CLANG
+    asm("");
+#endif
+
+    ResAlwaysTrigger* always_trigger_table {bin_param.pResAlwaysTriggerTable};
+    u64 asset_ctb_pos = reinterpret_cast<u64>(bin_param.pResAssetCallTable);
+    for (u32 i {0}; i < user_header->numResAlwaysTrigger; ++i) {
+        ResAlwaysTrigger* always_trigger {&always_trigger_table[i]};
+        always_trigger->assetCtbPos += asset_ctb_pos;
+        always_trigger->overwriteParamPos = always_trigger->overwriteParamPos != -1 ? always_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
+    }
+
+    user_header->isSetup = true;
+}
+
 void ResourceParamCreator::solveAboutGlobalProperty(RomResourceParam* rom_res_param, const ParamDefineTable* param_define, System* system)
 {
     solveCommonResourceAboutGlobalProperty_(rom_res_param, system);
@@ -311,7 +387,7 @@ void ResourceParamCreator::solveAboutGlobalProperty(EditorResourceParam* editor_
 void ResourceParamCreator::createUserBinParam(UserBinParam* user_bin_param, ResUserHeader* user_header, const ParamDefineTable*  param_define)
 {
     *user_bin_param = {};
-    user_bin_param->commonResourceParam = reinterpret_cast<CommonResourceParam*>(user_header);
+    user_bin_param->pResUserHeader = user_header;
 
     u32* local_prop_name_refs {reinterpret_cast<u32*>(user_header + 1)};
     if (user_header->numLocalProperty > 0)
@@ -321,7 +397,7 @@ void ResourceParamCreator::createUserBinParam(UserBinParam* user_bin_param, ResU
     if (param_define->getNumUserParam() > 0)
         user_bin_param->userParamArray = user_params; 
 
-    s16* sorted_asset_id_table {reinterpret_cast<s16*>(user_params + param_define->getNumUserParam())};
+    u16* sorted_asset_id_table {reinterpret_cast<u16*>(user_params + param_define->getNumUserParam())};
     if (user_header->numCallTable > 0)
         user_bin_param->pSortedAssetIdTable = sorted_asset_id_table;
     

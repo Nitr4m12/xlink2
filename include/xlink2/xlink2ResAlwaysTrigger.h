@@ -5,9 +5,9 @@
 namespace xlink2 {
 struct ResAlwaysTrigger {
     s32 guId;
-    u32 assetCtbPos;
+    s32 assetCtbPos;
     u16 flag;
     s16 overwriteHash;
-    u32 overwriteParamPos;
+    s32 overwriteParamPos;
 };
 }  // namespace xlink2

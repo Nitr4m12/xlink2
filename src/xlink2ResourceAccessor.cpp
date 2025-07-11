@@ -178,7 +178,7 @@ const char* ResourceAccessor::getResParamValueString_(const ResParam& param) con
 {
     UserResourceParam* user_param = mpUserResource->getParam();
     u64 value_string_pos =
-        user_param->commonResourceParam->nameTablePos + (param.getValue());
+        user_param->pCommonResourceParam->nameTablePos + (param.getValue());
     return calcOffset<char>(value_string_pos);
 }
 
@@ -217,7 +217,7 @@ bool ResourceAccessor::getCustomParamValueBool(u32 idx, const ResAssetCallTable&
 s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 {
     UserResourceParam* user_resource_param {mpUserResource->getParam()};
-    return user_resource_param->commonResourceParam->directValueTable[param.getValue()];
+    return user_resource_param->pCommonResourceParam->directValueTable[param.getValue()];
 }
 
 s32 ResourceAccessor::getCustomParamValueInt(u32 idx, const ResAssetCallTable& asset_ctb) const
@@ -292,7 +292,7 @@ f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param, const Us
         return static_cast<f32>(getResParamValueInt_(res_param));
     
     case ValueReferenceType::Curve: {
-        ResCurveCallTable* curve_ctb {mpUserResource->getParam()->commonResourceParam->curveCallTable};
+        ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
         if (&curve_ctb[res_param.getValue()] != nullptr)
             return getCurveValue(curve_ctb[res_param.getValue()], user_instance);
         break;
@@ -659,8 +659,8 @@ const char* ResourceAccessor::getUserCustomParamValueString(s32 idx) const
 {
     u32 id {mpSystem->getParamDefineTable()->getNumCustomUserParam() + idx};
 
-    ResParam* user_params {mpUserResource->getParam()->userParamArray};
-    u32 name_table_pos {mpUserResource->getParam()->commonResourceParam->nameTablePos};
+    ResParam* user_params {mpUserResource->getParam()->userBinParam.userParamArray};
+    u32 name_table_pos {mpUserResource->getParam()->pCommonResourceParam->nameTablePos};
     s32 param_raw_value {user_params[id].getValue()};
 
     u32 value_pos {name_table_pos + param_raw_value};
@@ -681,8 +681,8 @@ s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
     auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
 
-    s32 param_value {mpUserResource->getParam()->userParamArray[num_custom_user_param + idx].getValue()};
-    s32 direct_value {mpUserResource->getParam()->commonResourceParam->directValueTable[param_value]};
+    s32 param_value {mpUserResource->getParam()->userBinParam.userParamArray[num_custom_user_param + idx].getValue()};
+    s32 direct_value {mpUserResource->getParam()->pCommonResourceParam->directValueTable[param_value]};
 
     return direct_value;
 }
@@ -692,15 +692,15 @@ f32 ResourceAccessor::getUserCustomParamValueFloat(s32 idx, const UserInstance* 
     auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
 
-    return getResParamValueFloat_(mpUserResource->getParam()->userParamArray[num_custom_user_param + idx], user_instance);
+    return getResParamValueFloat_(mpUserResource->getParam()->userBinParam.userParamArray[num_custom_user_param + idx], user_instance);
 }
 
 const char* ResourceAccessor::getUserCustomParamValueString(const char* name) const
 {
     s32 id {mpSystem->getParamDefineTable()->searchUserParamIdxFromCustomParamName(name)};
 
-    ResParam* user_params {mpUserResource->getParam()->userParamArray};
-    u32 name_table_pos {mpUserResource->getParam()->commonResourceParam->nameTablePos};
+    ResParam* user_params {mpUserResource->getParam()->userBinParam.userParamArray};
+    u32 name_table_pos {mpUserResource->getParam()->pCommonResourceParam->nameTablePos};
     s32 param_raw_value {user_params[id].getValue()};
 
     u32 value_pos {name_table_pos + param_raw_value};
@@ -721,8 +721,8 @@ s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
     auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
-    s32 param_value {mpUserResource->getParam()->userParamArray[idx].getValue()};
-    s32 direct_value {mpUserResource->getParam()->commonResourceParam->directValueTable[param_value]};
+    s32 param_value {mpUserResource->getParam()->userBinParam.userParamArray[idx].getValue()};
+    s32 direct_value {mpUserResource->getParam()->pCommonResourceParam->directValueTable[param_value]};
 
     return direct_value;
 }
@@ -732,7 +732,7 @@ f32 ResourceAccessor::getUserCustomParamValueFloat(const char* name, const UserI
     auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
-    return getResParamValueFloat_(mpUserResource->getParam()->userParamArray[idx], user_instance);
+    return getResParamValueFloat_(mpUserResource->getParam()->userBinParam.userParamArray[idx], user_instance);
 }
 
 ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
@@ -758,7 +758,7 @@ const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallT
     if (checkAndErrorIsAsset_(asset_ctb, "") && getParamType(asset_ctb, idx) == ParamValueType::Bool) {
         if (mpUserResource != nullptr) {
             ResParam* param {calcOffset<ResParam>(asset_ctb.paramStartPos)};
-            ResCurveCallTable* curve_ctb {mpUserResource->getParam()->commonResourceParam->curveCallTable};
+            ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
             return curve_ctb != nullptr ? 
                    &curve_ctb[param[idx].getValue()] : 
                    nullptr;
@@ -880,7 +880,7 @@ const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_st
 
 const ResRandomCallTable* ResourceAccessor::getResRandomCallTable_(const ResParam& res_param) const 
 {
-    ResRandomCallTable* random_ctb {mpUserResource->getParam()->commonResourceParam->randomCallTable};
+    ResRandomCallTable* random_ctb {mpUserResource->getParam()->pCommonResourceParam->randomCallTable};
     if (random_ctb != nullptr)
         return &random_ctb[res_param.getValue()];
 

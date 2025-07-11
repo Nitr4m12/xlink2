@@ -26,7 +26,7 @@ struct ResAssetCallTable {
     s32 parentIndex;
     s32 guid;
     u32 keyNameHash;
-    u32 paramStartPos;
-    u32 conditionPos;
+    s32 paramStartPos;
+    s32 conditionPos;
 };
 }  // namespace xlink2

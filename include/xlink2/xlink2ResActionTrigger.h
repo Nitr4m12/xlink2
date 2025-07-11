@@ -11,6 +11,6 @@ struct ResActionTrigger {
     s32 endFrame;
     sead::BitFlag16 flag;
     s16 overwriteHash;
-    u32 overwriteParamPos;
+    s32 overwriteParamPos;
 };
 }  // namespace xlink2

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "xlink2/xlink2CommonResourceParam.h"
 #include "xlink2/xlink2ResAction.h"
 #include "xlink2/xlink2ResActionSlot.h"
 #include "xlink2/xlink2ResActionTrigger.h"
@@ -9,13 +8,14 @@
 #include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2ResProperty.h"
 #include "xlink2/xlink2ResPropertyTrigger.h"
+#include "xlink2/xlink2ResUserHeader.h"
 
 namespace xlink2 {
 struct UserBinParam {
-    CommonResourceParam* commonResourceParam {};
+    ResUserHeader* pResUserHeader {};
     u32* pLocalPropertyNameRefTable {};
     ResParam* userParamArray {};
-    s16* pSortedAssetIdTable {};
+    u16* pSortedAssetIdTable {};
     ResAssetCallTable* pResAssetCallTable {};
     u32 containerTablePos {};
     ResActionSlot* pResActionSlotTable {};

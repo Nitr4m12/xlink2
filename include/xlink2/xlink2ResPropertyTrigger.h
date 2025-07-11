@@ -1,14 +1,15 @@
 #pragma once
 
 #include "basis/seadTypes.h"
+#include "prim/seadBitFlag.h"
 
 namespace xlink2 {
 struct ResPropertyTrigger {
     s32 guId;
-    u32 assetCtbPos;
-    u32 condition;
-    u16 flag;
+    s32 assetCtbPos;
+    s32 condition;
+    sead::BitFlag16 flag;
     s16 overwriteHash;
-    u32 overwriteParamPos;
+    s32 overwriteParamPos;
 };
 }  // namespace xlink2

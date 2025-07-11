@@ -43,7 +43,7 @@ void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx)
     ResActionTrigger* action_trigger {getUserResource()->getActionTriggerTableItem(action_trigger_idx)};
 
     if (!(action_trigger->flag & 1) || !getModelTriggerConnection_(action_trigger_idx)->isActive) {
-        u32 ow_param_pos {action_trigger->overwriteParamPos};
+        s32 ow_param_pos {action_trigger->overwriteParamPos};
         ResAssetCallTable* asset_ctb {calcOffset<ResAssetCallTable>(action_trigger->assetCtbPos)};
         emitByTriggerImpl_(TriggerType::Action, action_trigger_idx, ow_param_pos, asset_ctb);
         getModelTriggerConnection_(action_trigger_idx)->isActive = true;
@@ -77,7 +77,7 @@ ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot,
     
     UserResourceParam* user_res_param = getUserResource()->getParam();
 
-    ResAction* action_table = user_res_param->resActionTable;
+    ResAction* action_table = user_res_param->userBinParam.pResActionTable;
     for (s32 i = action_slot->actionStartIdx; i <= action_slot->actionEndIdx; ++i) {
         if (strcmp(calcOffset<const char>(action_table[i].namePos), name) == 0) {
             if (idx != nullptr)
@@ -95,9 +95,8 @@ void ActionTriggerCtrl::stopAction()
 
     UserResourceParam* user_res_param {getUserResource()->getParam()};
     
-    ResActionTrigger* action_trigger_table {user_res_param->resActionTriggerTable};
+    ResActionTrigger* action_trigger_table {user_res_param->userBinParam.pResActionTriggerTable};
     for (s32 i {mAction->triggerStartIdx}; i <= mAction->triggerEndIdx; ++i) {
-        // sead::BitFlag16 action_flag {action_trigger_table[i].flag};
         fadeByTrigger_(i);
         if (action_trigger_table[i].startFrame == -1 || (action_trigger_table[i].flag & 12) == 8)
             emitByTrigger_(i);
@@ -111,8 +110,8 @@ void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2)
     UserResource* user_resource {getUserResource()};
     UserResourceParam* user_resource_param {user_resource->getParam()};
    
-    if (-1 < action_idx && action_idx < (s32)user_resource_param->resUserHeader->numResAction) { 
-        ResAction* res_action = &user_resource_param->resActionTable[action_idx];
+    if (-1 < action_idx && action_idx < static_cast<s32>(user_resource_param->userBinParam.pResUserHeader->numResAction)) { 
+        ResAction* res_action = &user_resource_param->userBinParam.pResActionTable[action_idx];
         if (mAction != res_action) {
             changeActionImpl_(res_action, p2, user_resource);
         }
@@ -125,7 +124,7 @@ s32 ActionTriggerCtrl::getCurrentResActionIdx() const
 {
     if (mAction != nullptr) {
         UserResourceParam* param {getUserResource()->getParam()};
-        return mAction - param->resActionTable;
+        return mAction - param->userBinParam.pResActionTable;
     }
 
     return -1;

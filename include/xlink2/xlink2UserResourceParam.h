@@ -2,12 +2,15 @@
 
 #include <container/seadBuffer.h>
 
+#include "xlink2/xlink2CommonResourceParam.h"
 #include "xlink2/xlink2Condition.h"
 #include "xlink2/xlink2ResAction.h"
 #include "xlink2/xlink2UserBinParam.h"
 
 namespace xlink2 {
-struct UserResourceParam : public UserBinParam {
+struct UserResourceParam {
+    CommonResourceParam* pCommonResourceParam;
+    UserBinParam userBinParam;
     sead::Buffer<SwitchCondition> conditionTableBuffer;
     sead::Buffer<ResAssetCallTable> callTableBuffer;
     sead::Buffer<ResAction> actionBuffer;
