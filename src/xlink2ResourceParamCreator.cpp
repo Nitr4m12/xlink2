@@ -1,7 +1,7 @@
-#include <cstddef>
+#include <codec/seadHashCRC32.h>
 
 #include "xlink2/xlink2ResourceParamCreator.h"
-#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2ActionTriggerCtrl.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -25,7 +25,7 @@ ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header,
                                                const ParamDefineTable* param_define)
 {
     pEditorHeader = editor_header;
-    binStart = reinterpret_cast<u64>(editor_header);
+    binStart = reinterpret_cast<uintptr_t>(editor_header);
     assetsStart = binStart + sizeof(EditorHeader);
     numAssetParam = param_define->getNumAssetParam();
     numTriggerParam = param_define->getNumTriggerParam();
@@ -306,6 +306,59 @@ void ResourceParamCreator::solveAboutGlobalProperty(EditorResourceParam* editor_
 {
     solveCommonResourceAboutGlobalProperty_(editor_res_param, system);
     solveUserBinAboutGlobalProperty_(editor_res_param->pResUserHeader, param_define, system);
+}
+
+void ResourceParamCreator::createUserBinParam(UserBinParam* user_bin_param, ResUserHeader* user_header, const ParamDefineTable*  param_define)
+{
+    *user_bin_param = {};
+    user_bin_param->commonResourceParam = reinterpret_cast<CommonResourceParam*>(user_header);
+
+    u32* local_prop_name_refs {reinterpret_cast<u32*>(user_header + 1)};
+    if (user_header->numLocalProperty > 0)
+        user_bin_param->pLocalPropertyNameRefTable = local_prop_name_refs;
+    
+    ResParam* user_params {reinterpret_cast<ResParam*>(local_prop_name_refs + user_header->numLocalProperty)};
+    if (param_define->getNumUserParam() > 0)
+        user_bin_param->userParamArray = user_params; 
+
+    s16* sorted_asset_id_table {reinterpret_cast<s16*>(user_params + param_define->getNumUserParam())};
+    if (user_header->numCallTable > 0)
+        user_bin_param->pSortedAssetIdTable = sorted_asset_id_table;
+    
+    ResAssetCallTable* asset_ctb {reinterpret_cast<ResAssetCallTable*>(sorted_asset_id_table + user_header->numCallTable)};
+    if (user_header->numCallTable & 1)
+        asset_ctb = reinterpret_cast<ResAssetCallTable*>(sorted_asset_id_table + user_header->numCallTable + 1);
+
+    if (user_header->numCallTable > 0)
+        user_bin_param->pResAssetCallTable = asset_ctb;
+
+    u32 container_table_pos = reinterpret_cast<u64>(asset_ctb + user_header->numCallTable);
+    if (user_header->numCallTable != user_header->numAsset)
+        user_bin_param->containerTablePos = container_table_pos; 
+
+    ResActionSlot* action_slot_table {calcOffset<ResActionSlot>(reinterpret_cast<u64>(user_header) + user_header->triggerTablePos)};
+    if (user_header->numResActionSlot > 0)
+        user_bin_param->pResActionSlotTable = action_slot_table;
+    
+    ResAction* action_table {reinterpret_cast<ResAction*>(action_slot_table + user_header->numResActionSlot)};
+    if (user_header->numResAction > 0)
+        user_bin_param->pResActionTable = action_table;
+    
+    ResActionTrigger* action_trigger_table {reinterpret_cast<ResActionTrigger*>(action_table + user_header->numResAction)};
+    if (user_header->numResActionTrigger > 0)
+        user_bin_param->pResActionTriggerTable = action_trigger_table;
+    
+    ResProperty* property_table {reinterpret_cast<ResProperty*>(action_trigger_table + user_header->numResActionTrigger)};
+    if (user_header->numResProperty > 0)
+        user_bin_param->pResPropertyTable = property_table;
+    
+    ResPropertyTrigger* property_trigger_table {reinterpret_cast<ResPropertyTrigger*>(property_table + user_header->numResProperty)};
+    if (user_header->numResPropertyTrigger > 0)
+        user_bin_param->pResPropertyTriggerTable = property_trigger_table;
+    
+    ResAlwaysTrigger* always_trigger_table {reinterpret_cast<ResAlwaysTrigger*>(property_trigger_table + user_header->numResPropertyTrigger)};
+    if (user_header->numResAlwaysTrigger > 0)
+        user_bin_param->pResAlwaysTriggerTable = always_trigger_table;
 }
 
 void ResourceParamCreator::solveCommonResourceAboutGlobalProperty_(CommonResourceParam* common_res_param, System* system)

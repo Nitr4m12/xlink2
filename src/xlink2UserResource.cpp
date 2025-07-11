@@ -62,13 +62,14 @@ void UserResource::setupEditorResourceParam(EditorResourceParam* param, sead::He
     setupResourceParam_(mParams[1], param->pResUserHeader, param, getSystem()->getEditorBuffer()->getParamDefineTable(), heap);
 }
 
+// WIP
 const ResUserHeader* UserResource::getUserHeader() const 
 {
-    auto* param = mParams[int(mResMode)];
+    // auto* param = mParams[int(mResMode)];
 
-    if (param != nullptr && param->isSetup)
-        return param->resUserHeader;
-    return nullptr;
+    // if (param != nullptr && param->isSetup)
+    //     return param->resUserHeader;
+    // return nullptr;
 }
 
 bool UserResource::searchAssetCallTableByName(Locator* locator, const char* name) const
@@ -84,99 +85,105 @@ ResAssetCallTable* UserResource::searchAssetCallTableByName(const char* name) co
     return doBinarySearchAsset_(name, TriggerType::Action);
 }
 
+// WIP
 ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerType type) const 
 {
-    UserResourceParam* param {getParam()};
-    if (param != nullptr && param->isSetup) {
-        if (param->resUserHeader->numCallTable == 0)
-            return nullptr;
+//     UserResourceParam* param {getParam()};
+//     if (param != nullptr && param->isSetup) {
+//         if (param->resUserHeader->numCallTable == 0)
+//             return nullptr;
 
-        s32 a {0};
-        s32 b = static_cast<s32>(param->resUserHeader->numCallTable) - 1;
-#ifdef MATCHING_HACK_NX_CLANG
-        asm("");
-#endif
+//         s32 a {0};
+//         s32 b = static_cast<s32>(param->resUserHeader->numCallTable) - 1;
+// #ifdef MATCHING_HACK_NX_CLANG
+//         asm("");
+// #endif
 
-        while (a <= b) {
-            const s32 m = (a + b) / 2;
-            auto* asset_param {&param->resAssetCallTable[param->sortedAssetIdTable[m]]};
-            if (asset_param == nullptr)
-                return nullptr;
+//         while (a <= b) {
+//             const s32 m = (a + b) / 2;
+//             auto* asset_param {&param->resAssetCallTable[param->sortedAssetIdTable[m]]};
+//             if (asset_param == nullptr)
+//                 return nullptr;
 
-            char* key_name {calcOffset<char>(asset_param->keyNamePos)};
+//             char* key_name {calcOffset<char>(asset_param->keyNamePos)};
 
-            const s32 c {strcmp(name, key_name)};
-            if (c == 0)
-                return asset_param;
+//             const s32 c {strcmp(name, key_name)};
+//             if (c == 0)
+//                 return asset_param;
 
-            if (c > 0)
-                a = m + 1;
-            else
-                b = m - 1;
-        }
+//             if (c > 0)
+//                 a = m + 1;
+//             else
+//                 b = m - 1;
+//         }
 
-    }
+//     }
 
-    return nullptr;
+//     return nullptr;
 }
 
+// WIP
 bool UserResource::searchAssetCallTableByHash(Locator* locator, u32 name_hash) const
 {
-    UserResourceParam* param {getParam()};
-    if (param != nullptr && param->isSetup && param->resUserHeader->numCallTable != 0) {
-        for (u32 i {0}; i < param->resUserHeader->numCallTable; ++i) {
-            if (param->resAssetCallTable[i].keyNameHash == name_hash) {
-                locator->setAssetCallTable(&param->resAssetCallTable[i]);
-                return true;
-            }
-        }
-    }
+    // UserResourceParam* param {getParam()};
+    // if (param != nullptr && param->isSetup && param->resUserHeader->numCallTable != 0) {
+    //     for (u32 i {0}; i < param->resUserHeader->numCallTable; ++i) {
+    //         if (param->resAssetCallTable[i].keyNameHash == name_hash) {
+    //             locator->setAssetCallTable(&param->resAssetCallTable[i]);
+    //             return true;
+    //         }
+    //     }
+    // }
 
-    return false;
+    // return false;
 }
 
+// WIP
 ResAssetCallTable* UserResource::getAssetCallTableItem(s32 idx) const 
 {
-    UserResourceParam* param = getParamWithSetupCheck();
+    // UserResourceParam* param = getParamWithSetupCheck();
     
-    if (param && param->isSetup) {
-        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numCallTable) > idx)
-            return &param->resAssetCallTable[idx];
-    }
-    return nullptr;
+    // if (param && param->isSetup) {
+    //     if (idx >= 0 && static_cast<s32>(param->resUserHeader->numCallTable) > idx)
+    //         return &param->resAssetCallTable[idx];
+    // }
+    // return nullptr;
 }
 
+// WIP
 ResActionTrigger* UserResource::getActionTriggerTableItem(s32 idx) const 
 {
-    UserResourceParam* param = getParamWithSetupCheck();
+    // UserResourceParam* param = getParamWithSetupCheck();
     
-    if (param != nullptr && param->isSetup) {
-        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResActionTrigger) > idx)
-            return &param->resActionTriggerTable[idx];
-    }
-    return nullptr;
+    // if (param != nullptr && param->isSetup) {
+    //     if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResActionTrigger) > idx)
+    //         return &param->resActionTriggerTable[idx];
+    // }
+    // return nullptr;
 }
 
+// WIP
 ResPropertyTrigger* UserResource::getPropertyTriggerTableItem(s32 idx) const 
 {
-    UserResourceParam* param = getParamWithSetupCheck();
+    // UserResourceParam* param = getParamWithSetupCheck();
     
-    if (param != nullptr && param->isSetup) {
-        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResPropertyTrigger) > idx)
-            return &param->resPropertyTriggerTable[idx];
-    }
-    return nullptr;
+    // if (param != nullptr && param->isSetup) {
+    //     if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResPropertyTrigger) > idx)
+    //         return &param->resPropertyTriggerTable[idx];
+    // }
+    // return nullptr;
 }
 
+// WIP
 ResAlwaysTrigger* UserResource::getAlwaysTriggerTableItem(s32 idx) const 
 {
-    UserResourceParam* param = getParamWithSetupCheck();
+    // UserResourceParam* param = getParamWithSetupCheck();
     
-    if (param != nullptr && param->isSetup) {
-        if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResAlwaysTrigger) > idx)
-            return &param->resAlwaysTriggerTable[idx];
-    }
-    return nullptr;
+    // if (param != nullptr && param->isSetup) {
+    //     if (idx >= 0 && static_cast<s32>(param->resUserHeader->numResAlwaysTrigger) > idx)
+    //         return &param->resAlwaysTriggerTable[idx];
+    // }
+    // return nullptr;
 }
 
 void UserResource::destroy() 
@@ -219,47 +226,50 @@ bool UserResource::doBinarySearchToNameArray_(s32* value_idx, const char* name, 
     return false;
 }
 
+// WIP
 void UserResource::solveNeedObserveFlag_(UserResourceParam* param)
 {
-    ResUserHeader* user_header {param->resUserHeader};
+    // ResUserHeader* user_header {param->resUserHeader};
 
-    if (user_header->numCallTable != 0) {
-        ResAssetCallTable* asset_ctb {param->resAssetCallTable};
+    // if (user_header->numCallTable != 0) {
+    //     ResAssetCallTable* asset_ctb {param->resAssetCallTable};
 
-        for (u32 i {0}; i < user_header->numCallTable; ++i) {
-            s32 parent_index {asset_ctb[i].parentIndex};
-            if (parent_index < 0 || asset_ctb[parent_index].flag.isOffBit(0))
-                solveNeedObserveFlagImpl_(i, &asset_ctb[i], param, user_header);
-        }
-    }
+    //     for (u32 i {0}; i < user_header->numCallTable; ++i) {
+    //         s32 parent_index {asset_ctb[i].parentIndex};
+    //         if (parent_index < 0 || asset_ctb[parent_index].flag.isOffBit(0))
+    //             solveNeedObserveFlagImpl_(i, &asset_ctb[i], param, user_header);
+    //     }
+    // }
 }
 
+// WIP
 ResAssetCallTable* UserResource::searchAssetAllResource(const char* name) const
 {
-    UserResourceParam* param {getParam()};
-    if (param != nullptr && param->isSetup && param->resUserHeader->numCallTable != 0) {
-        for (u64 i {0}; i < (u32)param->resUserHeader->numCallTable; ++i) {
-            char* key_name {calcOffset<char>(param->resAssetCallTable[i].keyNamePos)};
-            if (strcmp(name, key_name) == 0)
-                return &param->resAssetCallTable[i];
-        }
-    }
+    // UserResourceParam* param {getParam()};
+    // if (param != nullptr && param->isSetup && param->resUserHeader->numCallTable != 0) {
+    //     for (u64 i {0}; i < (u32)param->resUserHeader->numCallTable; ++i) {
+    //         char* key_name {calcOffset<char>(param->resAssetCallTable[i].keyNamePos)};
+    //         if (strcmp(name, key_name) == 0)
+    //             return &param->resAssetCallTable[i];
+    //     }
+    // }
 
-    return nullptr;
+    // return nullptr;
 }
 
+// WIP
 bool UserResource::hasGlobalPropertyTrigger() const 
 {
-    UserResourceParam* param {getParam()};
+    // UserResourceParam* param {getParam()};
 
-    if (param != nullptr && param->isSetup) {
-        for (u32 i{0}; i < param->resUserHeader->numResProperty; ++i) {
-            if (param->resPropertyTable[i].isGlobal)
-                return true;
-        }
-    }
+    // if (param != nullptr && param->isSetup) {
+    //     for (u32 i{0}; i < param->presUserHeader->numResProperty; ++i) {
+    //         if (param->pResPropertyTable[i].isGlobal)
+    //             return true;
+    //     }
+    // }
 
-    return false;
+    // return false;
 }
 
 u64 UserResource::getEditorSetupTime() const {
@@ -269,19 +279,20 @@ u64 UserResource::getEditorSetupTime() const {
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,
                                                         TriggerType /*unused*/) {}
 
+// WIP
 bool UserResource::searchAssetCallTableByGuid(Locator* locator, s32 guid) const
 {
-    locator->reset();
-    UserResourceParam* param {getParam()};
-    if (param != nullptr && param->isSetup) {
-        for (u32 i{0}; i < param->resUserHeader->numCallTable; ++i) {
-            if (param->resAssetCallTable[i].guid == guid) {
-                locator->setAssetCallTable(&param->resAssetCallTable[i]);
-                return true;
-            }
-        }
-    }
-    return false;
+    // locator->reset();
+    // UserResourceParam* param {getParam()};
+    // if (param != nullptr && param->isSetup) {
+    //     for (u32 i{0}; i < param->resUserHeader->numCallTable; ++i) {
+    //         if (param->resAssetCallTable[i].guid == guid) {
+    //             locator->setAssetCallTable(&param->resAssetCallTable[i]);
+    //             return true;
+    //         }
+    //     }
+    // }
+    // return false;
 }
 
 void UserResource::onSetupResourceParam_(UserResourceParam* /*unused*/,

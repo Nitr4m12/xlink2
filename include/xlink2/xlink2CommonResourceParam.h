@@ -1,17 +1,13 @@
 #pragma once
 
 #include <basis/seadTypes.h>
+#include <math/seadVectorFwd.h>
 
 #include "xlink2/xlink2ResCurveCallTable.h"
 #include "xlink2/xlink2ResParam.h"
 #include "xlink2/xlink2ResRandomCallTable.h"
 
 namespace xlink2 {
-class DirectValue {};
-struct CurvePoint {
-    float x;
-    float y;
-};
 struct CommonResourceParam {
     u32 numResParam {};
     u32 numResAssetParam {};
@@ -29,7 +25,7 @@ struct CommonResourceParam {
     s32* directValueTable {};
     ResRandomCallTable* randomCallTable {};
     ResCurveCallTable* curveCallTable {};
-    CurvePoint* curvePointTable {};
+    sead::Vector2f* curvePointTable {};
     u32 conditionTablePos {};
     u32 exRegionPos {};
     u32 nameTablePos {};
