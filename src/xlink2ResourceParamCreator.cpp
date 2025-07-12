@@ -72,7 +72,6 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
     rom_res_param->isInitialized = true;
 }
 
-// WIP
 void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* common_res_param,
                                                       BinAccessor* bin_accessor)
 {
@@ -86,15 +85,19 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     common_res_param->numCurveTable = bin_accessor->getNumCurveTable();
     common_res_param->numCurvePointTable = bin_accessor->getNumCurvePointTable();
 
-    auto* asset_param_table {calcOffset<ResAssetParam>(bin_accessor->assetsStart)};
+    auto* asset_param_table {reinterpret_cast<ResAssetParam*>((bin_accessor->assetsStart >= sMinAddressLow) ? 
+                                                              (bin_accessor->assetsStart | sMinAddressHigh) :
+                                                              (bin_accessor->assetsStart | sMinAddressHigh) + 0x100000000)};
     if (common_res_param->numResAssetParam > 0)
         common_res_param->assetParamTable = asset_param_table;
 
     u32 table_pos = bin_accessor->getTriggerOverwriteParamTablePos();
     if (common_res_param->numResTriggerOverwriteParam > 0)
-        common_res_param->triggerOverwriteParamTablePos = bin_accessor->getTriggerOverwriteParamTablePos() + bin_accessor->binStart;
+        common_res_param->triggerOverwriteParamTablePos = table_pos;
 
-    u32* local_prop_name_refs = calcOffset<u32>(bin_accessor->getLocalPropertyNameRefTablePos() + bin_accessor->binStart);
+    u32* local_prop_name_refs = reinterpret_cast<u32*>((bin_accessor->getLocalPropertyNameRefTablePos() >= sMinAddressLow) ? 
+                                                       (bin_accessor->getLocalPropertyNameRefTablePos() | sMinAddressHigh) :
+                                                       (bin_accessor->getLocalPropertyNameRefTablePos() | sMinAddressHigh) + 0x100000000);
     if (common_res_param->numLocalPropertyNameRefTable > 0)
         common_res_param->localPropertyNameRefTable = local_prop_name_refs;
     

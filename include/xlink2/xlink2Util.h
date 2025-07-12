@@ -15,8 +15,9 @@ static void setMinLargeAddressMask(u64 mask) {
 
 template <typename T>
 T* calcOffset(const u32& offset) {
-    return reinterpret_cast<T*>((offset >= sMinAddressLow) ? (offset | sMinAddressHigh) :
-                                        (offset | sMinAddressHigh) + 0x100000000);
+    return reinterpret_cast<T*>((offset >= sMinAddressLow) ? 
+                                (offset | sMinAddressHigh) :
+                                (offset | sMinAddressHigh) + 0x100000000);
 }
 
 }  // namespace xlink2

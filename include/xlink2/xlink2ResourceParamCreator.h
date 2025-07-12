@@ -76,12 +76,12 @@ public:
 
         u32 getTriggerOverwriteParamTablePos() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos : pEditorHeader->triggerOverwriteParamTablePos;
+            return (pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos : pEditorHeader->triggerOverwriteParamTablePos) + binStart;
         }
 
         u32 getLocalPropertyNameRefTablePos() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->localPropertyNameRefTablePos : pEditorHeader->localPropertyNameRefTablePos;
+            return (pResourceHeader != nullptr ? pResourceHeader->localPropertyNameRefTablePos : pEditorHeader->localPropertyNameRefTablePos) + binStart;
         }
 
         u32 getExRegionPos() const
