@@ -4,6 +4,11 @@
 #include "xlink2/xlink2ResourceParamCreator.h"
 
 namespace xlink2 {
+ResourceBuffer::ResourceBuffer()
+{
+    mParamDefineTable.reset();
+}
+
 ResourceBuffer::~ResourceBuffer() = default;
 
 bool ResourceBuffer::load(void* bin, System* system)

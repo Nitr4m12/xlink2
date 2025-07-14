@@ -4,8 +4,8 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-void ParamDefineTable::reset() {
-    // MATCHING
+void ParamDefineTable::reset() 
+{
     mNumUserParam = 0;
     mNumAssetParam = 0;
     mNumTriggerParam = 0;
@@ -19,7 +19,8 @@ void ParamDefineTable::reset() {
     mIsInitialized = false;
 }
 
-void ParamDefineTable::setup(unsigned char* bin, u32 num_non_user_param, bool /*unused*/) {
+void ParamDefineTable::setup(unsigned char* bin, u32 num_non_user_param, bool /*unused*/) 
+{
     if (!mIsInitialized) {
         mSize = *(u32*)bin;
         u32 num_user_param = *(u32*)(&bin[4]);
@@ -74,25 +75,29 @@ void ParamDefineTable::setup(unsigned char* bin, u32 num_non_user_param, bool /*
 
 void ParamDefineTable::dump_() {}
 
-const char* ParamDefineTable::getUserParamName(u32 idx) const {
+const char* ParamDefineTable::getUserParamName(u32 idx) const 
+{
     if (mUserParams)
         return calcOffset<char>(mUserParams[idx].namePos);
     return nullptr;
 }
 
-const char* ParamDefineTable::getAssetParamName(u32 idx) const {
+const char* ParamDefineTable::getAssetParamName(u32 idx) const 
+{
     if (idx < mNumAssetParam)
         return calcOffset<char>(mAssetParams[idx].namePos);
     return nullptr;
 }
 
-const char* ParamDefineTable::getTriggerParamName(u32 idx) const {
+const char* ParamDefineTable::getTriggerParamName(u32 idx) const 
+{
     if (mTriggerParams)
         return calcOffset<char>(mTriggerParams[idx].namePos);
     return nullptr;
 }
 
-s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_param_name) const {
+s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_param_name) const 
+{
     if (custom_param_name) {
         u32 asset_param_idx = mNumCustomParam;
         if (asset_param_idx < mNumAssetParam) {
@@ -112,7 +117,8 @@ s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_
 }
 
 // NON-MATCHING / WIP
-s32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const {
+s32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const 
+{
     if (custom_param_name) {
         u32 user_param_idx = mNumCustomUserParam;
         if (user_param_idx <= mNumUserParam && mNumUserParam - mNumCustomUserParam > 0) {
@@ -134,73 +140,85 @@ s32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_p
     return -1;
 }
 
-ParamValueType ParamDefineTable::getUserParamType(u32 id) const {
+ParamValueType ParamDefineTable::getUserParamType(u32 id) const 
+{
     if (mUserParams)
         return mUserParams[id].type;
     return ParamValueType::Invalid;
 }
 
-ParamValueType ParamDefineTable::getAssetParamType(u32 id) const {
+ParamValueType ParamDefineTable::getAssetParamType(u32 id) const 
+{
     if (id < mNumAssetParam)
         return mAssetParams[id].type;
     return ParamValueType::Invalid;
 }
 
-ParamValueType ParamDefineTable::getTriggerParamType(u32 id) const {
+ParamValueType ParamDefineTable::getTriggerParamType(u32 id) const 
+{
     if (mTriggerParams)
         return mTriggerParams[id].type;
     return ParamValueType::Invalid;
 }
 
-s32 ParamDefineTable::getUserParamDefaultValueInt(u32 id) const {
+s32 ParamDefineTable::getUserParamDefaultValueInt(u32 id) const 
+{
     if (mUserParams)
         return mUserParams[id].defaultValueInt;
     return 0;
 }
 
-f32 ParamDefineTable::getUserParamDefaultValueFloat(u32 id) const {
+f32 ParamDefineTable::getUserParamDefaultValueFloat(u32 id) const 
+{
     if (mUserParams)
         return mUserParams[id].defaultValueFloat;
     return 0;
 }
 
-const char* ParamDefineTable::getUserParamDefaultValueString(u32 id) const {
+const char* ParamDefineTable::getUserParamDefaultValueString(u32 id) const 
+{
     if (mUserParams)
         return calcOffset<char>(mUserParams[id].defaultValueString);
     return "";
 }
 
-s32 ParamDefineTable::getAssetParamDefaultValueInt(u32 id) const {
+s32 ParamDefineTable::getAssetParamDefaultValueInt(u32 id) const 
+{
     if (id < mNumAssetParam)
         return mAssetParams[id].defaultValueInt;
     return 0;
 }
 
-f32 ParamDefineTable::getAssetParamDefaultValueFloat(u32 id) const {
+f32 ParamDefineTable::getAssetParamDefaultValueFloat(u32 id) const 
+{
     if (id < mNumAssetParam)
         return mAssetParams[id].defaultValueFloat;
     return 0;
 }
 
-const char* ParamDefineTable::getAssetParamDefaultValueString(u32 id) const {
+const char* ParamDefineTable::getAssetParamDefaultValueString(u32 id) const 
+{
     if (id < mNumAssetParam)
         return calcOffset<char>(mAssetParams[id].defaultValueString);
     return "";
 }
 
-s32 ParamDefineTable::getTriggerParamDefaultValueInt(u32 id) const {
+s32 ParamDefineTable::getTriggerParamDefaultValueInt(u32 id) const 
+{
     if (mTriggerParams)
         return mTriggerParams[id].defaultValueInt;
     return 0;
 }
 
-f32 ParamDefineTable::getTriggerParamDefaultValueFloat(u32 id) const {
+f32 ParamDefineTable::getTriggerParamDefaultValueFloat(u32 id) const 
+{
     if (mTriggerParams)
         return mTriggerParams[id].defaultValueFloat;
     return 0;
 }
 
-const char* ParamDefineTable::getTriggerParamDefaultValueString(u32 id) const {
+const char* ParamDefineTable::getTriggerParamDefaultValueString(u32 id) const 
+{
     if (mTriggerParams)
         return calcOffset<char>(mTriggerParams[id].defaultValueString);
     return nullptr;
