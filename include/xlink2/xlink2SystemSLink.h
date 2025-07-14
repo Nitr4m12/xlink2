@@ -14,7 +14,9 @@ class DrawContext;
 
 namespace xlink2 {
 class UserResourceSLink;
-class SystemSLink : System {
+class SystemSLink : public System {
+    SEAD_SINGLETON_DISPOSER(SystemSLink);
+
 public:
     static ILockProxy* sLockProxy;
 
@@ -37,9 +39,13 @@ public:
 
     void stopAllEvent(s32);
 
+#ifdef SEAD_DEBUG
+    void genMessage(sead::hostio::Context* context) override;
+    void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
+#else
     void genMessage(sead::hostio::Context* /*unused*/);
-
     void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/);
+#endif
 
     sead::SafeString* getORIconString();
 

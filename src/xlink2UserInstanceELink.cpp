@@ -10,11 +10,11 @@ void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mod
 }
 
 ResourceAccessorELink* UserInstanceELink::getResourceAccessor() const {
-    return (ResourceAccessorELink*)mUser->getUserResource()->getResourceAccessor();
+    return static_cast<ResourceAccessorELink*>(mUser->getUserResource()->getResourceAccessor());
 }
 
-UserResource* UserInstanceELink::getResourceELink() const {
-    return mUser->getUserResource();
+UserResourceELink* UserInstanceELink::getResourceELink() const {
+    return static_cast<UserResourceELink*>(mUser->getUserResource());
 }
 
 void UserInstanceELink::onDestroy_() {}

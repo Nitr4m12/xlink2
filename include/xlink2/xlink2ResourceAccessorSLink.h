@@ -11,7 +11,7 @@ SEAD_ENUM(FadeCurveType, Linear, Square, Sqrt, Sin);
 }
 
 namespace xlink2 {
-class ResourceAccessorSLink : ResourceAccessor {
+class ResourceAccessorSLink : public ResourceAccessor {
 public:
     ~ResourceAccessorSLink() override;
 

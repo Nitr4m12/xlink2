@@ -15,6 +15,7 @@
 #include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2ResourceAccessorSLink.h"
+#include "xlink2/xlink2UserResourceSLink.h"
 
 namespace aal {
 class Emitter;
@@ -22,8 +23,8 @@ class IAssetInfoReadable;
 }
 
 namespace xlink2 {
+class UserResourceSLink;
 class UserInstanceSLink : public UserInstance {
-
 public:
     class CreateArgSLink {
     public:
@@ -58,21 +59,21 @@ public:
         sead::Buffer<AssetLimiterParam> mParamBuffer;
     };
 
-    ~UserInstanceSLink() override = default;
     UserInstanceSLink(CreateArgSLink const&, System*, User*, sead::Heap*);
+    ~UserInstanceSLink() override = default;
 
     void allocEmitter(sead::Heap*);
 
-    void searchAndEmit(char const*);
-    void searchAndEmit(char const*, HandleSLink*);
+    void searchAndEmit(const char*);
+    void searchAndEmit(const char*, HandleSLink*);
 
-    void emit(Locator const&);
-    void emit(Locator const&, HandleSLink*);
-    void emit(ResAssetCallTable const&);
-    void emit(ResAssetCallTable const&, HandleSLink*);
+    void emit(const Locator&);
+    void emit(const Locator&, HandleSLink*);
+    void emit(const ResAssetCallTable&);
+    void emit(const ResAssetCallTable&, HandleSLink*);
 
-    void searchAndHold(char const*);
-    void searchAndHold(char const*, HandleSLink*);
+    void searchAndHold(const char*);
+    void searchAndHold(const char*, HandleSLink*);
 
     void stopAllEvent(s32);
 
@@ -82,9 +83,9 @@ public:
 
     s32 getSoundSourceNum() const;
     u64 getResourceAccessor() const;
-    ResourceAccessorSLink* getResourceSLink() const;
+    UserResourceSLink* getResourceSLink() const;
 
-    void setupEmitter(ResAssetCallTable const&);
+    void setupEmitter(const ResAssetCallTable&);
 
     void onPostCalc_() override;
     void onDestroy_() override;
@@ -99,7 +100,6 @@ public:
 
     bool doEventActivatingCallback_(Locator const&) override;
     void doEventActivatedCallback_(Locator const&, Event*) override;
-
 
     void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const override;
 

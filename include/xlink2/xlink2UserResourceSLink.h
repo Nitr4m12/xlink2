@@ -2,6 +2,8 @@
 
 #include "heap/seadHeap.h"
 #include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2ResourceAccessorSLink.h"
+#include "xlink2/xlink2SystemSLink.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
 
@@ -10,9 +12,7 @@ class IAssetInfoReadable;
 }
 
 namespace xlink2 {
-class SystemSLink;
 class UserResourceSLink : UserResource {
-
 public:
     UserResourceSLink(User*, sead::Heap*);
     ~UserResourceSLink() override = default;
@@ -20,7 +20,7 @@ public:
     u64 getUserParam() const;
 
     void solveIsLoop(aal::IAssetInfoReadable*);
-    void solveIsLoop_(UserResourceParam*, ParamDefineTable const*, aal::IAssetInfoReadable*);
+    void solveIsLoop_(UserResourceParam*, const ParamDefineTable*, aal::IAssetInfoReadable*);
 
     bool isEnableAssetInfoReader_(aal::IAssetInfoReadable**) const;
 
@@ -28,12 +28,12 @@ public:
     void freeResourceParam_(UserResourceParam*) override;
     void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
 
-    ResourceAccessor* getAccessor() const override;
-    ResourceAccessor* getAccessorPtr() override;
+    ResourceAccessorSLink* getAccessor() const override;
+    ResourceAccessorSLink* getAccessorPtr() override;
     System* getSystem() const override;
 
 private:
 };
-static_assert(sizeof(UserResourceSLink) == 0x48, "Wrong size for 'xlink2::UserResourceSLink'");
+static_assert(sizeof(UserResourceSLink) == 0x48, "xlink2::UserResourceSLink size mismatch");
 
 }  // namespace xlink2

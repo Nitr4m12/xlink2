@@ -1,6 +1,8 @@
 #pragma once
 
-#include "heap/seadHeap.h"
+#include <heap/seadDisposer.h>
+#include <heap/seadHeap.h>
+
 #include "xlink2/xlink2AssetExecutorELink.h"
 #include "xlink2/xlink2UserInstanceELink.h"
 #include "xlink2/xlink2UserResourceELink.h"
@@ -14,7 +16,9 @@ class UserResourceELink;
 class UserInstanceELink;
 class AssetExecutorELink;
 
-class SystemELink : System {
+class SystemELink : public System {
+    SEAD_SINGLETON_DISPOSER(SystemELink);
+
 public:
     static ILockProxy* sLockProxy;
 
@@ -34,9 +38,13 @@ public:
     u64 getResourceVersion() const override;
     sead::SafeString* getModuleName() const override;
 
+#ifdef SEAD_DEBUG
+    void genMessage(sead::hostio::Context* context) override;
+    void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
+#else
     void genMessage(sead::hostio::Context* /*unused*/);
-
     void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/);
+#endif
 
     sead::SafeString* getORIconString();
 

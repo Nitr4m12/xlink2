@@ -4,6 +4,7 @@
 #include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2PtclResourceAccessorELink.h"
 #include "xlink2/xlink2ResAssetCallTable.h"
+#include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2SystemELink.h"
 #include "xlink2/xlink2User.h"
 #include "xlink2/xlink2UserResourceParam.h"
@@ -11,9 +12,10 @@
 
 namespace xlink2 {
 class SystemELink;
-class UserResourceELink : UserResource {
+class UserResourceELink : public UserResource {
 public:
     UserResourceELink(User*, sead::Heap*);
+    ~UserResourceELink() override;
 
     u64 getSolvedAssetParameterELink(ResAssetCallTable const&);
 
@@ -27,10 +29,8 @@ public:
 
     void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
 
-    ~UserResourceELink() override;
-
-    ResourceAccessor* getAccessor() const override;
-    ResourceAccessor* getAccessorPtr() override;
+    ResourceAccessorELink* getAccessor() const override;
+    ResourceAccessorELink* getAccessorPtr() override;
     System* getSystem() const override;
 
 private:

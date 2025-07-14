@@ -13,11 +13,10 @@ class Handle;
 namespace xlink2 {
 class AssetExecutorSLink;
 class EventSLink : Event {
-    ~EventSLink() override;
-
 public:
+    ~EventSLink() override;
     void initializeImpl_() override;
-
+    
     u64 getPos(sead::Vector3f*) const;
     u64 getVelocity() const;
 
@@ -25,6 +24,9 @@ public:
     u64 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
 
     u64 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
+
+
+
 private:
     u32 _16;
     u32 _17;
@@ -39,6 +41,6 @@ private:
     void* _30;
     u16 _31;
 };
-static_assert(sizeof(EventSLink) == 0xe8, "Wrong size for 'xlink2::EventSLink'");
+static_assert(sizeof(EventSLink) == 0xe8, "xlink2::EventSLink size mismatch");
 
 }  // namespace xlink2
