@@ -1,4 +1,5 @@
 #include "xlink2/xlink2EditorBuffer.h"
+#include "xlink2/xlink2ResourceParamCreator.h"
 
 namespace xlink2 {
 EditorBuffer::~EditorBuffer() = default;
@@ -34,4 +35,13 @@ void EditorBuffer::setupParamDefineTable(u8* param_define_bin, u32 param_define_
     mParamDefineTable->setup(mParamDefineBuffer, mSystem->getUserParamNum(),
                              mSystem->debugOperationParamOR().get258Check());
 }
+
+void EditorBuffer::applyGlobalPropertyDefinition()
+{
+    for (auto& param : mParams) {
+        if (param.isInitialized)
+            ResourceParamCreator::solveAboutGlobalProperty(&param, mParamDefineTable, mSystem);
+    }
+}
+
 }  // namespace xlink2
