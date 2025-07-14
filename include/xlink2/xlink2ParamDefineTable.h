@@ -40,7 +40,7 @@ public:
     u32 getNumTriggerParam() const { return mNumTriggerParam; }
     u32 get0() const { return _0; }
     u32 getNumCustomParam() const { return mNumCustomParam; }
-    bool isInitilized() const { return mIsInitialized; }
+    bool isInitialized() const { return mIsInitialized; }
     u32 getNumCustomUserParam() const { return mNumCustomUserParam; }
 
 private:
@@ -58,6 +58,6 @@ private:
     u32 mSize;
     bool mIsInitialized;
 };
-static_assert(sizeof(ParamDefineTable) == 0x48, "Wrong size for 'xlink2::ParamDefineTable'");
+static_assert(sizeof(ParamDefineTable) == 0x48, "xlink2::ParamDefineTable size mismatch");
 
 }  // namespace xlink2

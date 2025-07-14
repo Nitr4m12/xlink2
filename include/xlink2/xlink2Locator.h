@@ -23,7 +23,7 @@ public:
 
     bool isNeedRebind() const;
     s32 getSearchedGuid() const;
-    void updateDataLoadedCount();
+    static void updateDataLoadedCount();
 
     void setAssetCallTable(const ResAssetCallTable* asset_call_table) {mpAssetCallTable = asset_call_table; }
 

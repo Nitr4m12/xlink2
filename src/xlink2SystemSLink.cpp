@@ -1,7 +1,7 @@
 #include "xlink2/xlink2SystemSLink.h"
 
 namespace xlink2 {
-u64 SystemSLink::getResourceVersion() const {
+u32 SystemSLink::getResourceVersion() const {
     return 0x1c;
 }
 

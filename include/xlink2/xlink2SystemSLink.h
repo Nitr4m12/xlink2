@@ -31,7 +31,7 @@ public:
     void allocHandle(sead::Heap*) override;
     void allocAssetExecutor(Event*) override;
 
-    u64 getResourceVersion() const override;
+    u32 getResourceVersion() const override;
     sead::SafeString* getModuleName() const override;
     u32 getUserParamNum() const override;
 

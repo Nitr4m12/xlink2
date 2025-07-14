@@ -171,7 +171,7 @@ public:
     virtual sead::SafeString* getModuleName() const = 0;
     virtual void allocAssetExecutor(Event*) = 0;
     virtual ILockProxy* getModuleLockObj() const = 0;
-    virtual u64 getResourceVersion() const = 0;
+    virtual u32 getResourceVersion() const = 0;
 
     virtual ~System();
 

@@ -29,7 +29,7 @@ u8* EditorBuffer::allocReceiveBuffer(u32 buffer_size)
 void EditorBuffer::setupParamDefineTable(u8* param_define_bin, u32 param_define_size)
 {
     memcpy(mParamDefineBuffer, param_define_bin, param_define_size);
-    if (mParamDefineTable->isInitilized())
+    if (mParamDefineTable->isInitialized())
         mParamDefineTable->reset();
     mParamDefineTable->setup(mParamDefineBuffer, mSystem->getUserParamNum(),
                              mSystem->debugOperationParamOR().get258Check());
