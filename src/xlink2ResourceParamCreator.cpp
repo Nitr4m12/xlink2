@@ -1,7 +1,6 @@
 #include <codec/seadHashCRC32.h>
 
 #include "xlink2/xlink2ResourceParamCreator.h"
-#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header,
@@ -419,14 +418,63 @@ void ResourceParamCreator::solveCommonResourceAboutGlobalProperty_(CommonResourc
         ResCurveCallTable* curve_ctb_item {common_res_param->curveCallTable};
         if (curve_ctb_item[i].isPropGlobal != 0 && curve_ctb_item[i].localPropertyNameIdx == -1) {
             const char* prop_name {calcOffset<char>(curve_ctb_item[i].propName)};
-            s32 global_property_idx {system->searchGlobalPropertyIndex(calcOffset<char>(curve_ctb_item[i].propName))};
+            s32 global_property_idx {system->searchGlobalPropertyIndex(prop_name)};
 
-            if (global_property_idx == -1) {
-                const char* prop_name {calcOffset<char>(curve_ctb_item[i].propName)};
-                system->addError(Error::Type::PropertyNotFound, nullptr, "property[%s(G)] in curve", prop_name);
-            }
-            else {
+            if (global_property_idx == -1) 
+                system->addError(Error::Type::PropertyNotFound, nullptr, "property[%s(G)] in curve", calcOffset<char>(curve_ctb_item[i].propName));
+            else 
                 curve_ctb_item[i].localPropertyNameIdx = global_property_idx;
+        }
+    }
+}
+
+void ResourceParamCreator::solveUserBinAboutGlobalProperty_(ResUserHeader* user_header, const ParamDefineTable* param_define, System* system)
+{
+    UserBinParam bin_param {};
+    createUserBinParam(&bin_param, user_header, param_define);
+    for (u32 i {0}; i < user_header->numCallTable; ++i) {
+        ResAssetCallTable* asset_ctb {bin_param.pResAssetCallTable};
+        if (asset_ctb[i].flag.isOnBit(0) && asset_ctb[i].paramStartPos != 0) {
+            auto* container {calcOffset<ResSwitchContainerParam>(asset_ctb[i].paramStartPos)};
+            if (container->type == ContainerType::Switch && container->isGlobal) {
+                if (container->localPropertyNameIdx == -1) {
+                    const char* watch_prop_name {calcOffset<char>(container->watchPropertyNamePos)};
+
+                    s32 idx {system->searchGlobalPropertyIndex(watch_prop_name)};
+                    if (idx == -1) {
+                        system->addError(Error::Type::PropertyNotFound, nullptr, "property[%s(G)] in swContainer(%s)", 
+                                         calcOffset<char>(container->watchPropertyNamePos), 
+                                         calcOffset<char>(asset_ctb[i].keyNamePos));
+                        continue;
+                    }
+
+                    container->localPropertyNameIdx = idx;
+                }
+
+                const PropertyDefinition* prop_define {system->getPropertyDefinition(container->localPropertyNameIdx)};
+
+                if (prop_define->getType() == PropertyType::Enum) {
+                    for (s32 j {container->childrenStartIndex}; j <= container->childrenEndIndex; ++j)
+                        solveSwitchConditionAboutGlobalProperty(bin_param.pResAssetCallTable[j].conditionPos, 
+                                                                static_cast<const EnumPropertyDefinition*>(prop_define));
+                }
+            }
+        }
+    }
+
+    for (u32 i {0}; i < user_header->numResProperty; ++i) {
+        ResProperty* property_table {bin_param.pResPropertyTable};
+        if (property_table[i].isGlobal != 0) {
+            const char* watch_prop_name {calcOffset<char>(property_table[i].watchPropertyNamePos)};
+            s32 idx {system->searchGlobalPropertyIndex(watch_prop_name)};
+            if (idx != -1) {
+                const PropertyDefinition* prop_define {system->getPropertyDefinition(idx)};
+    
+                if (prop_define->getType() == PropertyType::Enum) {
+                    for (s32 j {property_table[i].triggerStartIdx}; j <= property_table[i].triggerEndIdx; ++j)
+                        solveSwitchConditionAboutGlobalProperty(bin_param.pResPropertyTriggerTable[j].condition, 
+                                                                static_cast<const EnumPropertyDefinition*>(prop_define));
+                }
             }
         }
     }

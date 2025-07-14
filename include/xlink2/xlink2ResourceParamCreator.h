@@ -1,16 +1,11 @@
 #pragma once
 
-#include "prim/seadSafeString.h"
+#include <prim/seadSafeString.h>
 
 #include "xlink2/xlink2ActionTriggerCtrl.h"
-#include "xlink2/xlink2CommonResourceParam.h"
-#include "xlink2/xlink2EditorHeader.h"
-#include "xlink2/xlink2EditorResourceParam.h"
-#include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2ResUserHeader.h"
+#include "xlink2/xlink2EnumPropertyDefinition.h"
 #include "xlink2/xlink2ResourceHeader.h"
-#include "xlink2/xlink2RomResourceParam.h"
-#include "xlink2/xlink2UserBinParam.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 class System;
@@ -162,6 +157,20 @@ private:
             always_trigger->assetCtbPos += reinterpret_cast<u64>(asset_ctb);
             always_trigger->overwriteParamPos = always_trigger->overwriteParamPos != -1 ? always_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
         }
+    }
+
+    static void solveSwitchConditionAboutGlobalProperty(u32 condition_pos, const EnumPropertyDefinition* enum_prop_define)
+    {
+        if (condition_pos != 0) {
+            auto* condition {calcOffset<SwitchCondition>(condition_pos)};
+            if (!condition->isSolved) {
+                const char* prop_key {calcOffset<char>(condition->value)};
+                s32 enum_name_idx {enum_prop_define->searchEntryValueByKey(prop_key)};
+                condition->localPropertyEnumNameIdx = enum_name_idx;
+                condition->isSolved = true;
+            }
+        }
+
     }
 };
 }  // namespace xlink2
