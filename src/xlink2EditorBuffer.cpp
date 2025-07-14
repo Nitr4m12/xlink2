@@ -44,4 +44,13 @@ void EditorBuffer::applyGlobalPropertyDefinition()
     }
 }
 
+EditorResourceParam* EditorBuffer::searchEditorResourceParam(const sead::SafeString& name)
+{
+    for (auto& param : mParams) {
+        if (param.editorName == name)
+            return &param;
+    }
+    return nullptr;
+}
+
 }  // namespace xlink2

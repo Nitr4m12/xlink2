@@ -26,7 +26,7 @@ public:
 
     void applyGlobalPropertyDefinition();
 
-    EditorResourceParam* searchEditorResourceParam(sead::SafeString const&);
+    EditorResourceParam* searchEditorResourceParam(const sead::SafeString&);
 
     ParamDefineTable* getParamDefineTable() const { return mParamDefineTable; }
 
