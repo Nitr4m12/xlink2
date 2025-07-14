@@ -3,6 +3,7 @@
 #include <prim/seadSafeString.h>
 
 #include "xlink2/xlink2ActionTriggerCtrl.h"
+#include "xlink2/xlink2EditorHeader.h"
 #include "xlink2/xlink2EnumPropertyDefinition.h"
 #include "xlink2/xlink2ResourceHeader.h"
 #include "xlink2/xlink2Util.h"

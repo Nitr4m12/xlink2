@@ -29,5 +29,10 @@ struct CommonResourceParam {
     u32 conditionTablePos {};
     u32 exRegionPos {};
     u32 nameTablePos {};
+
+    void reset()
+    {
+        *this = {};
+    }
 };
 }  // namespace xlink2

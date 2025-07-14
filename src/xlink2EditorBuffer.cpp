@@ -15,6 +15,21 @@ EditorBuffer::EditorBuffer(System* system, sead::Heap* heap)
     mParams.initOffset(0xf0);
 }
 
+void EditorBuffer::destroy()
+{
+    delete[] mReceiveBuffer;
+    mReceiveBuffer = nullptr;
+
+    for (auto& param : mParams.robustRange()) {
+        param.reset();
+        mParams.erase(&param);
+        delete &param;
+    }
+
+    delete[] mParamDefineBuffer;
+    delete mParamDefineTable; 
+}
+
 u8* EditorBuffer::allocReceiveBuffer(u32 buffer_size)
 {
     delete[] mReceiveBuffer;
