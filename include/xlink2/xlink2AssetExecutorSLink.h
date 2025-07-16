@@ -1,13 +1,10 @@
 #pragma once
 
-#include <prim/seadBitFlag.h>
-#include <prim/seadSafeString.h>
-
 #include "xlink2/xlink2AssetExecutor.h"
-#include "xlink2/xlink2HandleSLink.h"
 
 namespace xlink2 {
-class EventSLink;
+class HandleSLink;
+
 class AssetExecutorSLink : AssetExecutor {
 public:
     ~AssetExecutorSLink() override;

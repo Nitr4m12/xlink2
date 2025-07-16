@@ -1,11 +1,7 @@
 #pragma once
 
-#include <heap/seadDisposer.h>
-#include <heap/seadHeap.h>
-
-#include "xlink2/xlink2AssetExecutorELink.h"
-#include "xlink2/xlink2UserInstanceELink.h"
-#include "xlink2/xlink2UserResourceELink.h"
+#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace sead::ptcl {
 class PtclSystem;
@@ -29,7 +25,7 @@ public:
 
     void initialize(sead::ptcl::PtclSystem*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
 
-    UserInstanceELink* createUserInstance(UserInstance::CreateArg const&, sead::Heap*, u32);
+    UserInstanceELink* createUserInstance(const UserInstance::CreateArg&, sead::Heap*, u32);
     void createUserResource(User*, sead::Heap*) override;
 
     void allocHandle(sead::Heap*) override;
@@ -43,7 +39,7 @@ public:
     void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
 #else
     void genMessage(sead::hostio::Context* /*unused*/);
-    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/);
+    void listenPropertyEvent(const sead::hostio::PropertyEvent* /*unused*/);
 #endif
 
     sead::SafeString* getORIconString();
@@ -57,7 +53,7 @@ public:
     void drawInformationEvent_(sead::TextWriter*) const override;
 
     void makeDebugAssetInformationString(s32, sead::BufferedSafeString*, sead::BufferedSafeString&,
-                                        sead::SafeString const&, Event*, AssetExecutorELink*,
+                                        const sead::SafeString&, Event*, AssetExecutorELink*,
                                         bool) const;
 
     u32 getUserParamNum() const override;

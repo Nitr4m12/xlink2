@@ -1,9 +1,8 @@
 #pragma once
 
-#include <basis/seadTypes.h>
 #include <prim/seadSafeString.h>
 #include <prim/seadBitFlag.h>
-#include "math/seadVector.h"
+#include <math/seadVector.h>
 
 namespace xlink2 {
 class DebugOperationParam {

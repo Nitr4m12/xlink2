@@ -1,16 +1,14 @@
 #pragma once
 
-#include <basis/seadTypes.h>
-#include <heap/seadHeap.h>
+#include <container/seadSafeArray.h>
 #include <prim/seadBitFlag.h>
 
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2TriggerCtrlParam.h"
-#include "xlink2/xlink2TriggerType.h"
+#include "xlink2/xlink2Types.h"
 
 namespace xlink2 {
 class UserInstance;
-struct TriggerCtrlParam;
 
 class TriggerCtrlMgr {
 public:

@@ -1,7 +1,5 @@
 #pragma once
 
-#include "basis/seadTypes.h"
-
 #include "xlink2/xlink2Event.h"
 
 namespace xlink2 {

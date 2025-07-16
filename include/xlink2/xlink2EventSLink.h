@@ -1,9 +1,7 @@
 #pragma once
 
 #include <container/seadPtrArray.h>
-#include <math/seadVectorFwd.h>
 
-#include "xlink2/xlink2AssetExecutorSLink.h"
 #include "xlink2/xlink2Event.h"
 
 namespace aal {

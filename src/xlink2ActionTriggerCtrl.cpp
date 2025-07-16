@@ -2,9 +2,9 @@
 #include <codec/seadHashCRC32.h>
 
 #include "xlink2/xlink2ActionTriggerCtrl.h"
-#include "xlink2/xlink2ResActionTrigger.h"
+#include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2ResourceUtil.h"
-#include "xlink2/xlink2UserResourceParam.h"
+#include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -21,6 +21,8 @@ ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
     mAction = nullptr;
     mIsActive = false;
 }
+
+ActionTriggerCtrl::~ActionTriggerCtrl() = default;
 
 void ActionTriggerCtrl::reset() 
 {
@@ -130,7 +132,7 @@ s32 ActionTriggerCtrl::getCurrentResActionIdx() const
     return -1;
 }
 
-void ActionTriggerCtrl::restartAction(char const* name, s32 idx) 
+void ActionTriggerCtrl::restartAction(const char* name, s32 idx) 
 {
     if (mActionSlot != nullptr) {
         ResAction* action {searchResAction_(mActionSlot, name, nullptr)};
@@ -141,7 +143,4 @@ void ActionTriggerCtrl::restartAction(char const* name, s32 idx)
         }
     }
 }
-
-
-ActionTriggerCtrl::~ActionTriggerCtrl() = default;
 }  // namespace xlink2

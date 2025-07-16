@@ -1,16 +1,17 @@
 #pragma once
 
+#include <gfx/seadTextWriter.h>
 #include <prim/seadSafeString.h>
 
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResEset.h"
-#include "xlink2/xlink2ResourceAccessorELink.h"
+#include "xlink2/xlink2Resource.h"
 
 namespace sead::ptcl {
 class EmitterSet;
 }  // namespace sead::ptcl
 
 namespace xlink2 {
+class ResourceAccessorELink;
+
 class IEventCallbackELink {
 public:
     struct EventArg {};
@@ -22,7 +23,7 @@ public:
     virtual u32 effectPreEmit(const EventArg&);
 
     virtual void replaceResEset(ResEset*, const ResAssetCallTable&, const ResourceAccessorELink&,
-                             char const*);
+                                const char *);
 
     virtual void drawDebugInformation(sead::TextWriter*);
     virtual void drawEsetDebugInformation(sead::BufferedSafeString*, sead::ptcl::EmitterSet*);

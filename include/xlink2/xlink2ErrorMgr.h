@@ -1,28 +1,28 @@
 #pragma once
 
 #include <gfx/seadTextWriter.h>
+#include <thread/seadCriticalSection.h>
 
 #include "xlink2/xlink2Error.h"
-#include "xlink2/xlink2System.h"
-#include "xlink2/xlink2User.h"
 
 namespace xlink2 {
+class System;
 class User;
-class ErrorMgr {
 
+class ErrorMgr {
 public:
-    explicit ErrorMgr(System const*);
+    explicit ErrorMgr(const System*);
     ~ErrorMgr() = default;
 
-    void add(Error::Type, User const*, char const*);
-    void clear(User const*);
+    void add(Error::Type, const User*, const char*);
+    void clear(const User*);
     void clearAll();
     void calc();
 
     void draw(sead::TextWriter*) const;
 
-    bool shouldErrorNoticed_(Error const*);
-    bool shouldErrorNoticed_(Error::Type const*);
+    bool shouldErrorNoticed_(const Error*);
+    bool shouldErrorNoticed_(const Error::Type*);
 
     void* getIsDebugBreakEnablePtr();
 

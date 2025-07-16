@@ -1,7 +1,8 @@
 #include <cstdarg>
+#include <math/seadMathCalcCommon.h>
 
 #include "xlink2/xlink2ResourceAccessor.h"
-#include "math/seadMathCalcCommon.h"
+#include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {

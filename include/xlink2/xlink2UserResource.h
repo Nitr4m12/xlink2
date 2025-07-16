@@ -1,17 +1,16 @@
 #pragma once
 
+#include <container/seadSafeArray.h>
+
 #include "xlink2/xlink2Locator.h"
-#include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2ResActionTrigger.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResPropertyTrigger.h"
-#include "xlink2/xlink2User.h"
+#include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2UserResourceParam.h"
+#include "xlink2/xlink2User.h"
 
 namespace xlink2 {
-class System;
+class ParamDefineTable;
 class ResourceAccessor;
-class User;
+class System;
 
 class UserResource {
 public:
@@ -22,7 +21,7 @@ public:
     void setupRomResourceParam_(sead::Heap*);
     void setupEditorResourceParam(EditorResourceParam*, sead::Heap*);
     void setupResourceParam_(UserResourceParam*, ResUserHeader*, const CommonResourceParam*,
-                             ParamDefineTable const*, sead::Heap*);
+                             const ParamDefineTable*, sead::Heap*);
 
     const ResUserHeader* getUserHeader() const;
     

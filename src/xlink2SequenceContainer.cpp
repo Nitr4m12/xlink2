@@ -1,5 +1,9 @@
 #include "xlink2/xlink2SequenceContainer.h"
+
+#include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ResourceUtil.h"
+#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {

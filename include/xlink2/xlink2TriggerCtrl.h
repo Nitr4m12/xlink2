@@ -1,20 +1,18 @@
 #pragma once
 
-#include <basis/seadTypes.h>
 #include <container/seadBuffer.h>
 
-#include "xlink2/xlink2ModelTriggerConnection.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2TriggerType.h"
-#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2Resource.h"
 
 namespace xlink2 {
+struct ModelTriggerConnection;
+class UserInstance;
 class TriggerCtrl {
 public:
     virtual void calc() = 0;
     virtual ~TriggerCtrl() = default;
 
-    void emitByTriggerImpl_(TriggerType, s32, u32, ResAssetCallTable const*);
+    void emitByTriggerImpl_(TriggerType, s32, u32, const ResAssetCallTable*);
     void fadeByTrigger_(s32);
 
     ModelTriggerConnection* getModelTriggerConnection_(s32 idx);

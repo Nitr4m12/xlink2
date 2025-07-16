@@ -1,12 +1,17 @@
 #include "xlink2/xlink2TriggerCtrl.h"
 
+#include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2Handle.h"
+#include "xlink2/xlink2ModelTriggerConnection.h"
+#include "xlink2/xlink2UserInstance.h"
+
 namespace xlink2 {
 void TriggerCtrl::fadeByTrigger_(s32 idx) 
 {
     constexpr const char* TRIGGERTYPES[3] {"Action", "Property", "Always"};
 
     Handle* handle {&mConnectionBuffer->unsafeGet(idx)->handle};
-    Event* event {static_cast<Event*>(handle->get0())};
+    Event* event {handle->getEvent()};
     if (event != nullptr && event->getCreateId() == handle->getCreateId()) {
         mUserInstance->printLogFadeOrKill(event, "fadeBySystem by %s Trigger", TRIGGERTYPES[(s32)event->getTriggerType()]);
         event->fadeBySystem();

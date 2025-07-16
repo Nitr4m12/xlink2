@@ -1,8 +1,19 @@
 #include <prim/seadScopedLock.h>
 #include <math/seadMathCalcCommon.h>
 
-#include "xlink2/xlink2EnumPropertyDefinition.h"
 #include "xlink2/xlink2System.h"
+
+#include "xlink2/xlink2AssetExecutor.h"
+#include "xlink2/xlink2EditorBuffer.h"
+#include "xlink2/xlink2EnumPropertyDefinition.h"
+#include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2HoldMgr.h"
+#include "xlink2/xlink2ILockProxy.h"
+#include "xlink2/xlink2IUser.h"
+#include "xlink2/xlink2ResourceBuffer.h"
+#include "xlink2/xlink2User.h"
+#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -364,9 +375,9 @@ void System::drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const se
 #endif
 }
 
-void System::drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
-                sead::SafeString const&, sead::TextWriter*, sead::Camera const&,
-                sead::Projection const&, sead::Viewport const&) const 
+void System::drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
+                const sead::SafeString&, sead::TextWriter*, const sead::Camera&,
+                const sead::Projection&, const sead::Viewport&) const 
 {
 #ifdef SEAD_DEBUG
 #endif

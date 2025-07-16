@@ -1,15 +1,11 @@
 #pragma once
 
 #include <container/seadObjList.h>
-#include <hostio/seadHostIOReflexible.h>
 
 #include "xlink2/xlink2Handle.h"
 #include "xlink2/xlink2System.h"
-#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class UserInstance;
-
 class HoldMgr : sead::hostio::Node {
 public:
     HoldMgr(System*, sead::Heap*);
@@ -22,7 +18,7 @@ public:
         sead::ListNode listNode;
     };
 
-    u32 searchAndHold(char const*, Handle*, UserInstance*);
+    u32 searchAndHold(const char*, Handle*, UserInstance*);
 
     void fade(const char*, UserInstance*, s32);
     void fade_(HoldAssetInfo*, s32);

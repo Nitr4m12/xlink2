@@ -1,6 +1,10 @@
-#include "xlink2/xlink2Event.h"
-#include "prim/seadScopedLock.h"
+#include <prim/seadScopedLock.h>
+
+#include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2ContainerCreator.h"
+#include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2ILockProxy.h"
+#include "xlink2/xlink2System.h"
 
 namespace xlink2 {
 Event::Event()

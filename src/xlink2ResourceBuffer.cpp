@@ -1,7 +1,10 @@
 #include <codec/seadHashCRC32.h>
 
 #include "xlink2/xlink2ResourceBuffer.h"
+
+#include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ResourceParamCreator.h"
+#include "xlink2/xlink2System.h"
 
 namespace xlink2 {
 ResourceBuffer::ResourceBuffer()

@@ -3,9 +3,7 @@
 #include <basis/seadTypes.h>
 #include <math/seadVectorFwd.h>
 
-#include "xlink2/xlink2ResCurveCallTable.h"
-#include "xlink2/xlink2ResParam.h"
-#include "xlink2/xlink2ResRandomCallTable.h"
+#include "xlink2/xlink2Resource.h"
 
 namespace xlink2 {
 struct CommonResourceParam {

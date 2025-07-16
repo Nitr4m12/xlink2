@@ -1,5 +1,8 @@
 #include "xlink2/xlink2AssetExecutorELink.h"
 
+#include "xlink2/xlink2ResourceAccessorELink.h"
+#include "xlink2/xlink2UserInstanceELink.h"
+
 namespace xlink2 {
 AssetExecutorELink::~AssetExecutorELink() = default;
 

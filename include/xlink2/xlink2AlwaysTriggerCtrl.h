@@ -1,7 +1,6 @@
 #pragma once
 
 #include "xlink2/xlink2TriggerCtrl.h"
-#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 class AlwaysTriggerCtrl : TriggerCtrl {

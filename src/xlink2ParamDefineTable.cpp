@@ -96,7 +96,7 @@ const char* ParamDefineTable::getTriggerParamName(u32 idx) const
     return nullptr;
 }
 
-s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(char const* custom_param_name) const 
+s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(const char* custom_param_name) const 
 {
     if (custom_param_name) {
         u32 asset_param_idx = mNumCustomParam;

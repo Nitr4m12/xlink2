@@ -1,6 +1,9 @@
 #include <math/seadMathCalcCommon.h>
 
 #include "xlink2/xlink2User.h"
+#include "xlink2/xlink2PropertyDefinition.h"
+#include "xlink2/xlink2UserResource.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
 

@@ -5,6 +5,7 @@
 #include "xlink2/xlink2AlwaysTriggerCtrl.h"
 #include "xlink2/xlink2PropertyTriggerCtrl.h"
 #include "xlink2/xlink2TriggerCtrlParam.h"
+#include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {

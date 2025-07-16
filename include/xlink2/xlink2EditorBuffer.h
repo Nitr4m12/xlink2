@@ -1,16 +1,9 @@
 #pragma once
 
-#include <heap/seadHeap.h>
-#include <prim/seadSafeString.h>
-
 #include "xlink2/xlink2EditorResourceParam.h"
-#include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2System.h"
 
 namespace xlink2 {
-class System;
-class ParamDefineTable;
-
 class EditorBuffer {
 public:
     EditorBuffer(System*, sead::Heap*);

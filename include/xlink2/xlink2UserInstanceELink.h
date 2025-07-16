@@ -1,14 +1,14 @@
 #pragma once
 
-#include "xlink2/xlink2HandleELink.h"
-#include "xlink2/xlink2IEventCallbackELink.h"
-#include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2System.h"
-#include "xlink2/xlink2User.h"
-#include "xlink2/xlink2UserResourceELink.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
+class HandleELink;
+class IEventCallbackELink;
+class PtclResourceAccessorELink;
+class ResourceAccessorELink;
 class UserResourceELink;
+class UserInstanceELink;
 
 class UserInstanceELink : public UserInstance {
 public:
@@ -38,9 +38,9 @@ public:
 
     void onSetupInstanceParam_(ResMode, sead::Heap*) override;
 
-    void initModelAssetConnection_(ResMode, ParamDefineTable const*, sead::Heap*) override;
+    void initModelAssetConnection_(ResMode, const ParamDefineTable*, sead::Heap*) override;
 
-    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const override;
+    void makeDebugStringEvent(sead::BufferedSafeString*, const sead::SafeString&) const override;
 
     u32 getDefaultGroup() const override;
 

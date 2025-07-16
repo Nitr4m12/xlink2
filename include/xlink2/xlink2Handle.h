@@ -3,9 +3,11 @@
 #include <basis/seadTypes.h>
 
 namespace xlink2 {
+class Event;
+
 class Handle {
 public:
-    void* get0() { return mpResource; }
+    Event* getEvent() { return static_cast<Event*>(mpResource); }
     s32 getCreateId() { return mCreateId; }
 
     void reset()

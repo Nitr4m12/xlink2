@@ -1,9 +1,12 @@
 #pragma once
 
+#include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2RomResourceParam.h"
-#include "xlink2/xlink2System.h"
 
 namespace xlink2 {
+class System;
+
 class ResourceBuffer {
 public:
     ResourceBuffer();

@@ -1,21 +1,7 @@
 #pragma once
 
-#include <basis/seadTypes.h>
-#include <container/seadPtrArray.h>
-#include <heap/seadHeap.h>
-
 #include "xlink2/xlink2ArrangeGroupParam.h"
-#include "xlink2/xlink2AssetExecutorSLink.h"
-#include "xlink2/xlink2Event.h"
-#include "xlink2/xlink2HandleSLink.h"
-#include "xlink2/xlink2IEventCallbackSLink.h"
-#include "xlink2/xlink2IUser.h"
-#include "xlink2/xlink2Locator.h"
-#include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResMode.h"
-#include "xlink2/xlink2ResourceAccessorSLink.h"
-#include "xlink2/xlink2UserResourceSLink.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace aal {
 class Emitter;
@@ -23,14 +9,19 @@ class IAssetInfoReadable;
 }
 
 namespace xlink2 {
+class AssetExecutorSLink;
+class HandleSLink;
+class IEventCallbackSLink;
+class ResourceAccessorSLink;
 class UserResourceSLink;
+
 class UserInstanceSLink : public UserInstance {
 public:
     class CreateArgSLink {
     public:
-        CreateArgSLink(char const*, IUser*);
-        explicit CreateArgSLink(UserInstance::CreateArg const&);
-        CreateArgSLink(CreateArgSLink const&);
+        CreateArgSLink(const char*, IUser*);
+        explicit CreateArgSLink(const UserInstance::CreateArg&);
+        CreateArgSLink(const CreateArgSLink&);
 
     private:
     };
@@ -59,7 +50,7 @@ public:
         sead::Buffer<AssetLimiterParam> mParamBuffer;
     };
 
-    UserInstanceSLink(CreateArgSLink const&, System*, User*, sead::Heap*);
+    UserInstanceSLink(const CreateArgSLink&, System*, User*, sead::Heap*);
     ~UserInstanceSLink() override = default;
 
     void allocEmitter(sead::Heap*);
@@ -96,12 +87,12 @@ public:
     void freeInstanceParam_(UserInstanceParam*, ResMode) override;
     void onSetupInstanceParam_(ResMode, sead::Heap*) override;
 
-    void initModelAssetConnection_(ResMode, ParamDefineTable const*, sead::Heap*) override;
+    void initModelAssetConnection_(ResMode, const ParamDefineTable*, sead::Heap*) override;
 
-    bool doEventActivatingCallback_(Locator const&) override;
-    void doEventActivatedCallback_(Locator const&, Event*) override;
+    bool doEventActivatingCallback_(const Locator&) override;
+    void doEventActivatedCallback_(const Locator&, Event*) override;
 
-    void makeDebugStringEvent(sead::BufferedSafeString*, sead::SafeString const&) const override;
+    void makeDebugStringEvent(sead::BufferedSafeString*, const sead::SafeString&) const override;
 
 private:
     void* _0xd8;

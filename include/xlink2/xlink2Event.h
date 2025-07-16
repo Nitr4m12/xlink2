@@ -2,14 +2,9 @@
 
 #include <container/seadSafeArray.h>
 #include <container/seadOffsetList.h>
-#include <prim/seadBitFlag.h>
 
-#include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2BoneMtx.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResParam.h"
-#include "xlink2/xlink2TriggerType.h"
-#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2Resource.h"
 
 namespace xlink2 {
 class AssetExecutor;
@@ -57,8 +52,8 @@ public:
     TriggerType& getTriggerType() { return mTriggerType; }
     sead::BitFlag32 getBitFlag() { return mBitFlag; }
 
-    const sead::OffsetList<xlink2::AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
-    const sead::OffsetList<xlink2::AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemList; }
+    const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
+    const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemList; }
 
 private:
     sead::BitFlag32 mBitFlag{0};
@@ -72,8 +67,8 @@ private:
     BoneMtx* mpBoneMtx {nullptr};
     bool _0x50 {true};
     ContainerBase* mpRootContainer {nullptr};
-    sead::OffsetList<xlink2::AssetExecutor> mAliveAssetExecutors;
-    sead::OffsetList<xlink2::AssetExecutor> mFadeBySystemList;
+    sead::OffsetList<AssetExecutor> mAliveAssetExecutors;
+    sead::OffsetList<AssetExecutor> mFadeBySystemList;
     float _0x90;
     u8 mGroupId{0xff};
 };

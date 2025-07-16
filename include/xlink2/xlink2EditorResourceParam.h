@@ -1,8 +1,8 @@
 #pragma once
 
-#include "prim/seadSafeString.h"
+#include <prim/seadSafeString.h>
+
 #include "xlink2/xlink2CommonResourceParam.h"
-#include "xlink2/xlink2ResUserHeader.h"
 
 namespace xlink2 {
 struct EditorResourceParam : CommonResourceParam {

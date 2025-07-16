@@ -2,7 +2,6 @@
 
 #include <heap/seadHeap.h>
 
-#include "xlink2/xlink2.h"
 #include "xlink2/xlink2PropertyDefinition.h"
 
 namespace xlink2 {
@@ -17,7 +16,7 @@ public:
     EnumPropertyDefinition(const char*, s32, bool, sead::Heap*, ...);
     EnumPropertyDefinition(const char*, s32, const char**, bool, sead::Heap*);
     EnumPropertyDefinition(const char*, bool);
-    void setEntries_(s32, char const**);
+    void setEntries_(s32, const char**);
 
     ~EnumPropertyDefinition() override;
 

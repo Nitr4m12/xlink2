@@ -1,6 +1,5 @@
 #pragma once
 
-#include <basis/seadTypes.h>
 #include <math/seadMatrix.h>
 
 #include "xlink2/xlink2ToolConnectionContext.h"
@@ -30,7 +29,7 @@ public:
 
     virtual sead::Matrix34f* getAutoInputMtxSource() = 0;
 
-    virtual u64 getBoneWorldMtx(char const*, sead::Matrix34f*) const;
+    virtual u64 getBoneWorldMtx(const char*, sead::Matrix34f*) const;
     virtual const sead::Matrix34f* getMtxCorrectingDrawBone() const;
 };
 }  // namespace xlink2

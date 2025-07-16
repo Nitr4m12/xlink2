@@ -1,5 +1,6 @@
 #include <cstring>
 
+#include "xlink2/xlink2EditorBuffer.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 

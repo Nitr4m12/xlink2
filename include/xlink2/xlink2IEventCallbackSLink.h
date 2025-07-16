@@ -1,7 +1,8 @@
 #pragma once
 
-#include <basis/seadTypes.h>
 #include <prim/seadSafeString.h>
+
+#include "xlink2/xlink2Resource.h"
 
 namespace aal {
 class AssetInfo;
@@ -9,7 +10,6 @@ class AssetInfo;
 
 namespace xlink2 {
 class UserInstanceSLink;
-struct ResAssetCallTable;
 
 class IEventCallbackSLink {
 public:
@@ -22,8 +22,8 @@ public:
 
     void eventCalced(const EventArg&);
 
-    u32 replaceAssetInfo(aal::AssetInfo*, const sead::SafeString&, UserInstanceSLink const*,
-                         ResAssetCallTable const*);
+    u32 replaceAssetInfo(aal::AssetInfo*, const sead::SafeString&, const UserInstanceSLink*,
+                         const ResAssetCallTable*);
 
     void soundPlayed(const EventArg&);
 };

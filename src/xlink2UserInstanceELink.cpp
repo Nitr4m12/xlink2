@@ -1,4 +1,6 @@
 #include <xlink2/xlink2UserInstanceELink.h>
+
+#include <xlink2/xlink2UserResourceELink.h>
 #include <xlink2/xlink2UserInstanceParam.h>
 
 namespace xlink2 {

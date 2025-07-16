@@ -11,7 +11,7 @@ u32 IEventCallbackELink::effectPreEmit(const EventArg& /*unused*/) {
 
 void IEventCallbackELink::replaceResEset(ResEset* /*unused*/, const ResAssetCallTable& /*unused*/,
                                       const ResourceAccessorELink& /*unused*/,
-                                      char const* /*unused*/) {}
+                                      const char* /*unused*/) {}
 
 void IEventCallbackELink::drawDebugInformation(sead::TextWriter* /*unused*/) {}
 void IEventCallbackELink::drawEsetDebugInformation(sead::BufferedSafeString* /*unused*/,

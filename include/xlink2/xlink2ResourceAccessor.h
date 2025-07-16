@@ -1,23 +1,14 @@
 #pragma once
 
 #include <prim/seadBitFlag.h>
+#include <math/seadMathCalcCommon.h>
 
-#include "math/seadMathCalcCommon.h"
-#include "xlink2/xlink2ContainerBase.h"
-#include "xlink2/xlink2Locator.h"
-#include "xlink2/xlink2ParamValueType.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResContainerParam.h"
-#include "xlink2/xlink2ResCurveCallTable.h"
-#include "xlink2/xlink2ResParam.h"
-#include "xlink2/xlink2ResRandomCallTable.h"
-#include "xlink2/xlink2UserResource.h"
+#include "xlink2/xlink2Resource.h"
+#include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserInstance.h"
-#include "xlink2/xlink2ValueReferenceType.h"
 
 namespace xlink2 {
-class UserInstance;
-class System;
 class ContainerBase;
 
 class ResourceAccessor {
@@ -29,23 +20,23 @@ public:
     virtual const char* getOverwriteBoneName(u32) const = 0;
     virtual bool isAutoOneTimeFade(const ResAssetCallTable&) const = 0;
     virtual bool isForceBoolAsset(const ResAssetCallTable&) const = 0;
-    virtual f32 getDelayWithOverwrite(const ResAssetCallTable&, u32, UserInstance const*) const = 0;
-    virtual f32 getDuration(const ResAssetCallTable&, UserInstance const*) const = 0;
+    virtual f32 getDelayWithOverwrite(const ResAssetCallTable&, u32, const UserInstance*) const = 0;
+    virtual f32 getDuration(const ResAssetCallTable&, const UserInstance*) const = 0;
     virtual s32 getTriggerOverwriteParamId_(u32) const = 0;
     virtual sead::BitFlag32 getAssetBitFlag_(const ResAssetCallTable&) const = 0;
 
-    const ResAssetCallTable* searchCallTable(char const*) const;
-    void searchCallTable(Locator*, char const*) const;
+    const ResAssetCallTable* searchCallTable(const char*) const;
+    void searchCallTable(Locator*, const char*) const;
 
     const ResAssetCallTable* getCallTable(u32) const;
 
-    void setError_(char const*, ...) const;
+    void setError_(const char*, ...) const;
 
     const char* getKeyName(const ResAssetCallTable&) const;
 
     ContainerType getCallTableType(const ResAssetCallTable&) const;
 
-    const ContainerBase* getContainer(ResAssetCallTable const&) const;
+    const ContainerBase* getContainer(const ResAssetCallTable&) const;
 
     const sead::SafeString* getCallTableTypeName(const ResAssetCallTable&) const;
 

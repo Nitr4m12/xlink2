@@ -1,6 +1,9 @@
 #include <codec/seadHashCRC32.h>
-
 #include "xlink2/xlink2ResourceParamCreator.h"
+
+#include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2System.h"
+
 
 namespace xlink2 {
 ResourceParamCreator::BinAccessor::BinAccessor(ResourceHeader* res_header,
@@ -30,7 +33,7 @@ ResourceParamCreator::BinAccessor::BinAccessor(EditorHeader* editor_header,
 }
 
 void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res_param, void* bin,
-                                                       ParamDefineTable const* param_define,
+                                                       const ParamDefineTable* param_define,
                                                        System* system)
 {
     *rom_res_param = {};
@@ -198,17 +201,17 @@ void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res
 
         switch (res_condition->parentContainerType) {
         case ContainerType::Switch: {
-            SwitchCondition* condition {static_cast<SwitchCondition*>(res_condition)};
+            ResSwitchCondition* condition {static_cast<ResSwitchCondition*>(res_condition)};
 
             if (condition->propertyType == PropertyType::Enum)
                 condition->value += common_res_param->nameTablePos;
             
-            condition_size = sizeof(SwitchCondition);
+            condition_size = sizeof(ResSwitchCondition);
             break;
         }
         case ContainerType::Random:
         case ContainerType::Random2:
-            condition_size = sizeof(RandomCondition);
+            condition_size = sizeof(ResRandomCondition);
             break;
         default:
             condition_size = 0;
@@ -927,7 +930,7 @@ void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_r
 
         switch (res_condition->parentContainerType) {
         case ContainerType::Switch: {
-            SwitchCondition* condition {static_cast<SwitchCondition*>(res_condition)};
+            ResSwitchCondition* condition {static_cast<ResSwitchCondition*>(res_condition)};
             dumpLine_(dump_str, "  [%d].parentContainerType: %d\n", i, condition->parentContainerType);
             dumpLine_(dump_str, "  [%d].propertyType: %d\n", i, condition->propertyType);
             dumpLine_(dump_str, "  [%d].compareType: %d\n", i, condition->compareType);
@@ -936,16 +939,16 @@ void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_r
             dumpLine_(dump_str, "  [%d].isSolved: %d\n", i, condition->isSolved);
             dumpLine_(dump_str, "  [%d].isGlobal: %d\n", i, condition->isGlobal);
             
-            condition_size = sizeof(SwitchCondition);
+            condition_size = sizeof(ResSwitchCondition);
             break;
         }
         case ContainerType::Random:
         case ContainerType::Random2: {
-            RandomCondition* condition {static_cast<RandomCondition*>(res_condition)};
+            ResRandomCondition* condition {static_cast<ResRandomCondition*>(res_condition)};
             dumpLine_(dump_str, "  [%d].parentContainerType: %d\n", i, condition->parentContainerType);
             dumpLine_(dump_str, "  [%d].weight: %.4f\n", i, condition->weight);
             
-            condition_size = sizeof(RandomCondition);
+            condition_size = sizeof(ResRandomCondition);
             break;
         }
         default:

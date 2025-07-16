@@ -2,18 +2,11 @@
 
 #include <math/seadMatrix.h>
 #include <prim/seadBitFlag.h>
-
 #include "xlink2/xlink2BoneMtx.h"
-#include "xlink2/xlink2Event.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2ResContainerParam.h"
-#include "xlink2/xlink2ResParam.h"
+#include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
-class Event;
-class UserInstance;
-
 class AssetExecutor {
 public:
     virtual ~AssetExecutor() = default;

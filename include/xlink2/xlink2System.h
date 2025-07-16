@@ -1,49 +1,37 @@
 #pragma once
 
 #include <container/seadBuffer.h>
-#include <container/seadOffsetList.h>
 #include <container/seadPtrArray.h>
 #include <gfx/seadCamera.h>
-#include <gfx/seadProjection.h>
+#include <gfx/seadDrawContext.h>
+#include <gfx/seadTextWriter.h>
+#include <heap/seadHeap.h>
 #include <hostio/seadHostIONode.h>
-#include <hostio/seadHostIOReflexible.h>
-#include <prim/seadSafeString.h>
-#include <prim/seadBitFlag.h>
 
-#include "xlink2/xlink2AssetExecutor.h"
-#include "xlink2/xlink2ContainerBase.h"
-#include "xlink2/xlink2EditorBuffer.h"
-#include "xlink2/xlink2Error.h"
-#include "xlink2/xlink2ErrorMgr.h"
-#include "xlink2/xlink2Event.h"
-#include "xlink2/xlink2HoldMgr.h"
-#include "xlink2/xlink2LockProxy.h"
-#include "xlink2/xlink2PropertyDefinition.h"
+#include <xlink2/xlink2ErrorMgr.h>
+#include "xlink2/xlink2DebugOperationParam.h"
 #include "xlink2/xlink2ResMode.h"
-#include "xlink2/xlink2ResourceBuffer.h"
-#include "xlink2/xlink2User.h"
+#include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserInstance.h"
-
-namespace sead {
-class DrawContext;
-class Viewport;
-}  // namespace sead
 
 namespace xlink2 {
 class AssetExecutor;
-class ContainerBase;
-class Event;
 class EditorBuffer;
-class ErrorMgr;
+class Event;
 class HoldMgr;
+class ILockProxy;
+class IUser;
+class ParamDefineTable;
+class PropertyDefinition;
 class ResourceBuffer;
-enum class ContainerType;
+struct ResUserHeader;
+class UserResource;
 
 class System : sead::hostio::Node {
 public:
     void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-                                sead::Camera const&, sead::Projection const&,
-                                sead::Viewport const&) const;
+                                const sead::Camera&, const sead::Projection&,
+                                const sead::Viewport&) const;
 
     System();
 
@@ -54,8 +42,8 @@ public:
     s32 searchUserIgnoreHeap(const char*, User**, s32) const;
 
     virtual void drawInformation(sead::DrawContext*, sead::TextWriter*) const;
-    virtual void drawInformation3D(sead::DrawContext*, sead::Camera const&, sead::Projection const&,
-                                   sead::Viewport const&, f32) const;
+    virtual void drawInformation3D(sead::DrawContext*, const sead::Camera&, const sead::Projection&,
+                                   const sead::Viewport&, f32) const;
 
     void makeDebugStringGlobalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;
 
@@ -91,23 +79,22 @@ public:
     const ParamDefineTable* getParamDefineTable() const;
     const ParamDefineTable* getParamDefineTable(ResMode) const;
 
-    // TODO: fix compiling error: "incomplete type 'xlink2::UserInstance' named in nested name specifier"
-    // System* searchUserOrCreate_(const UserInstance::CreateArg&, sead::Heap*, u32);
+    System* searchUserOrCreate_(const UserInstance::CreateArg&, sead::Heap*, u32);
 
     void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
 
     void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-                                   sead::Camera const&, sead::Projection const&,
-                                   sead::Viewport const&) const;
+                                   const sead::Camera&, const sead::Projection&,
+                                   const sead::Viewport&) const;
 
-    void drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
-                    sead::SafeString const&, sead::TextWriter*, IUser*) const;
-    void drawText3D_(sead::Matrix34f const&, sead::Vector2f const&, sead::SafeString const&,
-                    sead::SafeString const&, sead::TextWriter*, sead::Camera const&,
-                    sead::Projection const&, sead::Viewport const&) const;
+    void drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
+                    const sead::SafeString&, sead::TextWriter*, IUser*) const;
+    void drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
+                    const sead::SafeString&, sead::TextWriter*, const sead::Camera&,
+                    const sead::Projection&, const sead::Viewport&) const;
 
-    void writeBlinkText_(sead::SafeString const&, sead::TextWriter*) const;
-    void writeLines_(sead::SafeString const&, sead::TextWriter*) const;
+    void writeBlinkText_(const sead::SafeString&, sead::TextWriter*) const;
+    void writeLines_(const sead::SafeString&, sead::TextWriter*) const;
 
     bool isDrawTargetInstance_(UserInstance*) const;
     void updateDebugDrawUserList_() const;
@@ -139,10 +126,10 @@ public:
 
     class DrawerModule {
     public:
-        void begin(sead::Camera const&, sead::Projection const&);
+        void begin(const sead::Camera&, const sead::Projection&);
 
-        void setModelMatrix(sead::Matrix34f const&);
-        void drawAxis(sead::Vector3f const&, f32);
+        void setModelMatrix(const sead::Matrix34f&);
+        void drawAxis(const sead::Vector3f&, f32);
 
         void end();
     };

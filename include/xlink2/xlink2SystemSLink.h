@@ -1,19 +1,17 @@
 #pragma once
 
-#include "heap/seadHeap.h"
-#include "xlink2/xlink2UserInstanceSLink.h"
-#include "xlink2/xlink2UserResourceSLink.h"
+#include <heap/seadHeap.h>
+
+#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2UserInstance.h"
 
 namespace aal {
 class System;
 }
 
-namespace sead {
-class DrawContext;
-}
-
 namespace xlink2 {
-class UserResourceSLink;
+class UserInstanceSLink;
+
 class SystemSLink : public System {
     SEAD_SINGLETON_DISPOSER(SystemSLink);
 
@@ -25,7 +23,7 @@ public:
 
     void initialize(aal::System*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
 
-    UserInstanceSLink* createUserInstance(UserInstance::CreateArg const&, sead::Heap*, u32);
+    UserInstanceSLink* createUserInstance(const UserInstance::CreateArg&, sead::Heap*, u32);
     void createUserResource(User*, sead::Heap*) override;
 
     void allocHandle(sead::Heap*) override;
@@ -44,7 +42,7 @@ public:
     void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
 #else
     void genMessage(sead::hostio::Context* /*unused*/);
-    void listenPropertyEvent(sead::hostio::PropertyEvent const* /*unused*/);
+    void listenPropertyEvent(const sead::hostio::PropertyEvent* /*unused*/);
 #endif
 
     sead::SafeString* getORIconString();
@@ -54,8 +52,8 @@ public:
     void drawInformationSystemDetail_(sead::TextWriter*) const override;
     void drawInformationEvent_(sead::TextWriter*) const override;
     void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
-                                sead::Camera const&, sead::Projection const&,
-                                sead::Viewport const&) const;
+                                const sead::Camera&, const sead::Projection&,
+                                const sead::Viewport&) const;
 
     ILockProxy* getModuleLockObj() const override;
 

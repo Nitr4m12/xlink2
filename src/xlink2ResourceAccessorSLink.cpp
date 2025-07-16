@@ -1,5 +1,8 @@
 #include <xlink2/xlink2ResourceAccessorSLink.h>
+
+#include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserResourceParamSLink.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
 ResourceAccessorSLink::~ResourceAccessorSLink() = default;
@@ -240,7 +243,7 @@ f32 ResourceAccessorSLink::getOverwritePriority(u32 idx, const UserInstance* use
     return this->getResOverwriteParamValueFloat_(idx, 13, user_instance);
 }
 
-char const* ResourceAccessorSLink::getOverwriteBoneName(u32 idx) const
+const char* ResourceAccessorSLink::getOverwriteBoneName(u32 idx) const
 {
     return this->getResOverwriteParamValueString_(idx, 15);
 }

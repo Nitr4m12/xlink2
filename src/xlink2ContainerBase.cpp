@@ -1,5 +1,10 @@
 #include "xlink2/xlink2ContainerBase.h"
+
 #include "xlink2/xlink2ContainerCreator.h"
+#include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
 ContainerBase::ContainerBase()
@@ -77,7 +82,7 @@ bool ContainerBase::killOneTimeEvent()
     return true;
 }
 
-ContainerBase* ContainerBase::createChildContainer_(ResAssetCallTable const& asset_call_table,
+ContainerBase* ContainerBase::createChildContainer_(const ResAssetCallTable& asset_call_table,
                                            ContainerBase* container)
 {
     auto* child_container{ContainerCreator::CreateContainer(mpEvent, asset_call_table)};

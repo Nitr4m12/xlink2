@@ -2,14 +2,8 @@
 
 #include <container/seadBuffer.h>
 
-#include "xlink2/xlink2ModelTriggerConnection.h"
-#include "xlink2/xlink2ResAction.h"
-#include "xlink2/xlink2ResActionSlot.h"
-#include "xlink2/xlink2ResActionTrigger.h"
 #include "xlink2/xlink2TriggerCtrl.h"
 #include "xlink2/xlink2UserInstance.h"
-#include "xlink2/xlink2UserResource.h"
-#include "xlink2/xlink2ResUserInfo.h"
 
 namespace xlink2 {
 class ActionTriggerCtrl : TriggerCtrl {
@@ -28,11 +22,11 @@ public:
     void changeAction(const char* name, s32 p2);
     ResAction* searchResAction_(const ResActionSlot* action_slot, const char* name, s32* idx) const;
     void stopAction();
-    void changeActionImpl_(ResAction const*, s32, UserResource const*);
+    void changeActionImpl_(const ResAction*, s32, const UserResource*);
     void changeAction(s32 action_idx, s32 p2);
     
     s32 getCurrentResActionIdx() const;
-    void changeActionImpl_old_(ResAction const*, s32, UserResource const*);
+    void changeActionImpl_old_(const ResAction*, s32, const UserResource*);
     void restartAction(const char*, s32);
 
     ~ActionTriggerCtrl() override;

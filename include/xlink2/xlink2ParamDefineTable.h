@@ -1,8 +1,6 @@
 #pragma once
 
-#include <basis/seadTypes.h>
-
-#include "xlink2/xlink2ResParamDefine.h"
+#include "xlink2/xlink2Resource.h"
 
 namespace xlink2 {
 class ParamDefineTable {
@@ -15,8 +13,8 @@ public:
     const char* getAssetParamName(u32) const;
     const char* getTriggerParamName(u32) const;
 
-    s32 searchAssetParamIdxFromCustomParamName(char const*) const;
-    s32 searchUserParamIdxFromCustomParamName(char const*) const;
+    s32 searchAssetParamIdxFromCustomParamName(const char*) const;
+    s32 searchUserParamIdxFromCustomParamName(const char*) const;
 
     ParamValueType getUserParamType(u32) const;
     ParamValueType getAssetParamType(u32) const;

@@ -1,11 +1,7 @@
 #pragma once
 
-#include "heap/seadHeap.h"
-#include "xlink2/xlink2ParamDefineTable.h"
 #include "xlink2/xlink2ResourceAccessorSLink.h"
-#include "xlink2/xlink2SystemSLink.h"
-#include "xlink2/xlink2User.h"
-#include "xlink2/xlink2UserResourceParam.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace aal {
 class IAssetInfoReadable;
@@ -26,7 +22,7 @@ public:
 
     void allocResourceParam(sead::Heap);
     void freeResourceParam_(UserResourceParam*) override;
-    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
+    void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) override;
 
     ResourceAccessorSLink* getAccessor() const override;
     ResourceAccessorSLink* getAccessorPtr() override;

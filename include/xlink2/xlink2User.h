@@ -1,21 +1,18 @@
 #pragma once
 
 #include <container/seadOffsetList.h>
-#include <heap/seadHeap.h>
 
 #include "xlink2/xlink2EditorResourceParam.h"
-#include "xlink2/xlink2PropertyDefinition.h"
-#include "xlink2/xlink2System.h"
-#include "xlink2/xlink2UserInstance.h"
-#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
-class UserResource;
+class PropertyDefinition;
+class System;
 class UserInstance;
+class UserResource;
 
 class User {
 public:
-    User(char const*, sead::Heap*, System*, u32);
+    User(const char*, sead::Heap*, System*, u32);
     ~User();
 
     System* getSystem() const;
@@ -23,11 +20,11 @@ public:
     s32 calcNumActiveInstance() const;
 
     void setActionSlot(u32 total_action_slots, const char** slot_names);
-    s32 searchActionSlotPos(char const*) const;
+    s32 searchActionSlotPos(const char*) const;
     
     void createPropertyDefinitionTable(u32);
-    void createPropertyDefinitionTable(u32, PropertyDefinition const**);
-    void setPropertyDefinition(u32, PropertyDefinition const*);
+    void createPropertyDefinitionTable(u32, const PropertyDefinition**);
+    void setPropertyDefinition(u32, const PropertyDefinition*);
     u32 searchPropertyIndex(const char* name) const;
     
     void changeEditorResource(EditorResourceParam*, sead::Heap*);

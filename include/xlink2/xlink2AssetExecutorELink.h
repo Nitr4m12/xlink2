@@ -1,14 +1,14 @@
 #pragma once
 
 #include "xlink2/xlink2AssetExecutor.h"
-#include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2ELinkAssetParamId.h"
 #include "xlink2/xlink2ELinkEventParam.h"
 #include "xlink2/xlink2EventELink.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
-#include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
+class HandleELink;
+class ResourceAccessorELink;
+
 class UserInstanceELink;
 
 class AssetExecutorELink : AssetExecutor {
@@ -41,8 +41,8 @@ public:
 
     void setInnerParam_();
 
-    void setMtx_(sead::Matrix34f const&, sead::Vector3f const&);
-    void setPos_(sead::Vector3f const&, sead::Vector3f const&);
+    void setMtx_(const sead::Matrix34f&, const sead::Vector3f&);
+    void setPos_(const sead::Vector3f&, const sead::Vector3f&);
 
     void calcMtx(sead::Matrix34f*, ResAssetCallTable*, UserInstanceELink*,
                  ResTriggerOverwriteParam*, BoneMtx);

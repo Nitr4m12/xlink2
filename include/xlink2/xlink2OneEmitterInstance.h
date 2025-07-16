@@ -1,16 +1,17 @@
 #pragma once
 
-#include "math/seadVectorFwd.h"
-#include "xlink2/xlink2Handle.h"
+#include <math/seadVectorFwd.h>
 
 namespace xlink2 {
+class Handle;
+
 class OneEmitterInstance {
 public:
     virtual ~OneEmitterInstance();
     
-    void* initialize(char const*, u8);
+    void* initialize(const char*, u8);
 
-    void emitParticle(sead::Vector3f const&, sead::Vector4f const&, sead::Vector2f const&);
+    void emitParticle(const sead::Vector3f&, const sead::Vector4f&, const sead::Vector2f&);
 
     void release();
 

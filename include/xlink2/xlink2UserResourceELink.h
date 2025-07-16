@@ -1,33 +1,28 @@
 #pragma once
 
-#include "heap/seadHeap.h"
-#include "xlink2/xlink2ParamDefineTable.h"
-#include "xlink2/xlink2PtclResourceAccessorELink.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResourceAccessorELink.h"
-#include "xlink2/xlink2SystemELink.h"
-#include "xlink2/xlink2User.h"
-#include "xlink2/xlink2UserResourceParam.h"
-#include "xlink2/xlink2UserResourceParamELink.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
+class PtclResourceAccessorELink;
 class SystemELink;
+class UserResourceParamELink;
 class UserResourceELink : public UserResource {
 public:
     UserResourceELink(User*, sead::Heap*);
     ~UserResourceELink() override;
 
-    u64 getSolvedAssetParameterELink(ResAssetCallTable const&);
+    u64 getSolvedAssetParameterELink(const ResAssetCallTable&);
 
     void solveResourceForChangeEset();
-    void solveAssetParam(UserResourceELink*, ParamDefineTable const*, PtclResourceAccessorELink*);
+    void solveAssetParam(UserResourceELink*, const ParamDefineTable*, PtclResourceAccessorELink*);
 
     UserResourceParam* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;
 
-    void releaseOneEmitterInstance(UserResourceParamELink*, ParamDefineTable const*);
+    void releaseOneEmitterInstance(UserResourceParamELink*, const ParamDefineTable*);
 
-    void onSetupResourceParam_(UserResourceParam*, ParamDefineTable const*, sead::Heap*) override;
+    void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) override;
 
     ResourceAccessorELink* getAccessor() const override;
     ResourceAccessorELink* getAccessorPtr() override;

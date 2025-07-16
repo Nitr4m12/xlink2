@@ -1,6 +1,7 @@
 #pragma once
 
-#include "basis/seadTypes.h"
+#include <basis/seadTypes.h>
+
 #include "xlink2/xlink2ContainerBase.h"
 
 namespace xlink2 {

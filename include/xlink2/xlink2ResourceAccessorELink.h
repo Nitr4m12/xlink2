@@ -1,10 +1,6 @@
 #pragma once
 
-#include "basis/seadTypes.h"
-#include "math/seadMathCalcCommon.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
 #include "xlink2/xlink2ResourceAccessor.h"
-#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
 class ResourceAccessorELink : public ResourceAccessor {
@@ -63,7 +59,7 @@ public:
     f32 getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getEmissionInterval(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
-    f32 getDirectionalVel(const ResAssetCallTable& asset_ctb, UserInstance const*) const;
+    f32 getDirectionalVel(const ResAssetCallTable& asset_ctb, const UserInstance*) const;
 
     f32 getLifeScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 

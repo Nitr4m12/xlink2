@@ -1,5 +1,9 @@
 #include "xlink2/xlink2BlendContainer.h"
+
+#include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ResourceUtil.h"
+#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -25,8 +29,6 @@ bool BlendContainer::callAllChildContainer_()
     s32 child_start_idx {param->childrenStartIndex};
     ContainerBase* temp_child{};
 
-    bool ret_val {false};
-
     for (s32 i {child_start_idx}, j{0}; i <= param->childrenEndIndex; ++i, ++j) {
         ResAssetCallTable* asset_ctb_item {user_instance->getUser()->getUserResource()->getAssetCallTableItem(j)};
         
@@ -46,7 +48,6 @@ bool BlendContainer::callAllChildContainer_()
 
         if (temp_child != nullptr)
             return true;
-        // ret_val = ret_val | (temp_child != nullptr);
     }
 
     return false;

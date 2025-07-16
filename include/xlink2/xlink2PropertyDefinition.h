@@ -1,9 +1,8 @@
 #pragma once
 
-#include <basis/seadTypes.h>
 #include <prim/seadSafeString.h>
 
-#include "xlink2/xlink2PropertyType.h"
+#include "xlink2/xlink2Types.h"
 
 namespace xlink2 {
 class PropertyDefinition {

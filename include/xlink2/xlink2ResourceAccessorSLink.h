@@ -1,10 +1,8 @@
 #pragma once
 
-#include <basis/seadTypes.h>
 #include <prim/seadEnum.h>
-#include "xlink2/xlink2ResAssetCallTable.h"
+
 #include "xlink2/xlink2ResourceAccessor.h"
-#include "xlink2/xlink2UserInstance.h"
 
 namespace aal {
 SEAD_ENUM(FadeCurveType, Linear, Square, Sqrt, Sin);

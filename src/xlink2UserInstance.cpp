@@ -1,10 +1,12 @@
 #include <cstdarg>
 #include <prim/seadScopedLock.h>
 
-#include "xlink2/xlink2UserInstance.h"
-#include "xlink2/xlink2ResMode.h"
-#include "xlink2/xlink2System.h"
+#include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2ILockProxy.h"
+#include "xlink2/xlink2PropertyDefinition.h"
 #include "xlink2/xlink2ResourceAccessor.h"
+#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
 // WIP
@@ -73,7 +75,7 @@ bool UserInstance::checkAndErrorCallInCalc(const char* /*unused*/, ...) const
     return true;
 }
 
-void UserInstance::printLogFadeOrKill(Event const* /*unused*/, char const* /*unused*/, ...) const {}
+void UserInstance::printLogFadeOrKill(const Event* /*unused*/, const char* /*unused*/, ...) const {}
 
 void UserInstance::preCalc() 
 {
@@ -290,9 +292,9 @@ bool UserInstance::checkAndErrorCallWithoutSetup_(const char* fmt, ...) const
     return false;
 }
 
-void UserInstance::printLogSearchAsset_(bool /*unused*/, char const* /*unused*/, ...) const {}
+void UserInstance::printLogSearchAsset_(bool /*unused*/, const char* /*unused*/, ...) const {}
 
-void UserInstance::printLogEmitFailed(char const* /*unused*/, char const* /*unused*/, ...) const {}
+void UserInstance::printLogEmitFailed(const char* /*unused*/, const char* /*unused*/, ...) const {}
 
 bool UserInstance::isDebugLogEnable(DebugLogFlag /*unused*/) const 
 {
@@ -322,7 +324,7 @@ bool UserInstance::searchAsset(Locator* locator, u32 name_hash)
     return false;
 }
 
-void UserInstance::changeAction(char const* name, int p1, int p2) 
+void UserInstance::changeAction(const char* name, int p1, int p2) 
 {
     auto* sys = mUser->getSystem();
     if (sys->isCallEnabled())
@@ -454,7 +456,7 @@ void UserInstance::setRootPos(const sead::Vector3f* root_pos)
 }
 
 void UserInstance::printLogContainerSelect(const Event& /*unused*/, const char* /*unused*/, ...) const {}
-void UserInstance::printLogEmitFailed(const Event& /*unused*/, char const* /*unused*/, ...) const {}
+void UserInstance::printLogEmitFailed(const Event& /*unused*/, const char* /*unused*/, ...) const {}
 
 // NON-MATCHING: two instructions in the wrong place
 const sead::SafeString* UserInstance::getContainerTypeName(const ResAssetCallTable& asset_call) const 

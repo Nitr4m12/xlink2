@@ -3,7 +3,6 @@
 #include <basis/seadTypes.h>
 
 #include "xlink2/xlink2ContainerBase.h"
-#include "xlink2/xlink2ResAssetCallTable.h"
 
 namespace xlink2 {
 class SwitchContainer : ContainerBase {
@@ -14,10 +13,10 @@ public:
 
     const ResAssetCallTable* getConditionMatchChildCallTable_();
 
-    bool start_(ResAssetCallTable const*);
+    bool start_(const ResAssetCallTable*);
 
     bool start() override;
 
-    void printChildSelect(ResAssetCallTable const* /*unused*/) const;
+    void printChildSelect(const ResAssetCallTable* /*unused*/) const;
 };
 }  // namespace xlink2

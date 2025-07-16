@@ -3,12 +3,15 @@
 #include <prim/seadSafeString.h>
 
 #include "xlink2/xlink2ActionTriggerCtrl.h"
-#include "xlink2/xlink2EditorHeader.h"
+#include "xlink2/xlink2EditorResourceParam.h"
 #include "xlink2/xlink2EnumPropertyDefinition.h"
-#include "xlink2/xlink2ResourceHeader.h"
+#include "xlink2/xlink2Resource.h"
+#include "xlink2/xlink2RomResourceParam.h"
+#include "xlink2/xlink2UserBinParam.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+class ParamDefineTable;
 class System;
 
 class ResourceParamCreator {
@@ -163,7 +166,7 @@ private:
     static void solveSwitchConditionAboutGlobalProperty(u32 condition_pos, const EnumPropertyDefinition* enum_prop_define)
     {
         if (condition_pos != 0) {
-            auto* condition {calcOffset<SwitchCondition>(condition_pos)};
+            auto* condition {calcOffset<ResSwitchCondition>(condition_pos)};
             if (!condition->isSolved) {
                 const char* prop_key {calcOffset<char>(condition->value)};
                 s32 enum_name_idx {enum_prop_define->searchEntryValueByKey(prop_key)};
