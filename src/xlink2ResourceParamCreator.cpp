@@ -1,4 +1,5 @@
 #include <codec/seadHashCRC32.h>
+
 #include "xlink2/xlink2ResourceParamCreator.h"
 
 #include "xlink2/xlink2ParamDefineTable.h"

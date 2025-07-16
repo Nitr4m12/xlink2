@@ -75,7 +75,7 @@ public:
 
         u32 getTriggerOverwriteParamTablePos() const
         {
-            return (pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos : pEditorHeader->triggerOverwriteParamTablePos) + binStart;
+            return pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos : pEditorHeader->triggerOverwriteParamTablePos;
         }
 
         u32 getLocalPropertyNameRefTablePos() const
