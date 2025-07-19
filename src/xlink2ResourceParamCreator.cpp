@@ -94,7 +94,13 @@ void ResourceParamCreator::createCommonResourceParam_(CommonResourceParam* commo
     if (common_res_param->numResAssetParam > 0)
         common_res_param->assetParamTable = asset_param_table;
 
-    u32 table_pos = bin_accessor->getTriggerOverwriteParamTablePos();
+    u32 table_pos;
+    if (bin_accessor->pResourceHeader != nullptr)
+        table_pos = bin_accessor->pResourceHeader->triggerOverwriteParamTablePos;
+    else
+        table_pos = bin_accessor->pEditorHeader->triggerOverwriteParamTablePos;
+    
+    table_pos = bin_accessor->binStart + table_pos;
     if (common_res_param->numResTriggerOverwriteParam > 0)
         common_res_param->triggerOverwriteParamTablePos = table_pos;
 
