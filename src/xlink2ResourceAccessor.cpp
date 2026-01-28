@@ -67,16 +67,15 @@ const char* ResourceAccessor::getKeyName(const ResAssetCallTable& asset_ctb) con
 // NON-MATCHING: Wrong register
 ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_ctb) const
 {
-    if (!isContainer(asset_ctb))
-        return ContainerType::Asset;
-
-    ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
-    if (container_param != nullptr) {
-        if (container_param->type > ContainerType::Sequence) {
-            setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
-            return ContainerType::Asset;
+    if (isContainer(asset_ctb)) {
+        auto* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
+        if (container_param != nullptr) {
+            if (container_param->type > ContainerType::Sequence) {
+                setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
+                return ContainerType::Asset;
+            }
+            return container_param->type;
         }
-        return container_param->type;
     }
 
     return ContainerType::Asset;
@@ -760,9 +759,7 @@ const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallT
         if (mpUserResource != nullptr) {
             ResParam* param {calcOffset<ResParam>(asset_ctb.paramStartPos)};
             ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
-            return curve_ctb != nullptr ? 
-                   &curve_ctb[param[idx].getValue()] : 
-                   nullptr;
+            return curve_ctb != nullptr ? &curve_ctb[param[idx].getValue()] : nullptr;
         }
     }
 

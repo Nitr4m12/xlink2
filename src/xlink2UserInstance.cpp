@@ -2,11 +2,13 @@
 #include <prim/seadScopedLock.h>
 
 #include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2Handle.h"
 #include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2PropertyDefinition.h"
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2UserResource.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 // WIP
@@ -293,6 +295,54 @@ bool UserInstance::checkAndErrorCallWithoutSetup_(const char* fmt, ...) const
 }
 
 void UserInstance::printLogSearchAsset_(bool /*unused*/, const char* /*unused*/, ...) const {}
+
+// NON-MATCHING
+void UserInstance::emitImpl(const Locator& locator, Handle* handle)
+{
+    if (mUser->getSystem()->isCallEnabled() && mBitFlag.isOffBit(3)) {
+        char* asset_key_name;
+        if (locator.getAssetCallTable() == nullptr)
+            asset_key_name = "";
+        else
+            asset_key_name = calcOffset<char>(locator.getAssetCallTable()->keyNamePos);
+
+        if (checkAndErrorCallWithoutSetup_("emit %s", asset_key_name) && mBitFlag.isOffBit(1) && locator.getAssetCallTable() != nullptr && !doEventActivatingCallback_(locator)) {
+            Event* event {};
+            {
+                auto lock {sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj())};
+                event = mUser->getSystem()->allocEvent();
+                if (event == nullptr)
+                    mUser->getSystem()->addError(Error::Type::EventPoolFull, mUser, "emit[%s] failed.", calcOffset<char*>(locator.getAssetCallTable()->keyNamePos));
+                else {
+                    auto* asset_call_table {locator.getAssetCallTable()};
+                    if (locator.get1())
+                        event->setBits(1);
+                    
+                    // auto trigger_type {locator.getTriggerType()};
+                    // auto* trigger_overwrite_param {locator.getTriggerOverwriteParam()};
+
+                    // event->setOverwriteParam(locator.getTriggerType(), locator.getTriggerOverwriteParam(), locator.getOverwriteBoneMtx());
+
+                    if (event->createRootContainer(this, *asset_call_table)) {
+                        mEventList.pushBack(event);
+                        if (handle != nullptr) {
+                            handle->setResource(event);
+                            handle->setCreateId(event->getCreateId());
+                        }
+                        mBitFlag.set(0b100);
+                    }
+                    else {
+                        mUser->getSystem()->freeEvent(event, nullptr);
+                        event = nullptr;
+                    }
+                }
+            }
+
+            if (event != nullptr)
+                doEventActivatedCallback_(locator, event);
+        }
+    }
+}
 
 void UserInstance::printLogEmitFailed(const char* /*unused*/, const char* /*unused*/, ...) const {}
 

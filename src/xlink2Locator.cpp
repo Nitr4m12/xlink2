@@ -14,7 +14,7 @@ TriggerType Locator::getTriggerType() const
     return TriggerType::Invalid;
 }
 
-const ResTriggerOverwriteParam* Locator::getTriggerOverwriteParam() const
+ResTriggerOverwriteParam* Locator::getTriggerOverwriteParam() const
 {
     return nullptr;
 }

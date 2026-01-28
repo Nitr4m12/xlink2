@@ -16,13 +16,10 @@ EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries
 {
     va_list args;
     va_start(args, heap);
-    if (num_entries > 0) {
-        // const char** key_buffer {va_arg(args, const char**)};
-        for (u32 i{0}; i != num_entries; ++i) {
-            mEntryBuffer[i].value = i;
-            mEntryBuffer[i].key = va_arg(args, const char*);
-            ++mCurrentIdx;
-        }
+    for (s32 i {0}; i < num_entries; ++i) {
+        mEntryBuffer[i].value = i;
+        mEntryBuffer[i].key = va_arg(args, const char*);
+        ++mCurrentIdx;
     }
     va_end(args);
 }
@@ -44,12 +41,10 @@ EnumPropertyDefinition::EnumPropertyDefinition(const char* name, bool)
 
 void EnumPropertyDefinition::setEntries_(s32 entry_num, const char** key_buffer)
 {
-    if (entry_num > 0) {
-        for (u32 i{0}, j{0}; i != entry_num; ++i, ++j) {
-            mEntryBuffer[i].value = j;
-            mEntryBuffer[i].key = key_buffer[j];
-            ++mCurrentIdx;
-        }
+    for (s32 i {0}; i < entry_num; ++i) {
+        mEntryBuffer[i].value = i;
+        mEntryBuffer[i].key = key_buffer[i];
+        ++mCurrentIdx;
     }
 }
 

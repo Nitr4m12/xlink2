@@ -16,6 +16,9 @@ public:
         mCreateId = 0;
     }
 
+    void setResource(void* resource) { mpResource = resource; }
+    void setCreateId(s32 create_id) { mCreateId = create_id; }
+
 private:
     void* mpResource = nullptr;
     s32 mCreateId = 0;

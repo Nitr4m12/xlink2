@@ -290,7 +290,7 @@ s32 System::incrementEventCreateId_()
     return event_id;
 }
 
-const Event* System::allocEvent()
+Event* System::allocEvent()
 {
     for (u32 i {0}; i < mMaxNumEventPool; ++i) {
         auto* event {getEventFromPool_(mNumEventPool)};

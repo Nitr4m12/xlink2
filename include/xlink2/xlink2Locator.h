@@ -14,14 +14,17 @@ public:
     virtual void reset();
     virtual void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
     virtual TriggerType getTriggerType() const;
-    virtual const ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
+    virtual ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
     virtual BoneMtx getOverwriteBoneMtx() const;
 
     bool isNeedRebind() const;
     s32 getSearchedGuid() const;
     static void updateDataLoadedCount();
 
-    void setAssetCallTable(const ResAssetCallTable* asset_call_table) {mpAssetCallTable = asset_call_table; }
+    const ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
+    void setAssetCallTable(const ResAssetCallTable* asset_call_table) { mpAssetCallTable = asset_call_table; }
+
+    bool get1() const { return _1; }
 
 protected:
     const ResAssetCallTable* mpAssetCallTable;

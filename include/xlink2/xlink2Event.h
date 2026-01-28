@@ -36,7 +36,7 @@ public:
     s32 getAliveAssetNum() const;
     s32 getFadeBySystemListAssetNum() const;
 
-    void setOverwriteParam(TriggerType type, ResTriggerOverwriteParam* param, BoneMtx bone_mtx);
+    void setOverwriteParam(TriggerType trigger_type, ResTriggerOverwriteParam* param, BoneMtx bone_mtx);
 
     void fade(s32 param_int);
     void killOneTimeEvent();
@@ -50,10 +50,15 @@ public:
     void set0x20(s32 value) { mCreateId = value; }
 
     TriggerType& getTriggerType() { return mTriggerType; }
-    sead::BitFlag32 getBitFlag() { return mBitFlag; }
 
-    const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
-    const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemList; }
+    sead::BitFlag32 getBitFlag() { return mBitFlag; }
+    void setBits(u32 bits) { mBitFlag.set(bits); }
+
+    sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
+    const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() const { return mAliveAssetExecutors; }
+    
+    sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemList; }
+    const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() const { return mFadeBySystemList; }
 
 private:
     sead::BitFlag32 mBitFlag{0};

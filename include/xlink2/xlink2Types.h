@@ -17,7 +17,7 @@ enum class CompareType : s32 {
     Equal,
 };
 
-enum class ContainerType : s32 {
+enum class ContainerType : u32 {
     Switch,
     Random,
     Random2,

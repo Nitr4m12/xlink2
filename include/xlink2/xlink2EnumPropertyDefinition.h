@@ -45,7 +45,10 @@ public:
         setEntryBuf_(N, mEntries);
     }
 
-    ~FixedEnumPropertyDefinition() override = default;
+    ~FixedEnumPropertyDefinition() override
+    {
+        setEntryBuf_(0, nullptr);
+    }
 
 private:
     Entry mEntries[N];

@@ -52,6 +52,7 @@ public:
 
     void setUserInstance(UserInstance* new_instance) { mpUserInstance = new_instance; }
 
+    void setBoneMtx(BoneMtx& bone_mtx) { mBoneMtx = bone_mtx; }
 
 protected:
     u8 _0x08[0x10];
