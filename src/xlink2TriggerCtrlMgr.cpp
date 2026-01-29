@@ -92,7 +92,7 @@ void TriggerCtrlMgr::reset()
         }
     }
 
-    mActionNeedToCalcFlag = 0;
+    mActionNeedToCalcBitfield = 0;
 }
 
 const UserInstance* TriggerCtrlMgr::getUserInstance_() const
@@ -143,6 +143,22 @@ s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
         }
     }
     return -1;
+}
+
+// NON-MATCHING: instruction missing
+void TriggerCtrlMgr::notifyActive()
+{
+    auto* param {getParam()};
+    if (param != nullptr) {
+        s16 action_slot_num {getUserInstance_()->getUser()->getActionSlotNum()};
+        for (s32 i {0}; i < action_slot_num; ++i) {
+            if (getParam()->actionTriggerCtrlBuffer[i] != nullptr)
+                getParam()->actionTriggerCtrlBuffer[i]->notifyActive();
+        }
+
+        if (getParam()->alwaysTriggerCtrl != nullptr)
+            getParam()->alwaysTriggerCtrl->notifyActive();
+    }
 }
 
 s32 TriggerCtrlMgr::getCurrentActionFrame(s32 action_idx) const 

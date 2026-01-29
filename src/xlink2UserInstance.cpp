@@ -136,6 +136,7 @@ void UserInstance::setIsActive(bool is_active)
             mTriggerCtrlMgr.notifyActive();
         else
             sleep();
+        
         u8 flag_bits;
         if (!is_active)
             flag_bits = mBitFlag | 2;
@@ -410,7 +411,7 @@ bool UserInstance::isCurrentActionNeedToObserve(s32 index) const
 
 bool UserInstance::isCurrentActionNeedToCalc() const 
 {
-    return mTriggerCtrlMgr.get1() != 0;
+    return mTriggerCtrlMgr.getActionNeedToCalcBitfield() != 0;
 }
 
 void UserInstance::setPropertyValue(u32 idx, s32 value)

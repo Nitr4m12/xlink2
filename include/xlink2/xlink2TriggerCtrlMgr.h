@@ -52,13 +52,13 @@ public:
     ResMode getResMode() { return mResMode; }
     void setResMode(ResMode mode) { mResMode = mode; }
 
-    u32 get1() const { return mActionNeedToCalcFlag; };
+    u32 getActionNeedToCalcBitfield() const { return mActionNeedToCalcBitfield; }
 
-    TriggerCtrlParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; };
+    TriggerCtrlParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; }
 
 private:
     ResMode mResMode {};
     sead::SafeArray<TriggerCtrlParam*, 2> mParams {};
-    sead::BitFlag32 mActionNeedToCalcFlag;
+    sead::BitFlag32 mActionNeedToCalcBitfield;
 };
 }  // namespace xlink2
