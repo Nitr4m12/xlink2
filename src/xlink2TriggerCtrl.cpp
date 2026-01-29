@@ -10,7 +10,7 @@ void TriggerCtrl::fadeByTrigger_(s32 idx)
 {
     constexpr const char* TRIGGERTYPES[3] {"Action", "Property", "Always"};
 
-    Handle* handle {&mConnectionBuffer->unsafeGet(idx)->handle};
+    Handle* handle {&mConnectionBuffer->get(idx)->handle};
     Event* event {handle->getEvent()};
     if (event != nullptr && event->getCreateId() == handle->getCreateId()) {
         mUserInstance->printLogFadeOrKill(event, "fadeBySystem by %s Trigger", TRIGGERTYPES[(s32)event->getTriggerType()]);

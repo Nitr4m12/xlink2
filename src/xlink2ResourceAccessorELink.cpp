@@ -6,7 +6,7 @@ ResourceAccessorELink::~ResourceAccessorELink() = default;
 
 bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
 {
-    const char* param_name;
+    const char* param_name {""};
     if (checkAndErrorIsAsset_(asset_ctb, "isBlankAsset")) {
         const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 1)};
 

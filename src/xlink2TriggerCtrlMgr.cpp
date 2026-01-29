@@ -7,6 +7,7 @@
 #include "xlink2/xlink2TriggerCtrlParam.h"
 #include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
 TriggerCtrlMgr::TriggerCtrlMgr() = default;
@@ -102,6 +103,26 @@ const UserInstance* TriggerCtrlMgr::getUserInstance_() const
 
 void TriggerCtrlMgr::postChangeResource() {}
 
+// NON-MATCHING
+void TriggerCtrlMgr::updateActionNeedToCalcFlag_(s32 action_idx)
+{
+    auto* param {getParam()};
+    s32 action_trigger_idx {param->actionTriggerCtrlBuffer[action_idx]->getCurrentResActionIdx()};
+
+    if (action_trigger_idx >= 0) {
+        auto* user_resource_param {getUserInstance_()->getUserResource()->getParam()};
+        ResAction* res_action {&user_resource_param->actionBuffer[action_trigger_idx]};
+
+        if (res_action->namePos != 0)
+            mActionNeedToCalcBitfield.setBit(action_idx);
+        else
+            mActionNeedToCalcBitfield.resetBit(action_idx);
+    }
+    else {
+        mActionNeedToCalcBitfield.resetBit(action_idx);
+    }
+}
+
 void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
 {
     const UserInstance* user_instance {getUserInstance_()};
@@ -112,6 +133,21 @@ void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
             ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
             if (action_trigger_ctrl != nullptr)
                 action_trigger_ctrl->setActionFrame(frame);
+        }
+    }
+}
+
+// NON-MATCHING: needs updateActionNeedToCalcFlag_
+void TriggerCtrlMgr::stopAction(s32 action_idx)
+{
+    if (action_idx > 0 && action_idx >= getUserInstance_()->getUser()->getActionSlotNum()) {
+        auto* param {getParam()};
+        if (param != nullptr) {
+            auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_idx]};
+            if (action_trigger_ctrl != nullptr) {
+                action_trigger_ctrl->stopAction();
+                updateActionNeedToCalcFlag_(action_idx);
+            }
         }
     }
 }
@@ -169,6 +205,20 @@ s32 TriggerCtrlMgr::getCurrentActionFrame(s32 action_idx) const
 const char* TriggerCtrlMgr::getCurrentActionName(s32 action_idx) const 
 {
     return nullptr;
+}
+
+void TriggerCtrlMgr::resetAllModelTriggerConnection()
+{
+    if (getParam() != nullptr) {
+        for (s32 i {0}; i < getParam()->_0x0.size(); ++i)
+            getParam()->_0x0[i].isActive = false;
+
+        for (s32 i {0}; i < getParam()->_0x10.size(); ++i)
+            getParam()->_0x10[i].isActive = false;
+
+        for (s32 i {0}; i < getParam()->_0x20.size(); ++i)
+            getParam()->_0x20[i].isActive = false;
+    }
 }
 
 }  // namespace xlink2
