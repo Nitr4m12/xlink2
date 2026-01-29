@@ -116,6 +116,22 @@ void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
     }
 }
 
+// NON-MATCHING
+bool TriggerCtrlMgr::isCurrentActionNeedToObserve(s32 action_idx) const
+{
+    bool need_to_observe {false};
+    if (action_idx > -1 && action_idx < getUserInstance_()->getUser()->getActionSlotNum()) {
+        auto* param {getParam()};
+        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
+            auto* trigger_ctrl {param->actionTriggerCtrlBuffer[action_idx]};
+            if (trigger_ctrl != nullptr)
+                need_to_observe = trigger_ctrl->isActive();
+        }
+    }
+
+    return need_to_observe;
+}
+
 s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
 {
     if (action_trigger_idx >= 0 && getUserInstance_()->getUser()->getActionSlotNum() > action_trigger_idx) {

@@ -45,9 +45,9 @@ private:
     u32 mNumUserParam;
     u32 mNumAssetParam;
     u32 mNumTriggerParam;
-    ResParamDefine* mUserParams;
-    ResParamDefine* mAssetParams;
-    ResParamDefine* mTriggerParams;
+    ResParamDefine* mDefaultUserParams;
+    ResParamDefine* mDefaultAssetParams;
+    ResParamDefine* mDefaultTriggerParams;
     u32 mStringTablePos;
     u32 _0;
     s32 mNumCustomParam;
