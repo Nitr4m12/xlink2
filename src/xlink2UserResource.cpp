@@ -193,7 +193,7 @@ void UserResource::freeResourceParam_(UserResourceParam* param)
 {
     param->conditionTableBuffer.freeBuffer();
     param->callTableBuffer.freeBuffer();
-    param->actionBuffer.freeBuffer();
+    param->actionNeedToCalcBuffer.freeBuffer();
 }
 
 bool UserResource::doBinarySearchToNameArray_(s32* value_idx, const char* name, u32* name_refs, u32 num_item) 

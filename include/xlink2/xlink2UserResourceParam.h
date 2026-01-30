@@ -11,7 +11,7 @@ struct UserResourceParam {
     UserBinParam userBinParam;
     sead::Buffer<ResSwitchCondition> conditionTableBuffer;
     sead::Buffer<ResAssetCallTable> callTableBuffer;
-    sead::Buffer<ResAction> actionBuffer;
+    sead::Buffer<bool> actionNeedToCalcBuffer;
     sead::BitFlag64 bitFlag;
     void* _2;
     bool isSetup;

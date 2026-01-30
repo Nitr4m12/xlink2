@@ -6,7 +6,7 @@ void TriggerLocator::setTriggerInfo(TriggerType trigger_type, ResTriggerOverwrit
 {
     mTriggerType = trigger_type;
     mpResTriggerOverwriteParam = trigger_overwrite_param;
-    mBoneMtx = {bone_mtx};
+    mOverwriteBoneMtx = {bone_mtx};
 }
 
 void TriggerLocator::reset() 
@@ -15,7 +15,7 @@ void TriggerLocator::reset()
     _1 = 0;
     mTriggerType = TriggerType::Invalid;
     mpResTriggerOverwriteParam = nullptr;
-    mBoneMtx.rawMtx = nullptr;
+    mOverwriteBoneMtx.rawMtx = nullptr;
 }
 
 TriggerType TriggerLocator::getTriggerType() const 
@@ -31,7 +31,7 @@ ResTriggerOverwriteParam* TriggerLocator::getTriggerOverwriteParam() const
 // NON-MATCHING
 BoneMtx TriggerLocator::getOverwriteBoneMtx() const 
 {
-    return mBoneMtx;
+    return mOverwriteBoneMtx;
 }
 
 

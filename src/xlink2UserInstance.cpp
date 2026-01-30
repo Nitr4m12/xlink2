@@ -411,7 +411,7 @@ bool UserInstance::isCurrentActionNeedToObserve(s32 index) const
 
 bool UserInstance::isCurrentActionNeedToCalc() const 
 {
-    return mTriggerCtrlMgr.getActionNeedToCalcBitfield() != 0;
+    return mTriggerCtrlMgr.getActionNeedToCalcFlag() != 0;
 }
 
 void UserInstance::setPropertyValue(u32 idx, s32 value)

@@ -162,6 +162,8 @@ public:
 
     const sead::OffsetList<Event>* getEventList() const { return &mEventList; }
 
+    const BoneMtx& getRootMtx() { return mRootMtx; }
+
     void updateGlobalPropertyTriggerCtrl() 
     {
         if (mBitFlag.isOffBit(1))

@@ -27,11 +27,11 @@ ModelTriggerConnection* TriggerCtrl::getModelTriggerConnection_(s32 idx)
     return nullptr;
 }
 
+// NON-MATCHING
 void TriggerCtrl::resetIsOnceCheck_() 
 {
     if (mConnectionBuffer != nullptr)
         for (auto it {mConnectionBuffer->begin()}; it != mConnectionBuffer->end(); ++it)
             mConnectionBuffer->getBufferPtr()[it.getIndex()].isActive = false;
 }
-
 }  // namespace xlink2

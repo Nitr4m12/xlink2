@@ -25,6 +25,7 @@ public:
     void setAssetCallTable(const ResAssetCallTable* asset_call_table) { mpAssetCallTable = asset_call_table; }
 
     bool get1() const { return _1; }
+    void set1(u8 new_value) { _1 = new_value; }
 
 protected:
     const ResAssetCallTable* mpAssetCallTable;

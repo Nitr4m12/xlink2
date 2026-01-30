@@ -7,7 +7,7 @@
 namespace xlink2 {
 class IUser {
 public:
-    virtual void* getBoneWorldMtxPtr(char*) const = 0;
+    virtual sead::Matrix34f* getBoneWorldMtxPtr(const char*) const = 0;
     virtual char* getActionSlotName(int) const;
 
     virtual void* getDebugDrawCamera() const;

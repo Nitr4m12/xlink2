@@ -93,7 +93,7 @@ void TriggerCtrlMgr::reset()
         }
     }
 
-    mActionNeedToCalcBitfield = 0;
+    mActionNeedToCalcFlag = 0;
 }
 
 const UserInstance* TriggerCtrlMgr::getUserInstance_() const
@@ -103,7 +103,6 @@ const UserInstance* TriggerCtrlMgr::getUserInstance_() const
 
 void TriggerCtrlMgr::postChangeResource() {}
 
-// NON-MATCHING
 void TriggerCtrlMgr::updateActionNeedToCalcFlag_(s32 action_idx)
 {
     auto* param {getParam()};
@@ -111,15 +110,15 @@ void TriggerCtrlMgr::updateActionNeedToCalcFlag_(s32 action_idx)
 
     if (action_trigger_idx >= 0) {
         auto* user_resource_param {getUserInstance_()->getUserResource()->getParam()};
-        ResAction* res_action {&user_resource_param->actionBuffer[action_trigger_idx]};
+        bool action_need_to_calc {user_resource_param->actionNeedToCalcBuffer[action_trigger_idx]};
 
-        if (res_action->namePos != 0)
-            mActionNeedToCalcBitfield.setBit(action_idx);
+        if (action_need_to_calc)
+            mActionNeedToCalcFlag.setBit(action_idx);
         else
-            mActionNeedToCalcBitfield.resetBit(action_idx);
+            mActionNeedToCalcFlag.resetBit(action_idx);
     }
     else {
-        mActionNeedToCalcBitfield.resetBit(action_idx);
+        mActionNeedToCalcFlag.resetBit(action_idx);
     }
 }
 

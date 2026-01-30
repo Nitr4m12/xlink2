@@ -3,7 +3,7 @@
 #include "xlink2/xlink2Locator.h"
 
 namespace xlink2 {
-class TriggerLocator : Locator {
+class TriggerLocator : public Locator {
 public:
     void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx) override;
 
@@ -14,9 +14,13 @@ public:
     
     BoneMtx getOverwriteBoneMtx() const override;
 
+    void setTriggerType(TriggerType type) { mTriggerType = type; }
+    void setTriggerOverwriteParam(ResTriggerOverwriteParam* param) { mpResTriggerOverwriteParam = param; }
+    void setBoneMtx(BoneMtx& bone_mtx) { mOverwriteBoneMtx = bone_mtx; }
+
 private:
     TriggerType mTriggerType;
     ResTriggerOverwriteParam* mpResTriggerOverwriteParam;
-    BoneMtx mBoneMtx;
+    BoneMtx mOverwriteBoneMtx;
 };
 }  // namespace xlink2

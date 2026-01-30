@@ -19,7 +19,7 @@ public:
 
     void resetIsOnceCheck_();
 
-    void setBoneMatrixToConnection(u32, ModelTriggerConnection*);
+    void setBoneMatrixToConnection_(u32, ModelTriggerConnection*);
 
 protected:
     UserInstance* mUserInstance {nullptr};
