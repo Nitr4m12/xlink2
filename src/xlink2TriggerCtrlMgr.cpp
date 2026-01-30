@@ -136,12 +136,11 @@ void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
     }
 }
 
-// NON-MATCHING: needs updateActionNeedToCalcFlag_
 void TriggerCtrlMgr::stopAction(s32 action_idx)
 {
-    if (action_idx > 0 && action_idx >= getUserInstance_()->getUser()->getActionSlotNum()) {
+    if (action_idx > -1 && action_idx < getUserInstance_()->getUser()->getActionSlotNum()) {
         auto* param {getParam()};
-        if (param != nullptr) {
+        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
             auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_idx]};
             if (action_trigger_ctrl != nullptr) {
                 action_trigger_ctrl->stopAction();
