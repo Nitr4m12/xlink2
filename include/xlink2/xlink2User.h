@@ -59,6 +59,7 @@ public:
     bool isHeapEqual(sead::Heap* heap) const { return mpHeap == heap; }
 
     s16 getActionSlotNum() { return mActionSlotNum; }
+    const char** getActionSlotNameTable() { return mActionSlotNameTable; }
 
 private:
     void* _0;

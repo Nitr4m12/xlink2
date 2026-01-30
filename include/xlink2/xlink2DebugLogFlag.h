@@ -1,5 +1,7 @@
 #pragma once
 
+#include <basis/seadTypes.h>
+
 namespace xlink2 {
-class DebugLogFlag {};
+enum DebugLogFlag : u32 {};
 }  // namespace xlink2

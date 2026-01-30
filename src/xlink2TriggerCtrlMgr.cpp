@@ -1,11 +1,13 @@
 #include <prim/seadPtrUtil.h>
 
 #include "xlink2/xlink2TriggerCtrlMgr.h"
+
 #include "xlink2/xlink2ActionTriggerCtrl.h"
 #include "xlink2/xlink2AlwaysTriggerCtrl.h"
+#include "xlink2/xlink2IUser.h"
+#include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2PropertyTriggerCtrl.h"
 #include "xlink2/xlink2TriggerCtrlParam.h"
-#include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2UserResource.h"
 
@@ -103,6 +105,28 @@ const UserInstance* TriggerCtrlMgr::getUserInstance_() const
 
 void TriggerCtrlMgr::postChangeResource() {}
 
+void TriggerCtrlMgr::changeAction(const char* name, s32 p2, s32 action_trigger_idx)
+{
+    s32 action_slot_num {getUserInstance_()->getUser()->getActionSlotNum()};
+    if (getUserInstance_()->isDebugLogEnable(((DebugLogFlag)4))) {
+        if (action_trigger_idx > -1 && action_trigger_idx < action_slot_num && getUserInstance_()->getUser()->getActionSlotNameTable() == nullptr) {
+            getUserInstance_()->getIUser()->getActionSlotName(action_trigger_idx);
+        }
+        getUserInstance_()->getUser()->getSystem();
+    }
+    
+    if (action_trigger_idx >= 0 && action_trigger_idx < action_slot_num) {
+        TriggerCtrlParam* param {getParam()};
+        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
+            auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+            if (action_trigger_ctrl != nullptr) {
+                action_trigger_ctrl->changeAction(name, p2);
+                updateActionNeedToCalcFlag_(action_trigger_idx);
+            }
+        }
+    }
+}
+
 void TriggerCtrlMgr::updateActionNeedToCalcFlag_(s32 action_trigger_idx)
 {
     auto* param {getParam()};
@@ -165,13 +189,13 @@ void TriggerCtrlMgr::stopAction(s32 action_trigger_idx)
 }
 
 // NON-MATCHING
-bool TriggerCtrlMgr::isCurrentActionNeedToObserve(s32 action_idx) const
+bool TriggerCtrlMgr::isCurrentActionNeedToObserve(s32 action_trigger_idx) const
 {
     bool need_to_observe {false};
-    if (action_idx > -1 && action_idx < getUserInstance_()->getUser()->getActionSlotNum()) {
+    if (action_trigger_idx > -1 && action_trigger_idx < getUserInstance_()->getUser()->getActionSlotNum()) {
         auto* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
-            auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_idx]};
+            auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
             if (action_trigger_ctrl != nullptr)
                 need_to_observe = action_trigger_ctrl->isActive();
         }
