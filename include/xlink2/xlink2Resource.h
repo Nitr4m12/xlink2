@@ -170,6 +170,14 @@ struct ResParamDefine {
 };
 static_assert(sizeof(ResParamDefine) == 0xC, "xlink2::ResParamDefine size mismatch");
 
+struct ResParamDefineTableHeader {
+    u32 size;
+    u32 numUserParam;
+    u32 numAssetParam;
+    u32 numCustomAssetParam;
+    u32 numTriggerParam;
+};
+
 struct ResRandomCallTable {
     f32 minValue;
     f32 maxValue;

@@ -32,12 +32,12 @@ public:
     f32 getTriggerParamDefaultValueFloat(u32) const;
     const char* getTriggerParamDefaultValueString(u32) const;
 
-    u32 getSize() const { return mSize; }
+    u32 getSize() const { return mDataSize; }
     u32 getNumAssetParam() const { return mNumAssetParam; }
     u32 getNumUserParam() const { return mNumUserParam; }
     u32 getNumTriggerParam() const { return mNumTriggerParam; }
-    u32 get0() const { return _0; }
-    u32 getNumCustomParam() const { return mNumCustomParam; }
+    u32 get0() const { return mNumCustomAssetParam; }
+    u32 getNumCustomParam() const { return mNumStandardAssetParam; }
     bool isInitialized() const { return mIsInitialized; }
     u32 getNumCustomUserParam() const { return mNumCustomUserParam; }
 
@@ -45,15 +45,15 @@ private:
     u32 mNumUserParam;
     u32 mNumAssetParam;
     u32 mNumTriggerParam;
-    ResParamDefine* mDefaultUserParams;
-    ResParamDefine* mDefaultAssetParams;
-    ResParamDefine* mDefaultTriggerParams;
+    ResParamDefine* mpUserParamDefine;
+    ResParamDefine* mpAssetParamDefine;
+    ResParamDefine* mpTriggerParamDefine;
     u32 mStringTablePos;
-    u32 _0;
-    s32 mNumCustomParam;
+    u32 mNumCustomAssetParam;
     u32 mNumStandardAssetParam;
+    u32 mNumStandardUserParam;
     u32 mNumCustomUserParam;
-    u32 mSize;
+    u32 mDataSize;
     bool mIsInitialized;
 };
 static_assert(sizeof(ParamDefineTable) == 0x48, "xlink2::ParamDefineTable size mismatch");
