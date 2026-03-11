@@ -179,13 +179,13 @@ protected:
         else
             param_value = mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
 
-        return sead::MathCalcCommon<f32>::max(param_value, 0.0);
+        return param_value < 0.0f ? 0.0f : param_value;
     }
 
     f32 getResOverwriteParamValueFloatWithLimit(u32 idx, u32 define_idx, const UserInstance* user_instance) const
     {
         f32 param_value {getResOverwriteParamValueFloat_(idx, define_idx, user_instance)};
-        return sead::MathCalcCommon<float>::max(param_value, 0.0);
+        return param_value < 0.0f ? 0.0f : param_value;
     }
 };
 
