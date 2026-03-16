@@ -68,7 +68,6 @@ const char* ResourceAccessor::getKeyName(const ResAssetCallTable& asset_ctb) con
 
 ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_ctb) const
 {
-
     auto* container_param {getContainer(asset_ctb)};
     if (container_param != nullptr) {
         if (container_param->type >= ContainerType::Asset) {
@@ -91,19 +90,11 @@ const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable&
 // WIP
 const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const 
 {
-    // if (isContainer(asset_ctb)) {
-    //     ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
-    //     if (container_param != nullptr) {
-    //         if (container_param->type > ContainerType::Sequence) {
-    //             setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb));
-    //             return &sContainerNames[6];
-    //         }
-    //         return &sContainerNames[(s8)container_param->type];
+    auto container_type {getCallTableType(asset_ctb)};
+    if (container_type < ContainerType::Asset)
+        return &sContainerNames[(u32)container_type];
 
-    //     }
-    // }
-
-    // return &sContainerNames[5];
+    return &sContainerNames[5];
 }
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const
@@ -755,7 +746,7 @@ ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb
 // NON-MATCHING: swapped registers
 const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallTable& asset_ctb, u32 idx) const
 {
-    if (checkAndErrorIsAsset_(asset_ctb, "") && getParamType(asset_ctb, idx) == ParamValueType::Bool) {
+    if (checkAndErrorIsAsset_(asset_ctb, "") && isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, idx)) {
         if (mpUserResource != nullptr) {
             ResParam* param {calcOffset<ResParam>(asset_ctb.paramStartPos)};
             ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
@@ -838,38 +829,43 @@ bool ResourceAccessor::isParamOverwritten(u32 param_pos, u32 trigger_idx) const
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_idx)};
 
     if (param_pos != 0 && overwrite_id >= 0) {
-        sead::BitFlag32* mask {calcOffset<sead::BitFlag32>(param_pos)};
-        return mask->isOnBit(overwrite_id);
+        auto* overwrite {calcOffset<ResTriggerOverwriteParam>(param_pos)};
+        return overwrite->mask.isOnBit(overwrite_id);
     }
 
     return false;
 }
 
-// NON-MATCHING: missing two instructions
-bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type, const ResTriggerOverwriteParam& overwrite_param, u32 idx) const
+bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type, const ResTriggerOverwriteParam& overwrite_param, u32 trigger_param_idx) const
 {
-    s32 overwrite_id {getTriggerOverwriteParamId_(idx)};
-    
-    if (&overwrite_param != 0 && overwrite_id >= 0) {
-        auto* mask = calcOffset<sead::BitFlag32>(reinterpret_cast<u64>(&overwrite_param));
-        if (mask->isOnBit(overwrite_id)) {
-            s32 param_idx {mask->countRightOnBit(overwrite_id)};
-            return reinterpret_cast<ResParam*>(mask)[param_idx].getRefType() == type;
+    u32 overwrite_param_pos = reinterpret_cast<u64>(&overwrite_param);
+    const ResParam* res_param {};
+
+    s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
+
+    if (overwrite_param_pos != 0 && overwrite_id >= 0) {
+        auto* overwrite = calcOffset<ResTriggerOverwriteParam>(overwrite_param_pos);
+        if (overwrite->mask.isOnBit(overwrite_id)) {
+            s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
+            res_param = &overwrite->params[param_idx];
         }
     }
+
+    if (res_param != nullptr)
+        return res_param->getRefType() == type;
     
     return false;
 }
 
-const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_start_pos, u32 overwrite_idx) const
+const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_start_pos, u32 trigger_param_idx) const
 {
-    s32 overwrite_id {getTriggerOverwriteParamId_(overwrite_idx)};
-    
+    s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
+
     if (param_start_pos != 0 && overwrite_id >= 0) {
-        auto* mask = calcOffset<sead::BitFlag32>(param_start_pos);
-        if (mask->isOnBit(overwrite_id)) {
-            s32 param_idx {mask->countRightOnBit(overwrite_id) - 1};
-            return &reinterpret_cast<ResParam*>(mask + 1)[param_idx];
+        auto* overwrite = calcOffset<ResTriggerOverwriteParam>(param_start_pos);
+        if (overwrite->mask.isOnBit(overwrite_id)) {
+            s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
+            return &reinterpret_cast<ResParam*>(&overwrite->mask + 1)[param_idx];
         }
     }
 
@@ -885,31 +881,32 @@ const ResRandomCallTable* ResourceAccessor::getResRandomCallTable_(const ResPara
     return nullptr;
 }
 
-f32 ResourceAccessor::getResOverwriteParamValueFloat_(u32 param_idx, u32 overwrite_idx, const UserInstance* user_instance) const
+f32 ResourceAccessor::getResOverwriteParamValueFloat_(u32 param_start_pos, u32 trigger_param_idx, const UserInstance* user_instance) const
 {
-    const ResParam* res_param {getResParamFromOverwriteParamPos_(param_idx, overwrite_idx)};
+    const ResParam* res_param {getResParamFromOverwriteParamPos_(param_start_pos, trigger_param_idx)};
     if (res_param != nullptr)
         return getResParamValueFloat_(*res_param, user_instance);
 
     return 0.0f;
 }
 
-const char* ResourceAccessor::getResOverwriteParamValueString_(u32 param_idx, u32 overwrite_idx) const
+const char* ResourceAccessor::getResOverwriteParamValueString_(u32 param_start_pos, u32 trigger_param_idx) const
 {
-    s32 overwrite_id {getTriggerOverwriteParamId_(overwrite_idx)};
-    
-    if (param_idx != 0 && overwrite_id >= 0) {
-        auto* mask = calcOffset<sead::BitFlag32>(param_idx);
-        if (mask->isOnBit(overwrite_id)) {
-            s32 param_idx {mask->countRightOnBit(overwrite_id)};
-            auto* res_param = &reinterpret_cast<ResParam*>(mask)[param_idx];
-            return getResParamValueString_(*res_param);
+    const ResParam* res_param {};
+
+    s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
+
+    if (param_start_pos != 0 && overwrite_id >= 0) {
+        auto* overwrite = calcOffset<ResTriggerOverwriteParam>(param_start_pos);
+        if (overwrite->mask.isOnBit(overwrite_id)) {
+            s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
+            res_param = &overwrite->params[param_idx];
         }
     }
 
+    if (res_param != nullptr)
+        return getResParamValueString_(*res_param);
 
     return "";
 }
-
-
 }  // namespace xlink2

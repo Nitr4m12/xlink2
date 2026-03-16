@@ -125,10 +125,6 @@ public:
     const char* getResOverwriteParamValueString_(u32, u32) const;
 
 protected:
-    ResUserHeader* mpUserHeader {nullptr};
-    UserResource* mpUserResource {nullptr};
-    System* mpSystem {nullptr};
-
     const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* fallback) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
@@ -187,6 +183,12 @@ protected:
         f32 param_value {getResOverwriteParamValueFloat_(idx, define_idx, user_instance)};
         return param_value < 0.0f ? 0.0f : param_value;
     }
+
+    ResUserHeader* mpUserHeader {nullptr};
+    UserResource* mpUserResource {nullptr};
+    System* mpSystem {nullptr};
+
+    static const sead::SafeString sContainerNames[6];
 };
 
 class ResourceAccessor2 : public ResourceAccessor {
