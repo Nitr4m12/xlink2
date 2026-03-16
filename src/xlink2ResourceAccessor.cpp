@@ -6,6 +6,8 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+ResourceAccessor::~ResourceAccessor() = default;
+
 const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) const
 {
     if (mpUserResource && mpSystem->isCallEnabled()) {
@@ -64,27 +66,25 @@ const char* ResourceAccessor::getKeyName(const ResAssetCallTable& asset_ctb) con
     return calcOffset<const char>(asset_ctb.keyNamePos);
 }
 
-// NON-MATCHING: Wrong register
 ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_ctb) const
 {
-    if (isContainer(asset_ctb)) {
-        auto* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
-        if (container_param != nullptr) {
-            if (container_param->type > ContainerType::Sequence) {
-                setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
-                return ContainerType::Asset;
-            }
-            return container_param->type;
+
+    auto* container_param {getContainer(asset_ctb)};
+    if (container_param != nullptr) {
+        if (container_param->type >= ContainerType::Asset) {
+            setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
+            return ContainerType::Asset;
         }
+        return container_param->type;
     }
 
     return ContainerType::Asset;
 }
 
-const ContainerBase* ResourceAccessor::getContainer(const ResAssetCallTable& asset_ctb) const
+const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable& asset_ctb) const
 {
     if (isContainer(asset_ctb))
-        return calcOffset<ContainerBase>(asset_ctb.paramStartPos);
+        return calcOffset<ResContainerParam>(asset_ctb.paramStartPos);
     return nullptr;
 }
 
@@ -327,49 +327,49 @@ f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param, const Us
             return getRandomValue(*random_ctb_item, 1.5f);
         break;
     }
-    case ValueReferenceType::RandomWeightMin2Pow: {
+    case ValueReferenceType::Random2PowWeightMin: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 2.0f);
         break;
     }
-    case ValueReferenceType::RandomWeightMin3Pow: {
+    case ValueReferenceType::Random3PowWeightMin: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 3.0f);
         break;
     }
-    case ValueReferenceType::RandomWeightMin4Pow: {
+    case ValueReferenceType::Random4PowWeightMin: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 4.0f);
         break;
     }
-    case ValueReferenceType::RandomWeightMin1Point5Pow: {
+    case ValueReferenceType::Random1Point5PowWeightMin: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMin(*random_ctb_item, 1.5f);
         break;
     }
-    case ValueReferenceType::RandomWeightMax2Pow: {
+    case ValueReferenceType::Random2PowWeightMax: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 2.0f);
         break;
     }
-    case ValueReferenceType::RandomWeightMax3Pow: {
+    case ValueReferenceType::Random3PowWeightMax: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 3.0f);
         break;
     }
-    case ValueReferenceType::RandomWeightMax4Pow: {
+    case ValueReferenceType::Random4PowWeightMax: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 4.0f);
         break;
     }
-    case ValueReferenceType::RandomWeightMax1Point5Pow: {
+    case ValueReferenceType::Random1Point5PowWeightMax: {
         const ResRandomCallTable* random_ctb_item {getResRandomCallTable_(res_param)};
         if (random_ctb_item != nullptr)
             return getRandomValueWeightMax(*random_ctb_item, 1.5f);

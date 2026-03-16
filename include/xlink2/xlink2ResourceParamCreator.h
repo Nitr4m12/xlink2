@@ -135,7 +135,9 @@ private:
         for (u32 i {0}; i < user_header->numResActionTrigger; ++i) {
             ResActionTrigger* action_trigger {&action_trigger_table[i]};
             action_trigger->assetCtbPos += reinterpret_cast<u64>(asset_ctb);
-            action_trigger->overwriteParamPos = action_trigger->overwriteParamPos != -1 ? action_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
+            action_trigger->overwriteParamPos = action_trigger->overwriteParamPos != -1 
+                                              ? action_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos 
+                                              : 0;
 
             if (ActionTriggerCtrl::getActionTriggerType_(*action_trigger) == TriggerType::None)
                 action_trigger->startFrame += common_res_param->nameTablePos;
@@ -148,8 +150,12 @@ private:
         for (u32 i {0}; i < user_header->numResPropertyTrigger; ++i) {
             ResPropertyTrigger* property_trigger {&property_trigger_table[i]};
             property_trigger->assetCtbPos += reinterpret_cast<u64>(asset_ctb);
-            property_trigger->condition = property_trigger->condition != -1 ? property_trigger->condition + common_res_param->conditionTablePos : 0;
-            property_trigger->overwriteParamPos = property_trigger->overwriteParamPos != -1 ? property_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
+            property_trigger->condition = property_trigger->condition != -1 
+                                        ? property_trigger->condition + common_res_param->conditionTablePos 
+                                        : 0;
+            property_trigger->overwriteParamPos = property_trigger->overwriteParamPos != -1 
+                                                ? property_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos 
+                                                : 0;
         }
     }
 

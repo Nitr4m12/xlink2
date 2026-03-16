@@ -59,12 +59,12 @@ static_assert(sizeof(ResParam) == 0x4, "xlink2::ResParam size mismatch");
 
 struct ResAssetParam {
     sead::BitFlag64 mask;
-    ResParam params[0];
+    ResParam params[1];
 };
 
 struct ResTriggerOverwriteParam {
     sead::BitFlag32 mask;
-    ResParam params[0];
+    ResParam params[1];
 };
 
 struct ResUserHeader {

@@ -83,7 +83,7 @@ bool ContainerBase::killOneTimeEvent()
 }
 
 ContainerBase* ContainerBase::createChildContainer_(const ResAssetCallTable& asset_call_table,
-                                           ContainerBase* container)
+                                                    ContainerBase* container)
 {
     auto* child_container{ContainerCreator::CreateContainer(mpEvent, asset_call_table)};
 

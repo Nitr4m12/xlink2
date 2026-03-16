@@ -13,7 +13,7 @@ class ContainerBase;
 
 class ResourceAccessor {
 public:
-    virtual ~ResourceAccessor() = default;
+    virtual ~ResourceAccessor();
     virtual bool isBlankAsset(const ResAssetCallTable&) const = 0;
     virtual const char* getBoneName(const ResAssetCallTable&) const = 0;
     virtual bool isBoneNameOverwritten(u32) const = 0;
@@ -36,7 +36,7 @@ public:
 
     ContainerType getCallTableType(const ResAssetCallTable&) const;
 
-    const ContainerBase* getContainer(const ResAssetCallTable&) const;
+    const ResContainerParam* getContainer(const ResAssetCallTable&) const;
 
     const sead::SafeString* getCallTableTypeName(const ResAssetCallTable&) const;
 
