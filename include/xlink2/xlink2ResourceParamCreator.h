@@ -172,9 +172,9 @@ private:
     static void solveSwitchConditionAboutGlobalProperty(u32 condition_pos, const EnumPropertyDefinition* enum_prop_define)
     {
         if (condition_pos != 0) {
-            auto* condition {calcOffset<ResSwitchCondition>(condition_pos)};
+            auto* condition {solveOffset<ResSwitchCondition>(condition_pos)};
             if (!condition->isSolved) {
-                const char* prop_key {calcOffset<char>(condition->value)};
+                const char* prop_key {solveOffset<char>(condition->value)};
                 s32 enum_name_idx {enum_prop_define->searchEntryValueByKey(prop_key)};
                 condition->localPropertyEnumNameIdx = enum_name_idx;
                 condition->isSolved = true;

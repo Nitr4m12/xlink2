@@ -55,7 +55,7 @@ ResUserHeader* ResourceBuffer::searchResUserHeader(const char* user_name) const
             u32 entry_hash {mRomResourceParam.nameHashTable[middle]};
 
             if (entry_hash == hash)
-                return calcOffset<ResUserHeader>(mRomResourceParam.offsetTable[middle]);
+                return solveOffset<ResUserHeader>(mRomResourceParam.offsetTable[middle]);
 
             if (entry_hash < hash) {
                 if (start == middle)

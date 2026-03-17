@@ -104,7 +104,7 @@ ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerT
             if (asset_param == nullptr)
                 return nullptr;
 
-            char* key_name {calcOffset<char>(asset_param->keyNamePos)};
+            char* key_name {solveOffset<char>(asset_param->keyNamePos)};
 
             const s32 c {strcmp(name, key_name)};
             if (c == 0)
@@ -203,7 +203,7 @@ bool UserResource::doBinarySearchToNameArray_(s32* value_idx, const char* name, 
 
     while (a <= b) {
         const s32 m = (a + b) / 2;
-        char* key_name {calcOffset<char>(name_refs[m])};
+        char* key_name {solveOffset<char>(name_refs[m])};
 
         const s32 c {strcmp(name, key_name)};
         if (c == 0) {
@@ -241,7 +241,7 @@ ResAssetCallTable* UserResource::searchAssetAllResource(const char* name) const
     UserResourceParam* param {getParam()};
     if (param != nullptr && param->isSetup && param->userBinParam.pResUserHeader->numCallTable != 0) {
         for (u64 i {0}; i < param->userBinParam.pResUserHeader->numCallTable; ++i) {
-            char* key_name {calcOffset<char>(param->userBinParam.pResAssetCallTable[i].keyNamePos)};
+            char* key_name {solveOffset<char>(param->userBinParam.pResAssetCallTable[i].keyNamePos)};
             if (strcmp(name, key_name) == 0)
                 return &param->userBinParam.pResAssetCallTable[i];
         }

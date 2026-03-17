@@ -305,7 +305,7 @@ void UserInstance::emitImpl(const Locator& locator, Handle* handle)
         if (locator.getAssetCallTable() == nullptr)
             asset_key_name = "";
         else
-            asset_key_name = calcOffset<char>(locator.getAssetCallTable()->keyNamePos);
+            asset_key_name = solveOffset<char>(locator.getAssetCallTable()->keyNamePos);
 
         if (checkAndErrorCallWithoutSetup_("emit %s", asset_key_name) && mBitFlag.isOffBit(1) && locator.getAssetCallTable() != nullptr && !doEventActivatingCallback_(locator)) {
             Event* event {};
@@ -313,7 +313,7 @@ void UserInstance::emitImpl(const Locator& locator, Handle* handle)
                 auto lock {sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj())};
                 event = mUser->getSystem()->allocEvent();
                 if (event == nullptr)
-                    mUser->getSystem()->addError(Error::Type::EventPoolFull, mUser, "emit[%s] failed.", calcOffset<char*>(locator.getAssetCallTable()->keyNamePos));
+                    mUser->getSystem()->addError(Error::Type::EventPoolFull, mUser, "emit[%s] failed.", solveOffset<char*>(locator.getAssetCallTable()->keyNamePos));
                 else {
                     auto* asset_call_table {locator.getAssetCallTable()};
                     if (locator.get1())

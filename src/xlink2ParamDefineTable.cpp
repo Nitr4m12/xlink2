@@ -80,21 +80,21 @@ void ParamDefineTable::dump_() {}
 const char* ParamDefineTable::getUserParamName(u32 idx) const 
 {
     if (mpUserParamDefine)
-        return calcOffset<char>(mpUserParamDefine[idx].namePos);
+        return solveOffset<char>(mpUserParamDefine[idx].namePos);
     return nullptr;
 }
 
 const char* ParamDefineTable::getAssetParamName(u32 idx) const 
 {
     if (idx < mNumAssetParam)
-        return calcOffset<char>(mpAssetParamDefine[idx].namePos);
+        return solveOffset<char>(mpAssetParamDefine[idx].namePos);
     return nullptr;
 }
 
 const char* ParamDefineTable::getTriggerParamName(u32 idx) const 
 {
     if (mpTriggerParamDefine)
-        return calcOffset<char>(mpTriggerParamDefine[idx].namePos);
+        return solveOffset<char>(mpTriggerParamDefine[idx].namePos);
     return nullptr;
 }
 
@@ -102,7 +102,7 @@ s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(const char* custom_
 {
     if (custom_param_name != nullptr) {
         for (u32 asset_param_idx {mNumStandardAssetParam}; asset_param_idx < mNumAssetParam; ++asset_param_idx) {
-            char* asset_param_name = calcOffset<char>(mpAssetParamDefine[asset_param_idx].namePos);
+            char* asset_param_name = solveOffset<char>(mpAssetParamDefine[asset_param_idx].namePos);
             if (asset_param_name && std::strcmp(custom_param_name, asset_param_name) == 0)
                 return asset_param_idx;
         }
@@ -115,7 +115,7 @@ s32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_p
 {
     if (custom_param_name != nullptr) {
         for (u32 user_param_idx {mNumCustomUserParam}; user_param_idx < mNumUserParam; ++user_param_idx) {
-            char* user_param_name = calcOffset<char>(mpUserParamDefine[user_param_idx].namePos);
+            char* user_param_name = solveOffset<char>(mpUserParamDefine[user_param_idx].namePos);
             if (user_param_name && std::strcmp(custom_param_name, user_param_name) == 0)
                 return user_param_idx;
         }
@@ -161,7 +161,7 @@ f32 ParamDefineTable::getUserParamDefaultValueFloat(u32 id) const
 const char* ParamDefineTable::getUserParamDefaultValueString(u32 id) const 
 {
     if (mpUserParamDefine)
-        return calcOffset<char>(mpUserParamDefine[id].defaultValueString);
+        return solveOffset<char>(mpUserParamDefine[id].defaultValueString);
     return "";
 }
 
@@ -182,7 +182,7 @@ f32 ParamDefineTable::getAssetParamDefaultValueFloat(u32 id) const
 const char* ParamDefineTable::getAssetParamDefaultValueString(u32 id) const 
 {
     if (id < mNumAssetParam)
-        return calcOffset<char>(mpAssetParamDefine[id].defaultValueString);
+        return solveOffset<char>(mpAssetParamDefine[id].defaultValueString);
     return "";
 }
 
@@ -203,7 +203,7 @@ f32 ParamDefineTable::getTriggerParamDefaultValueFloat(u32 id) const
 const char* ParamDefineTable::getTriggerParamDefaultValueString(u32 id) const 
 {
     if (mpTriggerParamDefine)
-        return calcOffset<char>(mpTriggerParamDefine[id].defaultValueString);
+        return solveOffset<char>(mpTriggerParamDefine[id].defaultValueString);
     return nullptr;
 }
 

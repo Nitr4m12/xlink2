@@ -58,10 +58,10 @@ bool SequenceContainer::callChildSequence_(s32 idx)
     Event* event {mpEvent};
 
     const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable)->cstr()};
-    const char* key_name {calcOffset<char>(mpAssetCallTable->keyNamePos)};
+    const char* key_name {solveOffset<char>(mpAssetCallTable->keyNamePos)};
     
     const char* container_child_name {user_instance->getContainerTypeName(*asset_ctb_item)->cstr()};
-    const char* key_name_child {calcOffset<char>(asset_ctb_item->keyNamePos)};
+    const char* key_name_child {solveOffset<char>(asset_ctb_item->keyNamePos)};
 
     user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_child_name, key_name_child, idx);
 

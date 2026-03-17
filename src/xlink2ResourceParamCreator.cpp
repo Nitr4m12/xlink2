@@ -64,7 +64,7 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
         u32 user_bin = rom_res_param->offsetTable[i] + static_cast<u32>(reinterpret_cast<u64>(bin));
         rom_res_param->offsetTable[i] = user_bin;
         
-        auto* user_header {calcOffset<ResUserHeader>(user_bin)};
+        auto* user_header {solveOffset<ResUserHeader>(user_bin)};
         if (user_header->isSetup == 0)
             solveUserBin_(user_header, rom_res_param, param_define);
     }
@@ -204,7 +204,7 @@ void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res
         common_res_param->curveCallTable[i].propName += common_res_param->nameTablePos;
 
     for (u32 i {common_res_param->conditionTablePos}, condition_size {0}; i < common_res_param->nameTablePos; i += condition_size) {
-        auto* res_condition {calcOffset<ResCondition>(i)};
+        auto* res_condition {solveOffset<ResCondition>(i)};
 
         switch (res_condition->parentContainerType) {
         case ContainerType::Switch: {
@@ -239,7 +239,7 @@ void ResourceParamCreator::solveUserBin_(ResUserHeader * user_header, CommonReso
     for (u32 i {0}; i < user_header->numCallTable; ++i) {
         ResAssetCallTable* asset_ctb_item {&bin_param.pResAssetCallTable[i]};
         asset_ctb_item->keyNamePos += common_res_param->nameTablePos;
-        const char* key_name {calcOffset<char>(asset_ctb_item->keyNamePos)};
+        const char* key_name {solveOffset<char>(asset_ctb_item->keyNamePos)};
         asset_ctb_item->keyNameHash = sead::HashCRC32::calcHash(key_name, strnlen(key_name, 256));
 
         if (asset_ctb_item->flag.isOffBit(0)) {
@@ -252,7 +252,7 @@ void ResourceParamCreator::solveUserBin_(ResUserHeader * user_header, CommonReso
             }
             else {
                 asset_ctb_item->paramStartPos += bin_param.containerTablePos;
-                ResContainerParam* container_param {calcOffset<ResContainerParam>(asset_ctb_item->paramStartPos)};
+                ResContainerParam* container_param {solveOffset<ResContainerParam>(asset_ctb_item->paramStartPos)};
                 if (container_param->type == ContainerType::Switch)
                     static_cast<ResSwitchContainerParam*>(container_param)->watchPropertyNamePos += common_res_param->nameTablePos;
             }
@@ -285,7 +285,7 @@ void ResourceParamCreator::solveAboutGlobalProperty(RomResourceParam* rom_res_pa
     solveCommonResourceAboutGlobalProperty_(rom_res_param, system);
     
     for (u32 i {0}; i < rom_res_param->numUser; ++i)
-        solveUserBinAboutGlobalProperty_(calcOffset<ResUserHeader>(rom_res_param->offsetTable[i]), param_define, system);
+        solveUserBinAboutGlobalProperty_(solveOffset<ResUserHeader>(rom_res_param->offsetTable[i]), param_define, system);
 }
 
 void ResourceParamCreator::createParamAndSolveResource(EditorResourceParam* editor_res_param, const sead::SafeString& editor_name, 
@@ -308,7 +308,7 @@ void ResourceParamCreator::createParamAndSolveResource(EditorResourceParam* edit
     
     EditorHeader* header {reinterpret_cast<EditorHeader*>(editor_res_param->binBuffer)};
     u32 user_bin_pos = reinterpret_cast<u64>(header) + header->userBinPos;
-    editor_res_param->pResUserHeader = calcOffset<ResUserHeader>(user_bin_pos);
+    editor_res_param->pResUserHeader = solveOffset<ResUserHeader>(user_bin_pos);
 
     BinAccessor bin_accessor {header, param_define};
     
@@ -397,7 +397,7 @@ void ResourceParamCreator::createUserBinParam(UserBinParam* user_bin_param, ResU
     if (user_header->numCallTable != user_header->numAsset)
         user_bin_param->containerTablePos = container_table_pos; 
 
-    ResActionSlot* action_slot_table {calcOffset<ResActionSlot>(reinterpret_cast<u64>(user_header) + user_header->triggerTablePos)};
+    ResActionSlot* action_slot_table {solveOffset<ResActionSlot>(reinterpret_cast<u64>(user_header) + user_header->triggerTablePos)};
     if (user_header->numResActionSlot > 0)
         user_bin_param->pResActionSlotTable = action_slot_table;
     
@@ -427,11 +427,11 @@ void ResourceParamCreator::solveCommonResourceAboutGlobalProperty_(CommonResourc
     for (u32 i {0}; i < common_res_param->numCurveTable; ++i) {
         ResCurveCallTable* curve_ctb_item {common_res_param->curveCallTable};
         if (curve_ctb_item[i].isPropGlobal != 0 && curve_ctb_item[i].localPropertyNameIdx == -1) {
-            const char* prop_name {calcOffset<char>(curve_ctb_item[i].propName)};
+            const char* prop_name {solveOffset<char>(curve_ctb_item[i].propName)};
             s32 global_property_idx {system->searchGlobalPropertyIndex(prop_name)};
 
             if (global_property_idx == -1) 
-                system->addError(Error::Type::PropertyNotFound, nullptr, "property[%s(G)] in curve", calcOffset<char>(curve_ctb_item[i].propName));
+                system->addError(Error::Type::PropertyNotFound, nullptr, "property[%s(G)] in curve", solveOffset<char>(curve_ctb_item[i].propName));
             else 
                 curve_ctb_item[i].localPropertyNameIdx = global_property_idx;
         }
@@ -445,16 +445,16 @@ void ResourceParamCreator::solveUserBinAboutGlobalProperty_(ResUserHeader* user_
     for (u32 i {0}; i < user_header->numCallTable; ++i) {
         ResAssetCallTable* asset_ctb {bin_param.pResAssetCallTable};
         if (asset_ctb[i].flag.isOnBit(0) && asset_ctb[i].paramStartPos != 0) {
-            auto* container {calcOffset<ResSwitchContainerParam>(asset_ctb[i].paramStartPos)};
+            auto* container {solveOffset<ResSwitchContainerParam>(asset_ctb[i].paramStartPos)};
             if (container->type == ContainerType::Switch && container->isGlobal) {
                 if (container->localPropertyNameIdx == -1) {
-                    const char* watch_prop_name {calcOffset<char>(container->watchPropertyNamePos)};
+                    const char* watch_prop_name {solveOffset<char>(container->watchPropertyNamePos)};
 
                     s32 idx {system->searchGlobalPropertyIndex(watch_prop_name)};
                     if (idx == -1) {
                         system->addError(Error::Type::PropertyNotFound, nullptr, "property[%s(G)] in swContainer(%s)", 
-                                         calcOffset<char>(container->watchPropertyNamePos), 
-                                         calcOffset<char>(asset_ctb[i].keyNamePos));
+                                         solveOffset<char>(container->watchPropertyNamePos), 
+                                         solveOffset<char>(asset_ctb[i].keyNamePos));
                         continue;
                     }
 
@@ -475,7 +475,7 @@ void ResourceParamCreator::solveUserBinAboutGlobalProperty_(ResUserHeader* user_
     for (u32 i {0}; i < user_header->numResProperty; ++i) {
         ResProperty* property_table {bin_param.pResPropertyTable};
         if (property_table[i].isGlobal != 0) {
-            const char* watch_prop_name {calcOffset<char>(property_table[i].watchPropertyNamePos)};
+            const char* watch_prop_name {solveOffset<char>(property_table[i].watchPropertyNamePos)};
             s32 idx {system->searchGlobalPropertyIndex(watch_prop_name)};
             if (idx != -1) {
                 const PropertyDefinition* prop_define {system->getPropertyDefinition(idx)};
@@ -561,7 +561,7 @@ void ResourceParamCreator::dumpCommonResourceFront_(CommonResourceParam* common_
     s32 ow_param_table_pos {static_cast<s32>(trigger_param_table_start)};
 
     for (s32 i {0}; i < common_res_param->numResTriggerOverwriteParam; ++i) {
-        auto* trigger_param {calcOffset<ResTriggerOverwriteParam>(ow_param_table_pos)};
+        auto* trigger_param {solveOffset<ResTriggerOverwriteParam>(ow_param_table_pos)};
         if (print_content)
             dumpLine_(dump_str, "  [%d] mask: %lu\n", i, trigger_param->mask.getDirect());
 
@@ -837,7 +837,7 @@ void ResourceParamCreator::dumpUserBin_(u32 user_index, const sead::SafeString& 
 
     // ------------------------------------- ResActionSlotTable ------------------------------------
     
-    ResActionSlot* action_slot_table {calcOffset<ResActionSlot>(reinterpret_cast<u64>(user_header) + user_header->triggerTablePos)};
+    ResActionSlot* action_slot_table {solveOffset<ResActionSlot>(reinterpret_cast<u64>(user_header) + user_header->triggerTablePos)};
 
     dumpLine_(dump_str, "    << ResActionSlotTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(action_slot_table), user_header->numResActionSlot);
     for (u32 i{0}; i < user_header->numResActionSlot; ++i) {
@@ -973,7 +973,7 @@ void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_r
               common_res_param->nameTablePos, name_table_size);
     if (name_table_size != 0) {
         char* dest = new (heap) char[name_table_size];
-        char* src = calcOffset<char>(common_res_param->nameTablePos);
+        char* src = solveOffset<char>(common_res_param->nameTablePos);
         memcpy(dest, src, name_table_size);
 
         for (s32 i {0}; i < name_table_size - 1; ++i) {

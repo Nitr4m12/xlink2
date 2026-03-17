@@ -46,7 +46,7 @@ void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx)
 
     if (!action_trigger->flag.isOn(1) || !getModelTriggerConnection_(action_trigger_idx)->isActive) {
         s32 ow_param_pos {action_trigger->overwriteParamPos};
-        ResAssetCallTable* asset_ctb {calcOffset<ResAssetCallTable>(action_trigger->assetCtbPos)};
+        ResAssetCallTable* asset_ctb {solveOffset<ResAssetCallTable>(action_trigger->assetCtbPos)};
         emitByTriggerImpl_(TriggerType::Action, action_trigger_idx, ow_param_pos, asset_ctb);
         getModelTriggerConnection_(action_trigger_idx)->isActive = true;
     }
@@ -81,7 +81,7 @@ ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot,
 
     ResAction* action_table = user_res_param->userBinParam.pResActionTable;
     for (s32 i = action_slot->actionStartIdx; i <= action_slot->actionEndIdx; ++i) {
-        if (strcmp(calcOffset<const char>(action_table[i].namePos), name) == 0) {
+        if (strcmp(solveOffset<const char>(action_table[i].namePos), name) == 0) {
             if (idx != nullptr)
                 *idx = i;
             return action_table + i;

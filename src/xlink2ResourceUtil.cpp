@@ -5,7 +5,7 @@ namespace xlink2 {
 ResContainerParam* ResourceUtil::getResContainerParam(const ResAssetCallTable& asset_ctb)
 {
     if (asset_ctb.flag.isOnBit(0))
-        return calcOffset<ResContainerParam>(asset_ctb.paramStartPos);
+        return solveOffset<ResContainerParam>(asset_ctb.paramStartPos);
     
     return nullptr;
 }

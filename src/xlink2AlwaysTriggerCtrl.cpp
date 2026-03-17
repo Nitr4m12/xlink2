@@ -28,7 +28,7 @@ void AlwaysTriggerCtrl::calc()
         s32 num_always_trigger {static_cast<s32>(user_header->numResAlwaysTrigger)};
 
         for (s32 i {0}; i < num_always_trigger; ++i) {
-            auto* asset_ctb {calcOffset<ResAssetCallTable>(always_trigger_table[i].assetCtbPos)};
+            auto* asset_ctb {solveOffset<ResAssetCallTable>(always_trigger_table[i].assetCtbPos)};
             if (!mIsActive) {
                 ResourceAccessor* accessor {user_resource->getAccessor()};
                 if (!accessor->isNeedObserve(*asset_ctb))
@@ -48,7 +48,7 @@ void AlwaysTriggerCtrl::calc()
 void AlwaysTriggerCtrl::emitByTrigger_(s32 idx) 
 {
     ResAlwaysTrigger* always_trigger {mUserInstance->getUser()->getUserResource()->getAlwaysTriggerTableItem(idx)};
-    ResAssetCallTable* call_table {calcOffset<ResAssetCallTable>(always_trigger->assetCtbPos)};
+    ResAssetCallTable* call_table {solveOffset<ResAssetCallTable>(always_trigger->assetCtbPos)};
     emitByTriggerImpl_(TriggerType::Always, idx, always_trigger->overwriteParamPos, call_table);
 }
 

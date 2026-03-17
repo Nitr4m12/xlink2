@@ -63,7 +63,7 @@ void ResourceAccessor::setError_(const char* fmt, ...) const
 
 const char* ResourceAccessor::getKeyName(const ResAssetCallTable& asset_ctb) const
 {
-    return calcOffset<const char>(asset_ctb.keyNamePos);
+    return solveOffset<const char>(asset_ctb.keyNamePos);
 }
 
 ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_ctb) const
@@ -83,7 +83,7 @@ ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_
 const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable& asset_ctb) const
 {
     if (isContainer(asset_ctb))
-        return calcOffset<ResContainerParam>(asset_ctb.paramStartPos);
+        return solveOffset<ResContainerParam>(asset_ctb.paramStartPos);
     return nullptr;
 }
 
@@ -136,7 +136,7 @@ const char* ResourceAccessor::getCustomParamValueString(u32 idx,
 
 const ResParam* ResourceAccessor::getResParamFromAssetParamPos(u32 param_start_pos, u32 idx) const
 {
-    auto* mask = calcOffset<sead::BitFlag64>(param_start_pos);
+    auto* mask = solveOffset<sead::BitFlag64>(param_start_pos);
     if (mask->isOnBit(idx)) {
         s32 param_idx {mask->countRightOnBit(idx) - 1};
         return &reinterpret_cast<ResParam*>(mask + 1)[param_idx];
@@ -170,7 +170,7 @@ const char* ResourceAccessor::getResParamValueString_(const ResParam& param) con
     UserResourceParam* user_param = mpUserResource->getParam();
     u64 value_string_pos =
         user_param->pCommonResourceParam->nameTablePos + (param.getValue());
-    return calcOffset<char>(value_string_pos);
+    return solveOffset<char>(value_string_pos);
 }
 
 bool ResourceAccessor::getCustomParamValueBool(u32 idx, const ResAssetCallTable& asset_ctb) const
@@ -655,7 +655,7 @@ const char* ResourceAccessor::getUserCustomParamValueString(s32 idx) const
     s32 param_raw_value {user_params[id].getValue()};
 
     u32 value_pos {name_table_pos + param_raw_value};
-    const char* value_str {calcOffset<const char>(value_pos)};
+    const char* value_str {solveOffset<const char>(value_pos)};
     return value_str;
 }
 
@@ -695,7 +695,7 @@ const char* ResourceAccessor::getUserCustomParamValueString(const char* name) co
     s32 param_raw_value {user_params[id].getValue()};
 
     u32 value_pos {name_table_pos + param_raw_value};
-    const char* value_str {calcOffset<const char>(value_pos)};
+    const char* value_str {solveOffset<const char>(value_pos)};
     return value_str;
 }
 
@@ -748,7 +748,7 @@ const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallT
 {
     if (checkAndErrorIsAsset_(asset_ctb, "") && isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, idx)) {
         if (mpUserResource != nullptr) {
-            ResParam* param {calcOffset<ResParam>(asset_ctb.paramStartPos)};
+            ResParam* param {solveOffset<ResParam>(asset_ctb.paramStartPos)};
             ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
             return curve_ctb != nullptr ? &curve_ctb[param[idx].getValue()] : nullptr;
         }
@@ -799,7 +799,7 @@ s32 ResourceAccessor::getContainerChildNum(const ResAssetCallTable& asset_ctb) c
     if (!asset_ctb.flag.isOnBit(0)) 
         return 0;
     
-    auto* container_param {calcOffset<ResContainerParam>(asset_ctb.paramStartPos)};
+    auto* container_param {solveOffset<ResContainerParam>(asset_ctb.paramStartPos)};
     if (container_param != nullptr)
         return getContainerChildNum(*container_param);
 
@@ -829,7 +829,7 @@ bool ResourceAccessor::isParamOverwritten(u32 param_pos, u32 trigger_idx) const
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_idx)};
 
     if (param_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite {calcOffset<ResTriggerOverwriteParam>(param_pos)};
+        auto* overwrite {solveOffset<ResTriggerOverwriteParam>(param_pos)};
         return overwrite->mask.isOnBit(overwrite_id);
     }
 
@@ -844,7 +844,7 @@ bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type, const 
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
 
     if (overwrite_param_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite = calcOffset<ResTriggerOverwriteParam>(overwrite_param_pos);
+        auto* overwrite = solveOffset<ResTriggerOverwriteParam>(overwrite_param_pos);
         if (overwrite->mask.isOnBit(overwrite_id)) {
             s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
             res_param = &overwrite->params[param_idx];
@@ -862,7 +862,7 @@ const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_st
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
 
     if (param_start_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite = calcOffset<ResTriggerOverwriteParam>(param_start_pos);
+        auto* overwrite = solveOffset<ResTriggerOverwriteParam>(param_start_pos);
         if (overwrite->mask.isOnBit(overwrite_id)) {
             s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
             return &reinterpret_cast<ResParam*>(&overwrite->mask + 1)[param_idx];
@@ -897,7 +897,7 @@ const char* ResourceAccessor::getResOverwriteParamValueString_(u32 param_start_p
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
 
     if (param_start_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite = calcOffset<ResTriggerOverwriteParam>(param_start_pos);
+        auto* overwrite = solveOffset<ResTriggerOverwriteParam>(param_start_pos);
         if (overwrite->mask.isOnBit(overwrite_id)) {
             s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
             res_param = &overwrite->params[param_idx];
