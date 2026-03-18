@@ -40,6 +40,14 @@ const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_c
     return this->getResParamValueString("getGroupName", asset_ctb, 3, "");
 }
 
+s8 ResourceAccessorELink::getGroupId(const ResAssetCallTable& asset_ctb) const
+{
+    auto* solved_asset_param {static_cast<UserResourceELink*>(mpUserResource)->getSolvedAssetParameterELink(asset_ctb)};
+    if (solved_asset_param != nullptr)
+        return solved_asset_param->groupId;
+    return -1;
+}
+
 ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAssetCallTable& asset_ctb) const
 {
     u32 param_value {0};

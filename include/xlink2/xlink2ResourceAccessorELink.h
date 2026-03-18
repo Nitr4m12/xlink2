@@ -26,7 +26,7 @@ public:
     s16 getEsetVal(const ResAssetCallTable& asset_ctb) const;
     
     const char* getGroupName(const ResAssetCallTable& asset_ctb) const;
-    u64 getGroupId(const ResAssetCallTable& asset_ctb) const;
+    s8 getGroupId(const ResAssetCallTable& asset_ctb) const;
     
     ClipType getClipType(const ResAssetCallTable& asset_ctb) const;
 
