@@ -12,7 +12,7 @@ public:
     UserResourceELink(User*, sead::Heap*);
     ~UserResourceELink() override;
 
-    u64 getSolvedAssetParameterELink(const ResAssetCallTable&);
+    SolvedAssetParamELink* getSolvedAssetParameterELink(const ResAssetCallTable&);
 
     void solveResourceForChangeEset();
     void solveAssetParam(UserResourceELink*, const ParamDefineTable*, PtclResourceAccessorELink*);

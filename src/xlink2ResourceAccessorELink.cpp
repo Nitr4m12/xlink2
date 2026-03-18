@@ -1,5 +1,6 @@
 #include <xlink2/xlink2ResourceAccessorELink.h>
 #include <xlink2/xlink2ResourceUtil.h>
+#include "xlink2/xlink2UserResourceELink.h"
 
 namespace xlink2 {
 ResourceAccessorELink::~ResourceAccessorELink() = default;
@@ -24,6 +25,14 @@ bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) con
 const char* ResourceAccessorELink::getAssetName(const ResAssetCallTable& asset_ctb) const
 {
     return this->getResParamValueString("getAssetName", asset_ctb, 1, "");
+}
+
+s16 ResourceAccessorELink::getEsetVal(const ResAssetCallTable& asset_ctb) const
+{
+    auto* solved_asset_param {static_cast<UserResourceELink*>(mpUserResource)->getSolvedAssetParameterELink(asset_ctb)};
+    if (solved_asset_param != nullptr)
+        return solved_asset_param->esetVal;
+    return -1;
 }
 
 const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_ctb) const

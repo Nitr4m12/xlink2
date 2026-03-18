@@ -3,6 +3,11 @@
 #include "xlink2/xlink2ResourceAccessor.h"
 
 namespace xlink2 {
+struct SolvedAssetParamELink {
+    s32 esetVal;
+    s8 groupId;
+};
+
 class ResourceAccessorELink : public ResourceAccessor {
 public:
     enum class ClipType {
@@ -18,7 +23,7 @@ public:
 
     const char* getAssetName(const ResAssetCallTable& asset_ctb) const;
     
-    u64 getEsetVal(const ResAssetCallTable& asset_ctb) const;
+    s16 getEsetVal(const ResAssetCallTable& asset_ctb) const;
     
     const char* getGroupName(const ResAssetCallTable& asset_ctb) const;
     u64 getGroupId(const ResAssetCallTable& asset_ctb) const;
