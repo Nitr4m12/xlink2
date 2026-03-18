@@ -13,7 +13,9 @@ class ContainerBase;
 
 class ResourceAccessor {
 public:
-    virtual ~ResourceAccessor();
+    // Only matches SLink and ELink accessors destructors if marked default on header
+    virtual ~ResourceAccessor() = default;
+    
     virtual bool isBlankAsset(const ResAssetCallTable&) const = 0;
     virtual const char* getBoneName(const ResAssetCallTable&) const = 0;
     virtual bool isBoneNameOverwritten(u32) const = 0;
@@ -98,7 +100,7 @@ public:
     bool isLoopAsset(const ResAssetCallTable&) const;
     bool isNeedObserve(const ResAssetCallTable&) const;
 
-    ParamValueType getParamType(const ResAssetCallTable&, u32) const;
+    ValueReferenceType getParamType(const ResAssetCallTable&, u32) const;
 
     const ResCurveCallTable* getCurveCallTable(const ResAssetCallTable&, u32) const;
     const ResRandomCallTable* getRandomCallTable(const ResAssetCallTable&, u32) const;

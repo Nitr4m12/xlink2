@@ -32,7 +32,7 @@ enum ParamValueType : u32 {
     Bool,
     Enum,
     String,
-    Unknown,
+    Arrange,
     Invalid = 0xFFFFFFFF
 };
 

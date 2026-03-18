@@ -2,6 +2,7 @@
 
 #include <basis/seadTypes.h>
 #include <prim/seadBitFlag.h>
+#include <prim/seadBitUtil.h>
 
 #include "xlink2/xlink2Types.h"
 
@@ -52,7 +53,7 @@ static_assert(sizeof(EditorHeader) == 0x44, "xlink2::EditorHeader size mismatch"
 struct ResParam {
     u32 rawValue;
     
-    s32 getValue() const { return rawValue & 0xffffff; }
+    s32 getValue() const { return sead::BitUtil::bitCast<s32>(rawValue & 0xffffff); }
     ValueReferenceType getRefType() const { return static_cast<ValueReferenceType>(rawValue >> 0x18); }
 };
 static_assert(sizeof(ResParam) == 0x4, "xlink2::ResParam size mismatch");

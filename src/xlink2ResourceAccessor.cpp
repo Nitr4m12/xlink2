@@ -6,8 +6,6 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-ResourceAccessor::~ResourceAccessor() = default;
-
 const ResAssetCallTable* ResourceAccessor::searchCallTable(const char* name) const
 {
     if (mpUserResource && mpSystem->isCallEnabled()) {
@@ -643,7 +641,7 @@ bool ResourceAccessor::isCustomParamValueUsingCurve(u32 idx, const ResAssetCallT
 
 bool ResourceAccessor::isParamTypeEqual(ValueReferenceType ref_type, const ResAssetCallTable& asset_ctb, u32 idx) const
 {
-    return static_cast<ParamValueType>(ref_type) == getParamType(asset_ctb, idx);
+    return ref_type == getParamType(asset_ctb, idx);
 }
 
 const char* ResourceAccessor::getUserCustomParamValueString(s32 idx) const
@@ -726,21 +724,22 @@ f32 ResourceAccessor::getUserCustomParamValueFloat(const char* name, const UserI
     return getResParamValueFloat_(mpUserResource->getParam()->userBinParam.userParamArray[idx], user_instance);
 }
 
-ParamValueType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
+ValueReferenceType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
 {
     if (checkAndErrorIsAsset_(asset_ctb, "")) {
         const ResParam* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, idx)};
-        if (res_param != nullptr)
-            return static_cast<ParamValueType>(res_param->getRefType());
-        
-        ParamValueType value_type {mpSystem->getParamDefineTable()->getAssetParamType(idx)};
-        if (value_type != ParamValueType::String)
-            return static_cast<ParamValueType>((value_type == ParamValueType::Unknown) * 4);
-        
-        return ParamValueType::Float;
+        if (res_param == nullptr) {
+            ParamValueType value_type {mpSystem->getParamDefineTable()->getAssetParamType(idx)};
+            if (value_type == ParamValueType::String)
+                return ValueReferenceType::String;
+            
+            return value_type == ParamValueType::Arrange ? ValueReferenceType::ArrangeGroup : ValueReferenceType::Direct;
+        }
+
+        return res_param->getRefType();
     }
 
-    return ParamValueType::UInt32;
+    return ValueReferenceType::Direct;
 }
 
 // NON-MATCHING: swapped registers
@@ -757,7 +756,7 @@ const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallT
     return nullptr;
 }
 
-f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 base) const
+f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 exp) const
 {
     f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue) / 2};
 
@@ -765,7 +764,7 @@ f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 b
     f32 random_value {random_f32 - 1.0f};
     random_f32 = sead::MathCalcCommon<f32>::abs(random_f32 - 1.0f);
 
-    f32 power_range {sead::MathCalcCommon<f32>::pow(random_f32, base) * range};
+    f32 power_range {sead::MathCalcCommon<f32>::pow(random_f32, exp) * range};
     f32 result = {random_ctb.minValue + range + (random_value >= 0.0f ? power_range : -power_range)};
     return result;
 }
