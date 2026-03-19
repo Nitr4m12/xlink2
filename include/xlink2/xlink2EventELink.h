@@ -6,6 +6,8 @@
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
+class AssetExecutorELink;
+
 class EventELink : Event {
 public:
     ~EventELink() override;
@@ -50,7 +52,7 @@ public:
     void setManualParticleEmissionWithParticleCount(int);
 
     void emitParticle(sead::Vector3f&);
-    u64 getAliveAssetExecutor() const;
+    AssetExecutorELink* getAliveAssetExecutor() const;
 
     UserInstanceELink* getUserInstanceELink() const { return static_cast<UserInstanceELink*>(mpUserInstance); }
 

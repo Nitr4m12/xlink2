@@ -99,4 +99,15 @@ void EventELink::emitParticle(sead::Vector3f& particle_pos)
         executor_elink->emitParticle(particle_pos);
     }
 }
+
+AssetExecutorELink* EventELink::getAliveAssetExecutor() const
+{
+    if (mAliveAssetExecutors.size() == 1)
+        return static_cast<AssetExecutorELink*>(&*mAliveAssetExecutors.begin());
+
+    if (mAliveAssetExecutors.size() > 1)
+        SystemELink::instance()->addError(Error::Type::EventHasMultipleAsset, mpUserInstance->getUser(), "getAliveAssetExecutor failed");
+
+    return nullptr;
+}
 } // namespace xlink2
