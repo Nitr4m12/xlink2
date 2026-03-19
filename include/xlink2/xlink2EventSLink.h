@@ -12,18 +12,17 @@ namespace xlink2 {
 class AssetExecutorSLink;
 class EventSLink : Event {
 public:
-    ~EventSLink() override;
+    ~EventSLink() override = default;
+
     void initializeImpl_() override;
     
     u64 getPos(sead::Vector3f*) const;
-    u64 getVelocity() const;
+    const sead::Vector3f& getVelocity() const;
 
     u64 getAliveAssetExecutor() const;
     u64 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
 
     u64 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
-
-
 
 private:
     u32 _16;
@@ -32,9 +31,9 @@ private:
     u32 _19;
     void* _20;
     u32 _21;
-    u32 _22;
-    u32 _23;
-    sead::Vector3f mPos;
+    u32 mBiquadType;
+    float mBiquadValue;
+    sead::Vector3f mPosition;
     sead::Vector3f mVelocity;
     void* _30;
     u16 _31;
