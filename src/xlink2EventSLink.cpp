@@ -21,4 +21,24 @@ AssetExecutorSLink* EventSLink::getAliveAssetExecutor() const
 
     return nullptr;
 }
+
+s32 EventSLink::getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>* executor_ptr_array) const
+{
+    s32 num_alive_executor {0};
+    for (auto& executor : mAliveAssetExecutors) {
+        if (executor_ptr_array->isFull()) {
+            SystemSLink::instance()->addError(Error::Type::ListToGetterIsFull, mpUserInstance->getUser(), 
+                                              "getAliveAssetExecutor(maxSize=%d) failed", executor_ptr_array->capacity());
+            return num_alive_executor;
+        }
+
+        if (executor.isAssetValid()) {
+            if (!executor_ptr_array->isFull())
+                executor_ptr_array->pushBack(static_cast<AssetExecutorSLink*>(&executor));
+            ++num_alive_executor;
+        }
+    }
+
+    return num_alive_executor;
+}
 } // namespace xlink2

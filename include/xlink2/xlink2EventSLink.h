@@ -20,7 +20,7 @@ public:
     const sead::Vector3f& getVelocity() const;
 
     AssetExecutorSLink* getAliveAssetExecutor() const;
-    u64 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
+    s32 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
 
     u64 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
 
