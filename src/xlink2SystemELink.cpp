@@ -5,10 +5,6 @@ u32 SystemELink::getResourceVersion() const {
     return 0x1e;
 }
 
-u32 SystemELink::getUserParamNum() const {
-    return 0;
-}
-
 sead::SafeString* SystemELink::getModuleName() const
 {
     return &sModuleName;
@@ -17,6 +13,18 @@ sead::SafeString* SystemELink::getModuleName() const
 const sead::SafeString* SystemELink::getORIconString()
 {
     return &sORIconString;
+}
+
+Event* SystemELink::getEventFromPool_(u32 idx) const
+{
+    if (idx < mMaxNumEventPool)
+        return &mpEventPool[idx];
+
+    return nullptr;
+}
+
+u32 SystemELink::getUserParamNum() const {
+    return 0;
 }
 
 ILockProxy* SystemELink::getModuleLockObj() const {

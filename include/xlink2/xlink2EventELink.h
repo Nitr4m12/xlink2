@@ -8,7 +8,7 @@
 namespace xlink2 {
 class AssetExecutorELink;
 
-class EventELink : Event {
+class EventELink : public Event {
 public:
     ~EventELink() override = default;
 
