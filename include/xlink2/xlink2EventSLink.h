@@ -10,7 +10,7 @@ class Handle;
 
 namespace xlink2 {
 class AssetExecutorSLink;
-class EventSLink : Event {
+class EventSLink : public Event {
 public:
     ~EventSLink() override = default;
 
@@ -19,7 +19,7 @@ public:
     u64 getPos(sead::Vector3f*) const;
     const sead::Vector3f& getVelocity() const;
 
-    u64 getAliveAssetExecutor() const;
+    AssetExecutorSLink* getAliveAssetExecutor() const;
     u64 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
 
     u64 getSoundHandle(sead::PtrArray<aal::Handle>*) const;

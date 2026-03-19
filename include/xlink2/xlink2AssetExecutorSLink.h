@@ -5,7 +5,7 @@
 namespace xlink2 {
 class HandleSLink;
 
-class AssetExecutorSLink : AssetExecutor {
+class AssetExecutorSLink : public AssetExecutor {
 public:
     ~AssetExecutorSLink() override;
 
