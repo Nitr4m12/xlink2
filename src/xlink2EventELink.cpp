@@ -79,4 +79,14 @@ void EventELink::setManualParticleEmission(bool b1)
         executor_elink->setManualParticleEmission(b1);
     }
 }
+
+void EventELink::setManualParticleEmissionWithParticleCount(s32 particle_count)
+{
+    mDelayEmitParam.particleCount = particle_count;
+    mDelayEmitParam.flag1.setBit(23);
+    for (auto& executor : mAliveAssetExecutors) {
+        auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
+        executor_elink->setManualParticleEmissionWithParticleCount(particle_count);
+    }
+}
 } // namespace xlink2
