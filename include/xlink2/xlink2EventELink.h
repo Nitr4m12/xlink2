@@ -11,14 +11,30 @@ public:
     ~EventELink() override;
 
     struct DelayEmitParam {
-        sead::Color4f mColor;
-        sead::Vector3f vectorPos;
-        sead::Vector3f vector;
+        sead::Color4f color;
+        sead::Vector3f position;
+        sead::Vector3f scale;
         sead::Matrix34f matrix34f;
-        u64 _4;
+        void* _4;
         u32 _5;
-        f32 _6;
+        f32 emissionIntervalScale;
+        u8 _0x68[24];
+        f32 directionalVel;
+        u8 _0x84[44];
+        sead::Color4f color0;
+        sead::Color4f color1;
+        u8 _0xd0[8];
+        u32 _0xd8;
+        s32 _0xdc;
+        bool _0xe0;
+        s32 particleCount;
+        sead::BitFlag32 isFixedFlag;
+        sead::BitFlag32 flag2;
+        u8 _0xf0;
+        void* _0xf8;
+
     };
+    static_assert(sizeof(DelayEmitParam) == 0x100, "'xlink2::EventELink::DelayEmitParam' size mismatch");
 
     void callEventCreateCallback_() override;
     void callEventDestroyCallback_() override;
@@ -40,13 +56,6 @@ public:
 
 private:
     DelayEmitParam mDelayEmitParam;
-    u8 _100[120];
-    bool mIsEmitting;
-    s32 mParticleCount;
-    sead::BitFlag32 mFlag1;
-    sead::BitFlag32 mFlag2;
-    void* _16;
-    void* _17;
 };
 static_assert(sizeof(EventELink) == 0x198, "xlink2::EventELink size mismatch");
 
