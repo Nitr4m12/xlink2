@@ -15,6 +15,9 @@ class UserInstanceELink;
 class AssetExecutorELink;
 class EventELink;
 
+static sead::SafeString sModuleName {"ELink2"};
+static sead::SafeString sORIconString {""};
+
 class SystemELink : public System {
     SEAD_SINGLETON_DISPOSER(SystemELink);
 
@@ -45,7 +48,7 @@ public:
     void listenPropertyEvent(const sead::hostio::PropertyEvent* /*unused*/);
 #endif
 
-    sead::SafeString* getORIconString();
+    const sead::SafeString* getORIconString();
 
     Event* getEventFromPool_(u32) const override;
 
@@ -65,8 +68,7 @@ public:
     IEventCallbackELink* getEventCallback() const { return mEventCallback; }
 
 private:
-    // sead::ptcl::PtclSystem* mPtclSystem;
-    void* mPtclSystem;
+    sead::ptcl::PtclSystem* mPtclSystem;
     EventELink* mpEventPool;
     IEventCallbackELink* mEventCallback;
     GroupTable* mGroupTable;

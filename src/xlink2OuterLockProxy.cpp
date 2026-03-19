@@ -2,9 +2,6 @@
 
 namespace xlink2 {
 template <typename T>
-OuterLockProxy<T>::~OuterLockProxy() = default;
-
-template <typename T>
 void OuterLockProxy<T>::lock()
 {
     mLock->lock();
@@ -17,8 +14,8 @@ void OuterLockProxy<T>::unlock()
 }
 
 // These are necessary for OuterLockProxy<sead::Mutex>
-// zto be picked up by the compiler as a separate class
-// for now
+// to be picked up by the compiler as a separate class
+// and be detected by check
 template <>
 void OuterLockProxy<sead::Mutex>::lock() {
     mLock->lock();
@@ -28,7 +25,4 @@ template <>
 void OuterLockProxy<sead::Mutex>::unlock() {
     mLock->unlock();
 };
-
-template <>
-OuterLockProxy<sead::Mutex>::~OuterLockProxy() = default;
 }  // namespace xlink2

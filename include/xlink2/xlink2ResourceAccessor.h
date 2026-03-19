@@ -209,11 +209,11 @@ public:
     s32 getValue_(const ResParam&) const;
 
 private:
-    UserInstance* mUserInstance;
-    UserResource* mUserResource;
-    ResAssetCallTable* mResAssetCallTable;
+    const UserInstance* mpUserInstance;
+    const UserResource* mpUserResource;
+    const ResAssetCallTable* mpAssetCallTable;
     void* _0;
-    u32 _1;
+    s32 mParamValue;
     u8 _2;
     void* _3;
     User* mUser;

@@ -45,8 +45,8 @@ public:
     void beginOtameshi();
     bool requestOtameshi();
 
-    char* getUserName() { return mUserName; }
-    UserResource* getUserResource() { return mpUserResource; }
+    char* getUserName() const { return mUserName; }
+    UserResource* getUserResource() const { return mpUserResource; }
     u16 getNumLocalProp() const { return mLocalPropNum; }
     PropertyDefinition* getPropertyDefinitionEntry(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
 
