@@ -41,10 +41,11 @@ public:
 
 private:
     DelayEmitParam mDelayEmitParam;
-    u8 unknown[120];
-    bool _13;
-    s32 _14;
-    void* _15;
+    u8 _100[120];
+    bool mIsEmitting;
+    s32 mParticleCount;
+    sead::BitFlag32 mFlag1;
+    sead::BitFlag32 mFlag2;
     void* _16;
     void* _17;
 };

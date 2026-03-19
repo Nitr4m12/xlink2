@@ -35,4 +35,12 @@ void EventELink::callEventDestroyCallback_()
         user_instance_callback->eventDestroy(arg);
     }
 }
+
+void EventELink::initializeImpl_()
+{
+    _17 = nullptr;
+    mFlag1 = 0;
+    mFlag2 = 0;
+    mGroupId = -1;
+}
 } // namespace xlink2
