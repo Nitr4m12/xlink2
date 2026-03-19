@@ -11,7 +11,7 @@ class ResourceAccessorELink;
 
 class UserInstanceELink;
 
-class AssetExecutorELink : AssetExecutor {
+class AssetExecutorELink : public AssetExecutor {
 public:
     ~AssetExecutorELink() override;
 

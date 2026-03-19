@@ -50,4 +50,22 @@ void EventELink::doFinalize_()
     if (mBitFlag.isOffBit(2))
         fixDelayParam_();
 }
+
+void EventELink::fixDelayParam_()
+{
+    if (!mFlag1.isZero()) {
+        DelayEmitParam* delay_param {&mDelayEmitParam};
+        mFlag2 = mFlag1 | mFlag2;
+        for (auto& executor : mAliveAssetExecutors) {
+            auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
+            executor_elink->setDelayParam(delay_param, mFlag1);
+        }
+
+        for (auto& executor : mFadeBySystemAssetExecutors) {
+            auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
+            executor_elink->setDelayParam(delay_param, mFlag1);
+        }
+        mFlag1.makeAllZero();
+    }
+}
 } // namespace xlink2

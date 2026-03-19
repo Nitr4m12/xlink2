@@ -1,5 +1,7 @@
 #pragma once
 
+#include "gfx/seadColor.h"
+
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2UserInstanceELink.h"
 
@@ -9,10 +11,7 @@ public:
     ~EventELink() override;
 
     struct DelayEmitParam {
-        f32 _0;
-        f32 _1;
-        f32 _2;
-        f32 _3;
+        sead::Color4f mColor;
         sead::Vector3f vectorPos;
         sead::Vector3f vector;
         sead::Matrix34f matrix34f;

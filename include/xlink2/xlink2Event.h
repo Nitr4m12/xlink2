@@ -57,8 +57,8 @@ public:
     sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
     const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() const { return mAliveAssetExecutors; }
     
-    sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemList; }
-    const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() const { return mFadeBySystemList; }
+    sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemAssetExecutors; }
+    const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() const { return mFadeBySystemAssetExecutors; }
 
 protected:
     sead::BitFlag32 mBitFlag{0};
@@ -73,7 +73,7 @@ protected:
     bool _0x50 {true};
     ContainerBase* mpRootContainer {nullptr};
     sead::OffsetList<AssetExecutor> mAliveAssetExecutors;
-    sead::OffsetList<AssetExecutor> mFadeBySystemList;
+    sead::OffsetList<AssetExecutor> mFadeBySystemAssetExecutors;
     float _0x90;
     u8 mGroupId{0xff};
 };
