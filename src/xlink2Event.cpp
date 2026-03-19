@@ -13,8 +13,6 @@ Event::Event()
     mFadeBySystemAssetExecutors.initOffset(8);
 }
 
-Event::~Event() = default;
-
 void Event::initialize(u32 create_id)
 {
     mBitFlag = 2;

@@ -14,7 +14,7 @@ class UserInstance;
 class Event {
 public:
     Event();
-    virtual ~Event();
+    virtual ~Event() = default;
 
     void initialize(u32 create_id);
     virtual void initializeImpl_();

@@ -10,7 +10,7 @@ class AssetExecutorELink;
 
 class EventELink : Event {
 public:
-    ~EventELink() override;
+    ~EventELink() override = default;
 
     struct DelayEmitParam {
         sead::Color4f color;
