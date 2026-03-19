@@ -49,7 +49,7 @@ public:
     void setManualParticleEmission(bool);
     void setManualParticleEmissionWithParticleCount(int);
 
-    void emitParticle();
+    void emitParticle(sead::Vector3f&);
     u64 getAliveAssetExecutor() const;
 
     UserInstanceELink* getUserInstanceELink() const { return static_cast<UserInstanceELink*>(mpUserInstance); }

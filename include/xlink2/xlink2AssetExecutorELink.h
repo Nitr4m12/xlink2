@@ -54,7 +54,7 @@ public:
     void setManualParticleEmission(bool);
     void setManualParticleEmissionWithParticleCount(int);
 
-    void emitParticle(sead::Vector3f*);
+    void emitParticle(sead::Vector3f&);
 
     void dumpDebugPrint() override;
 

@@ -1,6 +1,8 @@
 #include "xlink2/xlink2EventELink.h"
 
+#include "xlink2/xlink2AssetExecutorELink.h"
 #include "xlink2/xlink2IEventCallbackELink.h"
+#include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2SystemELink.h"
 
 namespace xlink2 {
@@ -87,6 +89,14 @@ void EventELink::setManualParticleEmissionWithParticleCount(s32 particle_count)
     for (auto& executor : mAliveAssetExecutors) {
         auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
         executor_elink->setManualParticleEmissionWithParticleCount(particle_count);
+    }
+}
+
+void EventELink::emitParticle(sead::Vector3f& particle_pos)
+{
+    for (auto& executor : mAliveAssetExecutors) {
+        auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
+        executor_elink->emitParticle(particle_pos);
     }
 }
 } // namespace xlink2
