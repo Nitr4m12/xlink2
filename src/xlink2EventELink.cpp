@@ -39,7 +39,7 @@ void EventELink::callEventDestroyCallback_()
 void EventELink::initializeImpl_()
 {
     mDelayEmitParam._0xf8 = nullptr;
-    mDelayEmitParam.isFixedFlag = 0;
+    mDelayEmitParam.flag1 = 0;
     mDelayEmitParam.flag2 = 0;
     mGroupId = -1;
 }
@@ -53,19 +53,30 @@ void EventELink::doFinalize_()
 
 void EventELink::fixDelayParam_()
 {
-    if (!mDelayEmitParam.isFixedFlag.isZero()) {
+    if (!mDelayEmitParam.flag1.isZero()) {
         DelayEmitParam* delay_param {&mDelayEmitParam};
-        mDelayEmitParam.flag2 = mDelayEmitParam.isFixedFlag | mDelayEmitParam.flag2;
+        mDelayEmitParam.flag2 = mDelayEmitParam.flag1 | mDelayEmitParam.flag2;
         for (auto& executor : mAliveAssetExecutors) {
             auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
-            executor_elink->setDelayParam(delay_param, mDelayEmitParam.isFixedFlag);
+            executor_elink->setDelayParam(delay_param, mDelayEmitParam.flag1);
         }
 
         for (auto& executor : mFadeBySystemAssetExecutors) {
             auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
-            executor_elink->setDelayParam(delay_param, mDelayEmitParam.isFixedFlag);
+            executor_elink->setDelayParam(delay_param, mDelayEmitParam.flag1);
         }
-        mDelayEmitParam.isFixedFlag.makeAllZero();
+        mDelayEmitParam.flag1.makeAllZero();
+    }
+}
+}
+
+void EventELink::setManualParticleEmission(bool b1)
+{
+    mDelayEmitParam._0xe0 = b1;
+    mDelayEmitParam.flag1.setBit(22);
+    for (auto& executor : mAliveAssetExecutors) {
+        auto* executor_elink {static_cast<AssetExecutorELink*>(&executor)};
+        executor_elink->setManualParticleEmission(b1);
     }
 }
 } // namespace xlink2

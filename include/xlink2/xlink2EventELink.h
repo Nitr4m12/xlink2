@@ -28,7 +28,7 @@ public:
         s32 _0xdc;
         bool _0xe0;
         s32 particleCount;
-        sead::BitFlag32 isFixedFlag;
+        sead::BitFlag32 flag1;
         sead::BitFlag32 flag2;
         u8 _0xf0;
         void* _0xf8;
@@ -44,7 +44,7 @@ public:
 
     void fixDelayParam_() override;
 
-    u64 getMtxSetType();
+    s32 getMtxSetType();
 
     void setManualParticleEmission(bool);
     void setManualParticleEmissionWithParticleCount(int);
