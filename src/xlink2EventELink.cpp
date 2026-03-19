@@ -70,6 +70,20 @@ void EventELink::fixDelayParam_()
         mDelayEmitParam.flag1.makeAllZero();
     }
 }
+
+s32 EventELink::getMtxSetType()
+{
+    if (!mAliveAssetExecutors.isEmpty()) {
+        auto* resource_accessor = getUserInstanceELink()->getResourceAccessor();
+        return resource_accessor->getMtxSetType(*mAliveAssetExecutors.begin()->getAssetCallTable());
+    }
+    
+    if (!mFadeBySystemAssetExecutors.isEmpty()) {
+        auto* resource_accessor = getUserInstanceELink()->getResourceAccessor();
+        return resource_accessor->getMtxSetType(*mFadeBySystemAssetExecutors.begin()->getAssetCallTable());
+    }
+
+    return 0;
 }
 
 void EventELink::setManualParticleEmission(bool b1)
