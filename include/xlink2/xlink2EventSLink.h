@@ -25,10 +25,7 @@ public:
     s32 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
 
 private:
-    u8 padding[3];
-    u8  _0x98;
-    sead::BitFlag8 _0x99;
-    u16 _0x9a;
+    sead::BitFlag32 mBitFlag2;
     f32 mVolumeScale;
     f32 mVolumeTvScale;
     f32 mPitchScale;
@@ -36,7 +33,7 @@ private:
     f32 mAngle;
     f32 mPriorityScale;
     u32 mBiquadType;
-    float mBiquadValue;
+    f32 mBiquadValue;
     sead::Vector3f mPosition;
     sead::Vector3f mVelocity;
     void* _0xd8;

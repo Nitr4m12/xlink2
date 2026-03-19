@@ -4,11 +4,26 @@
 #include "xlink2/xlink2SystemSLink.h"
 
 namespace xlink2 {
-void EventSLink::initializeImpl_() {}
+void EventSLink::initializeImpl_() 
+{
+    mBitFlag2.makeAllZero();
+    mVolumeScale = 1.0;
+    mVolumeTvScale = -1.0;
+    mPitchScale = 1.0;
+    mLpfScale = 0.0;
+    mAngle = 0.0;
+    mPriorityScale = 1.0;
+    mBiquadType = 0;
+    mBiquadValue = 0.0;
+    mPosition = {0, 0, 0};
+    mVelocity = {0, 0, 0};
+    _0xd8 = nullptr;
+    _0xe0 = 0;
+}
 
 bool EventSLink::getPos(sead::Vector3f* pos) const
 {
-    if (_0x99.isOnBit(0)) {
+    if (mBitFlag2.isOnBit(8)) {
         pos->set(mPosition);
         return true;
     }
