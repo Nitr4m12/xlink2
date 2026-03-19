@@ -60,7 +60,7 @@ public:
     sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemList; }
     const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() const { return mFadeBySystemList; }
 
-private:
+protected:
     sead::BitFlag32 mBitFlag{0};
     void* _0x10{nullptr};
     void* _0x18{nullptr};

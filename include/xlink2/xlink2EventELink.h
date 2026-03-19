@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
 class EventELink : Event {
@@ -35,6 +36,8 @@ public:
 
     void emitParticle();
     u64 getAliveAssetExecutor() const;
+
+    UserInstanceELink* getUserInstanceELink() const { return static_cast<UserInstanceELink*>(mpUserInstance); }
 
 private:
     DelayEmitParam mDelayEmitParam;

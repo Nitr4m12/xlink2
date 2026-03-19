@@ -27,7 +27,7 @@ bool ResourceBuffer::load(void* bin, System* system)
 
         if (!mRomResourceParam.isInitialized && !mParamDefineTable.isInitialized()) {
             u64 num_user {static_cast<u64>(header->numUser)};
-            mParamDefineTable.setup(static_cast<u8*>(bin) + (num_user * 8) + sizeof(ParamDefineTable), system->getUserParamNum(), system->debugOperationParamOR().get258Check());
+            mParamDefineTable.setup(static_cast<u8*>(bin) + (num_user * 8) + sizeof(ParamDefineTable), system->getUserParamNum(), system->debugOperationParamOR().getPrintFlagCheck());
             ResourceParamCreator::createParamAndSolveResource(&mRomResourceParam, bin, &mParamDefineTable, system);
             Locator::updateDataLoadedCount();
             return true;

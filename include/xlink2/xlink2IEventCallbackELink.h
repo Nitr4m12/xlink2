@@ -3,7 +3,10 @@
 #include <gfx/seadTextWriter.h>
 #include <prim/seadSafeString.h>
 
+#include "xlink2/xlink2AssetExecutorELink.h"
 #include "xlink2/xlink2Resource.h"
+#include "xlink2/xlink2UserInstanceELink.h"
+#include "xlink2/xlink2EventELink.h"
 
 namespace sead::ptcl {
 class EmitterSet;
@@ -14,7 +17,19 @@ class ResourceAccessorELink;
 
 class IEventCallbackELink {
 public:
-    struct EventArg {};
+    struct EventArg {
+        EventArg(const ResAssetCallTable* asset_ctb, UserInstanceELink* user_instance, 
+                 HandleELink* handle, AssetExecutorELink* asset_executor, EventELink* event)
+            :  pAssetCallTable(asset_ctb), pUserInstance(user_instance), pHandle(handle),
+               pAssetExecutor(asset_executor), pEvent(event) {}
+    
+        u8 _0[0x10];
+        const ResAssetCallTable* pAssetCallTable;
+        UserInstanceELink* pUserInstance;
+        HandleELink* pHandle;
+        AssetExecutorELink* pAssetExecutor;
+        EventELink* pEvent;
+    };
 
     virtual void eventCreate(const EventArg&);
     virtual void eventDestroy(const EventArg&);

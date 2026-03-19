@@ -51,7 +51,7 @@ void EditorBuffer::setupParamDefineTable(u8* param_define_bin, u32 param_define_
     if (mParamDefineTable->isInitialized())
         mParamDefineTable->reset();
     mParamDefineTable->setup(mParamDefineBuffer, mSystem->getUserParamNum(),
-                             mSystem->debugOperationParamOR().get258Check());
+                             mSystem->debugOperationParamOR().getPrintFlagCheck());
 }
 
 void EditorBuffer::applyGlobalPropertyDefinition()

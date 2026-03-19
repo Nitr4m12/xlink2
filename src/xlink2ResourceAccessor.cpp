@@ -747,9 +747,10 @@ const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallT
 {
     if (checkAndErrorIsAsset_(asset_ctb, "") && isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, idx)) {
         if (mpUserResource != nullptr) {
-            ResParam* param {solveOffset<ResParam>(asset_ctb.paramStartPos)};
+            const ResParam* param {solveOffset<const ResParam>(asset_ctb.paramStartPos)};
             ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
-            return curve_ctb != nullptr ? &curve_ctb[param[idx].getValue()] : nullptr;
+            if (curve_ctb != nullptr)
+                return &curve_ctb[param[idx].getValue()];
         }
     }
 

@@ -11,7 +11,7 @@ public:
 
     sead::BitFlag32 getDebugFlag() const { return mDebugFlag; }
     sead::BitFlag32 getPrintFlag() const { return mPrintFlag; }
-    bool get258Check() const { return mPrintFlag & 1; }
+    bool getPrintFlagCheck() const { return mPrintFlag & 1; }
 
 private:
     sead::BitFlag32 mDebugFlag;

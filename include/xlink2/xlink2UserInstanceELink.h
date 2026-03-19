@@ -44,6 +44,8 @@ public:
 
     u32 getDefaultGroup() const override;
 
+    IEventCallbackELink* getEventCallback() const { return mEventCallback; }
+
 private:
     void* _0xd8;
     void* _0xe0;

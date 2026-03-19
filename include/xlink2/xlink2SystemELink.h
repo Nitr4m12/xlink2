@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xlink2/xlink2GroupTable.h"
+#include "xlink2/xlink2IEventCallbackELink.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserInstance.h"
 
@@ -11,6 +13,7 @@ namespace xlink2 {
 class UserResourceELink;
 class UserInstanceELink;
 class AssetExecutorELink;
+class EventELink;
 
 class SystemELink : public System {
     SEAD_SINGLETON_DISPOSER(SystemELink);
@@ -59,12 +62,14 @@ public:
     u32 getUserParamNum() const override;
     ILockProxy* getModuleLockObj() const override;
 
+    IEventCallbackELink* getEventCallback() const { return mEventCallback; }
+
 private:
     // sead::ptcl::PtclSystem* mPtclSystem;
     void* mPtclSystem;
-    void* _19;
-    void* _20;
-    void* _21;
+    EventELink* mpEventPool;
+    IEventCallbackELink* mEventCallback;
+    GroupTable* mGroupTable;
     u32 _22;
     u32 _23;
     u32 _24;

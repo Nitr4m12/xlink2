@@ -31,7 +31,7 @@ ModelTriggerConnection* TriggerCtrl::getModelTriggerConnection_(s32 idx)
 void TriggerCtrl::resetIsOnceCheck_() 
 {
     if (mConnectionBuffer != nullptr)
-        for (auto it {mConnectionBuffer->begin()}; it != mConnectionBuffer->end(); ++it)
-            mConnectionBuffer->getBufferPtr()[it.getIndex()].isActive = false;
+        for (s32 i {0}; i < mConnectionBuffer->getSize(); ++i)
+            getModelTriggerConnection_(i)->isActive = false;
 }
 }  // namespace xlink2
