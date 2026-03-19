@@ -6,6 +6,16 @@
 namespace xlink2 {
 void EventSLink::initializeImpl_() {}
 
+bool EventSLink::getPos(sead::Vector3f* pos) const
+{
+    if (_0x99.isOnBit(0)) {
+        pos->set(mPosition);
+        return true;
+    }
+
+    return false;
+}
+
 const sead::Vector3f& EventSLink::getVelocity() const
 {
     return mVelocity;

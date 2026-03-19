@@ -16,27 +16,31 @@ public:
 
     void initializeImpl_() override;
     
-    u64 getPos(sead::Vector3f*) const;
+    bool getPos(sead::Vector3f*) const;
     const sead::Vector3f& getVelocity() const;
 
     AssetExecutorSLink* getAliveAssetExecutor() const;
     s32 getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>*) const;
 
-    u64 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
+    s32 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
 
 private:
-    u32 _16;
-    u32 _17;
-    u32 _18;
-    u32 _19;
-    void* _20;
-    u32 _21;
+    u8 padding[3];
+    u8  _0x98;
+    sead::BitFlag8 _0x99;
+    u16 _0x9a;
+    f32 mVolumeScale;
+    f32 mVolumeTvScale;
+    f32 mPitchScale;
+    f32 mLpfScale;
+    f32 mAngle;
+    f32 mPriorityScale;
     u32 mBiquadType;
     float mBiquadValue;
     sead::Vector3f mPosition;
     sead::Vector3f mVelocity;
-    void* _30;
-    u16 _31;
+    void* _0xd8;
+    u16 _0xe0;
 };
 static_assert(sizeof(EventSLink) == 0xe8, "xlink2::EventSLink size mismatch");
 
