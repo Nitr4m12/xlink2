@@ -43,4 +43,11 @@ void EventELink::initializeImpl_()
     mFlag2 = 0;
     mGroupId = -1;
 }
+
+void EventELink::doFinalize_()
+{
+    callEventDestroyCallback_();
+    if (mBitFlag.isOffBit(2))
+        fixDelayParam_();
+}
 } // namespace xlink2
