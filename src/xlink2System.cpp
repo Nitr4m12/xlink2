@@ -531,4 +531,12 @@ void System::postDrawInformation_(sead::TextWriter* text_writer) const
 #endif
 }
 
+void System::drawInformationEmitter_(UserInstance* user_instance, sead::DrawContext* draw_context, 
+                                     sead::TextWriter* text_writer, const sead::Camera& camera, 
+                                     const sead::Projection& projection, const sead::Viewport& viewport) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
 }  // namespace xlink2

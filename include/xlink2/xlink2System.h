@@ -170,7 +170,7 @@ public:
     virtual void drawInformationEvent_(sead::TextWriter* text_writer) const = 0;
     virtual void drawInformationEmitter_(UserInstance*, sead::DrawContext*, sead::TextWriter*, 
                                          const sead::Camera&, const sead::Projection&,
-                                         const sead::Viewport&);
+                                         const sead::Viewport&) const;
 
 protected:
     const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
