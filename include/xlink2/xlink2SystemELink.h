@@ -16,7 +16,7 @@ class AssetExecutorELink;
 class EventELink;
 
 static sead::SafeString sModuleNameELink {"ELink2"};
-static sead::SafeString sORIconString {""};
+static sead::SafeString sORIconStringELink {""};
 
 class SystemELink : public System {
     SEAD_SINGLETON_DISPOSER(SystemELink);

@@ -12,6 +12,9 @@ class System;
 }
 
 namespace xlink2 {
+static sead::SafeString sModuleNameSLink {"SLink2"};
+static sead::SafeString sORIconStringSLink {""};
+
 class SystemSLink : public System {
     SEAD_SINGLETON_DISPOSER(SystemSLink);
 

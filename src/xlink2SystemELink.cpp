@@ -34,8 +34,9 @@ AssetExecutor* SystemELink::allocAssetExecutor(Event* event)
     return nullptr;
 }
 
-u32 SystemELink::getResourceVersion() const {
-    return 0x1e;
+u32 SystemELink::getResourceVersion() const 
+{
+    return 30;
 }
 
 sead::SafeString* SystemELink::getModuleName() const
@@ -57,7 +58,7 @@ void SystemELink::listenPropertyEvent(const sead::hostio::PropertyEvent* propert
 
 const sead::SafeString* SystemELink::getORIconString()
 {
-    return &sORIconString;
+    return &sORIconStringELink;
 }
 
 Event* SystemELink::getEventFromPool_(u32 idx) const

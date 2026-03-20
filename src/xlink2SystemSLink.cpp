@@ -37,8 +37,14 @@ UserResource* SystemSLink::createUserResource(User* user, sead::Heap* heap)
     return new(heap) UserResourceSLink(user, heap);
 }
 
-u32 SystemSLink::getResourceVersion() const {
-    return 0x1c;
+u32 SystemSLink::getResourceVersion() const 
+{
+    return 28;
+}
+
+sead::SafeString* SystemSLink::getModuleName() const
+{
+    return &sModuleNameSLink;
 }
 
 u32 SystemSLink::getUserParamNum() const {
