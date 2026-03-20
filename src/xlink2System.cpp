@@ -525,5 +525,10 @@ void System::preDrawInformation_(sead::TextWriter* text_writer) const
 #endif
 }
 
+void System::postDrawInformation_(sead::TextWriter* text_writer) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
 
 }  // namespace xlink2
