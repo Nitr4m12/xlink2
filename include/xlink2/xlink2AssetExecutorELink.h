@@ -4,15 +4,17 @@
 #include "xlink2/xlink2ELinkAssetParamId.h"
 #include "xlink2/xlink2ELinkEventParam.h"
 #include "xlink2/xlink2EventELink.h"
+#include "xlink2/xlink2HandleELink.h"
 
 namespace xlink2 {
-class HandleELink;
 class ResourceAccessorELink;
 
 class UserInstanceELink;
 
 class AssetExecutorELink : public AssetExecutor {
 public:
+    AssetExecutorELink(Event* event) : AssetExecutor(event) {}
+
     ~AssetExecutorELink() override;
 
     u32 calc() override;
@@ -68,20 +70,15 @@ public:
     void onFinalize_() override;
 
 private:
-    u8 _5;
-    u32 mDelay;
-    void* _7;
-    HandleELink* mHandle;
-    u32 _9;
-    u32 _16;
-    u16 _10;
-    u16 _11;
+    sead::BitFlag8 mBitFlag;
+    u32 mDelay{};
+    bool _0x58{};
+    HandleELink mHandle{};
+    sead::BitFlag16 mPositionFlag;
+    sead::BitFlag16 mRotationFlag;
     sead::Vector3f mPosition;
     sead::Vector3f mRotation;
-    f32 _12;
-    f32 _13;
-    f32 _14;
-    f32 _15;
+    sead::Color4f mColor;
 };
 static_assert(sizeof(AssetExecutorELink) == 0xa0, "Wrong size of 'xlink2::AssetExecutorELink'");
 }  // namespace xlink2

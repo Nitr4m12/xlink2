@@ -27,7 +27,7 @@ public:
     UserResource* createUserResource(User* user, sead::Heap* heap) override;
 
     void allocHandle(sead::Heap*) override;
-    void allocAssetExecutor(Event*) override;
+    AssetExecutor* allocAssetExecutor(Event* event) override;
 
     u32 getResourceVersion() const override;
     sead::SafeString* getModuleName() const override;

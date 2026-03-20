@@ -152,21 +152,21 @@ public:
 
     const PropertyDefinition* getPropertyDefinition(u32 idx) const { return mGlobalPropertyDefinitions[idx]; }
 
-    virtual UserResource* createUserResource(User*, sead::Heap*) = 0;
-    virtual void allocHandle(sead::Heap*) = 0;
+    virtual UserResource* createUserResource(User* user, sead::Heap* heap) = 0;
+    virtual void allocHandle(sead::Heap* heap) = 0;
     virtual u32 getUserParamNum() const = 0;
     virtual sead::SafeString* getModuleName() const = 0;
-    virtual void allocAssetExecutor(Event*) = 0;
+    virtual AssetExecutor* allocAssetExecutor(Event* event) = 0;
     virtual ILockProxy* getModuleLockObj() const = 0;
     virtual u32 getResourceVersion() const = 0;
 
     virtual ~System();
 
-    virtual Event* getEventFromPool_(u32) const = 0;
-    virtual void preDrawInformation_(sead::TextWriter*) const;
-    virtual void postDrawInformation_(sead::TextWriter*) const;
-    virtual void drawInformationSystemDetail_(sead::TextWriter*) const = 0;
-    virtual void drawInformationEvent_(sead::TextWriter*) const = 0;
+    virtual Event* getEventFromPool_(u32 idx) const = 0;
+    virtual void preDrawInformation_(sead::TextWriter* text_writer) const;
+    virtual void postDrawInformation_(sead::TextWriter* text_writer) const;
+    virtual void drawInformationSystemDetail_(sead::TextWriter* text_writer) const = 0;
+    virtual void drawInformationEvent_(sead::TextWriter* text_writer) const = 0;
 
 protected:
     const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }

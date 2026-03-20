@@ -1,4 +1,5 @@
 #include "xlink2/xlink2SystemELink.h"
+#include "xlink2/xlink2AssetExecutorELink.h"
 #include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2UserResourceELink.h"
 
@@ -20,6 +21,18 @@ UserInstanceELink* SystemELink::createUserInstance(const UserInstance::CreateArg
 UserResource* SystemELink::createUserResource(User* user, sead::Heap* heap)
 {
     return new(heap) UserResourceELink(user, heap);
+}
+
+// NON-MATCHING
+AssetExecutor* SystemELink::allocAssetExecutor(Event* event)
+{
+    auto* executor {static_cast<AssetExecutorELink*>(mAssetExecutorHeap->tryAlloc(sizeof(AssetExecutorELink), 8))};
+    if (executor != nullptr) {
+        *executor = {event};
+        return executor;
+    }
+    addError(Error::Type::OutOfMemory, event->getUserInstance()->getUser(), "SystemELink::allocAssetExecutor failed.");
+    return nullptr;
 }
 
 u32 SystemELink::getResourceVersion() const {

@@ -4,11 +4,34 @@
 
 namespace xlink2 {
 enum class ELinkAssetParamId : u32 {
-    PositionX = 0xd,
+    AssetName,
+    RuntimeAssetName,
+    Eset,
+    GroupName,
+    GrouId,
+    Delay,
+    Duration,
+    Clip,
+    ForceCalc,
+    MtxSetType,
+    RotateSourceType,
+    BoneName,
+    Scale,
+    PositionX,
     PositionY,
     PositionZ,
     RotationX,
     RotationY,
-    RotationZ
+    RotationZ,
+    ColorRed,
+    ColorGreen,
+    ColorBlue,
+    Alpha,
+    EmissionRate,
+    EmissionScale,
+    EmissionInterval,
+    DirectionalVel,
+    LifeScale,
+    BitFlag,
 };
-}
+} // namespace xlink2

@@ -4,11 +4,17 @@
 #include <prim/seadBitFlag.h>
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2Resource.h"
+#include "xlink2/xlink2Types.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
+class Event;
+
 class AssetExecutor {
 public:
+    AssetExecutor() = default;
+    AssetExecutor(Event* event) : mpEvent(event) {}
+
     virtual ~AssetExecutor() = default;
 
     virtual u32 calc() = 0;
@@ -55,13 +61,13 @@ public:
     void setBoneMtx(BoneMtx& bone_mtx) { mBoneMtx = bone_mtx; }
 
 protected:
-    u8 _0x08[0x10];
-    class Event* mpEvent;
-    UserInstance* mpUserInstance;
-    ResAssetCallTable* mpAssetCallTable;
-    ContainerType mContainerType;
-    float _0x34;
-    ResTriggerOverwriteParam* mpTriggerOverwriteParam;
+    u8 _0x08[0x10]{};
+    Event* mpEvent;
+    UserInstance* mpUserInstance{};
+    ResAssetCallTable* mpAssetCallTable{};
+    ContainerType mContainerType{ContainerType::Switch};
+    f32 _0x34{};
+    ResTriggerOverwriteParam* mpTriggerOverwriteParam{};
     BoneMtx mBoneMtx;
 };
 static_assert(sizeof(AssetExecutor) == 0x50, "Wrong size for 'xlink2::AssetExecutor'");

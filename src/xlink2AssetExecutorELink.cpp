@@ -1,5 +1,7 @@
 #include "xlink2/xlink2AssetExecutorELink.h"
 
+#include "xlink2/xlink2ELinkAssetParamId.h"
+#include "xlink2/xlink2ELinkEventParam.h"
 #include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2UserInstanceELink.h"
 
@@ -22,7 +24,7 @@ void AssetExecutorELink::onResetOverwriteParam_() {
     if (mpAssetCallTable) {
         auto* accessor{((UserInstanceELink*)mpUserInstance)->getResourceAccessor()};
         if (accessor->isFollow(*mpAssetCallTable))
-            _5 |= 1;
+            mBitFlag.setBit(0);
     }
 }
 
@@ -37,79 +39,85 @@ void AssetExecutorELink::setInnerParam_() {
     mRotation.z = setInnerParamBit_(ELinkAssetParamId::RotationZ, ELinkEventParam::RotationZ);
 }
 
-f32 AssetExecutorELink::setInnerParamBit_(ELinkAssetParamId param_id, ELinkEventParam param) {
+f32 AssetExecutorELink::setInnerParamBit_(ELinkAssetParamId param_id, ELinkEventParam param) 
+{
     auto* accessor{((UserInstanceELink*)mpUserInstance)->getResourceAccessor()};
-    u32 unk = (u64)mpTriggerOverwriteParam;
-    bool is_param_overwritten{accessor->isParamOverwritten(unk, (u32)param_id)};
-    bool unknown_check;
+    u32 overwrite_param_pos = (u64)mpTriggerOverwriteParam;
+    bool is_param_curve;
     f32 param_value{0.0};
 
+    ELinkEventParam current_param {(s32)param_id - (s32)ELinkAssetParamId::PositionX};
+
+    bool is_param_overwritten{accessor->isParamOverwritten(overwrite_param_pos, (u32)param_id)};
     if (is_param_overwritten) {
-        switch ((u32)param_id - 13) {
-        case 0:
-            param_value = accessor->getOverwritePositionX(unk, mpUserInstance);
+        switch (current_param) {
+        case ELinkEventParam::PositionX:
+            param_value = accessor->getOverwritePositionX(overwrite_param_pos, mpUserInstance);
             break;
-        case 1:
-            param_value = accessor->getOverwritePositionY(unk, mpUserInstance);
+        case ELinkEventParam::PositionY:
+            param_value = accessor->getOverwritePositionY(overwrite_param_pos, mpUserInstance);
             break;
-        case 2:
-            param_value = accessor->getOverwritePositionZ(unk, mpUserInstance);
+        case ELinkEventParam::PositionZ:
+            param_value = accessor->getOverwritePositionZ(overwrite_param_pos, mpUserInstance);
             break;
-        case 3:
-            param_value = accessor->getOverwriteRotationX(unk, mpUserInstance);
+        case ELinkEventParam::RotationX:
+            param_value = accessor->getOverwriteRotationX(overwrite_param_pos, mpUserInstance);
             break;
-        case 4:
-            param_value = accessor->getOverwriteRotationY(unk, mpUserInstance);
+        case ELinkEventParam::RotationY:
+            param_value = accessor->getOverwriteRotationY(overwrite_param_pos, mpUserInstance);
             break;
-        case 5:
-            param_value = accessor->getOverwriteRotationZ(unk, mpUserInstance);
+        case ELinkEventParam::RotationZ:
+            param_value = accessor->getOverwriteRotationZ(overwrite_param_pos, mpUserInstance);
             break;
         default:
             param_value = 0.0;
         }
-        unknown_check =
-            accessor->isOverwriteParamTypeEqual((ValueReferenceType)2, *mpTriggerOverwriteParam, (u32)param_id);
-    } else {
-        switch ((u32)param_id - 13) {
-        case 0:
+        is_param_curve =
+            accessor->isOverwriteParamTypeEqual(ValueReferenceType::Curve, *mpTriggerOverwriteParam, (u32)param_id);
+    } 
+    else {
+        switch (current_param) {
+        case ELinkEventParam::PositionX:
             param_value = accessor->getPositionX(*mpAssetCallTable, mpUserInstance);
             break;
-        case 1:
+        case ELinkEventParam::PositionY:
             param_value = accessor->getPositionY(*mpAssetCallTable, mpUserInstance);
             break;
-        case 2:
+        case ELinkEventParam::PositionZ:
             param_value = accessor->getPositionZ(*mpAssetCallTable, mpUserInstance);
             break;
-        case 3:
+        case ELinkEventParam::RotationX:
             param_value = accessor->getRotationX(*mpAssetCallTable, mpUserInstance);
             break;
-        case 4:
+        case ELinkEventParam::RotationY:
             param_value = accessor->getRotationY(*mpAssetCallTable, mpUserInstance);
             break;
-        case 5:
+        case ELinkEventParam::RotationZ:
             param_value = accessor->getRotationZ(*mpAssetCallTable, mpUserInstance);
             break;
         default:
             param_value = 0.0;
         }
-        unknown_check =
-            accessor->isParamTypeEqual((ValueReferenceType)2, *mpAssetCallTable, (u32)param_id);
+        is_param_curve =
+            accessor->isParamTypeEqual(ValueReferenceType::Curve, *mpAssetCallTable, (u32)param_id);
     }
-    if (unknown_check)
-        _10 |= 1 << (u32)param;
+    if (is_param_curve)
+        mPositionFlag.setBit(static_cast<s32>(param));
 
     return param_value;
 }
 
-void AssetExecutorELink::requestReEmit(bool param1) {
-    if (!param1)
-        _5 &= 0xdf;
+void AssetExecutorELink::requestReEmit(bool param1) 
+{
+    if (param1)
+        mBitFlag.setBit(5);
     else
-        _5 |= 0x20;
+        mBitFlag.resetBit(5);
 }
 
-bool AssetExecutorELink::isRequestReEmit() const {
-    return _5 >> 5 & 1;
+bool AssetExecutorELink::isRequestReEmit() const 
+{
+    return mBitFlag.isOnBit(5);
 }
 
 }  // namespace xlink2
