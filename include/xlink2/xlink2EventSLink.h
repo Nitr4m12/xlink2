@@ -25,19 +25,19 @@ public:
     s32 getSoundHandle(sead::PtrArray<aal::Handle>*) const;
 
 private:
-    sead::BitFlag32 mBitFlag2;
-    f32 mVolumeScale;
-    f32 mVolumeTvScale;
-    f32 mPitchScale;
-    f32 mLpfScale;
-    f32 mAngle;
-    f32 mPriorityScale;
-    u32 mBiquadType;
-    f32 mBiquadValue;
-    sead::Vector3f mPosition;
-    sead::Vector3f mVelocity;
-    void* _0xd8;
-    u16 _0xe0;
+    sead::BitFlag32 mBitFlag2 {0};
+    f32 mVolumeScale {1.0};
+    f32 mVolumeTvScale {-1.0};
+    f32 mPitchScale {1.0};
+    f32 mLpfScale {0.0};
+    f32 mAngle {0.0};
+    f32 mPriorityScale {1.0};
+    u32 mBiquadType {0};
+    f32 mBiquadValue {0.0};
+    sead::Vector3f mPosition {0, 0, 0};
+    sead::Vector3f mVelocity {0, 0, 0};
+    void* _0xd8 {};
+    u16 _0xe0 {0};
 };
 static_assert(sizeof(EventSLink) == 0xe8, "xlink2::EventSLink size mismatch");
 

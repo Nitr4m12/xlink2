@@ -6,7 +6,7 @@
 
 namespace xlink2 {
 template <typename T>
-class LockProxy : private ILockProxy {
+class LockProxy : public ILockProxy {
 public:
     ~LockProxy() override;
     void lock() override;
