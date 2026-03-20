@@ -92,6 +92,12 @@ s32 System::searchUserIgnoreHeap(const char* user_name, User** user_ptrs, s32 id
     return user_idx;
 }
 
+void System::drawInformation(sead::DrawContext* ctx, sead::TextWriter* text_writer) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
 void System::makeDebugStringGlobalProperty(sead::BufferedSafeString* dump_str, const sead::SafeString& filter) const
 {
     if (dump_str != nullptr) {

@@ -41,7 +41,7 @@ public:
     User* searchUser(const char*, sead::Heap*, u32) const;
     s32 searchUserIgnoreHeap(const char*, User**, s32) const;
 
-    virtual void drawInformation(sead::DrawContext*, sead::TextWriter*) const;
+    virtual void drawInformation(sead::DrawContext* ctx, sead::TextWriter* text_writer) const;
     virtual void drawInformation3D(sead::DrawContext*, const sead::Camera&, const sead::Projection&,
                                    const sead::Viewport&, f32) const;
 
