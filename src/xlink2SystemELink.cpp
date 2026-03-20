@@ -49,6 +49,12 @@ void SystemELink::genMessage(sead::hostio::Context* ctx)
 #endif
 }
 
+void SystemELink::listenPropertyEvent(const sead::hostio::PropertyEvent* property_event)
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
 const sead::SafeString* SystemELink::getORIconString()
 {
     return &sORIconString;
