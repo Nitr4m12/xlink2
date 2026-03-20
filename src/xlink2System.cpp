@@ -23,11 +23,11 @@ System::System()
     setMinLargeAddressMask(reinterpret_cast<u64>(this));
 }
 
-void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 p3)
+void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 max_num_event_pool)
 {
     mPrimaryHeap = primary_heap;
     mResourceBuffer = new (heap) ResourceBuffer;
-    mMaxNumEventPool = p3;
+    mMaxNumEventPool = max_num_event_pool;
     mNumEventPool = 0;
     mGlobalPropertyTriggerUserList.allocBuffer(0x60, heap);
     mErrorMgr = new (heap) ErrorMgr(this);

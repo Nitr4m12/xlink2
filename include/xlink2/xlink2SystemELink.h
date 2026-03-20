@@ -40,8 +40,13 @@ public:
     u32 getResourceVersion() const override;
     sead::SafeString* getModuleName() const override;
 
+#ifdef SEAD_DEBUG
+    void genMessage(sead::hostio::Context* ctx) override;
+    void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
+#else
     void genMessage(sead::hostio::Context* ctx);
     void listenPropertyEvent(const sead::hostio::PropertyEvent* property_event);
+#endif
 
     const sead::SafeString* getORIconString();
 

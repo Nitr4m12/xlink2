@@ -35,7 +35,7 @@ public:
 
     System();
 
-    void initSystem_(sead::Heap*, sead::Heap*, u32);
+    void initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 max_num_event_pool);
     void calc();
 
     User* searchUser(const char*, sead::Heap*, u32) const;

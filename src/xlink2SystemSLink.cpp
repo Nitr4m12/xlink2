@@ -1,6 +1,8 @@
 #include "xlink2/xlink2SystemSLink.h"
 
 namespace xlink2 {
+SystemSLink::SystemSLink() = default;
+
 u32 SystemSLink::getResourceVersion() const {
     return 0x1c;
 }
