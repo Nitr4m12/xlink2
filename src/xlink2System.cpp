@@ -98,6 +98,14 @@ void System::drawInformation(sead::DrawContext* ctx, sead::TextWriter* text_writ
 #endif
 }
 
+void System::drawInformation3D(sead::DrawContext* ctx, const sead::Camera& camera, 
+                               const sead::Projection& projection, const sead::Viewport& viewport, 
+                               f32 f1) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
 void System::makeDebugStringGlobalProperty(sead::BufferedSafeString* dump_str, const sead::SafeString& filter) const
 {
     if (dump_str != nullptr) {

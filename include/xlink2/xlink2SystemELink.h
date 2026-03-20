@@ -15,7 +15,7 @@ class UserInstanceELink;
 class AssetExecutorELink;
 class EventELink;
 
-static sead::SafeString sModuleName {"ELink2"};
+static sead::SafeString sModuleNameELink {"ELink2"};
 static sead::SafeString sORIconString {""};
 
 class SystemELink : public System {

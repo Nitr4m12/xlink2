@@ -42,8 +42,9 @@ public:
     s32 searchUserIgnoreHeap(const char*, User**, s32) const;
 
     virtual void drawInformation(sead::DrawContext* ctx, sead::TextWriter* text_writer) const;
-    virtual void drawInformation3D(sead::DrawContext*, const sead::Camera&, const sead::Projection&,
-                                   const sead::Viewport&, f32) const;
+    virtual void drawInformation3D(sead::DrawContext* ctx, const sead::Camera& camera, 
+                                   const sead::Projection& projection, const sead::Viewport& viewport, 
+                                   f32 f1) const;
 
     void makeDebugStringGlobalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;
 

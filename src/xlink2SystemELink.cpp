@@ -40,7 +40,7 @@ u32 SystemELink::getResourceVersion() const {
 
 sead::SafeString* SystemELink::getModuleName() const
 {
-    return &sModuleName;
+    return &sModuleNameELink;
 }
 
 void SystemELink::genMessage(sead::hostio::Context* ctx)
