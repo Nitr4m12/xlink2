@@ -74,6 +74,11 @@ void SystemELink::preDrawInformation_(sead::TextWriter* text_writer) const
 #endif
 }
 
+void SystemELink::postDrawInformation_(sead::TextWriter* text_writer) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
 
 u32 SystemELink::getUserParamNum() const {
     return 0;
