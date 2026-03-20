@@ -47,15 +47,18 @@ sead::SafeString* SystemSLink::getModuleName() const
     return &sModuleNameSLink;
 }
 
-u32 SystemSLink::getUserParamNum() const {
+u32 SystemSLink::getUserParamNum() const 
+{
     return 8;
 }
 
-bool SystemSLink::isEnableUserAssetInfoReadable() const {
+bool SystemSLink::isEnableUserAssetInfoReadable() 
+{
     return false;
 }
 
-ILockProxy* SystemSLink::getModuleLockObj() const {
+ILockProxy* SystemSLink::getModuleLockObj() const 
+{
     return sLockProxy;
 }
 }  // namespace xlink2
