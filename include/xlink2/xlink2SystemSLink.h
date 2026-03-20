@@ -65,7 +65,7 @@ public:
     ILockProxy* getModuleLockObj() const override;
 
 private:
-    bool mIsSpinLock {false};
+    bool mIsAllocatedLock {false};
     bool _15 {true};
     aal::System* mAalSystem {};
     void* _16 {};
