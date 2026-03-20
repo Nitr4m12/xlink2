@@ -23,8 +23,8 @@ public:
 
     void initialize(aal::System*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
 
-    UserInstanceSLink* createUserInstance(const UserInstance::CreateArg&, sead::Heap*, u32);
-    void createUserResource(User*, sead::Heap*) override;
+    UserInstanceSLink* createUserInstance(const UserInstance::CreateArg& arg, sead::Heap* heap, u32 i1);
+    UserResource* createUserResource(User* user, sead::Heap* heap) override;
 
     void allocHandle(sead::Heap*) override;
     void allocAssetExecutor(Event*) override;

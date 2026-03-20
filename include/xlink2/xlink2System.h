@@ -152,7 +152,7 @@ public:
 
     const PropertyDefinition* getPropertyDefinition(u32 idx) const { return mGlobalPropertyDefinitions[idx]; }
 
-    virtual void createUserResource(User*, sead::Heap*) = 0;
+    virtual UserResource* createUserResource(User*, sead::Heap*) = 0;
     virtual void allocHandle(sead::Heap*) = 0;
     virtual u32 getUserParamNum() const = 0;
     virtual sead::SafeString* getModuleName() const = 0;

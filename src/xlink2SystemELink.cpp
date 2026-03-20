@@ -1,5 +1,6 @@
 #include "xlink2/xlink2SystemELink.h"
 #include "xlink2/xlink2ILockProxy.h"
+#include "xlink2/xlink2UserResourceELink.h"
 
 namespace xlink2 {
 UserInstanceELink* SystemELink::createUserInstance(const UserInstance::CreateArg& arg, sead::Heap* heap, u32 i1)
@@ -14,6 +15,11 @@ UserInstanceELink* SystemELink::createUserInstance(const UserInstance::CreateArg
         }
     }
     return nullptr;
+}
+
+UserResource* SystemELink::createUserResource(User* user, sead::Heap* heap)
+{
+    return new(heap) UserResourceELink(user, heap);
 }
 
 u32 SystemELink::getResourceVersion() const {

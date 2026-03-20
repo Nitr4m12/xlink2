@@ -32,7 +32,7 @@ public:
     void initialize(sead::ptcl::PtclSystem*, sead::Heap*, sead::Heap*, u32, ILockProxy*);
 
     UserInstanceELink* createUserInstance(const UserInstance::CreateArg&, sead::Heap*, u32);
-    void createUserResource(User*, sead::Heap*) override;
+    UserResource* createUserResource(User*, sead::Heap*) override;
 
     void allocHandle(sead::Heap*) override;
     void allocAssetExecutor(Event*) override;
