@@ -54,6 +54,7 @@ public:
 
     u32 get8() { return _0x40; }
 
+    void addInstance(UserInstance* instance) { mUserInstanceList.pushBack(instance); }
     void removeInstance(UserInstance* instance) { mUserInstanceList.erase(instance); }
     
     bool isHeapEqual(sead::Heap* heap) const { return mpHeap == heap; }

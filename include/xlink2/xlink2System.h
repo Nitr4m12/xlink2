@@ -79,7 +79,7 @@ public:
     const ParamDefineTable* getParamDefineTable() const;
     const ParamDefineTable* getParamDefineTable(ResMode) const;
 
-    System* searchUserOrCreate_(const UserInstance::CreateArg&, sead::Heap*, u32);
+    User* searchUserOrCreate_(const UserInstance::CreateArg&, sead::Heap*, u32);
 
     void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
 

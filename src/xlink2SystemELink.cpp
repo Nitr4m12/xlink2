@@ -1,6 +1,21 @@
 #include "xlink2/xlink2SystemELink.h"
+#include "xlink2/xlink2ILockProxy.h"
 
 namespace xlink2 {
+UserInstanceELink* SystemELink::createUserInstance(const UserInstance::CreateArg& arg, sead::Heap* heap, u32 i1)
+{
+    {
+        auto lock {sead::makeScopedLock(*sLockProxy)};
+        User* user {searchUserOrCreate_(arg, heap, i1)};
+        if (user != nullptr) {
+            auto* user_instance = new(heap) UserInstanceELink(arg, this, user, heap);
+            user->addInstance(user_instance);
+            return user_instance;
+        }
+    }
+    return nullptr;
+}
+
 u32 SystemELink::getResourceVersion() const {
     return 0x1e;
 }
