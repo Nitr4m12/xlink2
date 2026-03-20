@@ -47,11 +47,11 @@ public:
 
     Event* getEventFromPool_(u32 idx) const override;
 
-    void preDrawInformation_(sead::TextWriter*) const override;
-    void postDrawInformation_(sead::TextWriter*) const override;
+    void preDrawInformation_(sead::TextWriter* text_writer) const override;
+    void postDrawInformation_(sead::TextWriter* text_writer) const override;
 
-    void drawInformationSystemDetail_(sead::TextWriter*) const override;
-    void drawInformationEvent_(sead::TextWriter*) const override;
+    void drawInformationSystemDetail_(sead::TextWriter* text_writer) const override;
+    void drawInformationEvent_(sead::TextWriter* text_writer) const override;
 
     void makeDebugAssetInformationString(s32, sead::BufferedSafeString*, sead::BufferedSafeString&,
                                         const sead::SafeString&, Event*, AssetExecutorELink*,

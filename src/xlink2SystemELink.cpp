@@ -68,6 +68,13 @@ Event* SystemELink::getEventFromPool_(u32 idx) const
     return nullptr;
 }
 
+void SystemELink::preDrawInformation_(sead::TextWriter* text_writer) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+
 u32 SystemELink::getUserParamNum() const {
     return 0;
 }
