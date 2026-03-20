@@ -163,10 +163,14 @@ public:
     virtual ~System();
 
     virtual Event* getEventFromPool_(u32 idx) const = 0;
+
     virtual void preDrawInformation_(sead::TextWriter* text_writer) const;
     virtual void postDrawInformation_(sead::TextWriter* text_writer) const;
     virtual void drawInformationSystemDetail_(sead::TextWriter* text_writer) const = 0;
     virtual void drawInformationEvent_(sead::TextWriter* text_writer) const = 0;
+    virtual void drawInformationEmitter_(UserInstance*, sead::DrawContext*, sead::TextWriter*, 
+                                         const sead::Camera&, const sead::Projection&,
+                                         const sead::Viewport&);
 
 protected:
     const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
