@@ -13,7 +13,7 @@ class Event;
 class AssetExecutor {
 public:
     AssetExecutor() = default;
-    AssetExecutor(Event* event) : mpEvent(event) {}
+    explicit AssetExecutor(Event* event) : mpEvent(event) {}
 
     virtual ~AssetExecutor() = default;
 
@@ -61,8 +61,9 @@ public:
     void setBoneMtx(BoneMtx& bone_mtx) { mBoneMtx = bone_mtx; }
 
 protected:
-    u8 _0x08[0x10]{};
-    Event* mpEvent;
+    void* _0x8{};
+    void* _0x10{};
+    Event* mpEvent{};
     UserInstance* mpUserInstance{};
     ResAssetCallTable* mpAssetCallTable{};
     ContainerType mContainerType{ContainerType::Switch};

@@ -26,9 +26,8 @@ UserResource* SystemELink::createUserResource(User* user, sead::Heap* heap)
 // NON-MATCHING
 AssetExecutor* SystemELink::allocAssetExecutor(Event* event)
 {
-    auto* executor {static_cast<AssetExecutorELink*>(mAssetExecutorHeap->tryAlloc(sizeof(AssetExecutorELink), 8))};
+    auto* executor {static_cast<AssetExecutorELink*>(mAssetExecutorHeap->alloc(sizeof(AssetExecutorELink)))};
     if (executor != nullptr) {
-        *executor = {event};
         return executor;
     }
     addError(Error::Type::OutOfMemory, event->getUserInstance()->getUser(), "SystemELink::allocAssetExecutor failed.");
@@ -42,6 +41,12 @@ u32 SystemELink::getResourceVersion() const {
 sead::SafeString* SystemELink::getModuleName() const
 {
     return &sModuleName;
+}
+
+void SystemELink::genMessage(sead::hostio::Context* ctx)
+{
+#ifdef SEAD_DEBUG
+#endif
 }
 
 const sead::SafeString* SystemELink::getORIconString()

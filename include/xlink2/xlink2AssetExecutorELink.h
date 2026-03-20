@@ -13,7 +13,7 @@ class UserInstanceELink;
 
 class AssetExecutorELink : public AssetExecutor {
 public:
-    AssetExecutorELink(Event* event) : AssetExecutor(event) {}
+    explicit AssetExecutorELink(Event* event) { mpEvent = event; }
 
     ~AssetExecutorELink() override;
 
@@ -80,5 +80,5 @@ private:
     sead::Vector3f mRotation;
     sead::Color4f mColor;
 };
-static_assert(sizeof(AssetExecutorELink) == 0xa0, "Wrong size of 'xlink2::AssetExecutorELink'");
+static_assert(sizeof(AssetExecutorELink) == 0xa0, "'xlink2::AssetExecutorELink' size mismatch");
 }  // namespace xlink2
