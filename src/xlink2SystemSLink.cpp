@@ -57,6 +57,17 @@ bool SystemSLink::isEnableUserAssetInfoReadable()
     return false;
 }
 
+void SystemSLink::stopAllEvent(s32 i1)
+{
+    {
+        auto lock {sead::makeScopedLock(*sLockProxy)};
+
+        for (auto& user : mUserList)
+            for (auto& instance : user.getUserInstanceList())
+                static_cast<UserInstanceSLink*>(&instance)->stopAllEvent(i1); 
+    }
+}
+
 ILockProxy* SystemSLink::getModuleLockObj() const 
 {
     return sLockProxy;
