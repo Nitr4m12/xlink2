@@ -62,10 +62,51 @@ void SystemSLink::stopAllEvent(s32 i1)
     {
         auto lock {sead::makeScopedLock(*sLockProxy)};
 
-        for (auto& user : mUserList)
+        for (auto& user : mUserList) {
             for (auto& instance : user.getUserInstanceList())
-                static_cast<UserInstanceSLink*>(&instance)->stopAllEvent(i1); 
+                static_cast<UserInstanceSLink*>(&instance)->stopAllEvent(i1);
+        }
     }
+}
+
+void SystemSLink::genMessage(sead::hostio::Context* ctx)
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void SystemSLink::listenPropertyEvent(const sead::hostio::PropertyEvent* property_event)
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+sead::SafeString* SystemSLink::getORIconString()
+{
+    return &sORIconStringSLink;
+}
+
+void SystemSLink::drawInformationSystemDetail_(sead::TextWriter* text_writer) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void SystemSLink::drawInformationEvent_(sead::TextWriter* text_writer) const
+{
+#ifdef SEAD_DEBUG
+#endif
+}
+
+void SystemSLink::drawInformationEmitter_(UserInstance* user_instance, 
+                                          sead::DrawContext* draw_context, 
+                                          sead::TextWriter* text_writer, 
+                                          const sead::Camera& camera, 
+                                          const sead::Projection& projection, 
+                                          const sead::Viewport& viewport) const
+{
+#ifdef SEAD_DEBUG
+#endif
 }
 
 ILockProxy* SystemSLink::getModuleLockObj() const 

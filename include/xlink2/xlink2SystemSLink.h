@@ -58,7 +58,7 @@ public:
     void drawInformationSystemDetail_(sead::TextWriter* text_writer) const override;
     void drawInformationEvent_(sead::TextWriter* text_writer) const override;
     void drawInformationEmitter_(UserInstance* user_instance, 
-                                sead::DrawContext* ctx, 
+                                sead::DrawContext* draw_context, 
                                 sead::TextWriter* text_writer,
                                 const sead::Camera& camera, 
                                 const sead::Projection& projection,
