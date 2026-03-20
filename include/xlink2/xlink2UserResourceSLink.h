@@ -8,7 +8,7 @@ class IAssetInfoReadable;
 }
 
 namespace xlink2 {
-class UserResourceSLink : UserResource {
+class UserResourceSLink : public UserResource {
 public:
     UserResourceSLink(User*, sead::Heap*);
     ~UserResourceSLink() override = default;
@@ -20,7 +20,7 @@ public:
 
     bool isEnableAssetInfoReader_(aal::IAssetInfoReadable**) const;
 
-    void allocResourceParam(sead::Heap);
+    UserResourceParam* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;
     void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) override;
 

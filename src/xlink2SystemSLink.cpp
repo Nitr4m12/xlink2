@@ -1,5 +1,6 @@
 #include "xlink2/xlink2SystemSLink.h"
 #include "xlink2/xlink2ILockProxy.h"
+#include "xlink2/xlink2UserResourceSLink.h"
 
 namespace xlink2 {
 SystemSLink::SystemSLink() = default;
@@ -29,6 +30,11 @@ UserInstanceSLink* SystemSLink::createUserInstance(const UserInstanceSLink::Crea
         }
     }
     return nullptr;
+}
+
+UserResource* SystemSLink::createUserResource(User* user, sead::Heap* heap)
+{
+    return new(heap) UserResourceSLink(user, heap);
 }
 
 u32 SystemSLink::getResourceVersion() const {
