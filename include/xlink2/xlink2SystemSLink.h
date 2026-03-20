@@ -5,14 +5,13 @@
 #include "xlink2/xlink2EventSLink.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2UserInstanceSLink.h"
 
 namespace aal {
 class System;
 }
 
 namespace xlink2 {
-class UserInstanceSLink;
-
 class SystemSLink : public System {
     SEAD_SINGLETON_DISPOSER(SystemSLink);
 
@@ -26,7 +25,7 @@ public:
                     sead::Heap* primary_heap, u32 max_num_event_pool, 
                     ILockProxy* lock);
 
-    UserInstanceSLink* createUserInstance(const UserInstance::CreateArg& arg, 
+    UserInstanceSLink* createUserInstance(const UserInstanceSLink::CreateArgSLink& arg, 
                                           sead::Heap* heap, u32 i1);
     UserResource* createUserResource(User* user, sead::Heap* heap) override;
 

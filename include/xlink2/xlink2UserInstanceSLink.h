@@ -17,13 +17,15 @@ class UserResourceSLink;
 
 class UserInstanceSLink : public UserInstance {
 public:
-    class CreateArgSLink {
+    class CreateArgSLink : public UserInstance::CreateArg {
     public:
         CreateArgSLink(const char*, IUser*);
         explicit CreateArgSLink(const UserInstance::CreateArg&);
         CreateArgSLink(const CreateArgSLink&);
-
+        
     private:
+        s8 _0x40;
+        void* _0x48;
     };
 
     class AssetLimiter {

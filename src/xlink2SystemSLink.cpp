@@ -16,6 +16,21 @@ SystemSLink::~SystemSLink()
     }
 }
 
+UserInstanceSLink* SystemSLink::createUserInstance(const UserInstanceSLink::CreateArgSLink& arg, 
+                                                   sead::Heap* heap, u32 i1)
+{
+    {
+        auto lock {sead::makeScopedLock(*sLockProxy)};
+        User* user {searchUserOrCreate_(arg, heap, i1)};
+        if (user != nullptr) {
+            auto* user_instance = new(heap) UserInstanceSLink(arg, this, user, heap);
+            user->addInstance(user_instance);
+            return user_instance;
+        }
+    }
+    return nullptr;
+}
+
 u32 SystemSLink::getResourceVersion() const {
     return 0x1c;
 }
