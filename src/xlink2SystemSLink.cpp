@@ -86,6 +86,14 @@ sead::SafeString* SystemSLink::getORIconString()
     return &sORIconStringSLink;
 }
 
+Event* SystemSLink::getEventFromPool_(u32 idx) const
+{
+    if (idx < mMaxNumEventPool)
+        return &mpEventPool[idx];
+
+    return nullptr;
+}
+
 void SystemSLink::drawInformationSystemDetail_(sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
