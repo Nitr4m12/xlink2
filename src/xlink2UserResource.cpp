@@ -5,15 +5,8 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-UserResource::UserResource(User* user) 
-{
-    mUser = user;
-    mResMode = ResMode::Rom;
-    mParams[0] = nullptr;
-    mParams[1] = nullptr;
-}
-
-UserResource::~UserResource() = default;
+UserResource::UserResource(User* user)
+    : mUser(user) {}
 
 void UserResource::setup(sead::Heap* heap) 
 {

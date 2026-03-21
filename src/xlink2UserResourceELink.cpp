@@ -11,6 +11,8 @@ UserResourceELink::UserResourceELink(User* user, sead::Heap* heap)
     _0x28 = false;
 }
 
+UserResourceELink::~UserResourceELink() = default;
+
 SolvedAssetParamELink* UserResourceELink::getSolvedAssetParameterELink(const ResAssetCallTable& asset_ctb) const
 {
     auto* param {getParamWithSetupCheck()};

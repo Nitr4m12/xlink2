@@ -12,7 +12,7 @@ public:
         Unknown
     };
 
-    ~ResourceAccessorELink() override;
+    ~ResourceAccessorELink() override = default;
 
     bool isBlankAsset(const ResAssetCallTable& asset_ctb) const override;
 

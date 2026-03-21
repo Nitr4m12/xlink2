@@ -15,7 +15,7 @@ class System;
 class UserResource {
 public:
     explicit UserResource(User*);
-    virtual ~UserResource();
+    virtual ~UserResource() = default;
 
     void setup(sead::Heap*);
     void setupRomResourceParam_(sead::Heap*);
@@ -71,9 +71,8 @@ public:
     void setResMode(ResMode new_val) { mResMode = new_val; }
 
 protected:
-    User* mUser;
-    ResMode mResMode;
-    u32 _5;
-    sead::SafeArray<UserResourceParam*, 2> mParams;
+    User* mUser {};
+    ResMode mResMode {ResMode::Rom};
+    sead::SafeArray<UserResourceParam*, 2> mParams {};
 };
 }  // namespace xlink2
