@@ -76,4 +76,9 @@ const ResourceAccessorELink& UserResourceELink::getAccessor() const
 {
     return mAccessor;
 }
+
+ResourceAccessorELink* UserResourceELink::getAccessorPtr()
+{
+    return &mAccessor;
+}
 }
