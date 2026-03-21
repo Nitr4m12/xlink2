@@ -1,7 +1,9 @@
 #pragma once
 
 #include "xlink2/xlink2ResourceAccessorSLink.h"
+#include "xlink2/xlink2SystemSLink.h"
 #include "xlink2/xlink2UserResource.h"
+#include "xlink2/xlink2UserResourceParamSLink.h"
 
 namespace aal {
 class IAssetInfoReadable;
@@ -11,22 +13,22 @@ namespace xlink2 {
 class UserResourceSLink : public UserResource {
 public:
     UserResourceSLink(User*, sead::Heap*);
-    ~UserResourceSLink() override = default;
+    ~UserResourceSLink() override;
 
-    u64 getUserParam() const;
+    void* getUserParam() const;
 
     void solveIsLoop(aal::IAssetInfoReadable*);
     void solveIsLoop_(UserResourceParam*, const ParamDefineTable*, aal::IAssetInfoReadable*);
 
     bool isEnableAssetInfoReader_(aal::IAssetInfoReadable**) const;
 
-    UserResourceParam* allocResourceParam_(sead::Heap*) override;
+    UserResourceParamSLink* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;
     void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) override;
 
     const ResourceAccessorSLink& getAccessor() const override;
     ResourceAccessorSLink* getAccessorPtr() override;
-    System* getSystem() const override;
+    SystemSLink* getSystem() const override;
 
     const ResourceAccessorSLink& getResourceAccessor() const { return mAccessor; }
 

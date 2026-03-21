@@ -1,5 +1,6 @@
 #include <xlink2/xlink2UserResourceELink.h>
-#include "xlink2/xlink2Util.h"
+
+#include <xlink2/xlink2Util.h>
 
 namespace xlink2 {
 UserResourceELink::UserResourceELink(User* user, sead::Heap* heap)
@@ -55,7 +56,7 @@ void UserResourceELink::freeResourceParam_(UserResourceParam* param)
     }
 }
 
-// WIP: Needs more of SystemELink
+// WIP: Needs more of SystemELink and possibly OneEmitterMgr
 void UserResourceELink::releaseOneEmitterInstance_(UserResourceParamELink* param, const ParamDefineTable* pdt)
 {
     if (_0x28 && mResMode != ResMode::Editor) {
