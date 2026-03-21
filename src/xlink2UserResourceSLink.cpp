@@ -35,4 +35,9 @@ ResourceAccessorSLink* UserResourceSLink::getAccessorPtr()
 {
     return &mAccessor;
 }
+
+SystemSLink* UserResourceSLink::getSystem() const 
+{
+    return SystemSLink::instance();
+}
 } // namespace xlink2

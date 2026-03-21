@@ -6,7 +6,7 @@ namespace xlink2 {
 UserResourceELink::UserResourceELink(User* user, sead::Heap* heap)
     : UserResource(user)
 {
-    mAccessor.setSystem(SystemELink::instance());
+    mAccessor.setSystem(getSystem());
     mAccessor.setUserResource(this);
     _0x28 = false;
 }
