@@ -9,4 +9,11 @@ UserResourceSLink::UserResourceSLink(User* user, sead::Heap* heap)
 }
 
 UserResourceSLink::~UserResourceSLink() = default;
+
+UserResourceParamSLink* UserResourceSLink::allocResourceParam_(sead::Heap* heap)
+{
+    auto* param {new(heap) UserResourceParamSLink};
+    param->accessor = &mAccessor;
+    return param;
+}
 } // namespace xlink2
