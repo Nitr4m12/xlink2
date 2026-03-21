@@ -3,6 +3,7 @@
 #include <xlink2/xlink2UserResourceELink.h>
 #include <xlink2/xlink2UserInstanceParam.h>
 #include "xlink2/xlink2HandleELink.h"
+#include "xlink2/xlink2HoldMgr.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
@@ -20,6 +21,12 @@ void UserInstanceELink::searchAndEmit(const char* asset_key_name, HandleELink* h
 void UserInstanceELink::emit(const Locator& locator, HandleELink* handle)
 {
     emitImpl(locator, handle);
+}
+
+void UserInstanceELink::searchAndHold(const char* name, HandleELink* handle)
+{
+    auto* system {mUser->getSystem()};
+    system->getHoldMgr()->searchAndHold(name, handle, this);
 }
 
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {

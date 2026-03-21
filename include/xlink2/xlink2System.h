@@ -151,6 +151,8 @@ public:
 
     bool isGlobalPropFixed() { return mIsGlobalPropFixed; }
 
+    HoldMgr* getHoldMgr() const { return mHoldMgr; }
+
     const PropertyDefinition* getPropertyDefinition(u32 idx) const { return mGlobalPropertyDefinitions[idx]; }
 
     virtual UserResource* createUserResource(User* user, sead::Heap* heap) = 0;
