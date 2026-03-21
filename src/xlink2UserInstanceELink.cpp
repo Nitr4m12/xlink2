@@ -60,6 +60,13 @@ void UserInstanceELink::onReset_()
     _0xf8 = -1;
 }
 
+void UserInstanceELink::onDestroy_() {}
+
+UserInstanceParam* UserInstanceELink::allocInstanceParam_(sead::Heap* heap)
+{
+    return new(heap) UserInstanceParam;
+}
+
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     if (param != nullptr) {
         UserInstance::freeInstanceParam_(param, mode);
@@ -67,5 +74,4 @@ void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mod
     }
 }
 
-void UserInstanceELink::onDestroy_() {}
 }  // namespace xlink2
