@@ -79,4 +79,9 @@ void UserInstanceELink::onSetupInstanceParam_(ResMode res_mode, sead::Heap* heap
 {
     initModelAssetConnection_(res_mode, mUser->getSystem()->getParamDefineTable(res_mode), heap);
 }
+
+u32 UserInstanceELink::getDefaultGroup() const
+{
+    return mDefaultGroup;
+}
 }  // namespace xlink2
