@@ -4,7 +4,7 @@ namespace xlink2 {
 UserResourceSLink::UserResourceSLink(User* user, sead::Heap* heap)
     : UserResource(user)
 {
-    mAccessor.setSystem(SystemSLink::instance());
+    mAccessor.setSystem(getSystem());
     mAccessor.setUserResource(this);
 }
 
@@ -29,5 +29,10 @@ void UserResourceSLink::freeResourceParam_(UserResourceParam* param)
 const ResourceAccessorSLink& UserResourceSLink::getAccessor() const
 {
     return mAccessor;
+}
+
+ResourceAccessorSLink* UserResourceSLink::getAccessorPtr()
+{
+    return &mAccessor;
 }
 } // namespace xlink2
