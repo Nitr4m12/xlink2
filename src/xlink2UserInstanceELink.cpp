@@ -2,8 +2,13 @@
 
 #include <xlink2/xlink2UserResourceELink.h>
 #include <xlink2/xlink2UserInstanceParam.h>
+#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
+UserInstanceELink::UserInstanceELink(const UserInstance::CreateArg& arg, System* system, 
+                                     User* user, sead::Heap* heap)
+    : UserInstance(arg, system, user, heap) {}
+
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     if (param != nullptr) {
         UserInstance::freeInstanceParam_(param, mode);

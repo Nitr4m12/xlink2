@@ -15,14 +15,14 @@ public:
     UserInstanceELink(const UserInstance::CreateArg&, System*, User*, sead::Heap*);
     ~UserInstanceELink() override;
 
-    void searchAndEmit(const char*);
-    void searchAndEmit(const char*, HandleELink*);
+    void searchAndEmit(const char* asset_key_name);
+    void searchAndEmit(const char* asset_key_name, HandleELink* handle);
 
-    void emit(const Locator&);
-    void emit(const Locator&, HandleELink*);
+    void emit(const Locator& locator);
+    void emit(const Locator& locator, HandleELink* handle);
 
-    void searchAndHold(const char*);
-    void searchAndHold(const char*, HandleELink*);
+    void searchAndHold(const char* name);
+    void searchAndHold(const char* name, HandleELink* handle);
 
     void fadeIfLoopEffect();
 
@@ -33,14 +33,14 @@ public:
     void onReset_() override;
     void onDestroy_() override;
 
-    UserInstanceParam* allocInstanceParam_(sead::Heap*) override;
-    void freeInstanceParam_(UserInstanceParam*, ResMode) override;
+    UserInstanceParam* allocInstanceParam_(sead::Heap* heap) override;
+    void freeInstanceParam_(UserInstanceParam* param, ResMode res_mode) override;
 
-    void onSetupInstanceParam_(ResMode, sead::Heap*) override;
+    void onSetupInstanceParam_(ResMode res_mode, sead::Heap* heap) override;
 
-    void initModelAssetConnection_(ResMode, const ParamDefineTable*, sead::Heap*) override;
+    void initModelAssetConnection_(ResMode res_mode, const ParamDefineTable* pdt, sead::Heap* heap) override;
 
-    void makeDebugStringEvent(sead::BufferedSafeString*, const sead::SafeString&) const override;
+    void makeDebugStringEvent(sead::BufferedSafeString* event_name, const sead::SafeString& filter_name) const override;
 
     u32 getDefaultGroup() const override;
 
@@ -50,10 +50,10 @@ private:
     void* _0xd8;
     void* _0xe0;
     void* _0xe8;
-    IEventCallbackELink* mEventCallback;
-    u16 _6;
-    u8 mDefaultGroup;
-    PtclResourceAccessorELink* mPtclResourceAccessor;
+    IEventCallbackELink* mEventCallback {};
+    s16 _6 {-1};
+    u8 mDefaultGroup {0};
+    PtclResourceAccessorELink* mPtclResourceAccessor {};
 };
 static_assert(sizeof(UserInstanceELink) == 0x108, "xlink2::UserInstanceELink size mismatch");
 
