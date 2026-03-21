@@ -18,4 +18,10 @@ void UserInstanceSLink::emit(const Locator& locator, HandleSLink* handle)
 {
     emitImpl(locator, handle);
 }
+
+void UserInstanceSLink::searchAndHold(const char* name, HandleSLink* handle)
+{
+    auto* system {mUser->getSystem()};
+    system->getHoldMgr()->searchAndHold(name, handle, this);
+}
 }  // namespace xlink2
