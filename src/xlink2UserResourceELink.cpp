@@ -56,6 +56,19 @@ void UserResourceELink::freeResourceParam_(UserResourceParam* param)
     }
 }
 
+void UserResourceELink::onSetupResourceParam_(UserResourceParam* param, const ParamDefineTable* pdt, sead::Heap* heap)
+{
+    auto* elink_param {static_cast<UserResourceParamELink*>(param)};
+    u32 num_asset {elink_param->userBinParam.pResUserHeader->numAsset};
+    if (num_asset > 0)
+        elink_param->solvedAssetParamBuffer.allocBufferAssert(num_asset, heap);
+
+    auto* leader_instance {static_cast<UserInstanceELink*>(mUser->getLeaderInstance())};
+    solveAssetParam_(elink_param, pdt, leader_instance->getPtclResourceAccessor());
+    solveNeedObserveFlag_(param);
+}
+
+
 // SystemELink* UserResourceELink::getSystem() const {
 //     return SystemELink::sInstance;
 // }
