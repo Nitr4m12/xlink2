@@ -7,4 +7,6 @@ UserResourceSLink::UserResourceSLink(User* user, sead::Heap* heap)
     mAccessor.setSystem(getSystem());
     mAccessor.setUserResource(this);
 }
+
+UserResourceSLink::~UserResourceSLink() = default;
 } // namespace xlink2
