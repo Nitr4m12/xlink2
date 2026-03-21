@@ -6,7 +6,10 @@
 namespace xlink2 {
 class Locator {
 public:
-    Locator() : mpAssetCallTable{nullptr}, _1{0} {};
+    Locator() 
+        : mpAssetCallTable{nullptr}, _1{0} {};
+    explicit Locator(const ResAssetCallTable& asset_ctb) 
+        : mpAssetCallTable{&asset_ctb}, _1{0} {};
     ~Locator() = default;
 
     static u32 sDataLoadedCount;

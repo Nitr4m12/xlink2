@@ -14,6 +14,12 @@ void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* h
     searchAndEmitImpl(asset_key_name, handle);
 }
 
+void UserInstanceSLink::emit(const ResAssetCallTable& asset_ctb, HandleSLink* handle)
+{
+    Locator locator {asset_ctb};
+    emitImpl(locator, handle);
+}
+
 void UserInstanceSLink::emit(const Locator& locator, HandleSLink* handle)
 {
     emitImpl(locator, handle);
