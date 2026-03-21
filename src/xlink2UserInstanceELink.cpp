@@ -17,6 +17,11 @@ void UserInstanceELink::searchAndEmit(const char* asset_key_name, HandleELink* h
     searchAndEmitImpl(asset_key_name, handle);
 }
 
+void UserInstanceELink::emit(const Locator& locator, HandleELink* handle)
+{
+    emitImpl(locator, handle);
+}
+
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     if (param != nullptr) {
         UserInstance::freeInstanceParam_(param, mode);
