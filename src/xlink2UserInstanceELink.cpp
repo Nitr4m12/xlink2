@@ -9,6 +9,8 @@ UserInstanceELink::UserInstanceELink(const UserInstance::CreateArg& arg, System*
                                      User* user, sead::Heap* heap)
     : UserInstance(arg, system, user, heap) {}
 
+UserInstanceELink::~UserInstanceELink() = default;
+
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     if (param != nullptr) {
         UserInstance::freeInstanceParam_(param, mode);
