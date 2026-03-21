@@ -46,6 +46,8 @@ public:
 
     IEventCallbackELink* getEventCallback() const { return mEventCallback; }
 
+    PtclResourceAccessorELink* getPtclResourceAccessor() const { return mPtclResourceAccessor; }
+
 private:
     void* _0xd8;
     void* _0xe0;

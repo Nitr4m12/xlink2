@@ -23,6 +23,19 @@ SolvedAssetParamELink* UserResourceELink::getSolvedAssetParameterELink(const Res
     return nullptr;
 }
 
+void UserResourceELink::solveResourceForChangeEset()
+{
+    auto* param {static_cast<UserResourceParamELink*>(getParam())};
+    if (param != nullptr && param->isSetup) {
+        auto* user_instance {static_cast<UserInstanceELink*>(mUser->getLeaderInstance())};
+        auto* ptcl_accessor {user_instance->getPtclResourceAccessor()};
+        auto* instance_param {static_cast<UserResourceParamELink*>(getParam())};
+        auto* pdt {getSystem()->getParamDefineTable(mResMode)};
+        solveAssetParam_(instance_param, pdt, ptcl_accessor);
+        solveNeedObserveFlag_(getParam());
+    }
+}
+
 // SystemELink* UserResourceELink::getSystem() const {
 //     return SystemELink::sInstance;
 // }
