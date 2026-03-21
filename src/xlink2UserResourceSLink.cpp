@@ -16,4 +16,13 @@ UserResourceParamSLink* UserResourceSLink::allocResourceParam_(sead::Heap* heap)
     param->accessor = &mAccessor;
     return param;
 }
+
+void UserResourceSLink::freeResourceParam_(UserResourceParam* param)
+{
+    auto* slink_param {static_cast<UserResourceParamSLink*>(param)};
+    if (slink_param != nullptr) {
+        UserResource::freeResourceParam_(slink_param);
+        delete param;
+    }
+}
 } // namespace xlink2
