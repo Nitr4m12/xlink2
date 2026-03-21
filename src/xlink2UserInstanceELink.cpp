@@ -49,8 +49,15 @@ const ResourceAccessorELink& UserInstanceELink::getResourceAccessor() const
     return getResourceELink()->getResourceAccessor();
 }
 
-UserResourceELink* UserInstanceELink::getResourceELink() const {
+UserResourceELink* UserInstanceELink::getResourceELink() const 
+{
     return static_cast<UserResourceELink*>(mUser->getUserResource());
+}
+
+void UserInstanceELink::onReset_()
+{
+    mBitFlag.resetBit(6);
+    _0xf8 = -1;
 }
 
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {

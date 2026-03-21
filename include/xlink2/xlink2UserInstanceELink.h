@@ -51,7 +51,7 @@ private:
     void* _0xe0;
     void* _0xe8;
     IEventCallbackELink* mEventCallback {};
-    s16 _6 {-1};
+    s16 _0xf8 {-1};
     u8 mDefaultGroup {0};
     PtclResourceAccessorELink* mPtclResourceAccessor {};
 };
