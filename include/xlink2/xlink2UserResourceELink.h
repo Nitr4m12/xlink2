@@ -7,6 +7,7 @@ namespace xlink2 {
 class PtclResourceAccessorELink;
 class SystemELink;
 class UserResourceParamELink;
+
 class UserResourceELink : public UserResource {
 public:
     UserResourceELink(User*, sead::Heap*);
@@ -24,13 +25,16 @@ public:
 
     void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) override;
 
-    ResourceAccessorELink* getAccessor() const override;
+    const ResourceAccessorELink& getAccessor() const override;
     ResourceAccessorELink* getAccessorPtr() override;
     System* getSystem() const override;
 
+    const ResourceAccessorELink& getResourceAccessor() const { return mAccessor; }
+
 private:
-    SystemELink* mSystem;
+    bool _0;
+    ResourceAccessorELink mAccessor;
 };
-static_assert(sizeof(UserResourceELink) == 0x50, "Wrong size for xlink2::UserResourceELink");
+static_assert(sizeof(UserResourceELink) == 0x50, "'xlink2::UserResourceELink' size mismatch");
 
 }  // namespace xlink2

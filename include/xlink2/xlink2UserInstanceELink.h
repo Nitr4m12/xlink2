@@ -26,7 +26,7 @@ public:
 
     void fadeIfLoopEffect();
 
-    ResourceAccessorELink* getResourceAccessor() const;
+    const ResourceAccessorELink& getResourceAccessor() const;
     UserResourceELink* getResourceELink() const;
 
     void onPostCalc_() override;

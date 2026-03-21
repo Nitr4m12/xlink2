@@ -35,7 +35,7 @@ public:
     ResPropertyTrigger* getPropertyTriggerTableItem(s32) const;
     ResAlwaysTrigger* getAlwaysTriggerTableItem(s32) const;
 
-    virtual ResourceAccessor* getAccessor() const = 0;
+    virtual const ResourceAccessor& getAccessor() const = 0;
     virtual ResourceAccessor* getAccessorPtr() = 0;
     virtual System* getSystem() const = 0;
 
@@ -60,8 +60,6 @@ public:
 
     virtual void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*);
 
-    ResourceAccessor* getResourceAccessor() const { return mResourceAccessor; }
-    
     UserResourceParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; }
     UserResourceParam* getParamWithSetupCheck() const { return getParam() != nullptr && getParam()->isSetup ? getParam() : nullptr; }
     
@@ -77,10 +75,5 @@ protected:
     ResMode mResMode;
     u32 _5;
     sead::SafeArray<UserResourceParam*, 2> mParams;
-    u8 _2;
-    ResourceAccessor* mResourceAccessor;
-    void* _3;
-    void* _4;
-
 };
 }  // namespace xlink2

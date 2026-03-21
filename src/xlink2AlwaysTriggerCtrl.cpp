@@ -30,8 +30,8 @@ void AlwaysTriggerCtrl::calc()
         for (s32 i {0}; i < num_always_trigger; ++i) {
             auto* asset_ctb {solveOffset<ResAssetCallTable>(always_trigger_table[i].assetCtbPos)};
             if (!mIsActive) {
-                ResourceAccessor* accessor {user_resource->getAccessor()};
-                if (!accessor->isNeedObserve(*asset_ctb))
+                auto& accessor {user_resource->getAccessor()};
+                if (!accessor.isNeedObserve(*asset_ctb))
                     continue;
             }
 

@@ -44,19 +44,20 @@ void UserInstanceELink::fadeIfLoopEffect()
     mTriggerCtrlMgr.reset();
 }
 
+const ResourceAccessorELink& UserInstanceELink::getResourceAccessor() const 
+{
+    return getResourceELink()->getResourceAccessor();
+}
+
+UserResourceELink* UserInstanceELink::getResourceELink() const {
+    return static_cast<UserResourceELink*>(mUser->getUserResource());
+}
+
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     if (param != nullptr) {
         UserInstance::freeInstanceParam_(param, mode);
         delete param;
     }
-}
-
-ResourceAccessorELink* UserInstanceELink::getResourceAccessor() const {
-    return static_cast<ResourceAccessorELink*>(mUser->getUserResource()->getResourceAccessor());
-}
-
-UserResourceELink* UserInstanceELink::getResourceELink() const {
-    return static_cast<UserResourceELink*>(mUser->getUserResource());
 }
 
 void UserInstanceELink::onDestroy_() {}

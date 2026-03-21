@@ -31,7 +31,7 @@ public:
     bool isStopWhenEmitterDestroying(const ResAssetCallTable& asset_ctb) const;
     bool isUnified(const ResAssetCallTable& asset_ctb) const;
     bool isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const override;
-    bool isForceLoopAsset(const ResAssetCallTable& asset_ctb) const;
+    bool isForceLoopAsset(const ResAssetCallTable& asset_ctb) const override;
 
     f32 getVolume(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getVolumeTv(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;

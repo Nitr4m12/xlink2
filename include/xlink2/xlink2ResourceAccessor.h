@@ -21,7 +21,7 @@ public:
     virtual bool isBoneNameOverwritten(u32) const = 0;
     virtual const char* getOverwriteBoneName(u32) const = 0;
     virtual bool isAutoOneTimeFade(const ResAssetCallTable&) const = 0;
-    virtual bool isForceBoolAsset(const ResAssetCallTable&) const = 0;
+    virtual bool isForceLoopAsset(const ResAssetCallTable&) const = 0;
     virtual f32 getDelayWithOverwrite(const ResAssetCallTable&, u32, const UserInstance*) const = 0;
     virtual f32 getDuration(const ResAssetCallTable&, const UserInstance*) const = 0;
     virtual s32 getTriggerOverwriteParamId_(u32) const = 0;

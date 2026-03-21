@@ -31,7 +31,7 @@ public:
     ClipType getClipType(const ResAssetCallTable& asset_ctb) const;
 
     bool isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const override;
-    bool isForceLoopAsset(const ResAssetCallTable& asset_ctb) const;
+    bool isForceLoopAsset(const ResAssetCallTable& asset_ctb) const override;
 
     s32 getForceCalc(const ResAssetCallTable& asset_ctb) const;
     s32 getMtxSetType(const ResAssetCallTable& asset_ctb) const;

@@ -24,11 +24,12 @@ public:
     void freeResourceParam_(UserResourceParam*) override;
     void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) override;
 
-    ResourceAccessorSLink* getAccessor() const override;
+    const ResourceAccessorSLink& getAccessor() const override;
     ResourceAccessorSLink* getAccessorPtr() override;
     System* getSystem() const override;
 
 private:
+    ResourceAccessorSLink mAccessor;
 };
 static_assert(sizeof(UserResourceSLink) == 0x48, "xlink2::UserResourceSLink size mismatch");
 

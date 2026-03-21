@@ -74,13 +74,13 @@ void EventELink::fixDelayParam_()
 s32 EventELink::getMtxSetType()
 {
     if (!mAliveAssetExecutors.isEmpty()) {
-        auto* resource_accessor = getUserInstanceELink()->getResourceAccessor();
-        return resource_accessor->getMtxSetType(*mAliveAssetExecutors.begin()->getAssetCallTable());
+        auto& resource_accessor = getUserInstanceELink()->getResourceAccessor();
+        return resource_accessor.getMtxSetType(*mAliveAssetExecutors.begin()->getAssetCallTable());
     }
     
     if (!mFadeBySystemAssetExecutors.isEmpty()) {
-        auto* resource_accessor = getUserInstanceELink()->getResourceAccessor();
-        return resource_accessor->getMtxSetType(*mFadeBySystemAssetExecutors.begin()->getAssetCallTable());
+        auto& resource_accessor = getUserInstanceELink()->getResourceAccessor();
+        return resource_accessor.getMtxSetType(*mFadeBySystemAssetExecutors.begin()->getAssetCallTable());
     }
 
     return 0;

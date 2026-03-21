@@ -512,8 +512,8 @@ void UserInstance::printLogEmitFailed(const Event& /*unused*/, const char* /*unu
 // NON-MATCHING: two instructions in the wrong place
 const sead::SafeString* UserInstance::getContainerTypeName(const ResAssetCallTable& asset_call) const 
 {
-    ResourceAccessor* accessor {mUser->getUserResource()->getAccessor()};
-    return accessor->getCallTableTypeName(asset_call);
+    auto& accessor {mUser->getUserResource()->getAccessor()};
+    return accessor.getCallTableTypeName(asset_call);
 }
 
 void UserInstance::fadeOrKillOtameshi(bool kill)

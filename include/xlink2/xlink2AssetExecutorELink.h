@@ -21,7 +21,7 @@ public:
 
     u32 emitEffect();
 
-    ResourceAccessorELink* getResourceAccessor_() const;
+    const ResourceAccessorELink& getResourceAccessor_() const;
 
     void stopCalcDraw();
     void restartCalcDraw();
