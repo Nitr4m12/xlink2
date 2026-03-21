@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xlink2/xlink2ArrangeGroupParam.h"
+#include "xlink2/xlink2ArrangeGroup.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace aal {
