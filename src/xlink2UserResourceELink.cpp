@@ -36,6 +36,13 @@ void UserResourceELink::solveResourceForChangeEset()
     }
 }
 
+UserResourceParamELink* UserResourceELink::allocResourceParam_(sead::Heap* heap)
+{
+    auto* param {new(heap) UserResourceParamELink};
+    param->accessor = &mAccessor;
+    return param;
+}
+
 // SystemELink* UserResourceELink::getSystem() const {
 //     return SystemELink::sInstance;
 // }

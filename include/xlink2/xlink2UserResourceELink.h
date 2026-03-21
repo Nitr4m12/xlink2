@@ -19,7 +19,7 @@ public:
     void solveResourceForChangeEset();
     void solveAssetParam_(UserResourceParamELink*, const ParamDefineTable*, PtclResourceAccessorELink*);
 
-    UserResourceParam* allocResourceParam_(sead::Heap*) override;
+    UserResourceParamELink* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;
 
     void releaseOneEmitterInstance(UserResourceParamELink*, const ParamDefineTable*);
