@@ -17,11 +17,11 @@ public:
     void calc() override;
 
 private:
-    ResProperty* mResProperty;
-    s32 _0;
-    u32 _1;
-    u8 _2;
-    bool _3;
+    const ResProperty* mResProperty;
+    s32 mPropertyIndex;
+    PropertyValueType mPropertyValue;
+    bool _2;
+    bool mIsGlobalProperty;
 };
 static_assert(sizeof(PropertyTriggerCtrl) == 0x30, "xlink2::PropertyTriggerCtrl size mismatch");
 

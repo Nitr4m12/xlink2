@@ -154,6 +154,7 @@ public:
     HoldMgr* getHoldMgr() const { return mHoldMgr; }
 
     const PropertyDefinition* getPropertyDefinition(u32 idx) const { return mGlobalPropertyDefinitions[idx]; }
+    PropertyValueType getPropertyValue(u32 idx) const { return mGlobalPropertyValues[idx]; }
 
     virtual UserResource* createUserResource(User* user, sead::Heap* heap) = 0;
     virtual void allocHandle(sead::Heap* heap) = 0;

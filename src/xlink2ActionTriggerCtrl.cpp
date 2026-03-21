@@ -11,6 +11,7 @@ namespace xlink2 {
 ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
                                      sead::Buffer<ModelTriggerConnection>* connection_buffer,
                                      const ResActionSlot* action_slot)
+    : TriggerCtrl(user_instance, connection_buffer)
 {
     mConnectionBuffer = connection_buffer;
     mActionSlot = action_slot;

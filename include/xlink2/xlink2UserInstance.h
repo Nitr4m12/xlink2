@@ -164,6 +164,8 @@ public:
 
     const BoneMtx& getRootMtx() { return mRootMtx; }
 
+    PropertyValueType getPropertyValue(u32 idx) { return mPropertyValueArray[idx]; }
+
     void updateGlobalPropertyTriggerCtrl() 
     {
         if (mBitFlag.isOffBit(1))
