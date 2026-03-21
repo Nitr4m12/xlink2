@@ -3,8 +3,7 @@
 #include "xlink2/xlink2UserResourceParam.h"
 
 namespace xlink2 {
-class UserResourceParamSLink : public UserResourceParam {
-public:
+struct UserResourceParamSLink : public UserResourceParam {
     u64 _1;
     char* distanceParamSetName;
     s32 limitType;
@@ -13,5 +12,5 @@ public:
     bool isNoPos;
     f32 dopplerFactor;
 };
-static_assert(sizeof(UserResourceParamSLink) == 0xd8, "Incorrect size of 'xlink2::UserResourceParamSLink'");
+static_assert(sizeof(UserResourceParamSLink) == 0xd8, "'xlink2::UserResourceParamSLink' size mismatch");
 }  // namespace xlink2

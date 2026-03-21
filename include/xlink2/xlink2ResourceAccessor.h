@@ -126,6 +126,9 @@ public:
     f32 getResOverwriteParamValueFloat_(u32, u32, const UserInstance*) const;
     const char* getResOverwriteParamValueString_(u32, u32) const;
 
+    void setUserResource(UserResource* resource) { mpUserResource = resource; }
+    void setSystem(System* system) { mpSystem = system; }
+
 protected:
     const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* fallback) const
     {
@@ -187,8 +190,8 @@ protected:
     }
 
     ResUserHeader* mpUserHeader {nullptr};
-    UserResource* mpUserResource {nullptr};
-    System* mpSystem {nullptr};
+    UserResource* mpUserResource;
+    System* mpSystem;
 
     static const sead::SafeString sContainerNames[6];
 };

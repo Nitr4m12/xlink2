@@ -3,11 +3,6 @@
 #include "xlink2/xlink2ResourceAccessor.h"
 
 namespace xlink2 {
-struct SolvedAssetParamELink {
-    s32 esetVal;
-    s8 groupId;
-};
-
 class ResourceAccessorELink : public ResourceAccessor {
 public:
     enum class ClipType {
