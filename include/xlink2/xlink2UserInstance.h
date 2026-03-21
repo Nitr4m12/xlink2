@@ -140,7 +140,7 @@ public:
     void rebuild(const RebuildArg&);
 
     virtual void makeDebugStringEvent(sead::BufferedSafeString*, const sead::SafeString&) const = 0;
-    virtual ~UserInstance();
+    virtual ~UserInstance() = default;
     virtual u32 getDefaultGroup() const;
     virtual void onPostCalc_() = 0;
     virtual void onReset_();

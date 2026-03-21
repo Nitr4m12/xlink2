@@ -13,7 +13,7 @@ class UserInstance;
 class TriggerCtrlMgr {
 public:
     TriggerCtrlMgr();
-    ~TriggerCtrlMgr() = default;
+    ~TriggerCtrlMgr();
 
     void destroy();
     void initialize(s32 /*unused*/, s32 /*unused*/, sead::Heap* /*unused*/);
