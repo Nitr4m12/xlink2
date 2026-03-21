@@ -22,7 +22,7 @@ public:
     UserResourceParamELink* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;
 
-    void releaseOneEmitterInstance(UserResourceParamELink*, const ParamDefineTable*);
+    void releaseOneEmitterInstance_(UserResourceParamELink*, const ParamDefineTable*);
 
     void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*) override;
 

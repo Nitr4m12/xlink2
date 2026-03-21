@@ -43,6 +43,19 @@ UserResourceParamELink* UserResourceELink::allocResourceParam_(sead::Heap* heap)
     return param;
 }
 
+void UserResourceELink::freeResourceParam_(UserResourceParam* param)
+{
+    auto* elink_param {static_cast<UserResourceParamELink*>(param)};
+    if (elink_param != nullptr) {
+        auto* local_param {static_cast<UserResourceParamELink*>(getParam())};
+        auto* pdt {getSystem()->getParamDefineTable(mResMode)};
+        releaseOneEmitterInstance_(local_param, pdt);
+        UserResource::freeResourceParam_(elink_param);
+        elink_param->solvedAssetParamBuffer.freeBuffer();
+        delete param;
+    }
+}
+
 // SystemELink* UserResourceELink::getSystem() const {
 //     return SystemELink::sInstance;
 // }
