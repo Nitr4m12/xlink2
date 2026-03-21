@@ -17,8 +17,8 @@ SolvedAssetParamELink* UserResourceELink::getSolvedAssetParameterELink(const Res
 {
     auto* param {getParamWithSetupCheck()};
     if (param != nullptr && asset_ctb.assetId > -1) {
-        auto& ptrs = static_cast<UserResourceParamELink*>(param)->solvedAssetParamPtrs;
-        return ptrs.unsafeAt(asset_ctb.assetId);
+        auto& buffer = static_cast<UserResourceParamELink*>(param)->solvedAssetParamBuffer;
+        return &buffer[asset_ctb.assetId];
     }
     return nullptr;
 }
