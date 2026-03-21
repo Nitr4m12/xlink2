@@ -45,4 +45,9 @@ UserResourceSLink* UserInstanceSLink::getResourceSLink() const
 {
     return static_cast<UserResourceSLink*>(mUser->getUserResource());
 }
+
+UserInstanceParamSLink* UserInstanceSLink::allocInstanceParam_(sead::Heap* heap)
+{
+    return new(heap) UserInstanceParamSLink;
+}
 }  // namespace xlink2
