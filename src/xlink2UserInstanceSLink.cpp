@@ -35,4 +35,14 @@ void UserInstanceSLink::fadeIfLoopSound()
 
     mTriggerCtrlMgr.reset();
 }
+
+const ResourceAccessorSLink& UserInstanceSLink::getResourceAccessor() const 
+{
+    return getResourceSLink()->getResourceAccessor();
+}
+
+UserResourceSLink* UserInstanceSLink::getResourceSLink() const 
+{
+    return static_cast<UserResourceSLink*>(mUser->getUserResource());
+}
 }  // namespace xlink2
