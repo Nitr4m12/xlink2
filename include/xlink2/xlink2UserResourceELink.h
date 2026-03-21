@@ -2,6 +2,7 @@
 
 #include "xlink2/xlink2ResourceAccessorELink.h"
 #include "xlink2/xlink2SolvedAssetParam.h"
+#include "xlink2/xlink2SystemELink.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2UserResourceParamELink.h"
 
@@ -28,7 +29,7 @@ public:
 
     const ResourceAccessorELink& getAccessor() const override;
     ResourceAccessorELink* getAccessorPtr() override;
-    System* getSystem() const override;
+    SystemELink* getSystem() const override;
 
     const ResourceAccessorELink& getResourceAccessor() const { return mAccessor; }
 

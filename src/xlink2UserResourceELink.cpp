@@ -1,7 +1,5 @@
 #include <xlink2/xlink2UserResourceELink.h>
 
-#include <xlink2/xlink2SystemELink.h>
-
 namespace xlink2 {
 UserResourceELink::UserResourceELink(User* user, sead::Heap* heap)
     : UserResource(user)
@@ -68,10 +66,6 @@ void UserResourceELink::onSetupResourceParam_(UserResourceParam* param, const Pa
     solveNeedObserveFlag_(param);
 }
 
-
-// SystemELink* UserResourceELink::getSystem() const {
-//     return SystemELink::sInstance;
-// }
 const ResourceAccessorELink& UserResourceELink::getAccessor() const
 {
     return mAccessor;
@@ -81,4 +75,9 @@ ResourceAccessorELink* UserResourceELink::getAccessorPtr()
 {
     return &mAccessor;
 }
+
+SystemELink* UserResourceELink::getSystem() const 
+{
+    return SystemELink::instance();
 }
+} // namespace xlink2
