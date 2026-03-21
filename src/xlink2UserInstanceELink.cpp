@@ -67,11 +67,16 @@ UserInstanceParam* UserInstanceELink::allocInstanceParam_(sead::Heap* heap)
     return new(heap) UserInstanceParam;
 }
 
-void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
+void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) 
+{
     if (param != nullptr) {
         UserInstance::freeInstanceParam_(param, mode);
         delete param;
     }
 }
 
+void UserInstanceELink::onSetupInstanceParam_(ResMode res_mode, sead::Heap* heap)
+{
+    initModelAssetConnection_(res_mode, mUser->getSystem()->getParamDefineTable(res_mode), heap);
+}
 }  // namespace xlink2
