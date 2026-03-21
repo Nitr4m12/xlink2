@@ -53,7 +53,7 @@ public:
     };
 
     UserInstanceSLink(const CreateArgSLink&, System*, User*, sead::Heap*);
-    ~UserInstanceSLink() override = default;
+    ~UserInstanceSLink() override;
 
     void allocEmitter(sead::Heap*);
 
@@ -75,7 +75,7 @@ public:
     void setAssetInfoReader(aal::IAssetInfoReadable*);
 
     s32 getSoundSourceNum() const;
-    u64 getResourceAccessor() const;
+    const ResourceAccessorSLink& getResourceAccessor() const;
     UserResourceSLink* getResourceSLink() const;
 
     void setupEmitter(const ResAssetCallTable&);
@@ -85,7 +85,7 @@ public:
 
     void freeEmitter_(aal::Emitter*);
 
-    UserInstanceParam* allocInstanceParam_(sead::Heap*) override;
+    UserInstanceParamSLink* allocInstanceParam_(sead::Heap*) override;
     void freeInstanceParam_(UserInstanceParam*, ResMode) override;
     void onSetupInstanceParam_(ResMode, sead::Heap*) override;
 

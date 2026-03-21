@@ -28,6 +28,8 @@ public:
     ResourceAccessorSLink* getAccessorPtr() override;
     System* getSystem() const override;
 
+    const ResourceAccessorSLink& getResourceAccessor() const { return mAccessor; }
+
 private:
     ResourceAccessorSLink mAccessor;
 };
