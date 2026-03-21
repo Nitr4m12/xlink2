@@ -24,4 +24,15 @@ void UserInstanceSLink::searchAndHold(const char* name, HandleSLink* handle)
     auto* system {mUser->getSystem()};
     system->getHoldMgr()->searchAndHold(name, handle, this);
 }
+
+void UserInstanceSLink::fadeIfLoopSound()
+{
+    {
+        auto lock {sead::makeScopedLock(*SystemSLink::sLockProxy)};
+        for (auto& event : mEventList)
+            event.fadeBySystem();
+    }
+
+    mTriggerCtrlMgr.reset();
+}
 }  // namespace xlink2
