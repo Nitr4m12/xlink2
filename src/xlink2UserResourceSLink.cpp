@@ -10,6 +10,15 @@ UserResourceSLink::UserResourceSLink(User* user, sead::Heap* heap)
 
 UserResourceSLink::~UserResourceSLink() = default;
 
+const ResParam* UserResourceSLink::getUserParam() const
+{
+    auto* param {static_cast<UserResourceParamSLink*>(getParam())};
+    if (param != nullptr && param->isSetup)
+        return &param->userParam;
+
+    return nullptr;
+}
+
 UserResourceParamSLink* UserResourceSLink::allocResourceParam_(sead::Heap* heap)
 {
     auto* param {new(heap) UserResourceParamSLink};

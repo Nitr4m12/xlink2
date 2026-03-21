@@ -15,7 +15,7 @@ public:
     UserResourceSLink(User*, sead::Heap*);
     ~UserResourceSLink() override;
 
-    void* getUserParam() const;
+    const ResParam* getUserParam() const;
 
     void solveIsLoop(aal::IAssetInfoReadable*);
     void solveIsLoop_(UserResourceParam*, const ParamDefineTable*, aal::IAssetInfoReadable*);

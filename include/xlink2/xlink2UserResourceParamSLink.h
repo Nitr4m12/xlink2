@@ -5,7 +5,9 @@
 
 namespace xlink2 {
 struct UserResourceParamSLink : public UserResourceParam {
-    const char* groupName {};
+    u32 _2;
+    ResParam userParam {};
+    u32 groupNamePos {0};
     const char* distanceParamSetName {};
     s32 limitType {0};
     s32 playableLimitNum {-1};
