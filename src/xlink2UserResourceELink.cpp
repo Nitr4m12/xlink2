@@ -1,4 +1,5 @@
 #include <xlink2/xlink2UserResourceELink.h>
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 UserResourceELink::UserResourceELink(User* user, sead::Heap* heap)
@@ -51,6 +52,34 @@ void UserResourceELink::freeResourceParam_(UserResourceParam* param)
         UserResource::freeResourceParam_(elink_param);
         elink_param->solvedAssetParamBuffer.freeBuffer();
         delete param;
+    }
+}
+
+// WIP: Needs more of SystemELink
+void UserResourceELink::releaseOneEmitterInstance_(UserResourceParamELink* param, const ParamDefineTable* pdt)
+{
+    if (_0x28 && mResMode != ResMode::Editor) {
+        _0x28 = false;
+        u32 name_table_pos {param->pCommonResourceParam->nameTablePos};
+        if (name_table_pos != 0) {
+            auto* user_header {param->userBinParam.pResUserHeader};
+            for (u32 i {0}; i < user_header->numCallTable; ++i) {
+                auto& asset_ctb_item {param->userBinParam.pResAssetCallTable[i]};
+                if ((asset_ctb_item.flag & 1) == 0) {
+                    auto* res_param {mAccessor.getResParamFromAssetParamPos(asset_ctb_item.paramStartPos, 1)};
+                    const char* runtime_asset_name {};
+                    if (res_param != nullptr)
+                        runtime_asset_name = solveOffset<const char>(res_param->getValue());
+                    else
+                       runtime_asset_name = pdt->getAssetParamDefaultValueString(1);
+
+                    if (runtime_asset_name != nullptr && getAccessor().isUseOneEmitter(asset_ctb_item)) {
+                        // OneEmitterMgr* one_emitter_mgr {getSystem()->getOneEmitterMgr()};
+                        // one_emitter_mgr->releaseOneEmitterInstance(runtime_asset_name);
+                    }
+                }
+            }
+        }
     }
 }
 

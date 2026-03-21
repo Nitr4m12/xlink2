@@ -16,7 +16,7 @@ public:
     void releaseOneEmitterInstance(const char*);
 
     OneEmitterInstance* getOneEmitterInstance(OneEmitterInstanceHandle);
-    OneEmitterMgr* getFreeOneEmitterInstance();
+    OneEmitterInstance* getFreeOneEmitterInstance();
 
     void drawDebugInformation(sead::TextWriter*);
 
