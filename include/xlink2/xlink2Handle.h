@@ -7,6 +7,8 @@ class Event;
 
 class Handle {
 public:
+    Handle() = default;
+
     Event* getEvent() { return static_cast<Event*>(mpResource); }
     s32 getCreateId() { return mCreateId; }
 

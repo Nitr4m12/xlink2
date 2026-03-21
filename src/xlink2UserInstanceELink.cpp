@@ -2,6 +2,7 @@
 
 #include <xlink2/xlink2UserResourceELink.h>
 #include <xlink2/xlink2UserInstanceParam.h>
+#include "xlink2/xlink2HandleELink.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
@@ -10,6 +11,11 @@ UserInstanceELink::UserInstanceELink(const UserInstance::CreateArg& arg, System*
     : UserInstance(arg, system, user, heap) {}
 
 UserInstanceELink::~UserInstanceELink() = default;
+
+void UserInstanceELink::searchAndEmit(const char* asset_key_name, HandleELink* handle)
+{
+    searchAndEmitImpl(asset_key_name, handle);
+}
 
 void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) {
     if (param != nullptr) {
