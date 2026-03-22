@@ -2,7 +2,8 @@
 
 #include <container/seadSafeArray.h>
 
-#include "xlink2/xlink2Resource.h"
+#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
 class Event;
@@ -27,6 +28,22 @@ public:
     virtual bool killOneTimeEvent();
 
     ContainerBase* createChildContainer_(const ResAssetCallTable&, ContainerBase*);
+
+    // Doesn't seem to exist, but similar logic is used throughout containers, so it's here as a helper
+    ContainerBase* createChildContainer(const ResAssetCallTable& asset_ctb, UserInstance* user_instance, ContainerBase* child) 
+    {
+        Event* event {mpEvent};
+
+        const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable)->cstr()};
+        const char* key_name {solveOffset<char>(mpAssetCallTable->keyNamePos)};
+        
+        const char* container_child_name {user_instance->getContainerTypeName(asset_ctb)->cstr()};
+        const char* key_name_child {solveOffset<char>(asset_ctb.keyNamePos)};
+
+        user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s]", container_name, key_name, container_child_name, key_name_child);
+
+        return createChildContainer_(asset_ctb, child);
+    }
 
     ContainerBase* getNext() { return mpParent; }
     void setNext(ContainerBase* parent) { mpParent = parent; }
