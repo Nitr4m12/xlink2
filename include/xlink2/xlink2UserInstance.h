@@ -96,7 +96,7 @@ public:
     bool searchAsset(Locator*, const char*);
     bool searchAsset(Locator*, u32);
     bool searchAssetRecursive(Locator*, const char*);
-    void* trySearchSwitchContainerRecursive_(const ResAssetCallTable**, const ResAssetCallTable&);
+    bool trySearchSwitchContainerRecursive_(const ResAssetCallTable**, const ResAssetCallTable&);
     u64 searchEmittingEvent(Handle*, const char*) const;
 
     void changeAction(const char*, s32, s32);

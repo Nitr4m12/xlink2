@@ -374,6 +374,28 @@ bool UserInstance::searchAsset(Locator* locator, u32 name_hash)
     return false;
 }
 
+bool UserInstance::searchAssetRecursive(Locator* locator, const char* name)
+{
+    locator->reset();
+    if (mUser->getSystem()->isCallEnabled()) {
+        ResAssetCallTable* asset_ctb1 {mUser->getUserResource()->searchAssetCallTableByName(name)};
+        if (asset_ctb1 != nullptr) {
+            const ResAssetCallTable* asset_ctb2 {};
+            if (trySearchSwitchContainerRecursive_(&asset_ctb2, *asset_ctb1)) {
+                if (asset_ctb2 != nullptr)
+                    locator->setAssetCallTable(asset_ctb2);
+                return asset_ctb2 != nullptr;
+            }
+            
+            locator->setAssetCallTable(asset_ctb1);
+            return true;
+        }
+        
+    }
+
+    return false;
+}
+
 void UserInstance::changeAction(const char* name, int p1, int p2) 
 {
     auto* sys = mUser->getSystem();
