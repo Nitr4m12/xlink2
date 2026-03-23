@@ -33,7 +33,7 @@ public:
     void _updateParamFirst();
     void updateParamFirst();
 
-    void _applyParam(sead::BitFlag32);
+    void _applyParam_(sead::BitFlag32);
     void applyParam_(bool);
 
     void onResetOverwriteParam_() override;

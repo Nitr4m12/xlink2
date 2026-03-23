@@ -10,6 +10,7 @@
 
 #include <xlink2/xlink2ErrorMgr.h>
 #include "xlink2/xlink2DebugOperationParam.h"
+#include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserInstance.h"
@@ -24,7 +25,6 @@ class AssetExecutor;
 class EditorBuffer;
 class Event;
 class HoldMgr;
-class ILockProxy;
 class IUser;
 class ParamDefineTable;
 class PropertyDefinition;

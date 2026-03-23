@@ -28,8 +28,8 @@ public:
         BoneMtx rootMtx;
         sead::Vector3f* rootPos;
         sead::Vector3f* scale;
-        s32 actionSlotCount;
-        s32 localPropertyCount;
+        s32 numActionSlot;
+        s32 numLocalProperty;
         char* actionSlotNames;
     };
 
@@ -177,18 +177,21 @@ protected:
 
     sead::OffsetList<Event> mEventList;
     sead::SafeArray<UserInstanceParam*, 2> mParams;
-    User* mUser;
-    IUser* mIUser;
-    BoneMtx mRootMtx;
-    const sead::Vector3f* mRootPos;
-    const sead::Vector3f* mScale; // Just a guess
-    f32 mSortKey;
+    User* mUser {};
+    IUser* mIUser {};
+    BoneMtx mRootMtx {};
+    const sead::Vector3f* mRootPos {};
+    const sead::Vector3f* mScale {}; // Just a guess
+    f32 mSortKey {INFINITY};
     sead::BitFlag64 mValueChangedBitfield;
-    PropertyValueType* mPropertyValueArray;
+    PropertyValueType* mPropertyValueArray {};
     TriggerCtrlMgr mTriggerCtrlMgr;
-    void* _0x98;
+    void* _0x98 {};
     u8 _0xA0[0x30];
     sead::BitFlag8 mBitFlag;
+    void* _0xd8 {};
+    void* _0xe0 {};
+    void* _0xe8 {};
 };
-static_assert(sizeof(UserInstance) == 0xd8, "xlink2::UserInstance size mismatch");
+static_assert(sizeof(UserInstance) == 0xf0, "xlink2::UserInstance size mismatch");
 }  // namespace xlink2

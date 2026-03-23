@@ -130,7 +130,7 @@ public:
     void setSystem(System* system) { mpSystem = system; }
 
 protected:
-    const char* getResParamValueString(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* fallback) const
+    const char* _getResParamValueString_(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* fallback) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return fallback;
@@ -142,7 +142,7 @@ protected:
         return mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(param_idx);
     }
 
-    s32 getResParamValueInt(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, s32 fallback) const
+    s32 _getResParamValueInt_(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, s32 fallback) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return fallback;
@@ -154,7 +154,7 @@ protected:
         return mpSystem->getParamDefineTable()->getAssetParamDefaultValueInt(param_idx);
     }
 
-    f32 getResParamValueFloat(const char* func_name, const ResAssetCallTable& asset_ctb, 
+    f32 _getResParamValueFloat_(const char* func_name, const ResAssetCallTable& asset_ctb, 
                               s32 param_idx, f32 fallback, const UserInstance* user_instance) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
@@ -167,7 +167,7 @@ protected:
         return mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
     }
     
-    f32 getResParamValueFloatWithLowerLimit(const char* func_name, const ResAssetCallTable& asset_ctb, 
+    f32 _getResParamValueFloatWithLowerLimit_(const char* func_name, const ResAssetCallTable& asset_ctb, 
                                        s32 param_idx, f32 fallback, const UserInstance* user_instance) const
     {
         f32 param_value {fallback};
@@ -183,7 +183,7 @@ protected:
         return param_value < 0.0f ? 0.0f : param_value;
     }
 
-    f32 getResOverwriteParamValueFloatWithLimit(u32 idx, u32 define_idx, const UserInstance* user_instance) const
+    f32 _getResOverwriteParamValueFloatWithLimit_(u32 idx, u32 define_idx, const UserInstance* user_instance) const
     {
         f32 param_value {getResOverwriteParamValueFloat_(idx, define_idx, user_instance)};
         return param_value < 0.0f ? 0.0f : param_value;

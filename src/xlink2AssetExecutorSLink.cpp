@@ -68,7 +68,8 @@ bool AssetExecutorSLink::isRequestReEmit() const
     return mBitFlag.isOnBit(0);
 }
 
-void AssetExecutorSLink::onFinalize_() {
+void AssetExecutorSLink::onFinalize_() 
+{
     _9 = nullptr;
 }
 }  // namespace xlink2

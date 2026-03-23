@@ -1,5 +1,4 @@
 #include "xlink2/xlink2SystemSLink.h"
-#include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2UserResourceSLink.h"
 
 namespace xlink2 {

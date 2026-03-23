@@ -97,9 +97,6 @@ public:
     void makeDebugStringEvent(sead::BufferedSafeString*, const sead::SafeString&) const override;
 
 private:
-    void* _0xd8;
-    void* _0xe0;
-    void* _0xe8;
     sead::Heap* mHeap;
     void* mEmitter;
     u8 _6;

@@ -3,7 +3,6 @@
 
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2Handle.h"
-#include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2PropertyDefinition.h"
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
@@ -11,34 +10,24 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-// WIP
-UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user, sead::Heap* heap) 
+UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user, sead::Heap* heap)
+    : mUser(user), mIUser(create_arg.iUser), 
+      mRootMtx(create_arg.rootMtx), mRootPos(create_arg.rootPos), 
+      mScale(create_arg.scale)
 {
-    mEventList = {};
-    mEventList.initOffset(10);
-    mUser = user;
-    mIUser = create_arg.iUser;
-    mRootMtx = create_arg.rootMtx;
-    mRootPos = create_arg.rootPos;
-    mSortKey = INFINITY;
-    mScale = create_arg.scale;
-    mValueChangedBitfield = 0;
-    mPropertyValueArray = nullptr;
-    mTriggerCtrlMgr = {};
-    _0x98 = nullptr;
-    mBitFlag = 0;
-    if (!create_arg.rootMtx.rawMtx) {
+    mEventList.initOffset(16);
+    if (create_arg.rootMtx.rawMtx == nullptr) {
         mRootMtx.rawMtx = &sead::Matrix34f::ident;
         mRootMtx._0 = 0;
     }
-    if (!create_arg.scale)
+    if (create_arg.scale == nullptr)
         mScale = &sead::Vector3f::ones;
 
-    u16 prop_define_table_num = mUser->getNumLocalProp();
-    if (prop_define_table_num > 0)
-        mPropertyValueArray = new (heap, 8) PropertyValueType[prop_define_table_num << 2];
+    u16 num_local_property = mUser->getNumLocalProp();
+    if (num_local_property > 0)
+        mPropertyValueArray = new (heap) PropertyValueType[num_local_property];
 
-    mTriggerCtrlMgr.initialize(create_arg.actionSlotCount, create_arg.localPropertyCount, heap);
+    mTriggerCtrlMgr.initialize(create_arg.numActionSlot, create_arg.numLocalProperty, heap);
 
     mParams.fill(nullptr);
 }
@@ -301,7 +290,7 @@ void UserInstance::printLogSearchAsset_(bool /*unused*/, const char* /*unused*/,
 void UserInstance::emitImpl(const Locator& locator, Handle* handle)
 {
     if (mUser->getSystem()->isCallEnabled() && mBitFlag.isOffBit(3)) {
-        char* asset_key_name;
+        const char* asset_key_name;
         if (locator.getAssetCallTable() == nullptr)
             asset_key_name = "";
         else
@@ -312,8 +301,9 @@ void UserInstance::emitImpl(const Locator& locator, Handle* handle)
             {
                 auto lock {sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj())};
                 event = mUser->getSystem()->allocEvent();
-                if (event == nullptr)
+                if (event == nullptr) {
                     mUser->getSystem()->addError(Error::Type::EventPoolFull, mUser, "emit[%s] failed.", solveOffset<char*>(locator.getAssetCallTable()->keyNamePos));
+                }
                 else {
                     auto* asset_call_table {locator.getAssetCallTable()};
                     if (locator.get1())
