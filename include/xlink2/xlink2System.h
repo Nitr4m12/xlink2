@@ -133,6 +133,9 @@ public:
         void drawAxis(const sead::Vector3f&, f32);
 
         void end();
+    private:
+        // sead::PrimitiveRenderer* mpPrimitiveRenderer;
+        // sead::PrimitiveDrawer* mpPrimitiveDrawer;
     };
 
     sead::Heap* getUserHeap() { return mUserCreateHeap; }

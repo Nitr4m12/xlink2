@@ -5,6 +5,11 @@
 namespace xlink2 {
 class TriggerLocator : public Locator {
 public:
+    TriggerLocator(const ResAssetCallTable& asset_ctb, TriggerType trigger_type, 
+                   ResTriggerOverwriteParam* param, const BoneMtx& bone_mtx)
+        : Locator(asset_ctb), mTriggerType(trigger_type), 
+          mpResTriggerOverwriteParam(param), mOverwriteBoneMtx(bone_mtx) {}
+
     void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx) override;
 
     void reset() override;

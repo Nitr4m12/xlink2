@@ -26,11 +26,15 @@ bool BlendContainer::callAllChildContainer_()
 {
     UserInstance* user_instance {mpEvent->getUserInstance()};
     ResContainerParam* param {ResourceUtil::getResContainerParam(*mpAssetCallTable)};
-    s32 child_start_idx {param->childrenStartIndex};
-    ContainerBase* temp_child{};
+    s32 child_end_idx {param->childrenEndIndex};
 
-    for (s32 i {child_start_idx}, j{0}; i <= param->childrenEndIndex; ++i, ++j) {
-        ResAssetCallTable* asset_ctb_item {user_instance->getUser()->getUserResource()->getAssetCallTableItem(j)};
+    ContainerBase* tmp_base {};
+
+    bool ret_val {};
+
+    bool condition {param->childrenEndIndex > param->childrenStartIndex};
+    for (s32 i {param->childrenStartIndex}, j {0}; condition; ++i, ++j) {
+        ResAssetCallTable* asset_ctb_item {user_instance->getUser()->getUserResource()->getAssetCallTableItem(i)};
         
         Event* event {mpEvent};
 
@@ -42,17 +46,16 @@ bool BlendContainer::callAllChildContainer_()
 
         user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_name_child, key_name_child, j);
 
-        ContainerBase* child_container {createChildContainer_(*asset_ctb_item, temp_child)};
+        ContainerBase* child_container {createChildContainer_(*asset_ctb_item, tmp_base)};
         if (child_container != nullptr)
-            temp_child = child_container;
+            tmp_base = child_container;
 
-        if (temp_child != nullptr)
-            return true;
+        ret_val = ret_val | (child_container != nullptr);
+
+        condition = i < child_end_idx;
     }
 
-    return false;
-
-
+    return ret_val;
 }
 
 ContainerBase::CalcResult BlendContainer::calc()

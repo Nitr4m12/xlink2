@@ -6,12 +6,6 @@ namespace xlink2 {
 struct BoneMtx {
     BoneMtx() = default;
 
-    BoneMtx(const BoneMtx& other) 
-    {
-        rawMtx = other.rawMtx;
-        _0 = other._0;
-    }
-
     void reset()
     {
         rawMtx = &sead::Matrix34f::ident;
