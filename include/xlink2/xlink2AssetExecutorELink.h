@@ -69,6 +69,9 @@ public:
 
     void onFinalize_() override;
 
+    UserInstanceELink* getUserInstanceELink() { return static_cast<UserInstanceELink*>(mpUserInstance); }
+    EventELink* getEventELink() { return static_cast<EventELink*>(mpEvent); }
+
 private:
     sead::BitFlag8 mBitFlag;
     u32 mDelay{};

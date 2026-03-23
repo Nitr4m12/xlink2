@@ -3,6 +3,7 @@
 #include <container/seadSafeArray.h>
 #include <prim/seadBitFlag.h>
 
+#include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2TriggerCtrlParam.h"
 #include "xlink2/xlink2Types.h"
@@ -16,7 +17,7 @@ public:
     ~TriggerCtrlMgr();
 
     void destroy();
-    void initialize(s32 /*unused*/, s32 /*unused*/, sead::Heap* /*unused*/);
+    void initialize([[maybe_unused]] s32, [[maybe_unused]] s32, [[maybe_unused]] sead::Heap*);
 
     void freeCtrlParam_(TriggerCtrlParam*);
 
@@ -42,7 +43,7 @@ public:
 
     void notifyActive();
 
-    u64 getOverwriteBoneMtx(TriggerType, s32) const;
+    BoneMtx* getOverwriteBoneMtx(TriggerType, s32) const;
 
     const char* getCurrentActionName(s32) const;
     s32 getCurrentActionFrame(s32) const;

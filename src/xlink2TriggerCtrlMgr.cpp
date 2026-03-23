@@ -32,7 +32,7 @@ void TriggerCtrlMgr::freeCtrlParam_(TriggerCtrlParam* param)
     param->_0x10.freeBuffer();
     param->_0x20.freeBuffer();
     
-    for (s32 i {0}; i < param->actionTriggerCtrlBuffer.getSize(); ++i) {
+    for (s32 i {0}; i < param->actionTriggerCtrlBuffer.size(); ++i) {
         if (param->actionTriggerCtrlBuffer[i] != nullptr) {
             delete param->actionTriggerCtrlBuffer[i];
             param->actionTriggerCtrlBuffer[i] = nullptr;
@@ -40,7 +40,7 @@ void TriggerCtrlMgr::freeCtrlParam_(TriggerCtrlParam* param)
     }
     param->actionTriggerCtrlBuffer.freeBuffer();
     
-    for (s32 i {0}; i < param->localPropertyTriggerCtrlBuffer.getSize(); ++i) {
+    for (s32 i {0}; i < param->localPropertyTriggerCtrlBuffer.size(); ++i) {
         if (param->localPropertyTriggerCtrlBuffer[i] != nullptr) {
             delete param->localPropertyTriggerCtrlBuffer[i];
             param->localPropertyTriggerCtrlBuffer[i] = nullptr;
@@ -48,7 +48,7 @@ void TriggerCtrlMgr::freeCtrlParam_(TriggerCtrlParam* param)
     }
     param->localPropertyTriggerCtrlBuffer.freeBuffer();
 
-    for (s32 i {0}; i < param->globalPropertyTriggerCtrlBuffer.getSize(); ++i) {
+    for (s32 i {0}; i < param->globalPropertyTriggerCtrlBuffer.size(); ++i) {
         if (param->globalPropertyTriggerCtrlBuffer[i] != nullptr) {
             delete param->globalPropertyTriggerCtrlBuffer[i];
             param->globalPropertyTriggerCtrlBuffer[i] = nullptr;
@@ -79,17 +79,17 @@ void TriggerCtrlMgr::reset()
 {
     TriggerCtrlParam* param {getParam()};
     if (param != nullptr) {
-        for (s32 i {0}; i < param->actionTriggerCtrlBuffer.getSize(); ++i) {
+        for (s32 i {0}; i < param->actionTriggerCtrlBuffer.size(); ++i) {
             if (param->actionTriggerCtrlBuffer[i] != nullptr)
                 param->actionTriggerCtrlBuffer[i]->reset();
         }
 
-        for (s32 i {0}; i < param->localPropertyTriggerCtrlBuffer.getSize(); ++i) {
+        for (s32 i {0}; i < param->localPropertyTriggerCtrlBuffer.size(); ++i) {
             if (param->localPropertyTriggerCtrlBuffer[i] != nullptr)
                 param->localPropertyTriggerCtrlBuffer[i]->reset();
         }
 
-        for (s32 i {0}; i < param->globalPropertyTriggerCtrlBuffer.getSize(); ++i) {
+        for (s32 i {0}; i < param->globalPropertyTriggerCtrlBuffer.size(); ++i) {
             if (param->globalPropertyTriggerCtrlBuffer[i] != nullptr)
                 param->globalPropertyTriggerCtrlBuffer[i]->reset();
         }

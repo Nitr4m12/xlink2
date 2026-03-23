@@ -3,6 +3,7 @@
 #include "xlink2/xlink2ELinkAssetParamId.h"
 #include "xlink2/xlink2ELinkEventParam.h"
 #include "xlink2/xlink2ResourceAccessorELink.h"
+#include "xlink2/xlink2SystemELink.h"
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
@@ -22,6 +23,24 @@ bool AssetExecutorELink::isLoopEvent() const
     return res_accessor.isLoopAsset(*mpAssetCallTable);
 }
 
+// NON-MATCHING: IEventCallbackELink::EventArg constructor not inlining properly
+void AssetExecutorELink::_callEffectDeletedCallback()
+{
+    auto* system_callback {SystemELink::instance()->getEventCallback()};
+    auto* user_instance {getUserInstanceELink()};
+    if (system_callback != nullptr) {
+        auto* event {getEventELink()};
+        IEventCallbackELink::EventArg arg {mpAssetCallTable, getUserInstanceELink(), &mHandle, this, event};
+        system_callback->eventDeleted(arg);
+    }
+
+    if (user_instance != nullptr && user_instance->getEventCallback() != nullptr) {
+        auto* event {getEventELink()};
+        IEventCallbackELink::EventArg arg {mpAssetCallTable, getUserInstanceELink(), &mHandle, this, event};
+        user_instance->getEventCallback()->eventDeleted(arg);
+    }
+}
+
 void AssetExecutorELink::onResetOverwriteParam_() 
 {
     if (mpAssetCallTable) {
@@ -29,8 +48,6 @@ void AssetExecutorELink::onResetOverwriteParam_()
             mBitFlag.setBit(0);
     }
 }
-
-void AssetExecutorELink::onFinalize_() {}
 
 void AssetExecutorELink::setInnerParam_() 
 {
@@ -123,4 +140,5 @@ bool AssetExecutorELink::isRequestReEmit() const
     return mBitFlag.isOnBit(5);
 }
 
+void AssetExecutorELink::onFinalize_() {}
 }  // namespace xlink2

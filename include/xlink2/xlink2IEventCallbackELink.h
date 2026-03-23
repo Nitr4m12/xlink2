@@ -20,10 +20,14 @@ public:
     struct EventArg {
         EventArg(const ResAssetCallTable* asset_ctb, UserInstanceELink* user_instance, 
                  HandleELink* handle, AssetExecutorELink* asset_executor, EventELink* event)
-            :  pAssetCallTable(asset_ctb), pUserInstance(user_instance), pHandle(handle),
-               pAssetExecutor(asset_executor), pEvent(event) {}
+            :  pAssetCallTable(asset_ctb), 
+               pUserInstance(user_instance), 
+               pHandle(handle),
+               pAssetExecutor(asset_executor), 
+               pEvent(event) {}
     
-        u8 _0[0x10];
+        [[maybe_unused]] void* _0x0;
+        [[maybe_unused]] void* _0x8;
         const ResAssetCallTable* pAssetCallTable;
         UserInstanceELink* pUserInstance;
         HandleELink* pHandle;
@@ -36,6 +40,11 @@ public:
     virtual void eventActivated(const EventArg&);
 
     virtual u32 effectPreEmit(const EventArg&);
+    
+    virtual void effectEmited(const EventArg&);
+    virtual void eventDeleted(const EventArg&);
+    virtual void colorApplied(const EventArg&);
+    virtual void eventCalced(const EventArg&);
 
     virtual void replaceResEset(ResEset*, const ResAssetCallTable&, const ResourceAccessorELink&,
                                 const char *);
@@ -43,9 +52,5 @@ public:
     virtual void drawDebugInformation(sead::TextWriter*);
     virtual void drawEsetDebugInformation(sead::BufferedSafeString*, sead::ptcl::EmitterSet*);
 
-    virtual void effectEmited(const EventArg&);
-    virtual void eventDeleted(const EventArg&);
-    virtual void colorApplied(const EventArg&);
-    virtual void eventCalced(const EventArg&);
 };
 }  // namespace xlink2
