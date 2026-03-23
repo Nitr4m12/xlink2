@@ -15,20 +15,7 @@ void TriggerCtrl::emitByTriggerImpl_(TriggerType trigger_type, s32 idx,
 {
     if (asset_ctb != nullptr) {
         auto* connection {mConnectionBuffer->get(idx)};
-        auto& accessor {mUserInstance->getUser()->getUserResource()->getAccessor()};
-        if (accessor.isBoneNameOverwritten(overwrite_param_pos)) {
-            const char* bone_overwrite_name {accessor.getOverwriteBoneName(overwrite_param_pos)};
-            if (*bone_overwrite_name == '\0') {
-                connection->rootMtx = mUserInstance->getRootMtx();
-            }
-            else {
-                auto* bone_world_mtx {mUserInstance->getIUser()->getBoneWorldMtxPtr(bone_overwrite_name)};
-                connection->rootMtx.rawMtx = bone_world_mtx;
-                connection->rootMtx._0 = 1;
-                if (bone_world_mtx == nullptr)
-                    connection->rootMtx = mUserInstance->getRootMtx();
-            }
-        }
+        setBoneMatrixToConnection_(overwrite_param_pos, connection);
 
         auto* param {solveOffset<ResTriggerOverwriteParam>(overwrite_param_pos)};
         TriggerLocator locator {*asset_ctb, trigger_type, param, connection->rootMtx};
@@ -60,8 +47,26 @@ ModelTriggerConnection* TriggerCtrl::getModelTriggerConnection_(s32 idx)
 // NON-MATCHING
 void TriggerCtrl::resetIsOnceCheck_() 
 {
-    if (mConnectionBuffer != nullptr)
-        for (s32 i {0}; i < mConnectionBuffer->getSize(); ++i)
-            getModelTriggerConnection_(i)->isActive = false;
+    for (s32 i {0}; i < mConnectionBuffer->size(); ++i)
+        mConnectionBuffer->get(i)->isActive = false;
+}
+
+void TriggerCtrl::setBoneMatrixToConnection_(u32 overwrite_param_pos, ModelTriggerConnection* connection)
+{
+    auto& accessor {mUserInstance->getUser()->getUserResource()->getAccessor()};
+    if (accessor.isBoneNameOverwritten(overwrite_param_pos)) {
+        const char* bone_overwrite_name {accessor.getOverwriteBoneName(overwrite_param_pos)};
+        if (*bone_overwrite_name == '\0') {
+            connection->rootMtx = mUserInstance->getRootMtx();
+        }
+        else {
+            auto* bone_world_mtx {mUserInstance->getIUser()->getBoneWorldMtxPtr(bone_overwrite_name)};
+            connection->rootMtx.rawMtx = bone_world_mtx;
+            connection->rootMtx._0 = 1;
+            if (bone_world_mtx == nullptr)
+                connection->rootMtx = mUserInstance->getRootMtx();
+        }
+    }
+
 }
 }  // namespace xlink2
