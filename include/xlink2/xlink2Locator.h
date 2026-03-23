@@ -6,10 +6,9 @@
 namespace xlink2 {
 class Locator {
 public:
-    Locator() 
-        : mpAssetCallTable{nullptr}, _1{0} {};
-    explicit Locator(const ResAssetCallTable& asset_ctb) 
-        : mpAssetCallTable{&asset_ctb}, _1{0} {};
+    Locator() : mpAssetCallTable(nullptr) {};
+    explicit Locator(const ResAssetCallTable& asset_ctb)
+        : mpAssetCallTable(&asset_ctb) {}
     ~Locator() = default;
 
     static u32 sDataLoadedCount;
@@ -32,7 +31,7 @@ public:
 
 protected:
     const ResAssetCallTable* mpAssetCallTable;
-    u8 _1;
+    u8 _1 {0};
 };
 static_assert(sizeof(Locator) == 0x18, "xlink2::Locator size mismatch");
 }  // namespace xlink2

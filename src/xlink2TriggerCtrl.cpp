@@ -2,10 +2,40 @@
 
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2Handle.h"
+#include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2ModelTriggerConnection.h"
-#include "xlink2/xlink2UserInstance.h"
+#include "xlink2/xlink2TriggerLocator.h"
+#include "xlink2/xlink2UserResource.h"
+#include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+// NON-MATCHING: TriggerLocator constructor not inlining properly
+void TriggerCtrl::emitByTriggerImpl_(TriggerType trigger_type, s32 idx, 
+                                     u32 overwrite_param_pos, const ResAssetCallTable* asset_ctb)
+{
+    if (asset_ctb != nullptr) {
+        auto* connection {mConnectionBuffer->get(idx)};
+        auto& accessor {mUserInstance->getUser()->getUserResource()->getAccessor()};
+        if (accessor.isBoneNameOverwritten(overwrite_param_pos)) {
+            const char* bone_overwrite_name {accessor.getOverwriteBoneName(overwrite_param_pos)};
+            if (*bone_overwrite_name == '\0') {
+                connection->rootMtx = mUserInstance->getRootMtx();
+            }
+            else {
+                auto* bone_world_mtx {mUserInstance->getIUser()->getBoneWorldMtxPtr(bone_overwrite_name)};
+                connection->rootMtx.rawMtx = bone_world_mtx;
+                connection->rootMtx._0 = 1;
+                if (bone_world_mtx == nullptr)
+                    connection->rootMtx = mUserInstance->getRootMtx();
+            }
+        }
+
+        auto* param {solveOffset<ResTriggerOverwriteParam>(overwrite_param_pos)};
+        TriggerLocator locator {*asset_ctb, trigger_type, param, connection->rootMtx};
+        mUserInstance->emitImpl(locator, &connection->handle);
+    }
+}
+
 void TriggerCtrl::fadeByTrigger_(s32 idx) 
 {
     constexpr const char* TRIGGERTYPES[3] {"Action", "Property", "Always"};

@@ -14,6 +14,11 @@
 #include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserInstance.h"
 
+namespace sead {
+class PrimitiveRenderer;
+class PrimitiveDrawer;
+}
+
 namespace xlink2 {
 class AssetExecutor;
 class EditorBuffer;
@@ -133,9 +138,10 @@ public:
         void drawAxis(const sead::Vector3f&, f32);
 
         void end();
+        
     private:
-        // sead::PrimitiveRenderer* mpPrimitiveRenderer;
-        // sead::PrimitiveDrawer* mpPrimitiveDrawer;
+        sead::PrimitiveRenderer* mpPrimitiveRenderer;
+        sead::PrimitiveDrawer* mpPrimitiveDrawer;
     };
 
     sead::Heap* getUserHeap() { return mUserCreateHeap; }
