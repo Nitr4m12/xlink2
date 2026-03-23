@@ -1,6 +1,8 @@
 #pragma once
 
 #include "xlink2/xlink2AssetExecutor.h"
+#include "xlink2/xlink2HandleSLink.h"
+#include "xlink2/xlink2UserInstanceSLink.h"
 
 namespace xlink2 {
 class HandleSLink;
@@ -12,8 +14,8 @@ public:
     u32 calc() override;
     void* emitSound();
     
-    void _updateParam();
-    void updateParam();
+    void _updateParam_();
+    void updateParam_();
 
     bool isLoopEvent() const override;
 
@@ -32,7 +34,7 @@ public:
     void updateParamFirst();
 
     void _applyParam(sead::BitFlag32);
-    void applyParam(bool);
+    void applyParam_(bool);
 
     void onResetOverwriteParam_() override;
 
@@ -45,17 +47,18 @@ public:
 
     void onFinalize_() override;
 
+    UserInstanceSLink* getUserInstance() { return static_cast<UserInstanceSLink*>(mpUserInstance); }
+
 private:
-    u8 _7;
+    sead::BitFlag8 mBitFlag;
     u32 _8;
     void* _9;
     void* _10;
-    HandleSLink* mHandle;
-    void* _11;
-    u16 _12;
+    HandleSLink mHandle;
+    sead::BitFlag16 mParamFlag;
     u16 _13;
     f32 mVolume;
-    f32 mDeviceVolume;
+    f32 mVolumeTv;
     f32 mPitch;
     f32 mLpf;
     f32 mPriority;

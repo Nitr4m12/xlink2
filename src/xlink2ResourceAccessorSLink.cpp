@@ -206,106 +206,106 @@ const char* ResourceAccessorSLink::getDistanceParamSetName(const ResAssetCallTab
     return this->getResParamValueString("getDistanceParamSetName", asset_ctb, 16, "");
 }
 
-f32 ResourceAccessorSLink::getOverwriteVolume(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getOverwriteVolume(u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloatWithLimit(idx, 3, user_instance);
+    return this->getResOverwriteParamValueFloatWithLimit(overwrite_param_pos, 3, user_instance);
 }
 
-f32 ResourceAccessorSLink::getOverwritePitch(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getOverwritePitch(u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloatWithLimit(idx, 6, user_instance);
+    return this->getResOverwriteParamValueFloatWithLimit(overwrite_param_pos, 6, user_instance);
 }
 
-f32 ResourceAccessorSLink::getOverwriteLpf(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getOverwriteLpf(u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 7, user_instance);
+    return this->getResOverwriteParamValueFloat_(overwrite_param_pos, 7, user_instance);
 }
 
-f32 ResourceAccessorSLink::getOverwriteStopFrame(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getOverwriteStopFrame(u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 8, user_instance);
+    return this->getResOverwriteParamValueFloat_(overwrite_param_pos, 8, user_instance);
 }
 
-f32 ResourceAccessorSLink::getOverwriteFadeInTime(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getOverwriteFadeInTime(u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 9, user_instance);
+    return this->getResOverwriteParamValueFloat_(overwrite_param_pos, 9, user_instance);
 }
 
-f32 ResourceAccessorSLink::getOverwriteDelay(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getOverwriteDelay(u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloatWithLimit(idx, 11, user_instance);
+    return this->getResOverwriteParamValueFloatWithLimit(overwrite_param_pos, 11, user_instance);
 }
 
-f32 ResourceAccessorSLink::getOverwritePriority(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getOverwritePriority(u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 13, user_instance);
+    return this->getResOverwriteParamValueFloat_(overwrite_param_pos, 13, user_instance);
 }
 
-const char* ResourceAccessorSLink::getOverwriteBoneName(u32 idx) const
+const char* ResourceAccessorSLink::getOverwriteBoneName(u32 overwrite_param_pos) const
 {
-    return this->getResOverwriteParamValueString_(idx, 15);
+    return this->getResOverwriteParamValueString_(overwrite_param_pos, 15);
 }
 
-f32 ResourceAccessorSLink::getVolumeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getVolumeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 3))
-        return getOverwriteVolume(idx, user_instance);
+    if (this->isParamOverwritten(overwrite_param_pos, 3))
+        return getOverwriteVolume(overwrite_param_pos, user_instance);
 
     return getVolume(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorSLink::getPitchWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getPitchWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 6))
-        return getOverwritePitch(idx, user_instance);
+    if (this->isParamOverwritten(overwrite_param_pos, 6))
+        return getOverwritePitch(overwrite_param_pos, user_instance);
 
     return getPitch(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorSLink::getLpfWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getLpfWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 7))
-        return getOverwriteLpf(idx, user_instance);
+    if (this->isParamOverwritten(overwrite_param_pos, 7))
+        return getOverwriteLpf(overwrite_param_pos, user_instance);
 
     return getLpf(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorSLink::getStopFrameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getStopFrameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 8))
-        return getOverwriteStopFrame(idx, user_instance);
+    if (this->isParamOverwritten(overwrite_param_pos, 8))
+        return getOverwriteStopFrame(overwrite_param_pos, user_instance);
 
     return getStopFrame(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorSLink::getFadeInTimeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getFadeInTimeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 9))
-        return getOverwriteFadeInTime(idx, user_instance);
+    if (this->isParamOverwritten(overwrite_param_pos, 9))
+        return getOverwriteFadeInTime(overwrite_param_pos, user_instance);
 
     return getFadeInTime(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorSLink::getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 11))
-        return getOverwriteDelay(idx, user_instance);
+    if (this->isParamOverwritten(overwrite_param_pos, 11))
+        return getOverwriteDelay(overwrite_param_pos, user_instance);
 
     return getDelay(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorSLink::getPriorityWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorSLink::getPriorityWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 13))
-        return getOverwritePriority(idx, user_instance);
+    if (this->isParamOverwritten(overwrite_param_pos, 13))
+        return getOverwritePriority(overwrite_param_pos, user_instance);
 
     return getPriority(asset_ctb, user_instance);
 }
 
-const char* ResourceAccessorSLink::getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx) const
+const char* ResourceAccessorSLink::getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos) const
 {
-    if (this->isParamOverwritten(idx, 15))
-        return getOverwriteBoneName(idx);
+    if (this->isParamOverwritten(overwrite_param_pos, 15))
+        return getOverwriteBoneName(overwrite_param_pos);
 
     return getBoneName(asset_ctb);
 }
@@ -325,8 +325,8 @@ sead::BitFlag32 ResourceAccessorSLink::getAssetBitFlag_(const ResAssetCallTable&
     return this->getResParamValueInt("getAssetBitFlag_", asset_ctb, 17, 0);
 }
 
-bool ResourceAccessorSLink::isBoneNameOverwritten(u32 idx) const
+bool ResourceAccessorSLink::isBoneNameOverwritten(u32 overwrite_param_pos) const
 {
-    return this->isParamOverwritten(idx, 15);
+    return this->isParamOverwritten(overwrite_param_pos, 15);
 }
 }
