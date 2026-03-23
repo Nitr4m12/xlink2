@@ -10,7 +10,7 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
-UserInstance::UserInstance(const CreateArg& create_arg, System* sys, User* user, sead::Heap* heap)
+UserInstance::UserInstance(const CreateArg& create_arg, [[maybe_unused]] System* sys, User* user, sead::Heap* heap)
     : mUser(user), mIUser(create_arg.iUser), 
       mRootMtx(create_arg.rootMtx), mRootPos(create_arg.rootPos), 
       mScale(create_arg.scale)
@@ -286,7 +286,6 @@ bool UserInstance::checkAndErrorCallWithoutSetup_(const char* fmt, ...) const
 
 void UserInstance::printLogSearchAsset_(bool /*unused*/, const char* /*unused*/, ...) const {}
 
-// NON-MATCHING
 void UserInstance::emitImpl(const Locator& locator, Handle* handle)
 {
     if (mUser->getSystem()->isCallEnabled() && mBitFlag.isOffBit(3)) {
@@ -296,7 +295,8 @@ void UserInstance::emitImpl(const Locator& locator, Handle* handle)
         else
             asset_key_name = solveOffset<char>(locator.getAssetCallTable()->keyNamePos);
 
-        if (checkAndErrorCallWithoutSetup_("emit %s", asset_key_name) && mBitFlag.isOffBit(1) && locator.getAssetCallTable() != nullptr && !doEventActivatingCallback_(locator)) {
+        if (checkAndErrorCallWithoutSetup_("emit %s", asset_key_name) && mBitFlag.isOffBit(1) && 
+            locator.getAssetCallTable() != nullptr && !doEventActivatingCallback_(locator)) {
             Event* event {};
             {
                 auto lock {sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj())};
@@ -307,12 +307,12 @@ void UserInstance::emitImpl(const Locator& locator, Handle* handle)
                 else {
                     auto* asset_call_table {locator.getAssetCallTable()};
                     if (locator.get1())
-                        event->setBits(1);
+                        event->setFlagBit(0);
                     
-                    // auto trigger_type {locator.getTriggerType()};
-                    // auto* trigger_overwrite_param {locator.getTriggerOverwriteParam()};
+                    auto trigger_type {locator.getTriggerType()};
+                    auto* trigger_overwrite_param {locator.getTriggerOverwriteParam()};
 
-                    // event->setOverwriteParam(locator.getTriggerType(), locator.getTriggerOverwriteParam(), locator.getOverwriteBoneMtx());
+                    event->setOverwriteParam(trigger_type, trigger_overwrite_param, locator.getOverwriteBoneMtx());
 
                     if (event->createRootContainer(this, *asset_call_table)) {
                         mEventList.pushBack(event);
@@ -320,7 +320,7 @@ void UserInstance::emitImpl(const Locator& locator, Handle* handle)
                             handle->setResource(event);
                             handle->setCreateId(event->getCreateId());
                         }
-                        mBitFlag.set(0b100);
+                        mBitFlag.setBit(2);
                     }
                     else {
                         mUser->getSystem()->freeEvent(event, nullptr);

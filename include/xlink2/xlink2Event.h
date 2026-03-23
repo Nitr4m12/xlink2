@@ -52,7 +52,7 @@ public:
     TriggerType& getTriggerType() { return mTriggerType; }
 
     sead::BitFlag32 getBitFlag() { return mBitFlag; }
-    void setBits(u32 bits) { mBitFlag.set(bits); }
+    void setFlagBit(s32 bit) { mBitFlag.setBit(bit); }
 
     sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
     const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() const { return mAliveAssetExecutors; }

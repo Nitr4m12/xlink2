@@ -47,7 +47,7 @@ public:
         Editor
     };
 
-    UserInstance(const CreateArg&, System*, User*, sead::Heap*);
+    UserInstance(const CreateArg&, [[maybe_unused]] System*, User*, sead::Heap*);
     void destroy();
 
     bool checkAndErrorCallInCalc(const char* /*unused*/, ...) const;
