@@ -344,6 +344,15 @@ bool UserInstance::isDebugLogEnable(DebugLogFlag /*unused*/) const
 
 void UserInstance::checkAndBreakWhenEmit_(const char* /*unused*/) {}
 
+// NON-MATCHING: unknown reason
+void UserInstance::freeEventIfFadeOrKillCalled()
+{
+    for (auto& event : mEventList.robustRange()) {
+        if (event.getBitFlag().isOnBit(4))
+            mUser->getSystem()->freeEvent(&event, &mEventList);
+    }
+}
+
 s32 UserInstance::getCurrentResActionIdx(s32 idx) const 
 {
     return mTriggerCtrlMgr.getCurrentResActionIdx(idx);
