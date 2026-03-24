@@ -89,6 +89,13 @@ void User::createPropertyDefinitionTable(u32 num_property)
     }
 }
 
+void User::createPropertyDefinitionTable(u32 num_property, const PropertyDefinition** prop_define_table)
+{
+    createPropertyDefinitionTable(num_property);
+    for (s32 i {0}; i < num_property; ++i)
+        setPropertyDefinition(i, prop_define_table[i]);
+}
+
 u32 User::searchPropertyIndex(const char* name) const 
 {
     if (mNumLocalProp != 0) {
