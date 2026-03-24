@@ -45,8 +45,8 @@ public:
 
     BoneMtx* getOverwriteBoneMtx(TriggerType, s32) const;
 
-    const char* getCurrentActionName(s32) const;
-    s32 getCurrentActionFrame(s32) const;
+    const char* getCurrentActionName([[maybe_unused]] s32) const;
+    s32 getCurrentActionFrame([[maybe_unused]] s32) const;
 
     void resetAllModelTriggerConnection();
 

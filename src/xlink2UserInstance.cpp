@@ -62,12 +62,12 @@ void UserInstance::destroy()
     }
 }
 
-bool UserInstance::checkAndErrorCallInCalc(const char* /*unused*/, ...) const 
+bool UserInstance::checkAndErrorCallInCalc([[maybe_unused]] const char* fmt, ...) const 
 {
     return true;
 }
 
-void UserInstance::printLogFadeOrKill(const Event* /*unused*/, const char* /*unused*/, ...) const {}
+void UserInstance::printLogFadeOrKill([[maybe_unused]] const Event* event, [[maybe_unused]] const char* fmt, ...) const {}
 
 void UserInstance::preCalc() 
 {
@@ -175,7 +175,6 @@ void UserInstance::setupResource(sead::Heap* heap)
                 mUser->getSystem()->registUserForGlobalPropertyTrigger(mUser);
             }
 
-            UserResourceParam* param_res {mUser->getUserResource()->getParamBuffer()[1]};
             if (mUser->getUserResource()->getResMode() == ResMode::Editor && 
                 mUser->getUserResource()->getParamBuffer()[1] != nullptr && 
                 mUser->getUserResource()->getParamBuffer()[1]->isSetup) {
@@ -650,17 +649,16 @@ u32 UserInstance::getDefaultGroup() const
 
 void UserInstance::onReset_() {}
 
-// WIP
-void UserInstance::freeInstanceParam_(UserInstanceParam* param, ResMode mode) 
+void UserInstance::freeInstanceParam_(UserInstanceParam* param, [[maybe_unused]] ResMode mode) 
 {
     param->modelAssetConnectionBuffer.freeBuffer();
     param->randomHistoryBuffer.freeBuffer();
 }
 
-void UserInstance::onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/) {}
-bool UserInstance::doEventActivatingCallback_(const Locator& /*unused*/) 
+void UserInstance::onSetupInstanceParam_([[maybe_unused]] ResMode mode, [[maybe_unused]] sead::Heap* heap) {}
+bool UserInstance::doEventActivatingCallback_([[maybe_unused]] const Locator& locator)
 {
     return false;
 }
-void UserInstance::doEventActivatedCallback_(const Locator& /*unused*/, Event* /*unused*/) {}
+void UserInstance::doEventActivatedCallback_([[maybe_unused]] const Locator& locator, [[maybe_unused]] Event* event) {}
 }  // namespace xlink2

@@ -145,11 +145,11 @@ public:
     virtual void onReset_();
     virtual void onDestroy_() = 0;
     virtual UserInstanceParam* allocInstanceParam_(sead::Heap*) = 0;
-    virtual void freeInstanceParam_(UserInstanceParam*, ResMode);
-    virtual void onSetupInstanceParam_(ResMode /*unused*/, sead::Heap* /*unused*/);
+    virtual void freeInstanceParam_(UserInstanceParam*, [[maybe_unused]] ResMode);
+    virtual void onSetupInstanceParam_([[maybe_unused]] ResMode, [[maybe_unused]] sead::Heap*);
     virtual void initModelAssetConnection_(ResMode, const ParamDefineTable*, sead::Heap*) = 0;
-    virtual bool doEventActivatingCallback_(const Locator& /*unused*/);
-    virtual void doEventActivatedCallback_(const Locator& /*unused*/, Event* /*unused*/);
+    virtual bool doEventActivatingCallback_([[maybe_unused]] const Locator&);
+    virtual void doEventActivatedCallback_([[maybe_unused]] const Locator&, [[maybe_unused]] Event*);
 
     User* getUser() const { return mUser; };
     UserResource* getUserResource() const { return mUser->getUserResource(); }

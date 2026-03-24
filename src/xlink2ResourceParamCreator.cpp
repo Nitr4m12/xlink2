@@ -192,7 +192,7 @@ void ResourceParamCreator::dumpRomResource_(ResourceHeader* res_header, RomResou
     dumpCommonResourceRear_(rom_res_param, bin_accessor, res_header->dataSize, heap, false, buffered_str);
 }
 
-void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res_param, BinAccessor * bin_accessor)
+void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res_param, [[maybe_unused]] BinAccessor * bin_accessor)
 {
     for (u32 i {0}; i < common_res_param->numLocalPropertyNameRefTable; ++i)
         common_res_param->localPropertyNameRefTable[i] += common_res_param->nameTablePos;
@@ -246,7 +246,7 @@ void ResourceParamCreator::solveUserBin_(ResUserHeader * user_header, CommonReso
             asset_ctb_item->paramStartPos += reinterpret_cast<u64>(common_res_param->assetParamTable);
         }
         else {
-            s32 param_start_pos {asset_ctb_item->paramStartPos};
+            // s32 param_start_pos {asset_ctb_item->paramStartPos};
             if (asset_ctb_item->paramStartPos == -1) {
                 asset_ctb_item->paramStartPos = 0;
             }
@@ -291,7 +291,7 @@ void ResourceParamCreator::solveAboutGlobalProperty(RomResourceParam* rom_res_pa
 void ResourceParamCreator::createParamAndSolveResource(EditorResourceParam* editor_res_param, const sead::SafeString& editor_name, 
                                                        u8* buffer, u32 data_size, const ParamDefineTable* param_define, System* system)
 {
-    u8* dest {editor_res_param->binBuffer}; // UNUSED
+    [[maybe_unused]] u8* dest {editor_res_param->binBuffer}; // UNUSED
 
     if (!editor_res_param->isInitialized) {
         editor_res_param->editorName.copy(editor_name);
@@ -920,7 +920,7 @@ void ResourceParamCreator::dumpUserBin_(u32 user_index, const sead::SafeString& 
 
 void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_res_param,
                                                    const BinAccessor* bin_accessor, u32 data_size,
-                                                   sead::Heap* heap, bool p2,
+                                                   sead::Heap* heap, [[maybe_unused]] bool p2,
                                                    sead::BufferedSafeString* dump_str)
 {
     // --------------------------------------- ConditionTable --------------------------------------

@@ -3,7 +3,7 @@
 #include <xlink2/xlink2Util.h>
 
 namespace xlink2 {
-UserResourceELink::UserResourceELink(User* user, sead::Heap* heap)
+UserResourceELink::UserResourceELink(User* user, [[maybe_unused]] sead::Heap* heap)
     : UserResource(user)
 {
     mAccessor.setSystem(getSystem());

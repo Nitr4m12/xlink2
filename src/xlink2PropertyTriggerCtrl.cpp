@@ -15,7 +15,7 @@ PropertyTriggerCtrl::PropertyTriggerCtrl(UserInstance* user_instance,
                                          ResMode mode)
     : TriggerCtrl(user_instance, mtc_buffer), 
       mResProperty{res_property}, mPropertyIndex{property_index}, 
-      mPropertyValue{0}, _2{true}, mIsGlobalProperty{is_global_property}
+      mIsGlobalProperty{is_global_property}
 {
     const PropertyDefinition* prop_define {};
     if (is_global_property) {

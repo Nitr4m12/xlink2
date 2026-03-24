@@ -7,7 +7,9 @@ void Locator::reset()
     _1 = 0;
 }
 
-void Locator::setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx) {}
+void Locator::setTriggerInfo([[maybe_unused]] TriggerType trigger_type, 
+                             [[maybe_unused]] ResTriggerOverwriteParam* overwrite_param, 
+                             [[maybe_unused]] BoneMtx bone_mtx) {}
 
 TriggerType Locator::getTriggerType() const
 {
@@ -19,8 +21,9 @@ ResTriggerOverwriteParam* Locator::getTriggerOverwriteParam() const
     return nullptr;
 }
 
-BoneMtx Locator::getOverwriteBoneMtx() const
+BoneMtx Locator::getOverwriteBoneMtx() const 
 {
+    return {nullptr, 1};
 }
 
 bool Locator::isNeedRebind() const

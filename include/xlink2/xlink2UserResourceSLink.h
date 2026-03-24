@@ -12,7 +12,7 @@ class IAssetInfoReadable;
 namespace xlink2 {
 class UserResourceSLink : public UserResource {
 public:
-    UserResourceSLink(User*, sead::Heap*);
+    UserResourceSLink(User*, [[maybe_unused]] sead::Heap*);
     ~UserResourceSLink() override;
 
     const ResParam* getUserParam() const;

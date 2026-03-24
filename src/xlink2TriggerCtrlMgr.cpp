@@ -233,12 +233,12 @@ void TriggerCtrlMgr::notifyActive()
     }
 }
 
-s32 TriggerCtrlMgr::getCurrentActionFrame(s32 action_idx) const 
+s32 TriggerCtrlMgr::getCurrentActionFrame([[maybe_unused]] s32 action_idx) const 
 {
     return -1;
 }
 
-const char* TriggerCtrlMgr::getCurrentActionName(s32 action_idx) const 
+const char* TriggerCtrlMgr::getCurrentActionName([[maybe_unused]] s32 action_idx) const 
 {
     return nullptr;
 }

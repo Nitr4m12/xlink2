@@ -28,7 +28,7 @@ public:
     
     bool searchAssetCallTableByName(Locator*, const char*) const;
     ResAssetCallTable* searchAssetCallTableByName(const char*) const;
-    ResAssetCallTable* doBinarySearchAsset_(const char*, TriggerType) const;
+    ResAssetCallTable* doBinarySearchAsset_(const char*, [[maybe_unused]] TriggerType) const;
     bool searchAssetCallTableByHash(Locator*, u32) const;
 
     ResAssetCallTable* getAssetCallTableItem(s32) const;

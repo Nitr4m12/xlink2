@@ -78,7 +78,7 @@ ResAssetCallTable* UserResource::searchAssetCallTableByName(const char* name) co
     return doBinarySearchAsset_(name, TriggerType::Action);
 }
 
-ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, TriggerType type) const 
+ResAssetCallTable* UserResource::doBinarySearchAsset_(const char* name, [[maybe_unused]] TriggerType type) const 
 {
     UserResourceParam* param {getParam()};
     if (param != nullptr && param->isSetup) {

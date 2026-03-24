@@ -106,7 +106,7 @@ public:
                                  const ParamDefineTable*, sead::Heap*, bool,
                                  sead::BufferedSafeString*);
 
-    static void solveCommonResource_(CommonResourceParam*, BinAccessor*);
+    static void solveCommonResource_(CommonResourceParam*, [[maybe_unused]] BinAccessor*);
     static void solveUserBin_(ResUserHeader*, CommonResourceParam*, const ParamDefineTable*);
     static void solveAboutGlobalProperty(RomResourceParam*, const ParamDefineTable*, System*);
 
@@ -126,7 +126,7 @@ public:
     static void dumpUserBin_(u32, const sead::SafeString&, ResUserHeader*, const ParamDefineTable*,
                              sead::BufferedSafeString*);
     static void dumpCommonResourceRear_(CommonResourceParam*, const BinAccessor*, u32, sead::Heap*,
-                                        bool, sead::BufferedSafeString*);
+                                        [[maybe_unused]] bool, sead::BufferedSafeString*);
 
 private:
     static void solveActionTriggerTable(ResActionTrigger* action_trigger_table, ResAssetCallTable* asset_ctb, 

@@ -42,25 +42,25 @@ public:
 
 #ifdef SEAD_DEBUG
     void genMessage(sead::hostio::Context* ctx) override;
-    void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
+    void listenPropertyEvent(const sead::hostio::PropertyEvent* property_event) override;
 #else
-    void genMessage(sead::hostio::Context* ctx);
-    void listenPropertyEvent(const sead::hostio::PropertyEvent* property_event);
+    void genMessage([[maybe_unused]] sead::hostio::Context* ctx);
+    void listenPropertyEvent([[maybe_unused]] const sead::hostio::PropertyEvent* property_event);
 #endif
 
     const sead::SafeString* getORIconString();
 
     Event* getEventFromPool_(u32 idx) const override;
 
-    void preDrawInformation_(sead::TextWriter* text_writer) const override;
-    void postDrawInformation_(sead::TextWriter* text_writer) const override;
+    void preDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const override;
+    void postDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const override;
 
-    void drawInformationSystemDetail_(sead::TextWriter* text_writer) const override;
-    void drawInformationEvent_(sead::TextWriter* text_writer) const override;
+    void drawInformationSystemDetail_([[maybe_unused]] sead::TextWriter* text_writer) const override;
+    void drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_writer) const override;
 
     void makeDebugAssetInformationString(s32, sead::BufferedSafeString*, sead::BufferedSafeString&,
-                                        const sead::SafeString&, Event*, AssetExecutorELink*,
-                                        bool) const;
+                                         const sead::SafeString&, Event*, AssetExecutorELink*,
+                                         bool) const;
 
     u32 getUserParamNum() const override;
     ILockProxy* getModuleLockObj() const override;

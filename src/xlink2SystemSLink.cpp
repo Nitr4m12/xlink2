@@ -68,13 +68,13 @@ void SystemSLink::stopAllEvent(s32 i1)
     }
 }
 
-void SystemSLink::genMessage(sead::hostio::Context* ctx)
+void SystemSLink::genMessage([[maybe_unused]] sead::hostio::Context* ctx)
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void SystemSLink::listenPropertyEvent(const sead::hostio::PropertyEvent* property_event)
+void SystemSLink::listenPropertyEvent([[maybe_unused]] const sead::hostio::PropertyEvent* property_event)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -93,24 +93,24 @@ Event* SystemSLink::getEventFromPool_(u32 idx) const
     return nullptr;
 }
 
-void SystemSLink::drawInformationSystemDetail_(sead::TextWriter* text_writer) const
+void SystemSLink::drawInformationSystemDetail_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void SystemSLink::drawInformationEvent_(sead::TextWriter* text_writer) const
+void SystemSLink::drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void SystemSLink::drawInformationEmitter_(UserInstance* user_instance, 
-                                          sead::DrawContext* draw_context, 
-                                          sead::TextWriter* text_writer, 
-                                          const sead::Camera& camera, 
-                                          const sead::Projection& projection, 
-                                          const sead::Viewport& viewport) const
+void SystemSLink::drawInformationEmitter_([[maybe_unused]] UserInstance* user_instance, 
+                                          [[maybe_unused]] sead::DrawContext* draw_context, 
+                                          [[maybe_unused]] sead::TextWriter* text_writer, 
+                                          [[maybe_unused]] const sead::Camera& camera, 
+                                          [[maybe_unused]] const sead::Projection& projection, 
+                                          [[maybe_unused]] const sead::Viewport& viewport) const
 {
 #ifdef SEAD_DEBUG
 #endif

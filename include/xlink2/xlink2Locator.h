@@ -14,7 +14,9 @@ public:
     static u32 sDataLoadedCount;
 
     virtual void reset();
-    virtual void setTriggerInfo(TriggerType, ResTriggerOverwriteParam*, BoneMtx);
+    virtual void setTriggerInfo([[maybe_unused]] TriggerType trigger_type, 
+                                [[maybe_unused]] ResTriggerOverwriteParam* overwrite_param, 
+                                [[maybe_unused]] BoneMtx bone_mtx);
     virtual TriggerType getTriggerType() const;
     virtual ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
     virtual BoneMtx getOverwriteBoneMtx() const;

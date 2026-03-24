@@ -7,7 +7,7 @@
 namespace xlink2 {
 class ModelAssetConnection {
 public:
-    virtual ~ModelAssetConnection();
+    virtual ~ModelAssetConnection() = default;
 
     BoneMtx mRootMtx;
 };

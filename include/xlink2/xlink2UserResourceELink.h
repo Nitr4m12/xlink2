@@ -12,7 +12,7 @@ class SystemELink;
 
 class UserResourceELink : public UserResource {
 public:
-    UserResourceELink(User*, sead::Heap*);
+    UserResourceELink(User*, [[maybe_unused]] sead::Heap*);
     ~UserResourceELink() override;
 
     SolvedAssetParamELink* getSolvedAssetParameterELink(const ResAssetCallTable&) const;

@@ -92,15 +92,18 @@ s32 System::searchUserIgnoreHeap(const char* user_name, User** user_ptrs, s32 id
     return user_idx;
 }
 
-void System::drawInformation(sead::DrawContext* ctx, sead::TextWriter* text_writer) const
+void System::drawInformation([[maybe_unused]] sead::DrawContext* ctx, 
+                             [[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::drawInformation3D(sead::DrawContext* ctx, const sead::Camera& camera, 
-                               const sead::Projection& projection, const sead::Viewport& viewport, 
-                               f32 f1) const
+void System::drawInformation3D([[maybe_unused]] sead::DrawContext* ctx, 
+                               [[maybe_unused]] const sead::Camera& camera, 
+                               [[maybe_unused]] const sead::Projection& projection, 
+                               [[maybe_unused]] const sead::Viewport& viewport, 
+                               [[maybe_unused]] f32 f1) const
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -374,24 +377,36 @@ void System::drawInformationInstance3D_(UserInstance* user_instance, sead::DrawC
     user_instance->getIUser()->getDebugDrawProjection();
 }
 
-void System::drawInformationInstance3D_(UserInstance* user_instance, sead::DrawContext*, sead::TextWriter*,
-                                const sead::Camera&, const sead::Projection&,
-                                const sead::Viewport&) const 
+void System::drawInformationInstance3D_([[maybe_unused]] UserInstance* user_instance, 
+                                        [[maybe_unused]] sead::DrawContext*, 
+                                        [[maybe_unused]] sead::TextWriter*,
+                                        [[maybe_unused]] const sead::Camera&, 
+                                        [[maybe_unused]] const sead::Projection&,
+                                        [[maybe_unused]] const sead::Viewport&) const 
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
-                const sead::SafeString&, sead::TextWriter*, IUser*) const 
+void System::drawText3D_([[maybe_unused]] const sead::Matrix34f&, 
+                         [[maybe_unused]] const sead::Vector2f&, 
+                         [[maybe_unused]] const sead::SafeString&,
+                         [[maybe_unused]] const sead::SafeString&, 
+                         [[maybe_unused]] sead::TextWriter*, 
+                         [[maybe_unused]] IUser*) const 
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
-                const sead::SafeString&, sead::TextWriter*, const sead::Camera&,
-                const sead::Projection&, const sead::Viewport&) const 
+void System::drawText3D_([[maybe_unused]] const sead::Matrix34f&, 
+                         [[maybe_unused]] const sead::Vector2f&, 
+                         [[maybe_unused]] const sead::SafeString&,
+                         [[maybe_unused]] const sead::SafeString&, 
+                         [[maybe_unused]] sead::TextWriter*, 
+                         [[maybe_unused]] const sead::Camera&,
+                         [[maybe_unused]] const sead::Projection&, 
+                         [[maybe_unused]] const sead::Viewport&) const 
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -404,7 +419,7 @@ bool System::isDrawTargetInstance_(UserInstance* target_instance) const
     return target_instance->getSortKey() <= mUserSortKey;
 }
 
-void System::clearError(const User* user)
+void System::clearError([[maybe_unused]] const User* user)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -415,7 +430,7 @@ void* System::getAnyone()
     return nullptr;
 }
 
-void System::updateContainerCount(ContainerType type, s32) 
+void System::updateContainerCount([[maybe_unused]] ContainerType type, [[maybe_unused]] s32) 
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -468,7 +483,7 @@ bool System::isServerConnecting() const
     return false;
 }
 
-void System::changeDebugOperationType(bool b1)
+void System::changeDebugOperationType([[maybe_unused]] bool b1)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -501,7 +516,7 @@ void System::dumpUsers() const
     {
         auto lock {sead::makeScopedLock(*getModuleLockObj())};
         for (auto& user : mUserList) {
-            for (auto& instance : user.getUserInstanceList()) {
+            for ([[maybe_unused]] auto& instance : user.getUserInstanceList()) {
 #ifdef SEAD_DEBUG
 #endif
             }
@@ -533,21 +548,24 @@ System::~System()
     }
 }
 
-void System::preDrawInformation_(sead::TextWriter* text_writer) const
+void System::preDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::postDrawInformation_(sead::TextWriter* text_writer) const
+void System::postDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::drawInformationEmitter_(UserInstance* user_instance, sead::DrawContext* draw_context, 
-                                     sead::TextWriter* text_writer, const sead::Camera& camera, 
-                                     const sead::Projection& projection, const sead::Viewport& viewport) const
+void System::drawInformationEmitter_([[maybe_unused]] UserInstance* user_instance, 
+                                     [[maybe_unused]] sead::DrawContext* draw_context, 
+                                     [[maybe_unused]] sead::TextWriter* text_writer, 
+                                     [[maybe_unused]] const sead::Camera& camera, 
+                                     [[maybe_unused]] const sead::Projection& projection, 
+                                     [[maybe_unused]] const sead::Viewport& viewport) const
 {
 #ifdef SEAD_DEBUG
 #endif

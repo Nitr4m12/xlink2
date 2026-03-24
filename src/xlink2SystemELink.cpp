@@ -43,13 +43,13 @@ sead::SafeString* SystemELink::getModuleName() const
     return &sModuleNameELink;
 }
 
-void SystemELink::genMessage(sead::hostio::Context* ctx)
+void SystemELink::genMessage([[maybe_unused]] sead::hostio::Context* ctx)
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void SystemELink::listenPropertyEvent(const sead::hostio::PropertyEvent* property_event)
+void SystemELink::listenPropertyEvent([[maybe_unused]] const sead::hostio::PropertyEvent* property_event)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -68,25 +68,25 @@ Event* SystemELink::getEventFromPool_(u32 idx) const
     return nullptr;
 }
 
-void SystemELink::preDrawInformation_(sead::TextWriter* text_writer) const
+void SystemELink::preDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void SystemELink::postDrawInformation_(sead::TextWriter* text_writer) const
+void SystemELink::postDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void SystemELink::drawInformationSystemDetail_(sead::TextWriter* text_writer) const
+void SystemELink::drawInformationSystemDetail_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void SystemELink::drawInformationEvent_(sead::TextWriter* text_writer) const
+void SystemELink::drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
