@@ -12,6 +12,7 @@ struct BoneMtx {
         _0 = 0;
     }
 
+    void setRawMtx(const sead::Matrix34f* mtx, u8 unknown) { rawMtx = mtx; _0 = unknown; }
     bool isNullMtxPtr() { return rawMtx == nullptr; }
 
     const sead::Matrix34f* rawMtx {&sead::Matrix34f::ident};

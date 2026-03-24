@@ -550,7 +550,6 @@ void UserInstance::makeDebugString(sead::BufferedSafeString* debug_str,
     if (debug_op_param.getDebugUserFlag().isOnBit(18))
         makeDebugStringAction(debug_str, debug_op_param.getDebugStringLocalProperty());
 
-    sead::SafeString debug_string_event ;
     makeDebugStringEvent(debug_str, debug_op_param.getDebugStringEvent());
 }
 
@@ -563,6 +562,25 @@ void UserInstance::makeDebugStringUserInformation(sead::BufferedSafeString* debu
 }
 
 void UserInstance::setDebugLogFlag(sead::BitFlag32 /*unused*/) {}
+
+void UserInstance::setRootMtx(const sead::Matrix34f* root_mtx)
+{
+    auto* raw_mtx {mRootMtx.rawMtx};
+    if (raw_mtx != root_mtx) {
+        auto* param {getParam()};
+        if (param != nullptr && param->isSetupRom) {
+            auto& connection_buffer {param->modelAssetConnectionBuffer};
+            for (s32 i {0}; i < connection_buffer.size(); ++i) {
+                auto& connection {connection_buffer[i]};
+                if (connection.mRootMtx.rawMtx == raw_mtx) {
+                    connection_buffer[i].mRootMtx.setRawMtx(root_mtx, 0);
+                }
+            }
+        }
+        mRootMtx.rawMtx = root_mtx;
+        mRootMtx._0 = 0;
+    }
+}
 
 void UserInstance::setRootPos(const sead::Vector3f* root_pos) 
 {
