@@ -16,7 +16,6 @@ class Locator;
 class IUser;
 
 class UserInstance {
-
 public:
     class CreateArg {
     public:
@@ -126,7 +125,7 @@ public:
     u32 searchRandomHistory(u32) const;
 
     void updateSortKey();
-    u64 getPosForSort() const;
+    const sead::Matrix34f* getPosForSort() const;
     f32 getSortKey() const;
     void getRootMtxForDrawText(sead::Matrix34f*);
 
