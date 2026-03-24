@@ -3,21 +3,21 @@
 namespace xlink2 {
 DebugOperationParam::DebugOperationParam()
 {
-    mDebugFlag = 0;
+    mDebugUserFlag = 0;
     mAxisScale = 1.0f;
     mTextScale = 1.0f;
     mCharacterDisplayOffsetSystem.set(0, 0);
     mCharacterDisplayOffsetUser.set(0, 0);
-    mDebugUser.clear();
-    mDebugAction.clear();
-    mDebugLocalProperty.clear();
-    mDebugEvent.clear();
+    mDebugStringUser.clear();
+    mDebugStringAction.clear();
+    mDebugLocalStringProperty.clear();
+    mDebugStringEvent.clear();
     mKeyName.clear();
     mPrintFlag = 0;
-    mDebugGlobalProperty.clear();
+    mDebugStringGlobalProperty.clear();
     mFixedGlobalProperty = 0.0f;
     mBreakWhenEmit = false;
     mBreakTargetOnly = false;
-    mDebugFlag.set(0x70000);
+    mDebugUserFlag.set(0x70000);
 }
 }

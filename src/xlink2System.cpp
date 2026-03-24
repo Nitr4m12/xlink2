@@ -37,7 +37,7 @@ void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 max_num
 void System::calc()
 {
     if (mIsCallEnabled) {
-        if (getDebugOperationParam().getDebugFlag().isOn(0b100000000000010011101111)) {
+        if (getDebugOperationParam().getDebugUserFlag().isOn(0b100000000000010011101111)) {
             {
                 auto lock {sead::makeScopedLock(*getModuleLockObj())};
                 for (auto& user : mUserList)

@@ -3,6 +3,7 @@
 
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2Handle.h"
+#include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2PropertyDefinition.h"
 #include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2UserInstance.h"
@@ -518,6 +519,39 @@ void UserInstance::setPropertyDefinition(u32 idx, const PropertyDefinition* prop
 char* UserInstance::getUserName() const 
 {
     return mUser->getUserName();
+}
+
+void UserInstance::makeDebugString(sead::BufferedSafeString* debug_str, 
+                                   const DebugOperationParam& debug_op_param) const
+{
+    debug_str->copy(getUserName());
+    if (mBitFlag.isOnBit(0)) {
+        sead::DateTime* editor_setup_time {mUser->getUserResource()->getEditorSetupTime()};
+        if (editor_setup_time != nullptr) {
+            sead::CalendarTime calendar_time {};
+            editor_setup_time->getCalendarTime(&calendar_time);
+            debug_str->appendWithFormat(" (%d/%d/%d %d:%d:%d)", 
+                                        calendar_time.getYear(), 
+                                        calendar_time.getMonth(),
+                                        calendar_time.getDay(),
+                                        calendar_time.getHour(),
+                                        calendar_time.getMinute(),
+                                        calendar_time.getSecond());
+        }
+    }
+    debug_str->appendWithFormat("\n");
+
+    if (debug_op_param.getDebugUserFlag().isOn(0x10000))
+        makeDebugStringUserInformation(debug_str);
+
+    if (debug_op_param.getDebugUserFlag().isOnBit(17))
+        makeDebugStringAction(debug_str, debug_op_param.getDebugStringAction());
+
+    if (debug_op_param.getDebugUserFlag().isOnBit(18))
+        makeDebugStringAction(debug_str, debug_op_param.getDebugStringLocalProperty());
+
+    sead::SafeString debug_string_event ;
+    makeDebugStringEvent(debug_str, debug_op_param.getDebugStringEvent());
 }
 
 void UserInstance::makeDebugStringUserInformation(sead::BufferedSafeString* debug_str) const

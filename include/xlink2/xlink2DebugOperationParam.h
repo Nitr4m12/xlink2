@@ -9,23 +9,27 @@ class DebugOperationParam {
 public:
     DebugOperationParam();
 
-    sead::BitFlag32 getDebugFlag() const { return mDebugFlag; }
+    sead::BitFlag32 getDebugUserFlag() const { return mDebugUserFlag; }
     sead::BitFlag32 getPrintFlag() const { return mPrintFlag; }
     bool getPrintFlagCheck() const { return mPrintFlag & 1; }
 
+    const sead::FixedSafeString<64>& getDebugStringAction() const { return mDebugStringAction; }
+    const sead::FixedSafeString<64>& getDebugStringLocalProperty() const { return mDebugLocalStringProperty; }
+    const sead::FixedSafeString<128>& getDebugStringEvent() const { return mDebugStringEvent; }
+
 private:
-    sead::BitFlag32 mDebugFlag;
+    sead::BitFlag32 mDebugUserFlag;
     f32 mAxisScale;
     f32 mTextScale;
     sead::Vector2f mCharacterDisplayOffsetUser;
     sead::Vector2f mCharacterDisplayOffsetSystem;
-    sead::FixedSafeString<64> mDebugUser;
-    sead::FixedSafeString<64> mDebugAction;
-    sead::FixedSafeString<64> mDebugLocalProperty;
-    sead::FixedSafeString<128> mDebugEvent;
+    sead::FixedSafeString<64> mDebugStringUser;
+    sead::FixedSafeString<64> mDebugStringAction;
+    sead::FixedSafeString<64> mDebugLocalStringProperty;
+    sead::FixedSafeString<128> mDebugStringEvent;
     sead::FixedSafeString<128> mKeyName;
     sead::BitFlag32 mPrintFlag;
-    sead::FixedSafeString<64> mDebugGlobalProperty;
+    sead::FixedSafeString<64> mDebugStringGlobalProperty;
     f32 mFixedGlobalProperty;
     bool mBreakWhenEmit;
     bool mBreakTargetOnly;
