@@ -34,10 +34,10 @@ public:
     {
         Event* event {mpEvent};
 
-        const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable)->cstr()};
+        const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable).cstr()};
         const char* key_name {solveOffset<char>(mpAssetCallTable->keyNamePos)};
         
-        const char* container_child_name {user_instance->getContainerTypeName(asset_ctb)->cstr()};
+        const char* container_child_name {user_instance->getContainerTypeName(asset_ctb).cstr()};
         const char* key_name_child {solveOffset<char>(asset_ctb.keyNamePos)};
 
         user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s]", container_name, key_name, container_child_name, key_name_child);

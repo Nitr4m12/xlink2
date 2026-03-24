@@ -40,7 +40,7 @@ public:
 
     const ResContainerParam* getContainer(const ResAssetCallTable&) const;
 
-    const sead::SafeString* getCallTableTypeName(const ResAssetCallTable&) const;
+    const sead::SafeString& getCallTableTypeName(const ResAssetCallTable&) const;
 
     bool isContainer(const ResAssetCallTable&) const;
 

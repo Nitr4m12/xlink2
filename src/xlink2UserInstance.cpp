@@ -590,8 +590,7 @@ void UserInstance::setRootPos(const sead::Vector3f* root_pos)
 void UserInstance::printLogContainerSelect(const Event& /*unused*/, const char* /*unused*/, ...) const {}
 void UserInstance::printLogEmitFailed(const Event& /*unused*/, const char* /*unused*/, ...) const {}
 
-// NON-MATCHING: two instructions in the wrong place
-const sead::SafeString* UserInstance::getContainerTypeName(const ResAssetCallTable& asset_call) const 
+const sead::SafeString& UserInstance::getContainerTypeName(const ResAssetCallTable& asset_call) const 
 {
     auto& accessor {mUser->getUserResource()->getAccessor()};
     return accessor.getCallTableTypeName(asset_call);

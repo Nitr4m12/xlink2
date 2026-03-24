@@ -86,13 +86,13 @@ const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable&
 }
 
 // WIP
-const sead::SafeString* ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const 
+const sead::SafeString& ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const 
 {
     auto container_type {getCallTableType(asset_ctb)};
     if (container_type < ContainerType::Asset)
-        return &sContainerNames[(u32)container_type];
+        return sContainerNames[(u32)container_type];
 
-    return &sContainerNames[5];
+    return sContainerNames[5];
 }
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const

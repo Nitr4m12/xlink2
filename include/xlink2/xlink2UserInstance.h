@@ -133,7 +133,7 @@ public:
     void printLogContainerSelect(const Event&, const char*, ...) const;
     void printLogEmitFailed(const Event&, const char*, ...) const;
 
-    const sead::SafeString* getContainerTypeName(const ResAssetCallTable&) const;
+    const sead::SafeString& getContainerTypeName(const ResAssetCallTable&) const;
 
     void fadeOrKillOtameshi(bool kill);
 
