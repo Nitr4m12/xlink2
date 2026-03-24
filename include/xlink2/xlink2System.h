@@ -165,6 +165,8 @@ public:
     const PropertyDefinition* getPropertyDefinition(u32 idx) const { return mGlobalPropertyDefinitions[idx]; }
     PropertyValueType getPropertyValue(u32 idx) const { return mGlobalPropertyValues[idx]; }
 
+    const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
+
     virtual UserResource* createUserResource(User* user, sead::Heap* heap) = 0;
     virtual void allocHandle(sead::Heap* heap) = 0;
     virtual u32 getUserParamNum() const = 0;
@@ -186,7 +188,6 @@ public:
                                          const sead::Viewport&) const;
 
 protected:
-    const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
 
     struct OtameshiRequest;
 

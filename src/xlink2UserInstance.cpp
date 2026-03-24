@@ -541,7 +541,7 @@ void UserInstance::makeDebugString(sead::BufferedSafeString* debug_str,
     }
     debug_str->appendWithFormat("\n");
 
-    if (debug_op_param.getDebugUserFlag().isOn(0x10000))
+    if (debug_op_param.getDebugUserFlag().isOnBit(16))
         makeDebugStringUserInformation(debug_str);
 
     if (debug_op_param.getDebugUserFlag().isOnBit(17))
@@ -585,6 +585,16 @@ void UserInstance::setRootMtx(const sead::Matrix34f* root_mtx)
 void UserInstance::setRootPos(const sead::Vector3f* root_pos) 
 {
     mRootPos = root_pos;
+}
+
+f32 UserInstance::getSortKey() const
+{
+    auto* system {mUser->getSystem()};
+    auto* debug_op_param {&system->getDebugOperationParam()};
+    if (debug_op_param->getDebugUserFlag().isOffBit(25) && mBitFlag.isOnBit(1))
+        return INFINITY;
+
+    return mSortKey;
 }
 
 void UserInstance::printLogContainerSelect(const Event& /*unused*/, const char* /*unused*/, ...) const {}
