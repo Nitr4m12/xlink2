@@ -11,15 +11,37 @@ User::User(const char* user_name, sead::Heap* heap, System* system, u32 i1)
 {
     mUserInstanceList.initOffset(0xd8);
     if (system->getMutexSize() > 0) {
-        s32 buffer_size = std::strlen(user_name);
-        char* user_name_buffer {new(heap, 8) char[buffer_size + 1]};
+        s32 buffer_size = static_cast<s32>(std::strlen(user_name));
+        char* user_name_buffer {new(heap) char[buffer_size + 1]};
         std::strncpy(user_name_buffer, user_name, buffer_size);
         user_name_buffer[buffer_size] = sead::SafeString::cNullChar;
+
         mUserName = user_name_buffer;
         mBitFlag.setBit(1);
     }
 
     mpUserResource = system->createUserResource(this, heap);
+}
+
+User::~User()
+{
+    delete[] mActionSlotNameTable;
+
+    if (mpPropertyDefinitionTable != nullptr) {
+        delete[] mpPropertyDefinitionTable;
+        mpPropertyDefinitionTable = nullptr;
+    }
+
+    mNumLocalProp = 0;
+
+    if (mpUserResource != nullptr) {
+        mpUserResource->destroy();
+        delete mpUserResource;
+        mpUserResource = nullptr;
+    }
+
+    if (mBitFlag.isOnBit(1))
+        delete mUserName;
 }
 
 System* User::getSystem() const 
@@ -145,7 +167,7 @@ void User::updateSortKey()
         user_instance.updateSortKey();
 }
 
-void User::setDebugDisable(bool) {}
+void User::setDebugDisable([[maybe_unused]] bool debug_disable) {}
 
 void User::beginOtameshi() 
 {

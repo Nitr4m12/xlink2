@@ -40,7 +40,7 @@ public:
     UserInstance* getMinSortKeyInstance();
     void updateSortKey();
 
-    void setDebugDisable(bool);
+    void setDebugDisable([[maybe_unused]] bool);
 
     void beginOtameshi();
     bool requestOtameshi();
