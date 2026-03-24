@@ -520,6 +520,14 @@ char* UserInstance::getUserName() const
     return mUser->getUserName();
 }
 
+void UserInstance::makeDebugStringUserInformation(sead::BufferedSafeString* debug_str) const
+{
+    if (debug_str != nullptr && mIUser->getUserInformation() != nullptr) {
+        debug_str->appendWithFormat("-- UserInfo --\n");
+        debug_str->appendWithFormat(mIUser->getUserInformation());
+    }
+}
+
 void UserInstance::setDebugLogFlag(sead::BitFlag32 /*unused*/) {}
 
 void UserInstance::setRootPos(const sead::Vector3f* root_pos) 

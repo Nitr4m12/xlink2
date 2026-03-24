@@ -14,7 +14,7 @@ public:
     virtual void* getDebugDrawProjection() const;
     virtual char* getDebugUserName() const;
 
-    virtual void* getUserInformation() const;
+    virtual const char* getUserInformation() const;
     virtual void getReservedAssetName(ToolConnectionContext*) const;
 
     virtual u32 getNumBone() const = 0;

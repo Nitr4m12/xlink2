@@ -257,8 +257,9 @@ bool UserResource::hasGlobalPropertyTrigger() const
     return false;
 }
 
-u64 UserResource::getEditorSetupTime() const {
-    return 0;
+sead::DateTime* UserResource::getEditorSetupTime() const 
+{
+    return nullptr;
 }
 
 void UserResource::checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable& /*unused*/,

@@ -21,7 +21,7 @@ char* IUser::getDebugUserName() const
     return nullptr;
 }
 
-void* IUser::getUserInformation() const
+const char* IUser::getUserInformation() const
 {
     return nullptr;
 }

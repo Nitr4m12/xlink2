@@ -1,6 +1,7 @@
 #pragma once
 
 #include <container/seadSafeArray.h>
+#include <time/seadDateTime.h>
 
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ResMode.h"
@@ -53,7 +54,7 @@ public:
     
     bool hasGlobalPropertyTrigger() const;
 
-    u64 getEditorSetupTime() const;
+    sead::DateTime* getEditorSetupTime() const;
     void checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable&, TriggerType);
     
     bool searchAssetCallTableByGuid(Locator*, s32) const;
