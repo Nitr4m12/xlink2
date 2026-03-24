@@ -110,7 +110,7 @@ public:
     bool isPropertyAssigned(u32 idx) const;
     void setPropertyDefinition(u32, const PropertyDefinition*);
 
-    char* getUserName() const;
+    const char* getUserName() const;
 
     void makeDebugString(sead::BufferedSafeString*, const DebugOperationParam&) const;
     void makeDebugStringUserInformation(sead::BufferedSafeString*) const;

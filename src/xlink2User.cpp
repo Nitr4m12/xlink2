@@ -6,6 +6,21 @@
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
+User::User(const char* user_name, sead::Heap* heap, System* system, u32 i1)
+    : mUserName(user_name), mpHeap(heap), _0x40(i1)
+{
+    mUserInstanceList.initOffset(0xd8);
+    if (system->getMutexSize() > 0) {
+        s32 buffer_size = std::strlen(user_name);
+        char* user_name_buffer {new(heap, 8) char[buffer_size + 1]};
+        std::strncpy(user_name_buffer, user_name, buffer_size);
+        user_name_buffer[buffer_size] = sead::SafeString::cNullChar;
+        mUserName = user_name_buffer;
+        mBitFlag.setBit(1);
+    }
+
+    mpUserResource = system->createUserResource(this, heap);
+}
 
 System* User::getSystem() const 
 {
@@ -24,15 +39,15 @@ s32 User::calcNumActiveInstance() const
 
 void User::setActionSlot(u32 total_action_slots, const char** slot_names)
 {
-    mActionSlotNum = total_action_slots;
-    if (mActionSlotNum > 0)
+    mNumActionSlot = total_action_slots;
+    if (mNumActionSlot > 0)
         mActionSlotNameTable = slot_names;
 }
 
 s32 User::searchActionSlotPos(const char* name) const
 {
-    if (mActionSlotNum > 0) {
-        for (s32 i {0}; i < mActionSlotNum; ++i) {
+    if (mNumActionSlot > 0) {
+        for (s32 i {0}; i < mNumActionSlot; ++i) {
             const char* action_slot_name {mActionSlotNameTable[i]}; 
             if (strcmp(action_slot_name, name) == 0)
                 return i & -1;
@@ -44,8 +59,8 @@ s32 User::searchActionSlotPos(const char* name) const
 
 u32 User::searchPropertyIndex(const char* name) const 
 {
-    if (mLocalPropNum != 0) {
-        for (u32 i{0}; i < mLocalPropNum; ++i) {
+    if (mNumLocalProp != 0) {
+        for (u32 i{0}; i < mNumLocalProp; ++i) {
             PropertyDefinition* property_definition = mpPropertyDefinitionTable[i];
             if (property_definition != nullptr) {
                 const sead::FixedSafeString<64>* prop_name = property_definition->getPropertyName();
@@ -140,10 +155,10 @@ void User::beginOtameshi()
     }
 }
 
-// NON-MATCHING
+// NON-MATCHING: getMinSortKeyInstance not inlining properly
 bool User::requestOtameshi() 
 {
     updateSortKey();
-    return getMinSortKeyInstance() == nullptr;
+    return getMinSortKeyInstance() != nullptr;
 }
 }  // namespace xlink2

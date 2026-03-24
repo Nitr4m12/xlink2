@@ -8,7 +8,7 @@
 #include <heap/seadHeap.h>
 #include <hostio/seadHostIONode.h>
 
-#include <xlink2/xlink2ErrorMgr.h>
+#include "xlink2/xlink2ErrorMgr.h"
 #include "xlink2/xlink2DebugOperationParam.h"
 #include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2ResMode.h"
@@ -161,6 +161,7 @@ public:
         sead::PrimitiveDrawer* mpPrimitiveDrawer;
     };
 
+    s32 getMutexSize() { return mMutexSize; }
     sead::Heap* getUserHeap() { return mUserCreateHeap; }
     EditorBuffer* getEditorBuffer() { return mEditorBuffer; }
     sead::Heap* getPrimaryHeap() { return mPrimaryHeap; }
@@ -213,7 +214,7 @@ protected:
 
     ResourceBuffer* mResourceBuffer {};
     sead::OffsetList<User> mUserList;
-    s32 _0x28 {};
+    s32 mMutexSize {};
     u32 mMaxNumEventPool {};
     u32 mNumEventPool {};
     s32 mEventCreateId {1};

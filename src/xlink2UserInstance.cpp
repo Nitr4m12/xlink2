@@ -515,7 +515,7 @@ void UserInstance::setPropertyDefinition(u32 idx, const PropertyDefinition* prop
     linkPropertyDefinitionToValueStruct(idx, prop_define);
 }
 
-char* UserInstance::getUserName() const 
+const char* UserInstance::getUserName() const 
 {
     return mUser->getUserName();
 }

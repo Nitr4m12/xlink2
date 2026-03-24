@@ -45,9 +45,9 @@ public:
     void beginOtameshi();
     bool requestOtameshi();
 
-    char* getUserName() const { return mUserName; }
+    const char* getUserName() const { return mUserName; }
     UserResource* getUserResource() const { return mpUserResource; }
-    u16 getNumLocalProp() const { return mLocalPropNum; }
+    u16 getNumLocalProp() const { return mNumLocalProp; }
     PropertyDefinition* getPropertyDefinitionEntry(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
 
     const sead::OffsetList<UserInstance>& getUserInstanceList() const { return mUserInstanceList; }
@@ -59,22 +59,22 @@ public:
     
     bool isHeapEqual(sead::Heap* heap) const { return mpHeap == heap; }
 
-    s16 getActionSlotNum() { return mActionSlotNum; }
+    s16 getActionSlotNum() { return mNumActionSlot; }
     const char** getActionSlotNameTable() { return mActionSlotNameTable; }
 
 private:
-    void* _0;
-    void* _1;
-    char* mUserName;
-    UserResource* mpUserResource;
+    void* _0 {};
+    void* _8 {};
+    const char* mUserName {};
+    UserResource* mpUserResource {};
     sead::OffsetList<UserInstance> mUserInstanceList;
-    sead::Heap* mpHeap;
-    u32 _0x40;
-    u16 mLocalPropNum;
-    s16 mActionSlotNum;
-    PropertyDefinition** mpPropertyDefinitionTable;
-    const char** mActionSlotNameTable;
-    u8 _11;
+    sead::Heap* mpHeap {};
+    u32 _0x40 {0};
+    u16 mNumLocalProp {0};
+    s16 mNumActionSlot {-1};
+    PropertyDefinition** mpPropertyDefinitionTable {};
+    const char** mActionSlotNameTable {};
+    sead::BitFlag8 mBitFlag {0};
 };
 static_assert(sizeof(User) == 0x60, "xlink2::User size mismatch");
 

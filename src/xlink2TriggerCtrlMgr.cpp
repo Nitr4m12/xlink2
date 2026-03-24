@@ -220,12 +220,12 @@ s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
 // NON-MATCHING: instruction missing
 void TriggerCtrlMgr::notifyActive()
 {
-    // auto* param {getParam()};
     if (getParam() != nullptr) {
         s16 action_slot_num {getUserInstance_()->getUser()->getActionSlotNum()};
         for (s32 i {0}; i < action_slot_num; ++i) {
-            if (getParam()->actionTriggerCtrlBuffer[i] != nullptr)
-                getParam()->actionTriggerCtrlBuffer[i]->notifyActive();
+            ActionTriggerCtrl* action_trigger_ctrl {getParam()->actionTriggerCtrlBuffer[i]};
+            if (action_trigger_ctrl != nullptr)
+                action_trigger_ctrl->notifyActive();
         }
 
         if (getParam()->alwaysTriggerCtrl != nullptr)
