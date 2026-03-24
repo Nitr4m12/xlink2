@@ -79,6 +79,16 @@ s32 User::searchActionSlotPos(const char* name) const
     return -1;
 }
 
+void User::createPropertyDefinitionTable(u32 num_property)
+{
+    if (num_property != 0) {
+        mpPropertyDefinitionTable = new(mpHeap) PropertyDefinition*[num_property];
+        for (s32 i {0}; i < num_property; ++i)
+            mpPropertyDefinitionTable[i] = nullptr;
+        mNumLocalProp = num_property;
+    }
+}
+
 u32 User::searchPropertyIndex(const char* name) const 
 {
     if (mNumLocalProp != 0) {
