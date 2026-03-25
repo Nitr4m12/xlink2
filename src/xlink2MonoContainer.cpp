@@ -28,4 +28,19 @@ void MonoContainer::kill()
     mAssetDuration = 0;
     _1 = -1.0f;
 }
+
+void MonoContainer::fade(s32 i1)
+{
+    if (mpChild != nullptr) {
+        auto* event {mpEvent};
+        auto* child_executor {reinterpret_cast<AssetExecutor*>(mpChild)};
+        mpChild = nullptr;
+        event->getAliveAssetExecutors().erase(child_executor);
+        event->getFadeBySystemExecutors().pushBack(child_executor);
+        child_executor->fade(i1);
+    }
+
+    mAssetDuration = 0;
+    _1 = -1.0f;
+}
 } // namespace xlink2
