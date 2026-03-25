@@ -44,10 +44,12 @@ public:
 
     virtual void fixDelayParam_();
 
+    u32 getCreateId() const { return mCreateId; }
+    void set0x20(s32 value) { mCreateId = value; }
+
     UserInstance* getUserInstance() const { return mpUserInstance; }
 
-    const s32& getCreateId() const { return mCreateId; }
-    void set0x20(s32 value) { mCreateId = value; }
+    const BoneMtx& getBoneMtx() { return mBoneMtx; }
 
     TriggerType& getTriggerType() { return mTriggerType; }
 
@@ -66,13 +68,13 @@ protected:
     sead::BitFlag32 mBitFlag{0};
     void* _0x10{nullptr};
     void* _0x18{nullptr};
-    s32 mCreateId{0};
+    u32 mCreateId{0};
     UserInstance* mpUserInstance;
     const ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;
     ResTriggerOverwriteParam* mpTriggerOverwriteParam {nullptr};
-    BoneMtx* mpBoneMtx {nullptr};
-    bool _0x50 {true};
+    BoneMtx mBoneMtx {nullptr, true};
+    // bool _0x50 {true};
     ContainerBase* mpRootContainer {nullptr};
     sead::OffsetList<AssetExecutor> mAliveAssetExecutors;
     sead::OffsetList<AssetExecutor> mFadeBySystemAssetExecutors;

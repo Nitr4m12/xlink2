@@ -39,14 +39,10 @@ public:
     virtual void onResetOverwriteParam_() = 0;
     virtual void onFinalize_() = 0;
 
-    BoneMtx boneMtx() { return mBoneMtx; }
-    void boneMtx(BoneMtx new_mtx) { mBoneMtx = new_mtx; }
+    Event* getEvent() { return mpEvent; }
+    void setEvent(Event* event) { mpEvent = event; }
 
-    u8 _0x48() {return mBoneMtx._0; }
-    void _0x48(u8 new_val) {mBoneMtx._0 = new_val; }
-
-    ResTriggerOverwriteParam* triggerOverwriteParam() { return mpTriggerOverwriteParam; }
-    void triggerOverwriteParam(ResTriggerOverwriteParam* new_param) { mpTriggerOverwriteParam = new_param; }
+    void setUserInstance(UserInstance* new_instance) { mpUserInstance = new_instance; }
 
     ContainerType getContainerType() const { return mContainerType; }
     void setContainerType(ContainerType new_type) { mContainerType = new_type; }
@@ -56,9 +52,10 @@ public:
 
     void set34(f32 new_val) { _0x34 = new_val; }
 
-    void setUserInstance(UserInstance* new_instance) { mpUserInstance = new_instance; }
+    ResTriggerOverwriteParam* getTriggerOverwriteParam() { return mpTriggerOverwriteParam; }
+    void setTriggerOverwriteParam(ResTriggerOverwriteParam* new_param) { mpTriggerOverwriteParam = new_param; }
 
-    void setBoneMtx(BoneMtx& bone_mtx) { mBoneMtx = bone_mtx; }
+    void setBoneMtx(const BoneMtx& bone_mtx) { mBoneMtx = bone_mtx; }
 
 protected:
     void* _0x8{};

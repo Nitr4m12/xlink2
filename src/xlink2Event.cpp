@@ -21,9 +21,9 @@ void Event::initialize(u32 create_id)
     mTriggerType = TriggerType::Invalid;
     _0x90 = 1;
     mCreateId = create_id;
+    mBoneMtx.rawMtx = nullptr;
     mpRootContainer = nullptr;
     mpTriggerOverwriteParam = nullptr;
-    mpBoneMtx = nullptr;
     this->initializeImpl_();
 }
 

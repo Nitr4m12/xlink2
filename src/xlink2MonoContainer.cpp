@@ -106,6 +106,31 @@ bool MonoContainer::initialize(Event* event, const ResAssetCallTable& asset_ctb)
     mOverwriteDuration = duration;
     mDelay = duration;
     return true;
+}
 
+bool MonoContainer::start()
+{
+    if (mpChild != nullptr) {
+        auto* child_executor {reinterpret_cast<AssetExecutor*>(mpChild)};
+        auto* asset_ctb {mpAssetCallTable};
+        auto* child_event {child_executor->getEvent()};
+        child_executor->setUserInstance(mpEvent->getUserInstance());
+        child_executor->setAssetCallTable(asset_ctb);
+
+        auto* overwrite_param {child_event->getOverwriteParam()};
+        BoneMtx bone_mtx {child_event->getBoneMtx()};
+        
+        child_executor->setBoneMtx(bone_mtx);
+        child_executor->setTriggerOverwriteParam(overwrite_param);
+
+        // if (child_event->getAliveAssetExecutors().front() != nullptr && child_event->getAliveAssetExecutors().back() != nullptr)
+        child_event->getAliveAssetExecutors().pushBack(child_executor);
+    
+        child_executor->activateImpl_();
+        return true;
+    }
+
+    return false;
+    
 }
 } // namespace xlink2
