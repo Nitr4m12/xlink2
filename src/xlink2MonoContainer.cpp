@@ -1,6 +1,8 @@
 #include "xlink2/xlink2MonoContainer.h"
+
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2Event.h"
+#include "xlink2/xlink2System.h"
 
 namespace xlink2 {
 MonoContainer::~MonoContainer() = default;
@@ -42,5 +44,19 @@ void MonoContainer::fade(s32 i1)
 
     mAssetDuration = 0;
     _1 = -1.0f;
+}
+
+// NON-MATCHING
+void MonoContainer::destroy()
+{
+    if (mpChild != nullptr) {
+        auto* child_executor {reinterpret_cast<AssetExecutor*>(mpChild)};
+        mpChild = nullptr;
+        mpEvent->getAliveAssetExecutors().erase(child_executor);
+        mpEvent->getUserInstance()->getUser()->getSystem()->freeAssetExecutor(child_executor);
+    }
+    auto* container_heap {mpEvent->getUserInstance()->getUser()->getSystem()->getContainerHeap()};
+    MonoContainer::~MonoContainer();
+    container_heap->free(this);
 }
 } // namespace xlink2
