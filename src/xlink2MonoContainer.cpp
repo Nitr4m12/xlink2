@@ -59,4 +59,19 @@ void MonoContainer::destroy()
     MonoContainer::~MonoContainer();
     container_heap->free(this);
 }
+
+void MonoContainer::fadeBySystem()
+{
+    if (mpChild != nullptr) {
+        auto* event {mpEvent};
+        auto* child_executor {reinterpret_cast<AssetExecutor*>(mpChild)};
+        mpChild = nullptr;
+        event->getAliveAssetExecutors().erase(child_executor);
+        event->getFadeBySystemExecutors().pushBack(child_executor);
+        child_executor->fadeBySystem();
+    }
+
+    mAssetDuration = 0;
+    _1 = -1.0f;
+}
 } // namespace xlink2
