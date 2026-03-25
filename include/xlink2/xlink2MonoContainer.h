@@ -21,7 +21,7 @@ public:
     bool start() override;
 
 private:
-    f32 _1;
-    f32 _2;
+    f32 mOverwriteDuration;
+    f32 mDelay;
 };
 }  // namespace xlink2

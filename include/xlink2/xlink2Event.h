@@ -51,6 +51,8 @@ public:
 
     TriggerType& getTriggerType() { return mTriggerType; }
 
+    ResTriggerOverwriteParam* getOverwriteParam() const { return mpTriggerOverwriteParam; }
+
     sead::BitFlag32 getBitFlag() { return mBitFlag; }
     void setFlagBit(s32 bit) { mBitFlag.setBit(bit); }
 

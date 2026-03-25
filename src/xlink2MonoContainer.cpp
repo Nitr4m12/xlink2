@@ -3,6 +3,7 @@
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2System.h"
+#include "xlink2/xlink2UserResource.h"
 
 namespace xlink2 {
 MonoContainer::~MonoContainer() = default;
@@ -28,7 +29,7 @@ void MonoContainer::kill()
     }
 
     mAssetDuration = 0;
-    _1 = -1.0f;
+    mOverwriteDuration = -1.0f;
 }
 
 void MonoContainer::fade(s32 i1)
@@ -43,7 +44,7 @@ void MonoContainer::fade(s32 i1)
     }
 
     mAssetDuration = 0;
-    _1 = -1.0f;
+    mOverwriteDuration = -1.0f;
 }
 
 // NON-MATCHING
@@ -72,6 +73,39 @@ void MonoContainer::fadeBySystem()
     }
 
     mAssetDuration = 0;
-    _1 = -1.0f;
+    mOverwriteDuration = -1.0f;
+}
+
+bool MonoContainer::initialize(Event* event, const ResAssetCallTable& asset_ctb)
+{
+    ContainerBase::initialize(event, asset_ctb);
+    UserInstance* user_instance {mpEvent->getUserInstance()};
+    System* system {user_instance->getUser()->getSystem()};
+    AssetExecutor* child_executor {system->allocAssetExecutor(event)};
+
+    mpChild = reinterpret_cast<ContainerBase*>(child_executor);
+    
+    if (child_executor == nullptr) {
+        user_instance->printLogEmitFailed(*mpEvent, "alloc AssetExecutor[%s] failed", 
+                                          solveOffset<const char>(asset_ctb.keyNamePos));
+        return false;
+    }
+
+    auto& accessor {user_instance->getUserResource()->getAccessor()};
+    f32 duration {accessor.getDuration(asset_ctb, user_instance)};
+    if (duration > 0.0f) {
+        f32 delay {accessor.getDelayWithOverwrite(asset_ctb, 
+                                                  reinterpret_cast<u64>(event->getOverwriteParam()), 
+                                                  user_instance)};
+        duration += delay;
+    }
+    else {
+        duration = -1.0f;
+    }
+
+    mOverwriteDuration = duration;
+    mDelay = duration;
+    return true;
+
 }
 } // namespace xlink2
