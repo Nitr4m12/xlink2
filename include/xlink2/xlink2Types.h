@@ -4,8 +4,8 @@
 
 namespace xlink2 {
 enum class ClipType {
-    Clipped=1,
-    NoClip,
+    ClipKill = 1,
+    ClipNone,
 };
 
 enum class CompareType : s32 {
@@ -26,13 +26,17 @@ enum class ContainerType : u32 {
     Asset
 };
 
-enum ParamValueType : u32 {
-    UInt32,
-    Float,
-    Bool,
-    Enum,
-    String,
-    Arrange,
+enum class MtxSetType {
+    Programmer,
+};
+
+enum class ParamValueType : u32 {
+    UInt32 = 0,
+    Float = 1,
+    Bool = 2,
+    Enum = 3,
+    String = 4,
+    Arrange = 5,
     Invalid = 0xFFFFFFFF
 };
 
@@ -44,9 +48,9 @@ enum class PropertyType : u32 {
 
 enum class TriggerType : s32 {
     Action = 0,
-    Property,
-    Always,
-    None,
+    Property = 1,
+    Always = 2,
+    None = 3,
     Invalid = -1
 };
 
