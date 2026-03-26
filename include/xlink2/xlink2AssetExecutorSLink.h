@@ -28,7 +28,7 @@ public:
 
     f32 getPlayingTime() const;
 
-    void activateImpl_() override;
+    bool activateImpl_() override;
     
     void _updateParamFirst();
     void updateParamFirst();

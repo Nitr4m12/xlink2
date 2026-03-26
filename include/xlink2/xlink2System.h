@@ -30,6 +30,7 @@ class ParamDefineTable;
 class PropertyDefinition;
 class ResourceBuffer;
 struct ResUserHeader;
+struct OtameshiRequest;
 class UserResource;
 
 class System : sead::hostio::Node {
@@ -209,9 +210,6 @@ public:
                                          [[maybe_unused]] const sead::Viewport&) const;
 
 protected:
-
-    struct OtameshiRequest;
-
     ResourceBuffer* mResourceBuffer {};
     sead::OffsetList<User> mUserList;
     s32 mMutexSize {};

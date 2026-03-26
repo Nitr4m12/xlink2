@@ -108,7 +108,6 @@ bool MonoContainer::initialize(Event* event, const ResAssetCallTable& asset_ctb)
     return true;
 }
 
-// NON-MATCHING
 bool MonoContainer::start()
 {
     if (mpChild != nullptr) {
@@ -118,17 +117,12 @@ bool MonoContainer::start()
         child_executor->setUserInstance(mpEvent->getUserInstance());
         child_executor->setAssetCallTable(asset_ctb);
 
-        auto* overwrite_param {child_event->getOverwriteParam()};
-        BoneMtx bone_mtx {child_event->getBoneMtx()};
-        
-        child_executor->setBoneMtx(bone_mtx);
-        child_executor->setTriggerOverwriteParam(overwrite_param);
+        child_executor->setOverwriteParam(child_event->getOverwriteParam(), child_event->getBoneMtx());
 
-        // if (child_event->getAliveAssetExecutors().front() != nullptr && child_event->getAliveAssetExecutors().back() != nullptr)
-        child_event->getAliveAssetExecutors().pushBack(child_executor);
+        if (!child_event->getAliveAssetExecutors().isNodeLinked(child_executor))
+            child_event->getAliveAssetExecutors().pushBack(child_executor);
     
-        child_executor->activateImpl_();
-        return true;
+        return child_executor->activateImpl_();
     }
 
     return false;

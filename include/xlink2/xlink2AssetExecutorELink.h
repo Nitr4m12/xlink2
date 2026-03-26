@@ -39,7 +39,7 @@ public:
     void fade(s32) override;
     void fadeBySystem() override;
 
-    void activateImpl_() override;
+    bool activateImpl_() override;
 
     void setInnerParam_();
 

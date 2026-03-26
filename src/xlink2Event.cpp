@@ -137,18 +137,18 @@ bool Event::calc()
         }
     }
 
-    bool is_empty {mFadeBySystemAssetExecutors.isEmpty()};
-    if (!is_empty) {
+    bool fade_by_system {mFadeBySystemAssetExecutors.isEmpty()};
+    if (!fade_by_system) {
         for (auto& executor : mFadeBySystemAssetExecutors.robustRange()) {
             if (executor.calc()) {
                 mFadeBySystemAssetExecutors.erase(&executor);
                 mpUserInstance->getUser()->getSystem()->freeAssetExecutor(&executor);
             }
         }
-        is_empty = mFadeBySystemAssetExecutors.isEmpty();
+        fade_by_system = mFadeBySystemAssetExecutors.isEmpty();
     }
 
-    return is_empty && container_done;
+    return fade_by_system && container_done;
 }
 
 s32 Event::getAliveAssetNum() const

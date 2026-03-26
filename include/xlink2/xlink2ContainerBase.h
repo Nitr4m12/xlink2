@@ -17,7 +17,7 @@ public:
         Failure,
         Success,
     };
-    
+
     virtual bool initialize(Event*, const ResAssetCallTable&);
     virtual void destroy();
     virtual bool start() = 0;

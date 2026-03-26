@@ -33,7 +33,7 @@ public:
 
     virtual void dumpDebugPrint();
 
-    virtual void activateImpl_() = 0;
+    virtual bool activateImpl_() = 0;
 
     virtual void onDestroy_();
     virtual void onResetOverwriteParam_() = 0;
@@ -53,7 +53,12 @@ public:
     void set34(f32 new_val) { _0x34 = new_val; }
 
     ResTriggerOverwriteParam* getTriggerOverwriteParam() { return mpTriggerOverwriteParam; }
-    void setTriggerOverwriteParam(ResTriggerOverwriteParam* new_param) { mpTriggerOverwriteParam = new_param; }
+
+    void setOverwriteParam(ResTriggerOverwriteParam* param, BoneMtx bone_mtx)
+    {
+        mpTriggerOverwriteParam = param;
+        mBoneMtx = bone_mtx;
+    }
 
     void resetOverwriteParam(ResTriggerOverwriteParam* param, BoneMtx bone_mtx)
     {
@@ -61,8 +66,6 @@ public:
         mBoneMtx = bone_mtx;
         onResetOverwriteParam_();
     }
-
-    void setBoneMtx(const BoneMtx& bone_mtx) { mBoneMtx = bone_mtx; }
 
 protected:
     void* _0x8{};
