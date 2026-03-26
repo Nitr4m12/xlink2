@@ -20,16 +20,16 @@ void ParamDefineTable::reset()
     mIsInitialized = false;
 }
 
-void ParamDefineTable::setup(unsigned char* bin, u32 num_non_user_param, bool /*unused*/) 
+void ParamDefineTable::setup(unsigned char* bin, u32 num_user_param, bool /*unused*/) 
 {
     if (!mIsInitialized) {
         auto* header {reinterpret_cast<ResParamDefineTableHeader*>(bin)};
 
         mDataSize = header->size;
-        u32 num_user_param = header->numUserParam;
-        mNumUserParam = num_user_param;
-        mNumStandardUserParam = num_user_param - num_non_user_param;
-        mNumCustomUserParam = num_non_user_param;
+        u32 total_user_param = header->numUserParam;
+        mNumUserParam = total_user_param;
+        mNumStandardUserParam = total_user_param - num_user_param;
+        mNumCustomUserParam = num_user_param;
         mNumAssetParam = header->numAssetParam;
         mNumCustomAssetParam = header->numCustomAssetParam;
         mNumStandardAssetParam = mNumAssetParam - mNumCustomAssetParam;
@@ -114,10 +114,12 @@ s32 ParamDefineTable::searchAssetParamIdxFromCustomParamName(const char* custom_
 s32 ParamDefineTable::searchUserParamIdxFromCustomParamName(const char* custom_param_name) const 
 {
     if (custom_param_name != nullptr) {
-        for (u32 user_param_idx {mNumCustomUserParam}; user_param_idx < mNumUserParam; ++user_param_idx) {
-            char* user_param_name = solveOffset<char>(mpUserParamDefine[user_param_idx].namePos);
-            if (user_param_name && std::strcmp(custom_param_name, user_param_name) == 0)
-                return user_param_idx;
+        if (mpUserParamDefine != nullptr) {
+            for (u32 user_param_idx {mNumStandardUserParam}; user_param_idx < mNumUserParam; ++user_param_idx) {
+                char* user_param_name = solveOffset<char>(mpUserParamDefine[user_param_idx].namePos);
+                if (user_param_name && std::strcmp(custom_param_name, user_param_name) == 0)
+                    return user_param_idx;
+            }
         }
     }
     return -1;

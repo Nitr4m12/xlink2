@@ -55,6 +55,13 @@ public:
     ResTriggerOverwriteParam* getTriggerOverwriteParam() { return mpTriggerOverwriteParam; }
     void setTriggerOverwriteParam(ResTriggerOverwriteParam* new_param) { mpTriggerOverwriteParam = new_param; }
 
+    void resetOverwriteParam(ResTriggerOverwriteParam* param, BoneMtx bone_mtx)
+    {
+        mpTriggerOverwriteParam = param;
+        mBoneMtx = bone_mtx;
+        onResetOverwriteParam_();
+    }
+
     void setBoneMtx(const BoneMtx& bone_mtx) { mBoneMtx = bone_mtx; }
 
 protected:

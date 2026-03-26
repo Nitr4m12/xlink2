@@ -171,6 +171,19 @@ s32 Event::getFadeBySystemListAssetNum() const
     return asset_num;
 }
 
+void Event::setOverwriteParam(TriggerType trigger_type, ResTriggerOverwriteParam* param, BoneMtx bone_mtx)
+{
+    mTriggerType = trigger_type;
+    mpTriggerOverwriteParam = param;
+    mBoneMtx = bone_mtx;
+
+    for (auto& executor : mAliveAssetExecutors)
+        executor.resetOverwriteParam(mpTriggerOverwriteParam, mBoneMtx);
+
+    for (auto& executor : mFadeBySystemAssetExecutors)
+        executor.resetOverwriteParam(mpTriggerOverwriteParam, mBoneMtx);
+}
+
 void Event::fade(s32 param_int) 
 {
     mBitFlag.setBit(4);
