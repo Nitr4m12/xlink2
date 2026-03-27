@@ -23,4 +23,9 @@ bool SwitchContainer::start_(const ResAssetCallTable* asset_ctb)
 
     return createChildContainer_(*asset_ctb, nullptr) != nullptr;
 }
+
+bool SwitchContainer::start()
+{
+    return start_(getConditionMatchChildCallTable_());
+}
 } // namespace xlink2
