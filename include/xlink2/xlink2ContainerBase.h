@@ -21,7 +21,7 @@ public:
     virtual bool initialize(Event*, const ResAssetCallTable&);
     virtual void destroy();
     virtual bool start() = 0;
-    virtual CalcResult calc() = 0;
+    virtual bool calc() = 0;
     virtual void fadeBySystem();
     virtual void fade(int);
     virtual void kill();
@@ -48,15 +48,15 @@ public:
     ContainerBase* getNext() { return mpParent; }
     void setNext(ContainerBase* parent) { mpParent = parent; }
 
-    CalcResult assetFinished() 
+    bool assetFinished() 
     {
         if (mAssetDuration > 0)
             --mAssetDuration;
     
         if (mAssetDuration != 0) {
-            return static_cast<CalcResult>(!start());
+            return !start();
         }
-        return CalcResult::Success;
+        return true;
     }
 
 protected:

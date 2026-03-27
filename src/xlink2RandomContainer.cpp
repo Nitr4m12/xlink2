@@ -7,10 +7,10 @@ namespace xlink2 {
 RandomContainer::~RandomContainer() = default;
 
 // WIP
-ContainerBase::CalcResult RandomContainer::calc()
+bool RandomContainer::calc()
 {
     auto* child {mpChild};
-    CalcResult result {child->calc()};
+    bool result {child->calc()};
     if (result != CalcResult::Failure) {
         child->destroy();
         mpChild = nullptr;

@@ -603,5 +603,4 @@ void System::drawInformationEmitter_([[maybe_unused]] UserInstance* user_instanc
 #ifdef SEAD_DEBUG
 #endif
 }
-
 }  // namespace xlink2

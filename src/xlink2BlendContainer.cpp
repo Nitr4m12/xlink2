@@ -58,22 +58,22 @@ bool BlendContainer::callAllChildContainer_()
     return ret_val;
 }
 
-ContainerBase::CalcResult BlendContainer::calc()
+// WIP
+bool BlendContainer::calc()
 {
-    ContainerBase* next {mpChild};
-    ContainerBase* current {nullptr};
+    BlendContainer* next {static_cast<BlendContainer*>(mpChild)};
+    BlendContainer* current {nullptr};
     bool finished {true};
 
-    for (ContainerBase* previous {current}; next != nullptr; previous = current) {
-        while (next != nullptr) {
-            current = next;
-            next = current->getNext();
-            if (!(current->calc() & CalcResult::Success)) {
+    for (BlendContainer* previous {current}; next != nullptr; previous = current) {
+        for (current = next; next != nullptr; current = next) {
+            next = static_cast<BlendContainer*>(current->mpParent);
+            if (!current->calc()) {
                 finished = false;
                 break;
             }
             if (previous != nullptr)
-                previous->setNext(next);
+                previous->mpParent = next;
             else
                 mpChild = next;
             current->destroy();

@@ -10,18 +10,18 @@ namespace xlink2 {
 SequenceContainer::~SequenceContainer() = default;
 
 // WIP
-ContainerBase::CalcResult SequenceContainer::calc()
+bool SequenceContainer::calc()
 {
     if (mpChild->calc() & CalcResult::Success) {
         mpChild->destroy();
         mpChild = nullptr;
         if (mpEvent->getBitFlag().isOnBit(4) || !callNextChildSequence_())
-            return assetFinished();
+            return CalcResult(assetFinished());
     
-        return CalcResult::Failure;
+        return false;
     }  
 
-    return CalcResult::Success;
+    return true;
 }
 
 bool SequenceContainer::callNextChildSequence_()

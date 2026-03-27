@@ -9,7 +9,7 @@ class SwitchContainer : ContainerBase {
 public:
     ~SwitchContainer() override;
 
-    CalcResult calc() override;
+    bool calc() override;
 
     const ResAssetCallTable* getConditionMatchChildCallTable_();
 

@@ -11,6 +11,6 @@ public:
 
     bool callAllChildContainer_();
 
-    CalcResult calc() override;
+    bool calc() override;
 };
 }  // namespace xlink2

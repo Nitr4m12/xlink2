@@ -30,8 +30,16 @@ class ParamDefineTable;
 class PropertyDefinition;
 class ResourceBuffer;
 struct ResUserHeader;
-struct OtameshiRequest;
 class UserResource;
+
+struct OtameshiRequest {
+    sead::FixedSafeString<128> _0;
+    u32 _98;
+    s32 _9c;
+    s32 _a0;
+    bool _a4;
+};
+static_assert(sizeof(OtameshiRequest) == 0xa8, "xlink2::OtameshiRequest size mismatch");
 
 class System : sead::hostio::Node {
 public:

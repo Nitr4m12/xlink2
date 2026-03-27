@@ -7,7 +7,7 @@ class MonoContainer : public ContainerBase {
 public:
     ~MonoContainer() override;
     
-    CalcResult calc() override;
+    bool calc() override;
 
     bool killOneTimeEvent() override;
     void kill() override;

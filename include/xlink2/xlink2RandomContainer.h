@@ -7,7 +7,7 @@ class RandomContainer : public ContainerBase {
 public:
     ~RandomContainer() override;
 
-    CalcResult calc() override;
+    bool calc() override;
     bool start() override;
 };
 
