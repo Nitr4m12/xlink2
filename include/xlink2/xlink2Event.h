@@ -55,7 +55,7 @@ public:
 
     ResTriggerOverwriteParam* getOverwriteParam() const { return mpTriggerOverwriteParam; }
 
-    sead::BitFlag32 getBitFlag() { return mBitFlag; }
+    const sead::BitFlag32& getBitFlag() { return mBitFlag; }
     void setFlagBit(s32 bit) { mBitFlag.setBit(bit); }
 
     sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }

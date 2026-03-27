@@ -48,6 +48,8 @@ public:
     ContainerBase* getNext() { return mpParent; }
     void setNext(ContainerBase* parent) { mpParent = parent; }
 
+    ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
+
     bool assetFinished() 
     {
         if (mAssetDuration > 0)
