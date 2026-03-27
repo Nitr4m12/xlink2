@@ -35,6 +35,20 @@ class UserResource;
 
 class System : sead::hostio::Node {
 public:
+    class DrawerModule {
+    public:
+        void begin(const sead::Camera&, const sead::Projection&);
+
+        void setModelMatrix(const sead::Matrix34f&);
+        void drawAxis(const sead::Vector3f&, f32);
+
+        void end();
+        
+    private:
+        sead::PrimitiveRenderer* mpPrimitiveRenderer;
+        sead::PrimitiveDrawer* mpPrimitiveDrawer;
+    };
+
     void drawInformationEmitter(UserInstance*, sead::DrawContext*, sead::TextWriter*,
                                 const sead::Camera&, const sead::Projection&,
                                 const sead::Viewport&) const;
@@ -147,20 +161,6 @@ public:
     void requestSendPickedUserName(const sead::SafeString& /*unused*/);
 
     void resetOtameshiRequest();
-
-    class DrawerModule {
-    public:
-        void begin(const sead::Camera&, const sead::Projection&);
-
-        void setModelMatrix(const sead::Matrix34f&);
-        void drawAxis(const sead::Vector3f&, f32);
-
-        void end();
-        
-    private:
-        sead::PrimitiveRenderer* mpPrimitiveRenderer;
-        sead::PrimitiveDrawer* mpPrimitiveDrawer;
-    };
 
     s32 getMutexSize() { return mMutexSize; }
     sead::Heap* getUserHeap() { return mUserCreateHeap; }

@@ -22,14 +22,14 @@ public:
         CreateArg(const char*, IUser*);
         CreateArg(const CreateArg& other);
 
-        char* name;
+        const char* userName;
         IUser* iUser;
         BoneMtx rootMtx;
         sead::Vector3f* rootPos;
         sead::Vector3f* scale;
         s32 numActionSlot;
         s32 numLocalProperty;
-        char* actionSlotNames;
+        const char** actionSlotNames;
     };
 
     class RebuildArg {

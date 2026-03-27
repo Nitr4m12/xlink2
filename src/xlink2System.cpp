@@ -371,6 +371,39 @@ const ParamDefineTable* System::getParamDefineTable(ResMode res_mode) const
     return nullptr;
 }
 
+User* System::searchUserOrCreate_(const UserInstance::CreateArg& instance_arg, sead::Heap* heap, u32 idx)
+{
+    const char* user_name {instance_arg.userName};
+    User* user {searchUser(user_name, heap, idx)};
+
+    if (user == nullptr) {
+        if (mUserCreateHeap != nullptr) {
+            if (mUserCreateHeap->getFreeSize() / 1024  < 5)
+                return nullptr;
+
+            heap = mUserCreateHeap;
+        }
+
+        user = new(heap) User(user_name, heap, this, idx);
+        mUserList.pushBack(user);
+        
+        const char** action_slot_name_table {nullptr};
+        if (instance_arg.actionSlotNames != nullptr && instance_arg.numActionSlot > 0) {
+            action_slot_name_table = new(heap) const char*[instance_arg.numActionSlot];
+            for (s32 i {0}; i < instance_arg.numActionSlot; ++i)
+                action_slot_name_table[i] = instance_arg.actionSlotNames[i];
+            user->setActionSlot(instance_arg.numActionSlot, action_slot_name_table);
+        }
+        else {
+            user->setActionSlot(instance_arg.numActionSlot, action_slot_name_table);
+        }
+
+        user->createPropertyDefinitionTable(instance_arg.numLocalProperty);
+    }
+
+    return user;
+}
+
 void System::drawInformationInstance3D_(UserInstance* user_instance, sead::DrawContext*, sead::TextWriter*) const
 {
     user_instance->getIUser()->getDebugDrawCamera();
