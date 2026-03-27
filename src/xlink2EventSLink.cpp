@@ -66,4 +66,26 @@ s32 EventSLink::getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>* execut
 
     return num_alive_executor;
 }
+
+s32 EventSLink::getSoundHandle(sead::PtrArray<aal::Handle>* handle_ptrs) const
+{
+    s32 num_handle {0};
+    for (auto& executor : mAliveAssetExecutors) {
+        auto& executor_slink {static_cast<AssetExecutorSLink&>(executor)};
+
+        if (handle_ptrs->isFull()) {
+            SystemSLink::instance()->addError(Error::Type::ListToGetterIsFull, 
+                                              mpUserInstance->getUser(), 
+                                              "getSoundHandle(maxSize=%d) failed", 
+                                              handle_ptrs->capacity());
+            return num_handle;
+        }
+
+        if (executor.isAssetValid()) {
+            handle_ptrs->pushBack(reinterpret_cast<aal::Handle*>(executor_slink.getHandle()));
+            ++num_handle;
+        }
+    }
+    return num_handle;
+}
 } // namespace xlink2

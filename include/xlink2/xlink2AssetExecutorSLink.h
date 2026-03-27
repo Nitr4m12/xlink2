@@ -48,6 +48,7 @@ public:
     void onFinalize_() override;
 
     UserInstanceSLink* getUserInstance() { return static_cast<UserInstanceSLink*>(mpUserInstance); }
+    HandleSLink* getHandle() { return &mHandle; }
 
 private:
     sead::BitFlag8 mBitFlag;

@@ -2,6 +2,7 @@
 
 #include <math/seadMatrix.h>
 #include <prim/seadBitFlag.h>
+
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2Types.h"

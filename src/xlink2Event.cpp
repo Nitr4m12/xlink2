@@ -3,7 +3,6 @@
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2ContainerCreator.h"
 #include "xlink2/xlink2Event.h"
-#include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2System.h"
 
 namespace xlink2 {
@@ -109,6 +108,7 @@ bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallT
         mpRootContainer = root_container;
         return true;
     }
+
     root_container->destroy();
     mpRootContainer = nullptr;
     return false;
