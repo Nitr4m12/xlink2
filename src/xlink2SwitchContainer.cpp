@@ -5,6 +5,41 @@
 namespace xlink2 {
 SwitchContainer::~SwitchContainer() = default;
 
+// NON-MATCHING
+bool SwitchContainer::calc()
+{
+    bool check1 {false};
+    if (mpEvent->getBitFlag().isOffBit(4)) {
+        auto& accessor {mpEvent->getUserInstance()->getUser()->getUserResource()->getAccessor()};
+        if (accessor.isNeedObserve(*mpAssetCallTable) && mpEvent->getBitFlag().isOffBit(3)) {
+            check1 = true;
+            auto* asset_ctb {getConditionMatchChildCallTable_()};
+            if (asset_ctb != nullptr && mpChild != nullptr) {
+                if (mpChild->getAssetCallTable() != asset_ctb) {
+                    mpChild->fadeBySystem();
+                    mpChild->destroy();
+                    mpChild = nullptr;
+                }
+
+                createChildContainer_(*asset_ctb, nullptr);
+            }
+        }
+    }
+
+    bool check2 {true};
+    if (mpChild != nullptr) {
+        if (mpChild->calc()) {
+            mpChild->destroy();
+            check2 = assetFinished();
+        }
+        else {
+            check2 = false;
+        }
+    }
+
+    return check1 && check2;
+}
+
 bool SwitchContainer::start_(const ResAssetCallTable* asset_ctb)
 {
     if (asset_ctb == nullptr) {
@@ -27,5 +62,11 @@ bool SwitchContainer::start_(const ResAssetCallTable* asset_ctb)
 bool SwitchContainer::start()
 {
     return start_(getConditionMatchChildCallTable_());
+}
+
+void SwitchContainer::printChildSelect_([[maybe_unused]] const ResAssetCallTable* asset_ctb) const
+{
+#ifdef SEAD_DEBUG
+#endif 
 }
 } // namespace xlink2

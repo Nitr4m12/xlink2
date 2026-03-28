@@ -17,6 +17,6 @@ public:
 
     bool start() override;
 
-    void printChildSelect(const ResAssetCallTable* /*unused*/) const;
+    void printChildSelect_([[maybe_unused]] const ResAssetCallTable*) const;
 };
 }  // namespace xlink2
