@@ -155,7 +155,9 @@ public:
     UserResource* getUserResource() const { return mUser->getUserResource(); }
 
     sead::BitFlag8 getBitFlag() const { return mBitFlag; };
+    
     UserInstanceParam* getParam() const { return mParams[mBitFlag & 1]; };
+    UserInstanceParam* getParam(ResMode mode) const { return mParams[(s32)mode]; };
 
     const IUser* getIUser() const { return mIUser; };
 

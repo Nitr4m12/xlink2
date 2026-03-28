@@ -55,9 +55,9 @@ public:
         if (mAssetDuration > 0)
             --mAssetDuration;
     
-        if (mAssetDuration != 0) {
+        if (mAssetDuration != 0)
             return !start();
-        }
+
         return true;
     }
 

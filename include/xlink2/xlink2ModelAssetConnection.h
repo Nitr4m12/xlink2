@@ -9,6 +9,6 @@ class ModelAssetConnection {
 public:
     virtual ~ModelAssetConnection() = default;
 
-    BoneMtx mRootMtx;
+    BoneMtx mRootMtx {nullptr, 1};
 };
 }

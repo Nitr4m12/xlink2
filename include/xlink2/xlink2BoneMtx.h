@@ -18,6 +18,6 @@ struct BoneMtx {
     bool isNullMtxPtr() { return rawMtx == nullptr; }
 
     const sead::Matrix34f* rawMtx {&sead::Matrix34f::ident};
-    u8 _0{};
+    u8 _0 {};
 };
 }  // namespace xlink2

@@ -206,6 +206,19 @@ bool UserInstance::isSetupRomInstanceParam_() const
     return false;
 }
 
+void UserInstance::setupInstanceParam_(ResMode res_mode, sead::Heap* heap)
+{
+    UserInstanceParam* instance_param {getParam(res_mode)};
+    UserResourceParam* resource_param {mUser->getUserResource()->getParam(res_mode)};
+    ResUserHeader* user_header {resource_param->userBinParam.pResUserHeader};
+
+    instance_param->modelAssetConnectionBuffer.allocBufferAssert(user_header->numAsset, heap);
+    instance_param->randomHistoryBuffer.allocBufferAssert(user_header->numRandomContainer2, heap);
+
+    onSetupInstanceParam_(res_mode, heap);
+    instance_param->isSetupRom = true;
+}
+
 void UserInstance::setupEditorInstanceParam() 
 {
     auto* heap = mUser->getSystem()->getPrimaryHeap();
