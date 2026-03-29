@@ -12,8 +12,8 @@ class Emitter;
 namespace xlink2 {
 struct UserInstanceParam {
     struct RandomHistory {
-        s32 oldIndex {0};
-        s32 newIndex {0};
+        u32 assetKeyNamePos1 {0};
+        u32 assetKeyNamePos2 {0};
     };
 
     sead::Buffer<ModelAssetConnection> modelAssetConnectionBuffer;

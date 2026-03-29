@@ -33,8 +33,8 @@ struct ResUserHeader;
 class UserResource;
 
 struct OtameshiRequest {
-    sead::FixedSafeString<128> _0;
-    u32 _98;
+    sead::FixedSafeString<128> assetKeyName;
+    u32 guId;
     s32 _9c;
     s32 _a0;
     bool _a4;

@@ -15,6 +15,11 @@ class Handle;
 class Locator;
 class IUser;
 
+struct EventInfo {
+    sead::FixedSafeString<128> assetKeyName;
+    s8 triggerType;
+};
+
 class UserInstance {
 public:
     class CreateArg {
@@ -116,7 +121,7 @@ public:
     void makeDebugStringUserInformation(sead::BufferedSafeString*) const;
     void makeDebugStringAction(sead::BufferedSafeString*, const sead::SafeString&) const;
     void makeDebugStringLocalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;
-    void setDebugLogFlag(sead::BitFlag32);
+    void setDebugLogFlag([[maybe_unused]] sead::BitFlag32);
 
     void setRootMtx(const sead::Matrix34f* root_mtx);
     void setRootPos(const sead::Vector3f* root_pos);
@@ -192,7 +197,7 @@ protected:
     sead::BitFlag8 mBitFlag;
     void* _0xd8 {};
     void* _0xe0 {};
-    void* _0xe8 {};
+    EventInfo* mSaveEmitEventInfo {};
 };
 static_assert(sizeof(UserInstance) == 0xf0, "xlink2::UserInstance size mismatch");
 }  // namespace xlink2

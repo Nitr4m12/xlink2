@@ -573,7 +573,7 @@ void UserInstance::makeDebugStringUserInformation(sead::BufferedSafeString* debu
     }
 }
 
-void UserInstance::setDebugLogFlag(sead::BitFlag32 /*unused*/) {}
+void UserInstance::setDebugLogFlag([[maybe_unused]] sead::BitFlag32 debug_log_flag) {}
 
 void UserInstance::setRootMtx(const sead::Matrix34f* root_mtx)
 {
@@ -597,6 +597,29 @@ void UserInstance::setRootMtx(const sead::Matrix34f* root_mtx)
 void UserInstance::setRootPos(const sead::Vector3f* root_pos) 
 {
     mRootPos = root_pos;
+}
+
+void UserInstance::setRandomHistory(u32 key_name_pos1, u32 key_name_pos2)
+{
+    auto* param {getParam()};
+    s32 idx {0};
+    if (param->randomHistoryBuffer.size() > 0) {
+        for (s32 i {0}, j {-1}; i < param->randomHistoryBuffer.size(); ++i, j = idx) {
+            auto* random_history {&param->randomHistoryBuffer[i]};
+            if (random_history->assetKeyNamePos1 == key_name_pos1) {
+                random_history->assetKeyNamePos2 = key_name_pos2;
+                return;
+            }
+    
+            idx = j == -1 && random_history->assetKeyNamePos1 == 0 ? i : j;
+        }
+
+        if (idx > -1) {
+            auto* random_history {&param->randomHistoryBuffer[idx]};
+            random_history->assetKeyNamePos1 = key_name_pos1;
+            random_history->assetKeyNamePos2 = key_name_pos2;
+        }
+    }
 }
 
 f32 UserInstance::getSortKey() const
