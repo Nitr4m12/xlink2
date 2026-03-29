@@ -634,6 +634,48 @@ u32 UserInstance::searchRandomHistory(u32 key_name_pos) const
     return 0;
 }
 
+// NON-MATCHING: WIP
+void UserInstance::updateSortKey()
+{
+    auto& debug_op_param {mUser->getSystem()->getDebugOperationParam()};
+    sead::Matrix34f bone_world_mtx {};
+    sead::Vector3f vector3f {};
+    if (debug_op_param.getDebugUserFlag().isOffBit(25) && mBitFlag.isOffBit(1)) {
+        auto* iuser {mIUser};
+        u32 num_bone {iuser->getNumBone()};
+        if (num_bone < 1) {
+            if (mRootPos == nullptr) {
+                if (mRootMtx._0 == 0) {
+                    vector3f.x = mRootMtx.rawMtx->m[0][3];
+                    vector3f.y = mRootMtx.rawMtx->m[1][3];
+                    bone_world_mtx.m[0][2] = mRootMtx.rawMtx->m[2][3];
+                }
+                else {
+                    vector3f.x = mRootMtx.rawMtx->a[9];
+                    vector3f.y = mRootMtx.rawMtx->a[10];
+                    bone_world_mtx.m[0][2] = mRootMtx.rawMtx->a[11];
+                }
+            }
+            else {
+                vector3f.x = mRootPos->x;
+                vector3f.y = mRootPos->y;
+                bone_world_mtx.m[0][2] = mRootPos->z;
+            }
+        }
+        else {
+            const char* root_bone_name {iuser->getBoneName(0)};
+            iuser->getBoneWorldMtx(root_bone_name, &bone_world_mtx);
+            vector3f.x = bone_world_mtx.m[0][3];
+            vector3f.y = bone_world_mtx.m[1][3];
+            bone_world_mtx.m[0][2] = bone_world_mtx.m[2][3];
+        }
+        bone_world_mtx.m[0][0] = vector3f.x;
+        bone_world_mtx.m[0][1] = vector3f.y;
+        f32 sort_key {mIUser->getSortKey(vector3f)};
+        mSortKey = sort_key;
+    }
+}
+
 f32 UserInstance::getSortKey() const
 {
     auto* system {mUser->getSystem()};
