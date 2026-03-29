@@ -45,11 +45,13 @@ public:
     virtual void fixDelayParam_();
 
     u32 getCreateId() const { return mCreateId; }
-    void set0x20(s32 value) { mCreateId = value; }
+    void setCreateId(s32 value) { mCreateId = value; }
 
     UserInstance* getUserInstance() const { return mpUserInstance; }
 
     const BoneMtx& getBoneMtx() { return mBoneMtx; }
+
+    const ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
 
     TriggerType& getTriggerType() { return mTriggerType; }
 

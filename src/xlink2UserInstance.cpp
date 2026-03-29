@@ -409,6 +409,44 @@ bool UserInstance::searchAssetRecursive(Locator* locator, const char* name)
     return false;
 }
 
+// NON-MATCHING: bad branching
+bool UserInstance::searchEmittingEvent(Handle* handle, const char* key_name) const
+{
+    if (key_name != nullptr) {
+        {
+            auto lock {sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj())};
+            u8 unknown;
+            for (auto& event : mEventList) {
+                if (event.getAssetCallTable() != nullptr) {
+                    const char* asset_key_name {solveOffset<const char>(event.getAssetCallTable()->keyNamePos)};
+                    if (handle != nullptr) {
+                        if (strcmp(key_name, asset_key_name) == 0) {
+                            handle->setResource(&event);
+                            handle->setCreateId(event.getCreateId());
+                            unknown = 1;
+                        }
+                        else {
+                            unknown = 0;
+                        }
+                    }
+                    else {
+                        unknown = strcmp(key_name, asset_key_name) == 0;
+                    }
+                }
+                else {
+                    unknown = 4;
+                }
+                if ((unknown | 4) != 4) break;
+            }
+
+            return (unknown | 2) != 2;
+        }
+
+    }
+
+    return false;
+}
+
 void UserInstance::changeAction(const char* name, int p1, int p2) 
 {
     auto* sys = mUser->getSystem();
