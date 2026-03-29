@@ -11,25 +11,35 @@ bool SwitchContainer::calc()
     bool check1 {false};
     if (mpEvent->getBitFlag().isOffBit(4)) {
         auto& accessor {mpEvent->getUserInstance()->getUser()->getUserResource()->getAccessor()};
-        if (accessor.isNeedObserve(*mpAssetCallTable) && mpEvent->getBitFlag().isOffBit(3)) {
-            check1 = true;
+        bool need_observe {accessor.isNeedObserve(*mpAssetCallTable)};
+        bool bit_3_on {mpEvent->getBitFlag().isOnBit(3)};
+        check1 = need_observe && !bit_3_on;
+
+        // if goes here, not sure on the order of checks, so it's left out for now
+        {
             auto* asset_ctb {getConditionMatchChildCallTable_()};
-            if (asset_ctb != nullptr && mpChild != nullptr) {
+            if (mpChild != nullptr) {
                 if (mpChild->getAssetCallTable() != asset_ctb) {
                     mpChild->fadeBySystem();
                     mpChild->destroy();
                     mpChild = nullptr;
+                    
+                    if (asset_ctb != nullptr)
+                        createChildContainer_(*asset_ctb, nullptr);
                 }
-
+            }
+            else if (asset_ctb != nullptr) {
                 createChildContainer_(*asset_ctb, nullptr);
             }
         }
+
     }
 
     bool check2 {true};
     if (mpChild != nullptr) {
         if (mpChild->calc()) {
             mpChild->destroy();
+            mpChild = nullptr;
             check2 = assetFinished();
         }
         else {
@@ -37,7 +47,7 @@ bool SwitchContainer::calc()
         }
     }
 
-    return check1 && check2;
+    return !check1 && check2;
 }
 
 bool SwitchContainer::start_(const ResAssetCallTable* asset_ctb)
