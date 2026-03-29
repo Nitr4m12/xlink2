@@ -24,7 +24,7 @@ PropertyTriggerCtrl::PropertyTriggerCtrl(UserInstance* user_instance,
         user_instance = mUserInstance;
     }
     else
-        prop_define = user_instance->getUser()->getPropertyDefinitionEntry(property_index);
+        prop_define = user_instance->getUser()->getPropertyDefinition(property_index);
 
     if (is_global_property)
         mPropertyValue = user_instance->getUser()->getSystem()->getPropertyValue(mPropertyIndex);

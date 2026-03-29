@@ -1,6 +1,7 @@
 #include <cstdarg>
 #include <prim/seadScopedLock.h>
 
+#include "xlink2/xlink2EnumPropertyDefinition.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2Handle.h"
 #include "xlink2/xlink2IUser.h"
@@ -192,8 +193,8 @@ void UserInstance::setupResource(sead::Heap* heap)
 
         if (mUser->getNumLocalProp() > 0) {
             for (u32 i {0}; i < mUser->getNumLocalProp(); ++i) {
-                if (mUser->getPropertyDefinitionEntry(i) != nullptr)
-                    linkPropertyDefinitionToValueStruct(i, mUser->getPropertyDefinitionEntry(i));
+                if (mUser->getPropertyDefinition(i) != nullptr)
+                    linkPropertyDefinitionToValueStruct(i, mUser->getPropertyDefinition(i));
             }
         }
     }
@@ -504,7 +505,7 @@ void UserInstance::setPropertyValue(u32 idx, s32 value)
             return;
         }
 
-        if (mUser->getPropertyDefinitionEntry(idx)->getType() == PropertyType::F32) {
+        if (mUser->getPropertyDefinition(idx)->getType() == PropertyType::F32) {
             mUser->getSystem()->addError(Error::Type::InvalidPropertyType, 
                                 mUser, 
                                 "local prop ix(=%d) is F32 type\n", 
@@ -537,7 +538,7 @@ void UserInstance::setPropertyValue(u32 idx, f32 value)
             return;
         }
 
-        if (mUser->getPropertyDefinitionEntry(idx)->getType() != PropertyType::F32) {
+        if (mUser->getPropertyDefinition(idx)->getType() != PropertyType::F32) {
             mUser->getSystem()->addError(Error::Type::InvalidPropertyType, 
                                 mUser, 
                                 "local prop ix(=%d) is not F32 type\n", 
@@ -598,7 +599,7 @@ void UserInstance::makeDebugString(sead::BufferedSafeString* debug_str,
         makeDebugStringAction(debug_str, debug_op_param.getDebugStringAction());
 
     if (debug_op_param.getDebugUserFlag().isOnBit(18))
-        makeDebugStringAction(debug_str, debug_op_param.getDebugStringLocalProperty());
+        makeDebugStringLocalProperty(debug_str, debug_op_param.getDebugStringLocalProperty());
 
     makeDebugStringEvent(debug_str, debug_op_param.getDebugStringEvent());
 }
@@ -629,10 +630,8 @@ void UserInstance::makeDebugStringAction(sead::BufferedSafeString* debug_str,
                 action_slot_name.appendWithFormat(mIUser->getActionSlotName(i));
 
             if (!action_slot_name.isEmpty()) {
-                if (!filter.isEmpty()) {
-                    sead::SafeString filter_cpy {filter.cstr()};
-                    if (action_slot_name.findIndex(filter_cpy) == -1)
-                        continue;
+                if (!filter.isEmpty() && action_slot_name.findIndex(filter.cstr()) == -1) {
+                    continue;
                 }
 
                 if (mTriggerCtrlMgr.getCurrentActionName(i) != nullptr) {
@@ -657,6 +656,57 @@ void UserInstance::makeDebugStringAction(sead::BufferedSafeString* debug_str,
         }
     }
 }
+
+// NON-MATCHING
+void UserInstance::makeDebugStringLocalProperty(sead::BufferedSafeString* debug_str,
+                                                const sead::SafeString& filter) const
+{
+    if (debug_str != nullptr) {
+        if (filter.isEmpty())
+            debug_str->appendWithFormat("-- Local Property --\n");
+        else
+            debug_str->appendWithFormat("-- Local Property (filter [%s]) --\n", filter.cstr());
+    
+        for (s32 i {0}; i < mUser->getNumLocalProp(); ++i) {
+            const char* property_name {""};
+            PropertyDefinition* property_definition {mUser->getPropertyDefinition(i)};
+            PropertyValueType* property_values {mPropertyValueArray};
+            
+            if (property_definition != nullptr) {
+                if (property_definition->getPropertyName()->cstr() != nullptr)
+                    property_name = property_definition->getPropertyName()->cstr();
+            }
+
+            if (*property_name != '\0') {
+                if (!filter.isEmpty()) {
+                    sead::FixedSafeStringBase<char, 64> safe_property_name {property_name};
+                    if (safe_property_name.findIndex(filter.cstr()) == -1)
+                        continue;
+                }
+
+                const char* entry_key {""};
+                PropertyValueType value {property_values[i]};
+
+                switch (property_definition->getType()) {
+                case PropertyType::Enum:
+                    entry_key = static_cast<EnumPropertyDefinition*>(property_definition)->searchEntryKeyByValue(value.valueInt);
+                    debug_str->appendWithFormat("[%s] %s (%d)\n", property_name, entry_key, value.valueInt);
+                    break;
+                case PropertyType::S32:
+                    if (value.valueInt >= 0)
+                        entry_key = " ";
+                    debug_str->appendWithFormat("[%s] %s%d\n", property_name, entry_key, value.valueInt);
+                    break;
+                case PropertyType::F32:
+                    if (value.valueFloat >= 0)
+                        entry_key = " ";
+                    debug_str->appendWithFormat("[%s] %s%f\n", property_name, entry_key, value.valueFloat);
+                    break;
+                }
+            }
+        }
+    }
+} 
 
 void UserInstance::setDebugLogFlag([[maybe_unused]] sead::BitFlag32 debug_log_flag) {}
 

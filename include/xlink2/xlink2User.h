@@ -47,8 +47,9 @@ public:
 
     const char* getUserName() const { return mUserName; }
     UserResource* getUserResource() const { return mpUserResource; }
+
     u16 getNumLocalProp() const { return mNumLocalProp; }
-    PropertyDefinition* getPropertyDefinitionEntry(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
+    PropertyDefinition* getPropertyDefinition(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
 
     const sead::OffsetList<UserInstance>& getUserInstanceList() const { return mUserInstanceList; }
 
