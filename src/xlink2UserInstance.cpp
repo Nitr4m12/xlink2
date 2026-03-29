@@ -611,6 +611,53 @@ void UserInstance::makeDebugStringUserInformation(sead::BufferedSafeString* debu
     }
 }
 
+// NON-MATCHING: uses 64-bit register instead of the expected 32-bit
+void UserInstance::makeDebugStringAction(sead::BufferedSafeString* debug_str, 
+                                         const sead::SafeString& filter) const
+{
+    if (debug_str != nullptr) {
+        if (filter.isEmpty())
+            debug_str->appendWithFormat("-- Action --\n");
+        else
+            debug_str->appendWithFormat("-- Action (filter [%s]) --\n", filter.cstr());
+        
+        for (s32 i {0}; i < mUser->getNumActionSlot(); ++i) {
+            sead::FixedSafeString<64> action_slot_name;
+            if (mUser->getActionSlotNameTable() != nullptr)
+                action_slot_name.appendWithFormat(mUser->getActionSlotName(i));
+            else
+                action_slot_name.appendWithFormat(mIUser->getActionSlotName(i));
+
+            if (!action_slot_name.isEmpty()) {
+                if (!filter.isEmpty()) {
+                    sead::SafeString filter_cpy {filter.cstr()};
+                    if (action_slot_name.findIndex(filter_cpy) == -1)
+                        continue;
+                }
+
+                if (mTriggerCtrlMgr.getCurrentActionName(i) != nullptr) {
+                    if (*mTriggerCtrlMgr.getCurrentActionName(i) == '\0') {
+                        const char* action_slot {action_slot_name.cstr()};
+                        s32 current_action_frame {mTriggerCtrlMgr.getCurrentActionFrame(i)};
+                        debug_str->appendWithFormat("[%s] no action (%d)\n", 
+                                                    action_slot, 
+                                                    current_action_frame);
+                    }
+                    else {
+                        const char* action_slot {action_slot_name.cstr()};
+                        const char* current_action_name {mTriggerCtrlMgr.getCurrentActionName(i)};
+                        s32 current_action_frame {mTriggerCtrlMgr.getCurrentActionFrame(i)};
+                        debug_str->appendWithFormat("[%s] %s (%d)\n", 
+                                                    action_slot, 
+                                                    current_action_name, 
+                                                    current_action_frame);
+                    }
+                }
+            }
+        }
+    }
+}
+
 void UserInstance::setDebugLogFlag([[maybe_unused]] sead::BitFlag32 debug_log_flag) {}
 
 void UserInstance::setRootMtx(const sead::Matrix34f* root_mtx)

@@ -107,7 +107,7 @@ void TriggerCtrlMgr::postChangeResource() {}
 
 void TriggerCtrlMgr::changeAction(const char* name, s32 p2, s32 action_trigger_idx)
 {
-    s32 action_slot_num {getUserInstance_()->getUser()->getActionSlotNum()};
+    s32 action_slot_num {getUserInstance_()->getUser()->getNumActionSlot()};
     if (getUserInstance_()->isDebugLogEnable(((DebugLogFlag)4))) {
         if (action_trigger_idx > -1 && action_trigger_idx < action_slot_num && getUserInstance_()->getUser()->getActionSlotNameTable() == nullptr) {
             getUserInstance_()->getIUser()->getActionSlotName(action_trigger_idx);
@@ -148,7 +148,7 @@ void TriggerCtrlMgr::updateActionNeedToCalcFlag_(s32 action_trigger_idx)
 
 void TriggerCtrlMgr::changeAction(s32 p1, s32 p2, s32 action_trigger_idx)
 {
-    if (action_trigger_idx >= 0 && action_trigger_idx < getUserInstance_()->getUser()->getActionSlotNum()) {
+    if (action_trigger_idx >= 0 && action_trigger_idx < getUserInstance_()->getUser()->getNumActionSlot()) {
         TriggerCtrlParam* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
             auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
@@ -164,7 +164,7 @@ void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
 {
     const UserInstance* user_instance {getUserInstance_()};
 
-    if (action_trigger_idx >= 0 && user_instance->getUser()->getActionSlotNum() > action_trigger_idx) {
+    if (action_trigger_idx >= 0 && user_instance->getUser()->getNumActionSlot() > action_trigger_idx) {
         TriggerCtrlParam* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
             ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
@@ -176,7 +176,7 @@ void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
 
 void TriggerCtrlMgr::stopAction(s32 action_trigger_idx)
 {
-    if (action_trigger_idx > -1 && action_trigger_idx < getUserInstance_()->getUser()->getActionSlotNum()) {
+    if (action_trigger_idx > -1 && action_trigger_idx < getUserInstance_()->getUser()->getNumActionSlot()) {
         TriggerCtrlParam* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
             auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
@@ -192,7 +192,7 @@ void TriggerCtrlMgr::stopAction(s32 action_trigger_idx)
 bool TriggerCtrlMgr::isCurrentActionNeedToObserve(s32 action_trigger_idx) const
 {
     bool need_to_observe {false};
-    if (action_trigger_idx > -1 && action_trigger_idx < getUserInstance_()->getUser()->getActionSlotNum()) {
+    if (action_trigger_idx > -1 && action_trigger_idx < getUserInstance_()->getUser()->getNumActionSlot()) {
         auto* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
             auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
@@ -206,7 +206,7 @@ bool TriggerCtrlMgr::isCurrentActionNeedToObserve(s32 action_trigger_idx) const
 
 s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
 {
-    if (action_trigger_idx >= 0 && getUserInstance_()->getUser()->getActionSlotNum() > action_trigger_idx) {
+    if (action_trigger_idx >= 0 && getUserInstance_()->getUser()->getNumActionSlot() > action_trigger_idx) {
         TriggerCtrlParam* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
             ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
@@ -221,7 +221,7 @@ s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
 void TriggerCtrlMgr::notifyActive()
 {
     if (getParam() != nullptr) {
-        s16 action_slot_num {getUserInstance_()->getUser()->getActionSlotNum()};
+        s16 action_slot_num {getUserInstance_()->getUser()->getNumActionSlot()};
         for (s32 i {0}; i < action_slot_num; ++i) {
             ActionTriggerCtrl* action_trigger_ctrl {getParam()->actionTriggerCtrlBuffer[i]};
             if (action_trigger_ctrl != nullptr)
