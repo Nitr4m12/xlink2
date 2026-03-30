@@ -75,18 +75,9 @@ ResUserHeader* ResourceBuffer::searchResUserHeader(const char* user_name) const
     return nullptr;
 }
 
-void ResourceBuffer::applyGlobalPropertyDefinition(System* system) {
+void ResourceBuffer::applyGlobalPropertyDefinition(System* system) 
+{
     if (mRomResourceParam.isInitialized)
         ResourceParamCreator::solveAboutGlobalProperty(&mRomResourceParam, &mParamDefineTable, system);
-}
-
-RomResourceParam ResourceBuffer::getEmptyRomResourceParam() {
-    static RomResourceParam sDummy{};
-    return sDummy;
-}
-
-ResUserHeader ResourceBuffer::getEmptyUserHeader() {
-    static ResUserHeader sDummy{};
-    return sDummy;
 }
 }  // namespace xlink2

@@ -37,7 +37,7 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
                                                        const ParamDefineTable* param_define,
                                                        System* system)
 {
-    *rom_res_param = {};
+    rom_res_param->reset();
     rom_res_param->_0 = reinterpret_cast<u64>(bin);
     
     ResourceHeader* header {reinterpret_cast<ResourceHeader*>(bin)};

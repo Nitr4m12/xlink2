@@ -69,18 +69,20 @@ struct ResTriggerOverwriteParam {
 };
 
 struct ResUserHeader {
-    u32 isSetup;
-    u32 numLocalProperty;
-    u32 numCallTable;
-    u32 numAsset;
-    u32 numRandomContainer2;
-    u32 numResActionSlot;
-    u32 numResAction;
-    u32 numResActionTrigger;
-    u32 numResProperty;
-    u32 numResPropertyTrigger;
-    u32 numResAlwaysTrigger;
-    u32 triggerTablePos;
+    ResUserHeader() {};
+
+    u32 isSetup {0};
+    u32 numLocalProperty {0};
+    u32 numCallTable {0};
+    u32 numAsset {0};
+    u32 numRandomContainer2 {0};
+    u32 numResActionSlot {0};
+    u32 numResAction {0};
+    u32 numResActionTrigger {0};
+    u32 numResProperty {0};
+    u32 numResPropertyTrigger {0};
+    u32 numResAlwaysTrigger {0};
+    u32 triggerTablePos {0};
 };
 static_assert(sizeof(ResUserHeader) == 0x30, "xlink2::ResUserHeader size mismatch");
 

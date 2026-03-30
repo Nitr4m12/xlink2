@@ -17,11 +17,20 @@ public:
     ResUserHeader* searchResUserHeader(const char* user_name) const;
     void applyGlobalPropertyDefinition(System* system);
     
-    static RomResourceParam getEmptyRomResourceParam();
-    static ResUserHeader getEmptyUserHeader();
+    static RomResourceParam* getEmptyRomResourceParam()
+    {
+        static RomResourceParam sDummy;
+        return &sDummy;
+    }
+
+    static ResUserHeader* getEmptyUserHeader()
+    {
+        static ResUserHeader sDummy;
+        return &sDummy;
+    }
     
     const ParamDefineTable* getParamDefineTable() { return &mParamDefineTable; }
-    RomResourceParam getRomResourceParam() { return mRomResourceParam; }
+    const RomResourceParam& getRomResourceParam() { return mRomResourceParam; }
 
 private:
     RomResourceParam mRomResourceParam;

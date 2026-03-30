@@ -2,6 +2,7 @@
 
 #include "xlink2/xlink2EditorBuffer.h"
 #include "xlink2/xlink2UserResource.h"
+#include "xlink2/xlink2ResourceBuffer.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -43,6 +44,33 @@ void UserResource::setup(sead::Heap* heap)
 
             this->mResMode = ResMode::Editor;
         }
+    }
+}
+
+void UserResource::setupRomResourceParam_(sead::Heap* heap)
+{
+    if (mParams[0] == nullptr) {
+        UserResourceParam* param {allocResourceParam_(heap)};
+        mParams[0] = param;
+        System* system {getSystem()};
+        ResourceBuffer* resource_buffer {system->getResourceBuffer()};
+        ResUserHeader* user_header {resource_buffer->searchResUserHeader(mUser->getUserName())};
+        RomResourceParam* rom_resource_param {};
+        if (user_header == nullptr) {
+            getSystem();
+
+            ResUserHeader* dummy_header {ResourceBuffer::getEmptyUserHeader()};
+            dummy_header->isSetup = true;
+            user_header = dummy_header;
+
+            RomResourceParam* dummy_param {ResourceBuffer::getEmptyRomResourceParam()};
+            dummy_param->isInitialized = true;
+            rom_resource_param = dummy_param;
+        }
+        else {
+            rom_resource_param = const_cast<RomResourceParam*>(&resource_buffer->getRomResourceParam());
+        }
+        setupResourceParam_(mParams[0], user_header, rom_resource_param, resource_buffer->getParamDefineTable(), heap);
     }
 }
 
