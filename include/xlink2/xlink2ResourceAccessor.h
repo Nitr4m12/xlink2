@@ -126,6 +126,7 @@ public:
     f32 getResOverwriteParamValueFloat_(u32, u32, const UserInstance*) const;
     const char* getResOverwriteParamValueString_(u32, u32) const;
 
+    void setUserHeader(ResUserHeader* user_header) { mpUserHeader = user_header; }
     void setUserResource(UserResource* resource) { mpUserResource = resource; }
     void setSystem(System* system) { mpSystem = system; }
 

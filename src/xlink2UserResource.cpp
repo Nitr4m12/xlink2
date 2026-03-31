@@ -3,6 +3,8 @@
 #include "xlink2/xlink2EditorBuffer.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2ResourceBuffer.h"
+#include "xlink2/xlink2ResourceParamCreator.h"
+#include "xlink2/xlink2ResourceUtil.h"
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
@@ -212,7 +214,7 @@ void UserResource::destroy()
 
 void UserResource::freeResourceParam_(UserResourceParam* param) 
 {
-    param->conditionTableBuffer.freeBuffer();
+    param->localPropertyIdxBuffer.freeBuffer();
     param->callTableBuffer.freeBuffer();
     param->actionNeedToCalcBuffer.freeBuffer();
 }
@@ -241,7 +243,6 @@ bool UserResource::doBinarySearchToNameArray_(s32* value_idx, const char* name, 
     return false;
 }
 
-// WIP
 void UserResource::solveNeedObserveFlag_(UserResourceParam* param)
 {
     ResUserHeader* user_header {param->userBinParam.pResUserHeader};
@@ -255,6 +256,46 @@ void UserResource::solveNeedObserveFlag_(UserResourceParam* param)
                 solveNeedObserveFlagImpl_(i, &asset_ctb[i], param, user_header);
         }
     }
+}
+
+// NON-MATCHING
+bool UserResource::solveNeedObserveFlagImpl_(u32 ctb_idx, 
+                                             ResAssetCallTable* asset_ctb, 
+                                             UserResourceParam* user_resource_param, 
+                                             ResUserHeader* user_header)
+{
+    CallTableParam* ctb_param {&user_resource_param->callTableBuffer[ctb_idx]};
+
+    if (asset_ctb->flag.isOnBit(0)) {
+        auto* container_param {ResourceUtil::getResContainerParam(*asset_ctb)};
+        bool solved_need_observe {false};
+        if (container_param != nullptr && 
+            container_param->childrenStartIndex >= 0 && 
+            container_param->childrenEndIndex >= 0) {
+            for (s32 i {container_param->childrenStartIndex}; i <= container_param->childrenEndIndex; ++i) {
+                solved_need_observe = solveNeedObserveFlagImpl_(i, &user_resource_param->userBinParam.pResAssetCallTable[i], user_resource_param, user_header);
+            }
+        }
+
+        if (asset_ctb->duration >= 0) {
+            ctb_param->bitFlag.resetBit(1);
+            return false;
+        }
+
+        if (solved_need_observe) {
+            ctb_param->bitFlag.setBit(1);
+            return true;
+        }
+    }
+    else if (asset_ctb->duration >= 0) {
+        if (ctb_param->bitFlag.isOffBit(0)) {
+            ctb_param->bitFlag.resetBit(1);
+            return false;
+        }
+    }
+
+    ctb_param->bitFlag.setBit(1);
+    return true;
 }
 
 ResAssetCallTable* UserResource::searchAssetAllResource(const char* name) const

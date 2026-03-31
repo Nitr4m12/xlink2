@@ -7,11 +7,17 @@
 #include "xlink2/xlink2UserBinParam.h"
 
 namespace xlink2 {
+struct CallTableParam {
+    s16 assetId;
+    sead::BitFlag8 bitFlag;
+    s8 _3;
+};
+
 struct UserResourceParam {
-    CommonResourceParam* pCommonResourceParam {};
+    const CommonResourceParam* pCommonResourceParam {};
     UserBinParam userBinParam {};
-    sead::Buffer<ResSwitchCondition> conditionTableBuffer;
-    sead::Buffer<ResAssetCallTable> callTableBuffer;
+    sead::Buffer<s8> localPropertyIdxBuffer;
+    sead::Buffer<CallTableParam> callTableBuffer;
     sead::Buffer<bool> actionNeedToCalcBuffer;
     sead::BitFlag64 bitFlag;
     ResourceAccessor* accessor {nullptr};
