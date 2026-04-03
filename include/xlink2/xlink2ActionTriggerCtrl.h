@@ -41,10 +41,9 @@ private:
     const ResActionSlot* mActionSlot {nullptr};
     u32 mNameHash;
     s32 mActionFrame;
-    // ResUserInfo mUserInfo {};
-    s32 mUserBinPos {0};
-    ResAction* mAction{nullptr};
-    bool mIsActive{false};
+    s32 mEndActionFrame {0};
+    ResAction* mpAction {nullptr};
+    bool mIsActive {false};
 };
 static_assert(sizeof(ActionTriggerCtrl) == 0x40, "xlink2::ActionTriggerCtrl size mismatch");
 

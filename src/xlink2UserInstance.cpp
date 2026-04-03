@@ -128,11 +128,13 @@ void UserInstance::setIsActive(bool is_active)
         else
             sleep();
         
-        u8 flag_bits;
+
+        // mBitFlag.changeBit(1, is_active);
+        u8 flag_bits = mBitFlag;
         if (!is_active)
-            flag_bits = mBitFlag | 2;
+            flag_bits |= 2;
         else
-            flag_bits = mBitFlag & 0b11111101;
+            flag_bits &= 253;
         mBitFlag = flag_bits;
     }
 }
@@ -234,12 +236,7 @@ void UserInstance::setupEditorInstanceParam()
 
 void UserInstance::changeInstanceParam(ResMode mode) 
 {
-    u8 bit_flag = mBitFlag;
-    if (mode != ResMode::Editor)
-        bit_flag &= 0xfe;
-    else
-        bit_flag |= 1;
-    mBitFlag = bit_flag;
+    mBitFlag.changeBit(0, mode == ResMode::Editor);
     mTriggerCtrlMgr.setResMode(mode);
 }
 

@@ -114,7 +114,6 @@ bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallT
     return false;
 }
 
-// WIP
 bool Event::calc()
 {
 

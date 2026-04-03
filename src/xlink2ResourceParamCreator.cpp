@@ -291,7 +291,7 @@ void ResourceParamCreator::solveAboutGlobalProperty(RomResourceParam* rom_res_pa
 void ResourceParamCreator::createParamAndSolveResource(EditorResourceParam* editor_res_param, const sead::SafeString& editor_name, 
                                                        u8* buffer, u32 data_size, const ParamDefineTable* param_define, System* system)
 {
-    [[maybe_unused]] u8* dest {editor_res_param->binBuffer}; // UNUSED
+    [[maybe_unused]] u8* dest {editor_res_param->binBuffer};
 
     if (!editor_res_param->isInitialized) {
         editor_res_param->editorName.copy(editor_name);
