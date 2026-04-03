@@ -82,6 +82,7 @@ const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable&
 {
     if (isContainer(asset_ctb))
         return solveOffset<ResContainerParam>(asset_ctb.paramStartPos);
+
     return nullptr;
 }
 
@@ -722,6 +723,17 @@ f32 ResourceAccessor::getUserCustomParamValueFloat(const char* name, const UserI
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
     return getResParamValueFloat_(mpUserResource->getParam()->userBinParam.userParamArray[idx], user_instance);
+}
+
+bool ResourceAccessor::isLoopAsset(const ResAssetCallTable& asset_ctb) const
+{
+    if (mpUserResource != nullptr) {
+        auto* user_resource_param {mpUserResource->getParam()};
+        s64 ctb_idx {&asset_ctb - user_resource_param->userBinParam.pResAssetCallTable};
+        return user_resource_param->callTableBuffer[ctb_idx].bitFlag.isOnBit(0);
+    }
+    
+    return false;
 }
 
 ValueReferenceType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
