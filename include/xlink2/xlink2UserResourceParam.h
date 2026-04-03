@@ -17,7 +17,7 @@ struct UserResourceParam {
     const CommonResourceParam* pCommonResourceParam {};
     UserBinParam userBinParam {};
     sead::Buffer<s8> localPropertyIdxBuffer;
-    sead::Buffer<CallTableParam> callTableBuffer;
+    sead::Buffer<CallTableParam> callTableParamBuffer;
     sead::Buffer<bool> actionNeedToCalcBuffer;
     sead::BitFlag64 bitFlag;
     ResourceAccessor* accessor {nullptr};

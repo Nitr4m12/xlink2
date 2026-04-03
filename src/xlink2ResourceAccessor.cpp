@@ -2,6 +2,7 @@
 #include <math/seadMathCalcCommon.h>
 
 #include "xlink2/xlink2ResourceAccessor.h"
+#include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 
@@ -730,7 +731,18 @@ bool ResourceAccessor::isLoopAsset(const ResAssetCallTable& asset_ctb) const
     if (mpUserResource != nullptr) {
         auto* user_resource_param {mpUserResource->getParam()};
         s64 ctb_idx {&asset_ctb - user_resource_param->userBinParam.pResAssetCallTable};
-        return user_resource_param->callTableBuffer[ctb_idx].bitFlag.isOnBit(0);
+        return user_resource_param->callTableParamBuffer[ctb_idx].bitFlag.isOnBit(0);
+    }
+    
+    return false;
+}
+
+bool ResourceAccessor::isNeedObserve(const ResAssetCallTable& asset_ctb) const
+{
+    if (mpUserResource != nullptr) {
+        auto* user_resource_param {mpUserResource->getParam()};
+        s64 ctb_idx {&asset_ctb - user_resource_param->userBinParam.pResAssetCallTable};
+        return user_resource_param->callTableParamBuffer[ctb_idx].bitFlag.isOnBit(1);
     }
     
     return false;

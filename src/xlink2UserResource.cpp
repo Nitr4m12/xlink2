@@ -215,7 +215,7 @@ void UserResource::destroy()
 void UserResource::freeResourceParam_(UserResourceParam* param) 
 {
     param->localPropertyIdxBuffer.freeBuffer();
-    param->callTableBuffer.freeBuffer();
+    param->callTableParamBuffer.freeBuffer();
     param->actionNeedToCalcBuffer.freeBuffer();
 }
 
@@ -264,7 +264,7 @@ bool UserResource::solveNeedObserveFlagImpl_(u32 ctb_idx,
                                              UserResourceParam* user_resource_param, 
                                              ResUserHeader* user_header)
 {
-    CallTableParam* ctb_param {&user_resource_param->callTableBuffer[ctb_idx]};
+    CallTableParam* ctb_param {&user_resource_param->callTableParamBuffer[ctb_idx]};
 
     if (asset_ctb->flag.isOnBit(0)) {
         auto* container_param {ResourceUtil::getResContainerParam(*asset_ctb)};
