@@ -50,6 +50,15 @@ void System::DrawerModule::drawAxis(const sead::Vector3f& axis, f32 _f1)
         mpPrimitiveDrawer->drawAxis(axis, _f1);
 }
 
+void System::DrawerModule::end()
+{
+    if (mpPrimitiveRenderer != nullptr)
+        mpPrimitiveRenderer->end();
+
+    if (mpPrimitiveDrawer != nullptr)
+        mpPrimitiveDrawer->end();
+}
+
 System::System()
 {
     mUserList.initOffset(0);
