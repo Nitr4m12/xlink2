@@ -32,6 +32,15 @@ void System::DrawerModule::begin(const sead::Camera& camera, const sead::Project
     }
 }
 
+void System::DrawerModule::setModelMatrix(const sead::Matrix34f& model_mtx)
+{
+    if (mpPrimitiveRenderer != nullptr)
+        mpPrimitiveRenderer->setModelMatrix(model_mtx);
+
+    if (mpPrimitiveDrawer != nullptr)
+        mpPrimitiveDrawer->setModelMatrix(&model_mtx);
+}
+
 System::System()
 {
     mUserList.initOffset(0);
