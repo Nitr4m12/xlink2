@@ -48,6 +48,7 @@ public:
         void begin(const sead::Camera&, const sead::Projection&);
 
         void setModelMatrix(const sead::Matrix34f&);
+        
         void drawAxis(const sead::Vector3f&, f32);
 
         void end();

@@ -41,6 +41,15 @@ void System::DrawerModule::setModelMatrix(const sead::Matrix34f& model_mtx)
         mpPrimitiveDrawer->setModelMatrix(&model_mtx);
 }
 
+void System::DrawerModule::drawAxis(const sead::Vector3f& axis, f32 _f1)
+{
+    if (mpPrimitiveRenderer != nullptr)
+        mpPrimitiveRenderer->drawAxis(axis, _f1);
+
+    if (mpPrimitiveDrawer != nullptr)
+        mpPrimitiveDrawer->drawAxis(axis, _f1);
+}
+
 System::System()
 {
     mUserList.initOffset(0);
