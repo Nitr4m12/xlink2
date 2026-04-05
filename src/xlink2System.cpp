@@ -1,14 +1,14 @@
-#include <prim/seadScopedLock.h>
-#include <math/seadMathCalcCommon.h>
-
 #include "xlink2/xlink2System.h"
+
+#include <math/seadMathCalcCommon.h>
+#include <gfx/seadPrimitiveRenderer.h>
+#include <prim/seadScopedLock.h>
 
 #include "xlink2/xlink2AssetExecutor.h"
 #include "xlink2/xlink2EditorBuffer.h"
 #include "xlink2/xlink2EnumPropertyDefinition.h"
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2HoldMgr.h"
-#include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2ResourceBuffer.h"
 #include "xlink2/xlink2User.h"
@@ -17,6 +17,21 @@
 #include "xlink2/xlink2Util.h"
 
 namespace xlink2 {
+void System::DrawerModule::begin(const sead::Camera& camera, const sead::Projection& projection)
+{
+    if (mpPrimitiveRenderer != nullptr) {
+        mpPrimitiveRenderer->setCamera(camera);
+        mpPrimitiveRenderer->setProjection(projection);
+        mpPrimitiveRenderer->begin();
+    }
+
+    if (mpPrimitiveDrawer != nullptr) {
+        mpPrimitiveDrawer->setCamera(&camera);
+        mpPrimitiveDrawer->setProjection(&projection);
+        mpPrimitiveDrawer->begin();
+    }
+}
+
 System::System()
 {
     mUserList.initOffset(0);
