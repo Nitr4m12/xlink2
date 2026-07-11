@@ -7,7 +7,7 @@ add_subdirectory(src)
 target_compile_options(xlink2 PRIVATE -fno-exceptions)
 target_compile_options(xlink2 PRIVATE -fno-strict-aliasing)
 target_compile_options(xlink2 PRIVATE -Wall -Wextra)
-target_compile_options(xlink2 PRIVATE -Wno-invalid-offsetof -Wno-sign-compare)
+target_compile_options(xlink2 PRIVATE -Wno-invalid-offsetof -Wno-sign-compare -Wno-unused-private-field)
 target_include_directories(xlink2 PUBLIC include/)
 
 if(NOT TARGET sead)
