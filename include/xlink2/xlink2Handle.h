@@ -2,6 +2,7 @@
 
 #include <basis/seadTypes.h>
 
+#include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
@@ -11,6 +12,12 @@ class Handle {
 public:
     Handle() = default;
     Handle(Handle&) = delete;
+
+    Handle(UserInstance* user_instance, const ResAssetCallTable& asset_ctb)
+    {
+        Locator locator {asset_ctb};
+        user_instance->emitImpl(locator, this);
+    }
 
     Handle(UserInstance* user_instance, const Locator& locator)
     {

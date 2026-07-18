@@ -58,6 +58,11 @@ void UserInstanceSLink::emit(const ResAssetCallTable& asset_ctb, HandleSLink* ha
     emitImpl(locator, handle);
 }
 
+HandleSLink UserInstanceSLink::emit(const ResAssetCallTable& asset_ctb)
+{
+    return {this, asset_ctb};
+}
+
 void UserInstanceSLink::emit(const Locator& locator, HandleSLink* handle)
 {
     emitImpl(locator, handle);

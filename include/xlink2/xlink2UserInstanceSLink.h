@@ -62,7 +62,7 @@ public:
 
     HandleSLink emit(const Locator&);
     void emit(const Locator&, HandleSLink*);
-    void emit(const ResAssetCallTable&);
+    HandleSLink emit(const ResAssetCallTable&);
     void emit(const ResAssetCallTable&, HandleSLink*);
 
     void searchAndHold(const char*);
