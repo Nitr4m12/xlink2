@@ -7,6 +7,8 @@
 namespace xlink2 {
 class HandleELink : public Handle /*, nn::vfx::Handle*/{
 public:
+    using Handle::Handle;
+
     sead::Vector3f setMtxUp(const sead::Vector3f&, const sead::Vector3f&, f32);
     HandleELink* setMtxZ(const sead::Vector3f&, const sead::Vector3f&, f32);
 };

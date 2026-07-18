@@ -17,6 +17,11 @@ UserInstanceELink::UserInstanceELink(const UserInstance::CreateArg& arg, System*
 
 UserInstanceELink::~UserInstanceELink() = default;
 
+HandleELink UserInstanceELink::searchAndEmit(const char* asset_key_name)
+{
+    return {this, asset_key_name};
+}
+
 void UserInstanceELink::searchAndEmit(const char* asset_key_name, HandleELink* handle)
 {
     searchAndEmitImpl(asset_key_name, handle);

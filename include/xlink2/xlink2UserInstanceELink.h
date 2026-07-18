@@ -15,13 +15,13 @@ public:
     UserInstanceELink(const UserInstance::CreateArg&, System*, User*, sead::Heap*);
     ~UserInstanceELink() override;
 
-    void searchAndEmit(const char* asset_key_name);
+    HandleELink searchAndEmit(const char* asset_key_name);
     void searchAndEmit(const char* asset_key_name, HandleELink* handle);
 
-    void emit(const Locator& locator);
+    HandleELink emit(const Locator& locator);
     void emit(const Locator& locator, HandleELink* handle);
 
-    void searchAndHold(const char* name);
+    HandleELink searchAndHold(const char* name);
     void searchAndHold(const char* name, HandleELink* handle);
 
     void fadeIfLoopEffect();
