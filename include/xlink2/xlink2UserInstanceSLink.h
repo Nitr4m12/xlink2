@@ -32,14 +32,14 @@ public:
     public:
         struct AssetLimiterParam {
             sead::FixedPtrArray<AssetExecutorSLink, 16> assetExecutorPtrs;
-            const char* name {};
-            s32 unkEnum {1};
+            const char* groupName {};
+            s32 limitType {1};
             s32 limitThreshold {-1};
             bool _0xa0 {true};
         };
         static_assert(sizeof(AssetLimiterParam) == 0xa8, "xlink2::UserInstanceSLink::AssetLimiter::AssetLimiterParam size mismatch");
 
-        virtual ~AssetLimiter() = default;
+        virtual ~AssetLimiter();
         AssetLimiter(s32, sead::Heap*);
 
         void clear();

@@ -16,6 +16,11 @@ UserInstanceSLink::CreateArgSLink::CreateArgSLink(const UserInstance::CreateArg&
 UserInstanceSLink::CreateArgSLink::CreateArgSLink(const CreateArgSLink& other)
     : UserInstance::CreateArg(other), _0x40(other._0x40), _0x48(other._0x48) {}
 
+UserInstanceSLink::AssetLimiter::AssetLimiter(s32 num_param, sead::Heap* heap)
+{
+    mParamBuffer.allocBufferAssert(num_param, heap);
+}
+
 UserInstanceSLink::~UserInstanceSLink() = default;
 
 void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* handle)
