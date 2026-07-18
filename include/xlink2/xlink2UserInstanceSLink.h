@@ -24,8 +24,8 @@ public:
         CreateArgSLink(const CreateArgSLink&);
         
     private:
-        s8 _0x40;
-        void* _0x48;
+        s8 _0x40 {0};
+        void* _0x48 {nullptr};
     };
 
     class AssetLimiter {

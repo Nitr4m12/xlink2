@@ -7,6 +7,15 @@
 #include <xlink2/xlink2UserResourceSLink.h>
 
 namespace xlink2 {
+UserInstanceSLink::CreateArgSLink::CreateArgSLink(const char* name, IUser* iuser)
+    : UserInstance::CreateArg(name, iuser) {}
+
+UserInstanceSLink::CreateArgSLink::CreateArgSLink(const UserInstance::CreateArg& other)
+    : UserInstance::CreateArg(other) {}
+
+UserInstanceSLink::CreateArgSLink::CreateArgSLink(const CreateArgSLink& other)
+    : UserInstance::CreateArg(other), _0x40(other._0x40), _0x48(other._0x48) {}
+
 UserInstanceSLink::~UserInstanceSLink() = default;
 
 void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* handle)
