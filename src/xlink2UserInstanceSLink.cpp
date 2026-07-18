@@ -31,6 +31,16 @@ void UserInstanceSLink::searchAndHold(const char* name, HandleSLink* handle)
     system->getHoldMgr()->searchAndHold(name, handle, this);
 }
 
+void UserInstanceSLink::stopAllEvent(s32 fade_param)
+{
+    {
+        auto lock {sead::makeScopedLock(*SystemSLink::sLockProxy)};
+        for (auto& event : mEventList)
+            event.fade(fade_param);
+    }
+}
+
+
 void UserInstanceSLink::fadeIfLoopSound()
 {
     {
@@ -72,7 +82,7 @@ bool UserInstanceSLink::doEventActivatingCallback_(const Locator& locator)
     }
 
     bool is_event_activating {false};
-    
+
     event_callback = mpEventCallback;
     if (event_callback != nullptr) {
         IEventCallbackSLink::EventArg event_arg;
