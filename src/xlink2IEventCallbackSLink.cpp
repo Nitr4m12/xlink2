@@ -1,8 +1,8 @@
 #include "xlink2/xlink2IEventCallbackSLink.h"
 
 namespace xlink2 {
-u32 IEventCallbackSLink::eventActivating(const EventArg& /*unused*/) {
-    return 0;
+bool IEventCallbackSLink::eventActivating(const EventArg& /*unused*/) {
+    return false;
 }
 void IEventCallbackSLink::eventActivated(const EventArg& /*unused*/) {}
 

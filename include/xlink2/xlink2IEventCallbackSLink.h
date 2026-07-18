@@ -23,7 +23,7 @@ public:
         EventSLink* pEvent {};
     };
 
-    virtual u32 eventActivating(const EventArg&);
+    virtual bool eventActivating(const EventArg&);
     virtual void eventActivated(const EventArg&);
 
     virtual u32 soundPrePlay(const EventArg&);

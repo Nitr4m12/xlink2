@@ -57,6 +57,34 @@ UserInstanceParamSLink* UserInstanceSLink::allocInstanceParam_(sead::Heap* heap)
     return new(heap) UserInstanceParamSLink;
 }
 
+bool UserInstanceSLink::doEventActivatingCallback_(const Locator& locator)
+{
+    auto* system {SystemSLink::instance()};
+    auto* event_callback {system->getEventCallback()};
+
+    bool is_activating {false};
+
+    if (event_callback != nullptr) {
+        IEventCallbackSLink::EventArg event_arg;
+        event_arg.pUserInstance = this;
+        event_arg.pAssetCallTable = locator.getAssetCallTable();
+        is_activating = event_callback->eventActivating(event_arg);
+    }
+
+    bool is_event_activating {false};
+    
+    event_callback = mpEventCallback;
+    if (event_callback != nullptr) {
+        IEventCallbackSLink::EventArg event_arg;
+        event_arg.pUserInstance = this;
+        event_arg.pAssetCallTable = locator.getAssetCallTable();
+        is_event_activating = event_callback->eventActivating(event_arg);
+        is_activating = is_event_activating || is_activating;
+    }
+
+    return is_activating;
+}
+
 void UserInstanceSLink::doEventActivatedCallback_(const Locator& locator, Event* event)
 {
     auto* system {SystemSLink::instance()};
