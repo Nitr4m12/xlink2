@@ -32,6 +32,14 @@ void UserInstanceSLink::AssetLimiter::clear()
         mParamBuffer[i].assetExecutorPtrs.clear();
 }
 
+void UserInstanceSLink::AssetLimiter::initialize(s32 param_idx, const char* group_name, const ArrangeGroupParam& group_param)
+{
+    mParamBuffer[param_idx].groupName = group_name;
+    mParamBuffer[param_idx].limitType = group_param.limitType;
+    mParamBuffer[param_idx].limitThreshold = group_param.limitThreshold;
+    mParamBuffer[param_idx]._0xa0 = !group_param._0x6;
+}
+
 UserInstanceSLink::~UserInstanceSLink() = default;
 
 void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* handle)
