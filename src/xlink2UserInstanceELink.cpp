@@ -27,6 +27,11 @@ void UserInstanceELink::searchAndEmit(const char* asset_key_name, HandleELink* h
     searchAndEmitImpl(asset_key_name, handle);
 }
 
+HandleELink UserInstanceELink::emit(const Locator& locator)
+{
+    return {this, locator};
+}
+
 void UserInstanceELink::emit(const Locator& locator, HandleELink* handle)
 {
     emitImpl(locator, handle);
