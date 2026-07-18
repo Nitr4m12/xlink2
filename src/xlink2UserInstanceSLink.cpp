@@ -42,6 +42,11 @@ void UserInstanceSLink::AssetLimiter::initialize(s32 param_idx, const char* grou
 
 UserInstanceSLink::~UserInstanceSLink() = default;
 
+HandleSLink UserInstanceSLink::searchAndEmit(const char* asset_key_name)
+{
+    return {this, asset_key_name};
+}
+
 void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* handle)
 {
     searchAndEmitImpl(asset_key_name, handle);

@@ -57,7 +57,7 @@ public:
 
     void allocEmitter(sead::Heap*);
 
-    void searchAndEmit(const char*);
+    HandleSLink searchAndEmit(const char*);
     void searchAndEmit(const char*, HandleSLink*);
 
     HandleSLink emit(const Locator&);

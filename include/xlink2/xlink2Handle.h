@@ -13,6 +13,11 @@ public:
     Handle() = default;
     Handle(Handle&) = delete;
 
+    Handle(UserInstance* user_instance, const char* asset_key_name)
+    {
+        user_instance->searchAndEmitImpl(asset_key_name, this);
+    }
+
     Handle(UserInstance* user_instance, const ResAssetCallTable& asset_ctb)
     {
         Locator locator {asset_ctb};
