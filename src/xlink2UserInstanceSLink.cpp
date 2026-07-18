@@ -60,7 +60,7 @@ UserInstanceParamSLink* UserInstanceSLink::allocInstanceParam_(sead::Heap* heap)
 void UserInstanceSLink::doEventActivatedCallback_(const Locator& locator, Event* event)
 {
     auto* system {SystemSLink::instance()};
-    IEventCallbackSLink* event_callback {system->getEventCallback()};
+    auto* event_callback {system->getEventCallback()};
     if (event_callback != nullptr) {
         IEventCallbackSLink::EventArg event_arg;
         event_arg.pUserInstance = this;

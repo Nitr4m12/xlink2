@@ -18,21 +18,13 @@ class ResourceAccessorELink;
 class IEventCallbackELink {
 public:
     struct EventArg {
-        EventArg(const ResAssetCallTable* asset_ctb, UserInstanceELink* user_instance, 
-                 HandleELink* handle, AssetExecutorELink* asset_executor, EventELink* event)
-            :  pAssetCallTable(asset_ctb), 
-               pUserInstance(user_instance), 
-               pHandle(handle),
-               pAssetExecutor(asset_executor), 
-               pEvent(event) {}
-    
         [[maybe_unused]] void* _0x0;
         [[maybe_unused]] void* _0x8;
-        const ResAssetCallTable* pAssetCallTable;
-        UserInstanceELink* pUserInstance;
-        HandleELink* pHandle;
-        AssetExecutorELink* pAssetExecutor;
-        EventELink* pEvent;
+        const ResAssetCallTable* pAssetCallTable {};
+        UserInstanceELink* pUserInstance {};
+        HandleELink* pHandle {};
+        AssetExecutorELink* pAssetExecutor {};
+        EventELink* pEvent {};
     };
 
     virtual void eventCreate(const EventArg&);

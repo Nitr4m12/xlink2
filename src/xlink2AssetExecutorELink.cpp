@@ -23,21 +23,28 @@ bool AssetExecutorELink::isLoopEvent() const
     return res_accessor.isLoopAsset(*mpAssetCallTable);
 }
 
-// NON-MATCHING: IEventCallbackELink::EventArg constructor not inlining properly
 void AssetExecutorELink::_callEffectDeletedCallback()
 {
     auto* system_callback {SystemELink::instance()->getEventCallback()};
     auto* user_instance {getUserInstanceELink()};
     if (system_callback != nullptr) {
-        auto* event {getEventELink()};
-        IEventCallbackELink::EventArg arg {mpAssetCallTable, getUserInstanceELink(), &mHandle, this, event};
-        system_callback->eventDeleted(arg);
+        IEventCallbackELink::EventArg event_arg;
+        event_arg.pAssetCallTable = mpAssetCallTable;
+        event_arg.pUserInstance = user_instance;
+        event_arg.pHandle = &mHandle;
+        event_arg.pAssetExecutor = this;
+        event_arg.pEvent = getEventELink();
+        system_callback->eventDeleted(event_arg);
     }
 
     if (user_instance != nullptr && user_instance->getEventCallback() != nullptr) {
-        auto* event {getEventELink()};
-        IEventCallbackELink::EventArg arg {mpAssetCallTable, getUserInstanceELink(), &mHandle, this, event};
-        user_instance->getEventCallback()->eventDeleted(arg);
+        IEventCallbackELink::EventArg event_arg;
+        event_arg.pAssetCallTable = mpAssetCallTable;
+        event_arg.pUserInstance = user_instance;
+        event_arg.pHandle = &mHandle;
+        event_arg.pAssetExecutor = this;
+        event_arg.pEvent = getEventELink();
+        user_instance->getEventCallback()->eventDeleted(event_arg);
     }
 }
 
