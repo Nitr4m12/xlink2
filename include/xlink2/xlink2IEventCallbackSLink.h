@@ -2,6 +2,8 @@
 
 #include <prim/seadSafeString.h>
 
+#include "xlink2/xlink2EventSLink.h"
+#include "xlink2/xlink2HandleSLink.h"
 #include "xlink2/xlink2Resource.h"
 
 namespace aal {
@@ -13,18 +15,24 @@ class UserInstanceSLink;
 
 class IEventCallbackSLink {
 public:
-    struct EventArg {};
+    struct EventArg {
+        UserInstanceSLink* pUserInstance {};
+        HandleSLink* pHandle {};
+        const ResAssetCallTable* pAssetCallTable {};
+        AssetExecutorSLink* pAssetExecutor {};
+        EventSLink* pEvent {};
+    };
 
-    u32 eventActivating(const EventArg&);
-    void eventActivated(const EventArg&);
+    virtual u32 eventActivating(const EventArg&);
+    virtual void eventActivated(const EventArg&);
 
-    u32 soundPrePlay(const EventArg&);
+    virtual u32 soundPrePlay(const EventArg&);
 
-    void eventCalced(const EventArg&);
+    virtual void eventCalced(const EventArg&);
 
-    u32 replaceAssetInfo(aal::AssetInfo*, const sead::SafeString&, const UserInstanceSLink*,
-                         const ResAssetCallTable*);
+    virtual u32 replaceAssetInfo(aal::AssetInfo*, const sead::SafeString&, const UserInstanceSLink*,
+                                 const ResAssetCallTable*);
 
-    void soundPlayed(const EventArg&);
+    virtual void soundPlayed(const EventArg&);
 };
 }  // namespace xlink2

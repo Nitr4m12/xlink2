@@ -101,7 +101,7 @@ private:
     void* mEmitter;
     u8 _6;
     void* mAssetInfoReader;
-    IEventCallbackSLink* mEventCallback;
+    IEventCallbackSLink* mpEventCallback;
     sead::SafeArray<AssetLimiter*, 2> mAssetLimiters;
 };
 static_assert(sizeof(UserInstanceSLink) == 0x128, "xlink2::UserInstanceSLink size mismatch");

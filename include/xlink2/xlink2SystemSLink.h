@@ -3,6 +3,7 @@
 #include <heap/seadHeap.h>
 
 #include "xlink2/xlink2EventSLink.h"
+#include "xlink2/xlink2IEventCallbackSLink.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2UserInstanceSLink.h"
@@ -66,6 +67,8 @@ public:
 
     ILockProxy* getModuleLockObj() const override;
 
+    IEventCallbackSLink* getEventCallback() const { return mpEventCallback; }
+    
 private:
     bool mIsAllocatedLock {false};
     bool _15 {true};
@@ -73,7 +76,7 @@ private:
     void* _16 {};
     void* _17 {};
     EventSLink* mpEventPool {};
-    void* _19 {};
+    IEventCallbackSLink* mpEventCallback {};
 };
 static_assert(sizeof(SystemSLink) == 0x820, "'xlink2::SystemSLink' size mismatch");
 
