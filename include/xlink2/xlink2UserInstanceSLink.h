@@ -60,7 +60,7 @@ public:
     void searchAndEmit(const char*);
     void searchAndEmit(const char*, HandleSLink*);
 
-    void emit(const Locator&);
+    HandleSLink emit(const Locator&);
     void emit(const Locator&, HandleSLink*);
     void emit(const ResAssetCallTable&);
     void emit(const ResAssetCallTable&, HandleSLink*);

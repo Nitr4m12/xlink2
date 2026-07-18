@@ -2,12 +2,20 @@
 
 #include <basis/seadTypes.h>
 
+#include "xlink2/xlink2UserInstance.h"
+
 namespace xlink2 {
 class Event;
 
 class Handle {
 public:
     Handle() = default;
+    Handle(Handle&) = delete;
+
+    Handle(UserInstance* user_instance, const Locator& locator)
+    {
+        user_instance->emitImpl(locator, this);
+    }
 
     Event* getEvent() { return static_cast<Event*>(mpResource); }
     s32 getCreateId() { return mCreateId; }
