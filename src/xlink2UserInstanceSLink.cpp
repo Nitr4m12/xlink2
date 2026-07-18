@@ -26,6 +26,12 @@ UserInstanceSLink::AssetLimiter::~AssetLimiter()
     mParamBuffer.freeBuffer();
 }
 
+void UserInstanceSLink::AssetLimiter::clear()
+{
+    for (int i {0}; i < mParamBuffer.size(); ++i)
+        mParamBuffer[i].assetExecutorPtrs.clear();
+}
+
 UserInstanceSLink::~UserInstanceSLink() = default;
 
 void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* handle)
