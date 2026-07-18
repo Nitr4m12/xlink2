@@ -65,7 +65,7 @@ public:
     HandleSLink emit(const ResAssetCallTable&);
     void emit(const ResAssetCallTable&, HandleSLink*);
 
-    void searchAndHold(const char*);
+    HandleSLink searchAndHold(const char*);
     void searchAndHold(const char*, HandleSLink*);
 
     void stopAllEvent(s32);

@@ -44,7 +44,7 @@ UserInstanceSLink::~UserInstanceSLink() = default;
 
 HandleSLink UserInstanceSLink::searchAndEmit(const char* asset_key_name)
 {
-    return {this, asset_key_name};
+    return {static_cast<UserInstance*>(this), asset_key_name};
 }
 
 void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* handle)
@@ -73,10 +73,15 @@ void UserInstanceSLink::emit(const Locator& locator, HandleSLink* handle)
     emitImpl(locator, handle);
 }
 
-void UserInstanceSLink::searchAndHold(const char* name, HandleSLink* handle)
+HandleSLink UserInstanceSLink::searchAndHold(const char* asset_key_name)
+{
+    return {this, asset_key_name};
+}
+
+void UserInstanceSLink::searchAndHold(const char* asset_key_name, HandleSLink* handle)
 {
     auto* system {mUser->getSystem()};
-    system->getHoldMgr()->searchAndHold(name, handle, this);
+    system->getHoldMgr()->searchAndHold(asset_key_name, handle, this);
 }
 
 void UserInstanceSLink::stopAllEvent(s32 fade_param)
