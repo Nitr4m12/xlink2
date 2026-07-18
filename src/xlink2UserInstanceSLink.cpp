@@ -21,6 +21,11 @@ UserInstanceSLink::AssetLimiter::AssetLimiter(s32 num_param, sead::Heap* heap)
     mParamBuffer.allocBufferAssert(num_param, heap);
 }
 
+UserInstanceSLink::AssetLimiter::~AssetLimiter()
+{
+    mParamBuffer.freeBuffer();
+}
+
 UserInstanceSLink::~UserInstanceSLink() = default;
 
 void UserInstanceSLink::searchAndEmit(const char* asset_key_name, HandleSLink* handle)
