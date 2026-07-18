@@ -19,7 +19,7 @@ UserInstanceELink::~UserInstanceELink() = default;
 
 HandleELink UserInstanceELink::searchAndEmit(const char* asset_key_name)
 {
-    return {this, asset_key_name};
+    return {static_cast<UserInstance*>(this), asset_key_name};
 }
 
 void UserInstanceELink::searchAndEmit(const char* asset_key_name, HandleELink* handle)
@@ -35,6 +35,11 @@ HandleELink UserInstanceELink::emit(const Locator& locator)
 void UserInstanceELink::emit(const Locator& locator, HandleELink* handle)
 {
     emitImpl(locator, handle);
+}
+
+HandleELink UserInstanceELink::searchAndHold(const char* name)
+{
+    return {this, name};
 }
 
 void UserInstanceELink::searchAndHold(const char* name, HandleELink* handle)
