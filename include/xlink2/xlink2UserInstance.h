@@ -179,6 +179,7 @@ public:
     }
 
 protected:
+    friend User;
     friend TriggerCtrlMgr;
 
     sead::OffsetList<Event> mEventList;
@@ -192,11 +193,10 @@ protected:
     sead::BitFlag64 mValueChangedBitfield;
     PropertyValueType* mPropertyValueArray {};
     TriggerCtrlMgr mTriggerCtrlMgr;
-    void* _0x98 {};
+    const char* mInstanceName {};  // mInstanceParamName?
     u8 _0xA0[0x30];
     sead::BitFlag8 mBitFlag;
-    void* _0xd8 {};
-    void* _0xe0 {};
+    sead::ListNode mListNode;
     EventInfo* mSaveEmitEventInfo {};
 };
 static_assert(sizeof(UserInstance) == 0xf0, "xlink2::UserInstance size mismatch");

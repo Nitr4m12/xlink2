@@ -53,8 +53,8 @@ public:
 private:
     sead::BitFlag8 mBitFlag;
     u32 _8;
-    void* _9;
-    void* _10;
+    ModelAssetConnection* mpModelAssetConnection;
+    aal::Emitter* mpEmitter;
     HandleSLink mHandle;
     sead::BitFlag16 mParamFlag;
     u16 _13;

@@ -15,7 +15,7 @@ EditorBuffer::EditorBuffer(System* system, sead::Heap* heap)
     mParamDefineTable = param_define_table;
     mParamDefineBuffer = new (heap, 8) u8[0x800];
 
-    mParams.initOffset(0xf0);
+    mParams.initOffset(offsetof(EditorResourceParam, mListNode));
 }
 
 void EditorBuffer::destroy()

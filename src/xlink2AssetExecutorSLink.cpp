@@ -70,6 +70,6 @@ bool AssetExecutorSLink::isRequestReEmit() const
 
 void AssetExecutorSLink::onFinalize_() 
 {
-    _9 = nullptr;
+    mpModelAssetConnection = nullptr;
 }
 }  // namespace xlink2

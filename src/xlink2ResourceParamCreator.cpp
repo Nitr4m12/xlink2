@@ -38,7 +38,7 @@ void ResourceParamCreator::createParamAndSolveResource(RomResourceParam* rom_res
                                                        System* system)
 {
     rom_res_param->reset();
-    rom_res_param->_0 = reinterpret_cast<u64>(bin);
+    rom_res_param->pResHeader = reinterpret_cast<ResourceHeader*>(bin);
     
     ResourceHeader* header {reinterpret_cast<ResourceHeader*>(bin)};
     u32* name_hash_table {reinterpret_cast<u32*>(header + 1)};

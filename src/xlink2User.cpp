@@ -9,7 +9,7 @@ namespace xlink2 {
 User::User(const char* user_name, sead::Heap* heap, System* system, u32 i1)
     : mUserName(user_name), mpHeap(heap), _0x40(i1)
 {
-    mUserInstanceList.initOffset(0xd8);
+    mUserInstanceList.initOffset(offsetof(UserInstance, mListNode));
     if (system->getMutexSize() > 0) {
         s32 buffer_size = static_cast<s32>(std::strlen(user_name));
         char* user_name_buffer {new(heap) char[buffer_size + 1]};

@@ -69,6 +69,15 @@ UserResourceELink* UserInstanceELink::getResourceELink() const
     return static_cast<UserResourceELink*>(mUser->getUserResource());
 }
 
+// NON-MATCHING
+void UserInstanceELink::onPostCalc_()
+{
+    for (auto& event : mEventList.robustRange()) {
+        if (event.calc())
+            mUser->getSystem()->freeEvent(&event, &mEventList);
+    }
+}
+
 void UserInstanceELink::onReset_()
 {
     mBitFlag.resetBit(6);

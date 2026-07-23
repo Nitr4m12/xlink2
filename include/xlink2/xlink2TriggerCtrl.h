@@ -27,7 +27,7 @@ public:
 
 protected:
     UserInstance* mUserInstance {nullptr};
-    sead::Buffer<ModelTriggerConnection>* mConnectionBuffer {nullptr}; // unsure
+    sead::Buffer<ModelTriggerConnection>* mConnectionBuffer {nullptr};
 };
 static_assert(sizeof(TriggerCtrl) == 0x18, "xlink2::TriggerCtrl size mismatch");
 

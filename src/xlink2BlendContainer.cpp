@@ -67,13 +67,13 @@ bool BlendContainer::calc()
 
     for (BlendContainer* previous {current}; next != nullptr; previous = current) {
         for (current = next; next != nullptr; current = next) {
-            next = static_cast<BlendContainer*>(current->mpParent);
+            next = static_cast<BlendContainer*>(current->mpNext);
             if (!current->calc()) {
                 finished = false;
                 break;
             }
             if (previous != nullptr)
-                previous->mpParent = next;
+                previous->mpNext = next;
             else
                 mpChild = next;
             current->destroy();

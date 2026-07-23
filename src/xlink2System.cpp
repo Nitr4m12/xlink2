@@ -61,7 +61,7 @@ void System::DrawerModule::end()
 
 System::System()
 {
-    mUserList.initOffset(0);
+    mUserList.initOffset(offsetof(User, mListNode));
     setMinLargeAddressMask(reinterpret_cast<u64>(this));
 }
 

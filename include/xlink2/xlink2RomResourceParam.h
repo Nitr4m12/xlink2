@@ -4,7 +4,7 @@
 
 namespace xlink2 {
 struct RomResourceParam : CommonResourceParam {
-    u64 _0 {0};
+    ResourceHeader* pResHeader {nullptr};
     u32* nameHashTable {nullptr};
     u32* offsetTable {nullptr};
     u32 numUser {0};
@@ -12,7 +12,7 @@ struct RomResourceParam : CommonResourceParam {
 
     void reset() {
         CommonResourceParam::reset();
-        _0 = 0;
+        pResHeader = nullptr;
         nameHashTable = nullptr;
         offsetTable = nullptr;
         numUser = 0;

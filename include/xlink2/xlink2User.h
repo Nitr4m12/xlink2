@@ -66,8 +66,9 @@ public:
     const char* getActionSlotName(s32 idx) { return mActionSlotNameTable[idx]; }
 
 private:
-    void* _0 {};
-    void* _8 {};
+    friend System;
+    
+    sead::ListNode mListNode {};
     const char* mUserName {};
     UserResource* mpUserResource {};
     sead::OffsetList<UserInstance> mUserInstanceList;

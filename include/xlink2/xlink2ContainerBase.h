@@ -45,8 +45,8 @@ public:
         return createChildContainer_(asset_ctb, child);
     }
 
-    ContainerBase* getNext() { return mpParent; }
-    void setNext(ContainerBase* parent) { mpParent = parent; }
+    ContainerBase* getNext() { return mpNext; }
+    void setNext(ContainerBase* next) { mpNext = next; }
 
     ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
 
@@ -65,7 +65,7 @@ protected:
     ResAssetCallTable* mpAssetCallTable;
     Event* mpEvent;
     ContainerBase* mpChild;
-    ContainerBase* mpParent;
+    ContainerBase* mpNext;
     s32 mAssetDuration;
 };
 }  // namespace xlink2

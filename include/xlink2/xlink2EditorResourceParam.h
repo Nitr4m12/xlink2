@@ -1,6 +1,7 @@
 #pragma once
 
 #include <prim/seadSafeString.h>
+#include <container/seadListImpl.h>
 
 #include "xlink2/xlink2CommonResourceParam.h"
 
@@ -11,8 +12,7 @@ struct EditorResourceParam : CommonResourceParam {
     ResUserHeader* pResUserHeader {};
     sead::FixedSafeString<64> editorName;
     bool isInitialized {false};
-    void* _2 {};
-    void* _3 {};
+    sead::ListNode mListNode;
 
     void reset()
     {

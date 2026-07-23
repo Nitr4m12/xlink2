@@ -11,6 +11,8 @@ class User;
 
 static bool mIsDebugBreakEnable;
 
+class ErrorCallback;
+
 class ErrorMgr {
 public:
     explicit ErrorMgr(const System*);
@@ -38,7 +40,7 @@ private:
     Error mErrorEntries[32] {};
     s32 mDispFrame {0};
     // u32 _2 {};
-    void* _3 {};
+    ErrorCallback* mErrorCallback {};
     const System* mSystem {};
     u32 _4[42];
     u32 _5 {0};

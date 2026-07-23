@@ -21,7 +21,6 @@ public:
 
     void setTriggerType(TriggerType type) { mTriggerType = type; }
     void setTriggerOverwriteParam(ResTriggerOverwriteParam* param) { mpResTriggerOverwriteParam = param; }
-    void setBoneMtx(BoneMtx& bone_mtx) { mOverwriteBoneMtx = bone_mtx; }
 
 private:
     TriggerType mTriggerType;

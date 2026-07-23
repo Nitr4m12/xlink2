@@ -51,7 +51,7 @@ public:
     ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
     void setAssetCallTable(ResAssetCallTable* asset_ctb) { mpAssetCallTable = asset_ctb; }
 
-    void set34(f32 new_val) { _0x34 = new_val; }
+    void set34(f32 new_val) { mOverwriteDelay = new_val; }
 
     ResTriggerOverwriteParam* getTriggerOverwriteParam() { return mpTriggerOverwriteParam; }
 
@@ -69,13 +69,14 @@ public:
     }
 
 protected:
-    void* _0x8{};
-    void* _0x10{};
+    friend Event;
+
+    sead::ListNode mListNode {};
     Event* mpEvent{};
     UserInstance* mpUserInstance{};
     ResAssetCallTable* mpAssetCallTable{};
     ContainerType mContainerType{ContainerType::Switch};
-    f32 _0x34{};
+    f32 mOverwriteDelay{};
     ResTriggerOverwriteParam* mpTriggerOverwriteParam{};
     BoneMtx mBoneMtx;
 };

@@ -26,10 +26,10 @@ public:
 private:
     System* mSystem{nullptr};
     sead::Heap* mHeap{nullptr};
-    sead::OffsetList<xlink2::EditorResourceParam> mParams{};
+    sead::OffsetList<xlink2::EditorResourceParam> mParams;
     u8* mReceiveBuffer{nullptr};
     u32 mReceiveBufferSize{0};
-    sead::FixedSafeString<64> _6{};
+    sead::FixedSafeString<64> _6;
     ParamDefineTable* mParamDefineTable{nullptr};
     u8* mParamDefineBuffer{nullptr};
 };

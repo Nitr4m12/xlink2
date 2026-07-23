@@ -67,9 +67,10 @@ public:
     const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() const { return mFadeBySystemAssetExecutors; }
 
 protected:
+    friend UserInstance;
+
     sead::BitFlag32 mBitFlag{0};
-    void* _0x10{nullptr};
-    void* _0x18{nullptr};
+    sead::ListNode mListNode;
     u32 mCreateId{0};
     UserInstance* mpUserInstance;
     const ResAssetCallTable* mpAssetCallTable;

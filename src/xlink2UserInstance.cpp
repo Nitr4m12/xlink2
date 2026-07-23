@@ -17,7 +17,7 @@ UserInstance::UserInstance(const CreateArg& create_arg, [[maybe_unused]] System*
       mRootMtx(create_arg.rootMtx), mRootPos(create_arg.rootPos), 
       mScale(create_arg.scale)
 {
-    mEventList.initOffset(16);
+    mEventList.initOffset(offsetof(Event, mListNode));
     if (create_arg.rootMtx.rawMtx == nullptr) {
         mRootMtx.rawMtx = &sead::Matrix34f::ident;
         mRootMtx._0 = 0;

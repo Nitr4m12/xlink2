@@ -98,9 +98,9 @@ public:
 
 private:
     sead::Heap* mHeap;
-    void* mEmitter;
+    aal::Emitter* mEmitter;
     u8 _6;
-    void* mAssetInfoReader;
+    aal::IAssetInfoReadable* mAssetInfoReader;
     IEventCallbackSLink* mpEventCallback;
     sead::SafeArray<AssetLimiter*, 2> mAssetLimiters;
 };

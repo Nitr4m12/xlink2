@@ -1,10 +1,13 @@
 #include <xlink2/xlink2ErrorMgr.h>
 
 namespace xlink2 {
+// NON-MATCHING: reason unknown, probably an error in the
+// structure
 ErrorMgr::ErrorMgr(const System* system)
     : mSystem(system)
 {
-    for (s32 i {0}; i < 42; ++i)
+    _4[0] = 1;
+    for (s32 i {1}; i < 42; ++i)
         _4[i] = 2;
 }
 

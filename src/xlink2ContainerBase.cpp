@@ -10,7 +10,7 @@ namespace xlink2 {
 ContainerBase::ContainerBase()
 {
     mAssetDuration = 0;
-    mpParent = nullptr;
+    mpNext = nullptr;
     mpChild = nullptr;
     mpAssetCallTable = nullptr;
     mpEvent = nullptr;
@@ -31,7 +31,7 @@ void ContainerBase::destroy()
     auto* child = mpChild;
     while (child != nullptr) {
         auto* unk = child;
-        child = child->mpParent;
+        child = child->mpNext;
         unk->destroy();
     }
 
@@ -46,7 +46,7 @@ void ContainerBase::destroy()
 
 void ContainerBase::fadeBySystem()
 {
-    for (auto* child = mpChild; child != nullptr; child = child->mpParent)
+    for (auto* child = mpChild; child != nullptr; child = child->mpNext)
         child->fadeBySystem();
 
     mAssetDuration = 0;
@@ -54,7 +54,7 @@ void ContainerBase::fadeBySystem()
 
 void ContainerBase::fade(s32 p1)
 {
-    for (auto* child = mpChild; child != nullptr; child = child->mpParent)
+    for (auto* child = mpChild; child != nullptr; child = child->mpNext)
         child->fade(p1);
 
     mAssetDuration = 0;
@@ -62,7 +62,7 @@ void ContainerBase::fade(s32 p1)
 
 void ContainerBase::kill()
 {
-    for (auto* child = mpChild; child != nullptr; child = child->mpParent)
+    for (auto* child = mpChild; child != nullptr; child = child->mpNext)
         child->kill();
 
     mAssetDuration = 0;
@@ -71,7 +71,7 @@ void ContainerBase::kill()
 bool ContainerBase::killOneTimeEvent()
 {
     bool unk = true;
-    for (auto* child = mpChild; child != nullptr; child = child->mpParent) {
+    for (auto* child = mpChild; child != nullptr; child = child->mpNext) {
         bool unk2 = child->killOneTimeEvent();
         unk = unk2 & unk;
     }
@@ -99,7 +99,7 @@ ContainerBase* ContainerBase::createChildContainer_(const ResAssetCallTable& ass
         mpChild = child_container;
     }
     else {
-        container->mpParent = child_container;
+        container->mpNext = child_container;
     }
 
     return child_container;

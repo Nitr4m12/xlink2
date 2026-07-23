@@ -8,8 +8,8 @@
 namespace xlink2 {
 Event::Event()
 {
-    mAliveAssetExecutors.initOffset(8);
-    mFadeBySystemAssetExecutors.initOffset(8);
+    mAliveAssetExecutors.initOffset(offsetof(AssetExecutor, mListNode));
+    mFadeBySystemAssetExecutors.initOffset(offsetof(AssetExecutor, mListNode));
 }
 
 void Event::initialize(u32 create_id)

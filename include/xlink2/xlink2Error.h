@@ -46,10 +46,10 @@ struct Error {
         UnknownError,	
     };
 
-    Type type;
+    Type type {Error::Type::None};
     sead::FixedSafeString<320> fixedString1;
     sead::FixedSafeString<256> fixedString2;
-    u32 _0;
+    u32 _0 {};
 };
 static_assert(sizeof(Error) == 0x280, "xlink2::Error size mismatch");
 }  // namespace xlink2
