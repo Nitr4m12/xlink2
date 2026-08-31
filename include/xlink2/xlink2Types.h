@@ -17,13 +17,13 @@ enum class CompareType : s32 {
     Equal,
 };
 
-enum class ContainerType : u32 {
-    Switch,
-    Random,
-    Random2,
-    Blend,
-    Sequence,
-    Asset
+enum ContainerType {
+    ContainerType_Switch,
+    ContainerType_Random,
+    ContainerType_Random2,
+    ContainerType_Blend,
+    ContainerType_Sequence,
+    ContainerType_Asset
 };
 
 enum class MtxSetType {

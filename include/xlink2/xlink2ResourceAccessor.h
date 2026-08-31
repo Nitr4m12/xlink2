@@ -193,8 +193,6 @@ protected:
     ResUserHeader* mpUserHeader {nullptr};
     UserResource* mpUserResource;
     System* mpSystem;
-
-    static const sead::SafeString sContainerNames[6];
 };
 
 class ResourceAccessor2 : public ResourceAccessor {
@@ -219,8 +217,6 @@ private:
     void* _0;
     s32 mParamValue;
     u8 _2;
-    void* _3;
-    User* mUser;
 };
 
 }  // namespace xlink2

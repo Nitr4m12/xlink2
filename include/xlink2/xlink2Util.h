@@ -6,7 +6,7 @@ namespace xlink2 {
 extern u64 sMinAddressLow;
 extern u64 sMinAddressHigh;
 
-inline void setMinLargeAddressMask(u64 mask) 
+inline void setMinLargeAddressMask(u64 mask)
 {
     if (mask < (sMinAddressHigh | sMinAddressLow)) {
         sMinAddressHigh = mask & 0xFFFFFFFF00000000;
@@ -15,7 +15,7 @@ inline void setMinLargeAddressMask(u64 mask)
 }
 
 template <typename T>
-inline T* solveOffset(u32 offset) 
+inline T* solveOffset(u32 offset)
 {
     return reinterpret_cast<T*>((offset >= sMinAddressLow) ? 
                                 (offset | sMinAddressHigh) :

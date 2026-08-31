@@ -515,11 +515,11 @@ void System::freeAssetExecutor(AssetExecutor* asset_executor)
 {
     asset_executor->onDestroy_();
     // TODO: revisit this function to see if this check can be made simpler
-    if ((static_cast<s32>(asset_executor->getContainerType()) & -2) != static_cast<s32>(ContainerType::Sequence))
+    if ((asset_executor->getContainerType() & -2) != ContainerType_Sequence)
         asset_executor->fadeBySystem();
 
     asset_executor->setAssetCallTable(nullptr);
-    asset_executor->setContainerType(ContainerType::Switch);
+    asset_executor->setContainerType(ContainerType_Switch);
     asset_executor->set34(0);
     asset_executor->setUserInstance(nullptr);
 

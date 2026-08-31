@@ -75,7 +75,7 @@ protected:
     Event* mpEvent{};
     UserInstance* mpUserInstance{};
     ResAssetCallTable* mpAssetCallTable{};
-    ContainerType mContainerType{ContainerType::Switch};
+    ContainerType mContainerType{ContainerType_Switch};
     f32 mOverwriteDelay{};
     ResTriggerOverwriteParam* mpTriggerOverwriteParam{};
     BoneMtx mBoneMtx;

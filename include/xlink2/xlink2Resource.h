@@ -188,7 +188,7 @@ struct ResRandomCallTable {
 static_assert(sizeof(ResRandomCallTable) == 8, "xlink2::ResRandomCallTable size mismatch");
 
 struct ResContainerParam {
-    ContainerType type;
+    s32 type;
     s32 childrenStartIndex;
     s32 childrenEndIndex;
 };

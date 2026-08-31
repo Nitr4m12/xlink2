@@ -69,14 +69,28 @@ ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_
 {
     auto* container_param {getContainer(asset_ctb)};
     if (container_param != nullptr) {
-        if (container_param->type >= ContainerType::Asset) {
+        switch (container_param->type) {
+        case 0:
+            return ContainerType_Switch;
+
+        case 1:
+            return ContainerType_Random;
+
+        case 2:
+            return ContainerType_Random2;
+
+        case 3:
+            return ContainerType_Blend;
+
+        case 4:
+            return ContainerType_Sequence;
+            
+        default:
             setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
-            return ContainerType::Asset;
         }
-        return container_param->type;
     }
 
-    return ContainerType::Asset;
+    return ContainerType_Asset;
 }
 
 const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable& asset_ctb) const
@@ -87,14 +101,36 @@ const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable&
     return nullptr;
 }
 
-// WIP
+// TODO: Figure out this struct
+struct {
+    u32 _0 {0x8004ef};
+    sead::SafeString sContainerNames[6] {"Switch", "Random", "Random2", "Blend", "Sequence", "Asset"};
+} containerArray {};
+
+// NON_MATCHING: swapped registers
 const sead::SafeString& ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const 
 {
     auto container_type {getCallTableType(asset_ctb)};
-    if (container_type < ContainerType::Asset)
-        return sContainerNames[(u32)container_type];
+    switch (container_type) {
+    case ContainerType_Switch:
+        return containerArray.sContainerNames[0];
 
-    return sContainerNames[5];
+    case ContainerType_Random:
+        return containerArray.sContainerNames[1];
+
+    case ContainerType_Random2:
+        return containerArray.sContainerNames[2];
+
+    case ContainerType_Blend:
+        return containerArray.sContainerNames[3];
+
+    case ContainerType_Sequence:
+        return containerArray.sContainerNames[4];
+
+    default:
+        return containerArray.sContainerNames[5];
+        
+    }
 }
 
 bool ResourceAccessor::isContainer(const ResAssetCallTable& asset_ctb) const

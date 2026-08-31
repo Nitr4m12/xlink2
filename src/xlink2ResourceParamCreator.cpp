@@ -207,7 +207,7 @@ void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res
         auto* res_condition {solveOffset<ResCondition>(i)};
 
         switch (res_condition->parentContainerType) {
-        case ContainerType::Switch: {
+        case ContainerType::ContainerType_Switch: {
             ResSwitchCondition* condition {static_cast<ResSwitchCondition*>(res_condition)};
 
             if (condition->propertyType == PropertyType::Enum)
@@ -216,8 +216,8 @@ void ResourceParamCreator::solveCommonResource_(CommonResourceParam * common_res
             condition_size = sizeof(ResSwitchCondition);
             break;
         }
-        case ContainerType::Random:
-        case ContainerType::Random2:
+        case ContainerType::ContainerType_Random:
+        case ContainerType::ContainerType_Random2:
             condition_size = sizeof(ResRandomCondition);
             break;
         default:
@@ -253,7 +253,7 @@ void ResourceParamCreator::solveUserBin_(ResUserHeader * user_header, CommonReso
             else {
                 asset_ctb_item->paramStartPos += bin_param.containerTablePos;
                 ResContainerParam* container_param {solveOffset<ResContainerParam>(asset_ctb_item->paramStartPos)};
-                if (container_param->type == ContainerType::Switch)
+                if (container_param->type == ContainerType_Switch)
                     static_cast<ResSwitchContainerParam*>(container_param)->watchPropertyNamePos += common_res_param->nameTablePos;
             }
         }
@@ -446,7 +446,7 @@ void ResourceParamCreator::solveUserBinAboutGlobalProperty_(ResUserHeader* user_
         ResAssetCallTable* asset_ctb {bin_param.pResAssetCallTable};
         if (asset_ctb[i].flag.isOnBit(0) && asset_ctb[i].paramStartPos != 0) {
             auto* container {solveOffset<ResSwitchContainerParam>(asset_ctb[i].paramStartPos)};
-            if (container->type == ContainerType::Switch && container->isGlobal) {
+            if (container->type == ContainerType_Switch && container->isGlobal) {
                 if (container->localPropertyNameIdx == -1) {
                     const char* watch_prop_name {solveOffset<char>(container->watchPropertyNamePos)};
 
@@ -809,9 +809,9 @@ void ResourceParamCreator::dumpUserBin_(u32 user_index, const sead::SafeString& 
     dumpLine_(dump_str, "    << ContainerTable (addr:0x%x, num=%d) >>\n", reinterpret_cast<u64>(container), num_container);
     for (u32 i {0}; i < num_container; ++i) {
         switch (container->type) {
-        case ContainerType::Switch: {
+        case ContainerType_Switch: {
             auto* switch_container {static_cast<ResSwitchContainerParam*>(container)};
-            volatile ContainerType* type {&switch_container->type};
+            volatile s32* type {&switch_container->type};
 
             dumpLine_(dump_str, "        [%d].type: %d\n",                  i,  *type);
             dumpLine_(dump_str, "        [%d].childrenStartIndex: %d\n",    i,  switch_container->childrenStartIndex);
@@ -936,7 +936,7 @@ void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_r
 
 
         switch (res_condition->parentContainerType) {
-        case ContainerType::Switch: {
+        case ContainerType::ContainerType_Switch: {
             ResSwitchCondition* condition {static_cast<ResSwitchCondition*>(res_condition)};
             dumpLine_(dump_str, "  [%d].parentContainerType: %d\n", i, condition->parentContainerType);
             dumpLine_(dump_str, "  [%d].propertyType: %d\n", i, condition->propertyType);
@@ -949,8 +949,8 @@ void ResourceParamCreator::dumpCommonResourceRear_(CommonResourceParam* common_r
             condition_size = sizeof(ResSwitchCondition);
             break;
         }
-        case ContainerType::Random:
-        case ContainerType::Random2: {
+        case ContainerType::ContainerType_Random:
+        case ContainerType::ContainerType_Random2: {
             ResRandomCondition* condition {static_cast<ResRandomCondition*>(res_condition)};
             dumpLine_(dump_str, "  [%d].parentContainerType: %d\n", i, condition->parentContainerType);
             dumpLine_(dump_str, "  [%d].weight: %.4f\n", i, condition->weight);
