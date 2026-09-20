@@ -140,7 +140,7 @@ private:
                                               : 0;
 
             if (ActionTriggerCtrl::getActionTriggerType_(*action_trigger) == TriggerType::None)
-                action_trigger->startFrame += static_cast<s32>(common_res_param->nameTablePos);
+                action_trigger->startFrame += common_res_param->nameTablePos;
         }
     }
 
@@ -149,7 +149,7 @@ private:
     {
         for (u32 i {0}; i < user_header->numResPropertyTrigger; ++i) {
             ResPropertyTrigger* property_trigger {&property_trigger_table[i]};
-            property_trigger->assetCtbPos += static_cast<s32>(reinterpret_cast<u64>(asset_ctb));
+            property_trigger->assetCtbPos += reinterpret_cast<u64>(asset_ctb);
             property_trigger->condition = property_trigger->condition != -1
                                         ? property_trigger->condition + common_res_param->conditionTablePos
                                         : 0;
@@ -164,7 +164,7 @@ private:
     {
         for (u32 i {0}; i < user_header->numResAlwaysTrigger; ++i) {
             ResAlwaysTrigger* always_trigger {&always_trigger_table[i]};
-            always_trigger->assetCtbPos += static_cast<s32>(reinterpret_cast<u64>(*&asset_ctb));
+            always_trigger->assetCtbPos += reinterpret_cast<u64>(*&asset_ctb);
             always_trigger->overwriteParamPos = always_trigger->overwriteParamPos != -1 ? always_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
         }
     }
