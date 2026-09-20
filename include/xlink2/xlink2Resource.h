@@ -52,7 +52,7 @@ static_assert(sizeof(EditorHeader) == 0x44, "xlink2::EditorHeader size mismatch"
 
 struct ResParam {
     u32 rawValue;
-    
+
     s32 getValue() const { return sead::BitUtil::bitCast<s32>(rawValue & 0xffffff); }
     ValueReferenceType getRefType() const { return static_cast<ValueReferenceType>(rawValue >> 0x18); }
 };
@@ -69,7 +69,7 @@ struct ResTriggerOverwriteParam {
 };
 
 struct ResUserHeader {
-    ResUserHeader() {};
+    ResUserHeader() {}
 
     u32 isSetup {0};
     u32 numLocalProperty {0};

@@ -60,7 +60,7 @@ public:
     void doOtameshiEmit_();
     void postCalc();
 
-    void reset(); 
+    void reset();
     void killAll();
     void sleep();
 
@@ -92,7 +92,7 @@ public:
     bool isDebugLogEnable(DebugLogFlag) const;
 
     void checkAndBreakWhenEmit_(const char* /*unused*/);
-    
+
     void freeEventIfFadeOrKillCalled();
 
     s32 getCurrentResActionIdx(s32) const;
@@ -156,15 +156,15 @@ public:
     virtual bool doEventActivatingCallback_([[maybe_unused]] const Locator&);
     virtual void doEventActivatedCallback_([[maybe_unused]] const Locator&, [[maybe_unused]] Event*);
 
-    User* getUser() const { return mUser; };
+    User* getUser() const { return mUser; }
     UserResource* getUserResource() const { return mUser->getUserResource(); }
 
-    sead::BitFlag8 getBitFlag() const { return mBitFlag; };
-    
-    UserInstanceParam* getParam() const { return mParams[mBitFlag & 1]; };
-    UserInstanceParam* getParam(ResMode mode) const { return mParams[(s32)mode]; };
+    sead::BitFlag8 getBitFlag() const { return mBitFlag; }
 
-    const IUser* getIUser() const { return mIUser; };
+    UserInstanceParam* getParam() const { return mParams[mBitFlag & 1]; }
+    UserInstanceParam* getParam(ResMode mode) const { return mParams[(s32)mode]; }
+
+    const IUser* getIUser() const { return mIUser; }
 
     const sead::OffsetList<Event>* getEventList() const { return &mEventList; }
 
@@ -172,7 +172,7 @@ public:
 
     PropertyValueType getPropertyValue(u32 idx) { return mPropertyValueArray[idx]; }
 
-    void updateGlobalPropertyTriggerCtrl() 
+    void updateGlobalPropertyTriggerCtrl()
     {
         if (mBitFlag.isOffBit(1))
             mTriggerCtrlMgr.updateGlobalPropertyTriggerCtrl();

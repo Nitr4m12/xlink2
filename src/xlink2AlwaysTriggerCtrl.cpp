@@ -8,13 +8,13 @@
 
 namespace xlink2 {
 AlwaysTriggerCtrl::AlwaysTriggerCtrl(UserInstance* user_instance,
-                                     sead::Buffer<ModelTriggerConnection>* buffer) 
+                                     sead::Buffer<ModelTriggerConnection>* buffer)
     : TriggerCtrl(user_instance, buffer)
 {
     mUserInstance = user_instance;
     mIsActive = true;
     mConnectionBuffer = buffer;
-};
+}
 
 AlwaysTriggerCtrl::~AlwaysTriggerCtrl() = default;
 
@@ -46,14 +46,14 @@ void AlwaysTriggerCtrl::calc()
     }
 }
 
-void AlwaysTriggerCtrl::emitByTrigger_(s32 idx) 
+void AlwaysTriggerCtrl::emitByTrigger_(s32 idx)
 {
     ResAlwaysTrigger* always_trigger {mUserInstance->getUser()->getUserResource()->getAlwaysTriggerTableItem(idx)};
     ResAssetCallTable* call_table {solveOffset<ResAssetCallTable>(always_trigger->assetCtbPos)};
     emitByTriggerImpl_(TriggerType::Always, idx, always_trigger->overwriteParamPos, call_table);
 }
 
-void AlwaysTriggerCtrl::notifyActive() 
+void AlwaysTriggerCtrl::notifyActive()
 {
     mIsActive = true;
 }

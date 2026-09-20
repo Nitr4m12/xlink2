@@ -19,7 +19,7 @@ static sead::SafeString sModuleNameELink {"ELink2"};
 static sead::SafeString sORIconStringELink {""};
 
 class SystemELink : public System {
-    SEAD_SINGLETON_DISPOSER(SystemELink);
+    SEAD_SINGLETON_DISPOSER(SystemELink)
 
 public:
     static ILockProxy* sLockProxy;

@@ -6,7 +6,7 @@
 namespace xlink2 {
 class Locator {
 public:
-    Locator() : mpAssetCallTable(nullptr) {};
+    Locator() : mpAssetCallTable(nullptr) {}
     explicit Locator(const ResAssetCallTable& asset_ctb)
         : mpAssetCallTable(&asset_ctb) {}
     ~Locator() = default;
@@ -14,8 +14,8 @@ public:
     static u32 sDataLoadedCount;
 
     virtual void reset();
-    virtual void setTriggerInfo([[maybe_unused]] TriggerType trigger_type, 
-                                [[maybe_unused]] ResTriggerOverwriteParam* overwrite_param, 
+    virtual void setTriggerInfo([[maybe_unused]] TriggerType trigger_type,
+                                [[maybe_unused]] ResTriggerOverwriteParam* overwrite_param,
                                 [[maybe_unused]] BoneMtx bone_mtx);
     virtual TriggerType getTriggerType() const;
     virtual ResTriggerOverwriteParam* getTriggerOverwriteParam() const;
