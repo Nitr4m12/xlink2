@@ -407,39 +407,24 @@ bool UserInstance::searchAssetRecursive(Locator* locator, const char* name)
     return false;
 }
 
-// NON-MATCHING: bad branching
 bool UserInstance::searchEmittingEvent(Handle* handle, const char* key_name) const
 {
-    if (key_name != nullptr) {
-        {
-            auto lock {sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj())};
-            u8 unknown;
-            for (auto& event : mEventList) {
-                if (event.getAssetCallTable() != nullptr) {
-                    const char* asset_key_name {solveOffset<const char>(event.getAssetCallTable()->keyNamePos)};
-                    if (handle != nullptr) {
-                        if (strcmp(key_name, asset_key_name) == 0) {
-                            handle->setResource(&event);
-                            handle->setCreateId(event.getCreateId());
-                            unknown = 1;
-                        }
-                        else {
-                            unknown = 0;
-                        }
-                    }
-                    else {
-                        unknown = strcmp(key_name, asset_key_name) == 0;
-                    }
-                }
-                else {
-                    unknown = 4;
-                }
-                if ((unknown | 4) != 4) break;
+    if (key_name == nullptr)
+        return false;
+
+    auto lock {sead::makeScopedLock(*mUser->getSystem()->getModuleLockObj())};
+    for (auto it = mEventList.begin(), end = mEventList.end(); it != end; ++it) {
+        const ResAssetCallTable* asset_call_table = it->getAssetCallTable();
+        if (asset_call_table == nullptr)
+            continue;
+
+        if (strcmp(key_name, solveOffset<const char>(asset_call_table->keyNamePos)) == 0) {
+            if (handle != nullptr) {
+                handle->setResource(&*it);
+                handle->setCreateId(it->getCreateId());
             }
-
-            return (unknown | 2) != 2;
+            return true;
         }
-
     }
 
     return false;
