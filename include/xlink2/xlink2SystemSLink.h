@@ -25,9 +25,8 @@ public:
     SystemSLink();
     ~SystemSLink() override;
 
-    void initialize(aal::System* aal_system, sead::Heap* heap,
-                    sead::Heap* primary_heap, u32 max_num_event_pool,
-                    ILockProxy* lock);
+    void initialize(aal::System* aal_system, sead::Heap* heap, sead::Heap* primary_heap,
+                    u32 max_num_event_pool, ILockProxy* lock);
 
     UserInstanceSLink* createUserInstance(const UserInstanceSLink::CreateArgSLink& arg,
                                           sead::Heap* heap, u32 i1);
@@ -48,22 +47,20 @@ public:
     void genMessage(sead::hostio::Context* context) override;
     void listenPropertyEvent(const sead::hostio::PropertyEvent* event) override;
 #else
-    void genMessage([[maybe_unused]] sead::hostio::Context*);
-    void listenPropertyEvent([[maybe_unused]] const sead::hostio::PropertyEvent*);
+    void genMessage(sead::hostio::Context*);
+    void listenPropertyEvent(const sead::hostio::PropertyEvent*);
 #endif
 
     sead::SafeString* getORIconString();
 
     Event* getEventFromPool_(u32 idx) const override;
 
-    void drawInformationSystemDetail_([[maybe_unused]] sead::TextWriter* text_writer) const override;
-    void drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_writer) const override;
-    void drawInformationEmitter_([[maybe_unused]] UserInstance* user_instance,
-                                 [[maybe_unused]] sead::DrawContext* draw_context,
-                                 [[maybe_unused]] sead::TextWriter* text_writer,
-                                 [[maybe_unused]] const sead::Camera& camera,
-                                 [[maybe_unused]] const sead::Projection& projection,
-                                 [[maybe_unused]] const sead::Viewport& viewport) const override;
+    void drawInformationSystemDetail_(sead::TextWriter* text_writer) const override;
+    void drawInformationEvent_(sead::TextWriter* text_writer) const override;
+    void drawInformationEmitter_(UserInstance* user_instance, sead::DrawContext* draw_context,
+                                 sead::TextWriter* text_writer, const sead::Camera& camera,
+                                 const sead::Projection& projection,
+                                 const sead::Viewport& viewport) const override;
 
     ILockProxy* getModuleLockObj() const override;
 

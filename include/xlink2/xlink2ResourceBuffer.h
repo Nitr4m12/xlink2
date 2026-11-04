@@ -13,10 +13,10 @@ public:
     virtual ~ResourceBuffer();
 
     bool load(void* bin, System* system);
-    
+
     ResUserHeader* searchResUserHeader(const char* user_name) const;
     void applyGlobalPropertyDefinition(System* system);
-    
+
     static RomResourceParam* getEmptyRomResourceParam()
     {
         static RomResourceParam sDummy;
@@ -28,7 +28,7 @@ public:
         static ResUserHeader sDummy;
         return &sDummy;
     }
-    
+
     const ParamDefineTable* getParamDefineTable() { return &mParamDefineTable; }
     const RomResourceParam& getRomResourceParam() { return mRomResourceParam; }
 

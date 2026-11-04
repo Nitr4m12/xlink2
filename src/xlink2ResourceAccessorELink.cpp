@@ -1,67 +1,73 @@
 #include <xlink2/xlink2ResourceAccessorELink.h>
-#include <xlink2/xlink2ResourceUtil.h>
+
+#include "xlink2/xlink2ELinkAssetParamId.h"
 #include "xlink2/xlink2UserResourceELink.h"
 
 namespace xlink2 {
 bool ResourceAccessorELink::isBlankAsset(const ResAssetCallTable& asset_ctb) const
 {
     const char* param_name {""};
-    if (checkAndErrorIsAsset_(asset_ctb, "isBlankAsset")) {
-        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 1)};
+    if (!checkAndErrorIsAsset_(asset_ctb, "isBlankAsset"))
+        return false;
 
-        if (asset_param == nullptr)
-            param_name = this->mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(1);
-        else
-            param_name = this->getResParamValueString_(*asset_param);
+    const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, s32(ELinkAssetParamId::RuntimeAssetName))};
 
-        return strncmp(param_name, "@Blank", 6) == 0;
-    }
+    if (asset_param == nullptr)
+        param_name = mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(s32(ELinkAssetParamId::RuntimeAssetName));
+    else
+        param_name = getResParamValueString_(*asset_param);
 
-    return false;
+    return strncmp(param_name, "@Blank", 6) == 0;
 }
 
 const char* ResourceAccessorELink::getAssetName(const ResAssetCallTable& asset_ctb) const
 {
-    return this->_getResParamValueString_("getAssetName", asset_ctb, 1, "");
+    return getValueString_("getAssetName", asset_ctb, s32(ELinkAssetParamId::RuntimeAssetName), "");
 }
 
 s16 ResourceAccessorELink::getEsetVal(const ResAssetCallTable& asset_ctb) const
 {
-    auto* solved_asset_param {static_cast<UserResourceELink*>(mpUserResource)->getSolvedAssetParameterELink(asset_ctb)};
-    if (solved_asset_param != nullptr)
-        return solved_asset_param->esetVal;
-    return -1;
+    UserResourceELink* user_resource {static_cast<UserResourceELink*>(mpUserResource)};
+    auto* solved_asset_param {user_resource->getSolvedAssetParameterELink(asset_ctb)};
+    if (solved_asset_param == nullptr)
+        return -1;
+
+    return static_cast<s16>(solved_asset_param->esetVal);
 }
 
 const char* ResourceAccessorELink::getGroupName(const ResAssetCallTable& asset_ctb) const
 {
-    return this->_getResParamValueString_("getGroupName", asset_ctb, 3, "");
+    return getValueString_("getGroupName", asset_ctb, s32(ELinkAssetParamId::GroupName), "");
 }
 
 s8 ResourceAccessorELink::getGroupId(const ResAssetCallTable& asset_ctb) const
 {
-    auto* solved_asset_param {static_cast<UserResourceELink*>(mpUserResource)->getSolvedAssetParameterELink(asset_ctb)};
-    if (solved_asset_param != nullptr)
-        return solved_asset_param->groupId;
-    return -1;
+    UserResourceELink* user_resource {static_cast<UserResourceELink*>(mpUserResource)};
+    auto* solved_asset_param {user_resource->getSolvedAssetParameterELink(asset_ctb)};
+    if (solved_asset_param == nullptr)
+        return -1;
+
+    return solved_asset_param->groupId;
 }
 
-ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAssetCallTable& asset_ctb) const
+ResourceAccessorELink::ClipType
+ResourceAccessorELink::getClipType(const ResAssetCallTable& asset_ctb) const
 {
     u32 param_value {0};
-    if (checkAndErrorIsAsset_(asset_ctb, "getClipType")) {
-        const ResParam* asset_param {this->getResParamFromAssetParamPos(asset_ctb.paramStartPos, 7)};
-        if (asset_param == nullptr)
-            param_value = this->mpSystem->getParamDefineTable()->getAssetParamDefaultValueInt(7);
-        else
-            param_value = this->getResParamValueInt_(*asset_param);
+    if (!checkAndErrorIsAsset_(asset_ctb, "getClipType"))
+        return ClipType::None;
 
-        if (param_value == 0) {
-            if (this->isNeedObserve(asset_ctb)) {
-                return ClipType::NeedObserve;
-            }
-            return ClipType::Kill;
+    const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, s32(ELinkAssetParamId::Clip))};
+    if (asset_param == nullptr)
+        param_value = mpSystem->getParamDefineTable()->getAssetParamDefaultValueInt(s32(ELinkAssetParamId::Clip));
+    else
+        param_value = getResParamValueInt_(*asset_param);
+
+    if (param_value == 0) {
+        if (isNeedObserve(asset_ctb)) {
+            return ClipType::NeedObserve;
         }
+        return ClipType::Kill;
     }
 
     return static_cast<ClipType>(param_value);
@@ -69,27 +75,27 @@ ResourceAccessorELink::ClipType ResourceAccessorELink::getClipType(const ResAsse
 
 bool ResourceAccessorELink::isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const
 {
-    return getAssetBitFlag_(asset_ctb).isOnBit(0);
+    return getAssetBitFlag_(asset_ctb).isOnBit(s32(ELinkAssetParamId::AssetName));
 }
 
 bool ResourceAccessorELink::isForceLoopAsset(const ResAssetCallTable& asset_ctb) const
 {
-    return getAssetBitFlag_(asset_ctb).isOnBit(3);
+    return getAssetBitFlag_(asset_ctb).isOnBit(s32(ELinkAssetParamId::GroupName));
 }
 
 s32 ResourceAccessorELink::getForceCalc(const ResAssetCallTable& asset_ctb) const
-{   
-    return this->_getResParamValueInt_("getForceCalc", asset_ctb, 8, 0);
+{
+    return getValueInt_("getForceCalc", asset_ctb, s32(ELinkAssetParamId::ForceCalc), 0);
 }
 
 s32 ResourceAccessorELink::getMtxSetType(const ResAssetCallTable& asset_ctb) const
 {
-    return this->_getResParamValueInt_("getMtxSetType", asset_ctb, 9, 0);
+    return getValueInt_("getMtxSetType", asset_ctb, s32(ELinkAssetParamId::MtxSetType), 0);
 }
 
 s32 ResourceAccessorELink::getRotateSourceType(const ResAssetCallTable& asset_ctb) const
 {
-    return this->_getResParamValueInt_("getRotateSourceType", asset_ctb, 10, 0);
+    return getValueInt_("getRotateSourceType", asset_ctb, s32(ELinkAssetParamId::RotateSourceType), 0);
 }
 
 bool ResourceAccessorELink::isFollow(const ResAssetCallTable& asset_ctb) const
@@ -102,300 +108,360 @@ bool ResourceAccessorELink::isUseOneEmitter(const ResAssetCallTable& asset_ctb) 
     return getAssetBitFlag_(asset_ctb).isOnBit(2);
 }
 
-f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getDelay(const ResAssetCallTable& asset_ctb,
+                                    const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloatWithLowerLimit_("getDelay", asset_ctb, 5, 0.0, user_instance);
+    return getValueFloatWithLowerLimit_("getDelay", asset_ctb, s32(ELinkAssetParamId::Delay), 0.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getDuration(const ResAssetCallTable& asset_ctb,
+                                       const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloatWithLowerLimit_("getDuration", asset_ctb, 6, 0.0, user_instance);
+    return getValueFloatWithLowerLimit_("getDuration", asset_ctb, s32(ELinkAssetParamId::Duration), 0.0, user_instance);
 }
 
 const char* ResourceAccessorELink::getBoneName(const ResAssetCallTable& asset_ctb) const
 {
-    return this->_getResParamValueString_("getBoneName", asset_ctb, 11, "");
+    return getValueString_("getBoneName", asset_ctb, s32(ELinkAssetParamId::BoneName), "");
 }
 
-f32 ResourceAccessorELink::getScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getScale(const ResAssetCallTable& asset_ctb,
+                                    const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getScale", asset_ctb, 12, 1.0, user_instance);
+    return getValueFloat_("getScale", asset_ctb, s32(ELinkAssetParamId::Scale), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getPositionX(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getPositionX(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getPositionX", asset_ctb, 13, 0.0, user_instance);
+    return getValueFloat_("getPositionX", asset_ctb, s32(ELinkAssetParamId::PositionX), 0.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getPositionY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getPositionY(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getPositionY", asset_ctb, 14, 0.0, user_instance);
+    return getValueFloat_("getPositionY", asset_ctb, s32(ELinkAssetParamId::PositionY), 0.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getPositionZ(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getPositionZ(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getPositionZ", asset_ctb, 15, 0.0, user_instance);
+    return getValueFloat_("getPositionZ", asset_ctb, s32(ELinkAssetParamId::PositionZ), 0.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getRotationX(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getRotationX(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getRotationX", asset_ctb, 16, 0.0, user_instance);
+    return getValueFloat_("getRotationX", asset_ctb, s32(ELinkAssetParamId::RotationX), 0.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getRotationY(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getRotationY(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getRotationY", asset_ctb, 17, 0.0, user_instance);
+    return getValueFloat_("getRotationY", asset_ctb, s32(ELinkAssetParamId::RotationY), 0.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getRotationZ(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getRotationZ(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getRotationZ", asset_ctb, 18, 0.0, user_instance);
+    return getValueFloat_("getRotationZ", asset_ctb, s32(ELinkAssetParamId::RotationZ), 0.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getColorRed(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getColorRed(const ResAssetCallTable& asset_ctb,
+                                       const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getColorRed", asset_ctb, 19, 1.0, user_instance);
+    return getValueFloat_("getColorRed", asset_ctb, s32(ELinkAssetParamId::ColorRed), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getColorGreen(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getColorGreen(const ResAssetCallTable& asset_ctb,
+                                         const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getColorGreen", asset_ctb, 20, 1.0, user_instance);
+    return getValueFloat_("getColorGreen", asset_ctb, s32(ELinkAssetParamId::ColorGreen), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getColorBlue(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getColorBlue(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getColorBlue", asset_ctb, 21, 1.0, user_instance);
+    return getValueFloat_("getColorBlue", asset_ctb, s32(ELinkAssetParamId::ColorBlue), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getAlpha(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getAlpha(const ResAssetCallTable& asset_ctb,
+                                    const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getAlpha", asset_ctb, 22, 1.0, user_instance);
+    return getValueFloat_("getAlpha", asset_ctb, s32(ELinkAssetParamId::Alpha), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getEmissionRate(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getEmissionRate(const ResAssetCallTable& asset_ctb,
+                                           const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getEmissionRate", asset_ctb, 23, 1.0, user_instance);
+    return getValueFloat_("getEmissionRate", asset_ctb, s32(ELinkAssetParamId::EmissionRate), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getEmissionScale(const ResAssetCallTable& asset_ctb,
+                                            const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getEmissionScale", asset_ctb, 24, 1.0, user_instance);
+    return getValueFloat_("getEmissionScale", asset_ctb, s32(ELinkAssetParamId::EmissionScale), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getEmissionInterval(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getEmissionInterval(const ResAssetCallTable& asset_ctb,
+                                               const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getEmissionInterval", asset_ctb, 25, 1.0, user_instance);
+    return getValueFloat_("getEmissionInterval", asset_ctb, s32(ELinkAssetParamId::EmissionInterval), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getDirectionalVel(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getDirectionalVel(const ResAssetCallTable& asset_ctb,
+                                             const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getDirectionalVel", asset_ctb, 26, 1.0, user_instance);
+    return getValueFloat_("getDirectionalVel", asset_ctb, s32(ELinkAssetParamId::DirectionalVel), 1.0, user_instance);
 }
 
-f32 ResourceAccessorELink::getLifeScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getLifeScale(const ResAssetCallTable& asset_ctb,
+                                        const UserInstance* user_instance) const
 {
-    return this->_getResParamValueFloat_("getLifeScale", asset_ctb, 27, 1.0, user_instance);
+    return getValueFloat_("getLifeScale", asset_ctb, s32(ELinkAssetParamId::LifeScale), 1.0, user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteDelay(u32 idx, const UserInstance* user_instance) const
 {
-    return this->_getResOverwriteParamValueFloatWithLimit_(idx, 5, user_instance);
+    return getOverwriteValueFloatWithLimit_(idx, s32(ELinkAssetParamId::Delay), user_instance);
 }
 
 const char* ResourceAccessorELink::getOverwriteBoneName(u32 idx) const
 {
-    return this->getResOverwriteParamValueString_(idx, 11);
+    return getResOverwriteParamValueString_(idx, s32(ELinkAssetParamId::BoneName));
 }
 
 f32 ResourceAccessorELink::getOverwriteScale(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 12, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::Scale), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwritePositionX(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 13, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::PositionX), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwritePositionY(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 14, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::PositionY), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwritePositionZ(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 15, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::PositionZ), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteRotationX(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 16, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::RotationX), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteRotationY(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 17, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::RotationY), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteRotationZ(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 18, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::RotationZ), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteColorRed(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 19, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::ColorRed), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteColorGreen(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 20, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::ColorGreen), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteColorBlue(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 21, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::ColorBlue), user_instance);
 }
 
 f32 ResourceAccessorELink::getOverwriteAlpha(u32 idx, const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 22, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::Alpha), user_instance);
 }
 
-f32 ResourceAccessorELink::getOverwriteEmissionRate(u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getOverwriteEmissionRate(u32 idx,
+                                                    const UserInstance* user_instance) const
 {
-    return this->getResOverwriteParamValueFloat_(idx, 23, user_instance);
+    return getResOverwriteParamValueFloat_(idx, s32(ELinkAssetParamId::EmissionRate), user_instance);
 }
 
-f32 ResourceAccessorELink::getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                 const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 5))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::Delay)))
         return getOverwriteDelay(idx, user_instance);
 
     return getDelay(asset_ctb, user_instance);
 }
 
-const char* ResourceAccessorELink::getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx) const
+const char* ResourceAccessorELink::getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb,
+                                                            u32 idx) const
 {
-    if (this->isParamOverwritten(idx, 11))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::BoneName)))
         return getOverwriteBoneName(idx);
 
     return getBoneName(asset_ctb);
 }
 
-f32 ResourceAccessorELink::getScaleWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getScaleWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                 const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 12))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::Scale)))
         return getOverwriteScale(idx, user_instance);
 
     return getScale(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getPositionXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getPositionXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                     const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 13))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::PositionX)))
         return getOverwritePositionX(idx, user_instance);
 
     return getPositionX(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getPositionYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getPositionYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                     const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 14))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::PositionY)))
         return getOverwritePositionY(idx, user_instance);
 
     return getPositionY(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getPositionZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getPositionZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                     const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 15))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::PositionZ)))
         return getOverwritePositionZ(idx, user_instance);
 
     return getPositionZ(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getRotationXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getRotationXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                     const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 16))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::RotationX)))
         return getOverwriteRotationX(idx, user_instance);
 
     return getRotationX(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getRotationYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getRotationYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                     const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 17))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::RotationY)))
         return getOverwriteRotationY(idx, user_instance);
 
     return getRotationY(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getRotationZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getRotationZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                     const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 18))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::RotationZ)))
         return getOverwriteRotationZ(idx, user_instance);
 
     return getRotationZ(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getColorRedWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getColorRedWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                    const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 19))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::ColorRed)))
         return getOverwriteColorRed(idx, user_instance);
 
     return getColorRed(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getColorGreenWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getColorGreenWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                      const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 20))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::ColorGreen)))
         return getOverwriteColorGreen(idx, user_instance);
 
     return getColorGreen(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getColorBlueWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getColorBlueWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                     const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 21))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::ColorBlue)))
         return getOverwriteColorBlue(idx, user_instance);
 
     return getColorBlue(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getAlphaWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getAlphaWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                 const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 22))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::Alpha)))
         return getOverwriteAlpha(idx, user_instance);
 
     return getAlpha(asset_ctb, user_instance);
 }
 
-f32 ResourceAccessorELink::getEmissionRateWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const
+f32 ResourceAccessorELink::getEmissionRateWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                                        const UserInstance* user_instance) const
 {
-    if (this->isParamOverwritten(idx, 23))
+    if (isParamOverwritten(idx, s32(ELinkAssetParamId::EmissionRate)))
         return getOverwriteEmissionRate(idx, user_instance);
 
     return getEmissionRate(asset_ctb, user_instance);
 }
 
-s32 ResourceAccessorELink::getTriggerOverwriteParamId_(u32 idx) const
+s32 ResourceAccessorELink::getTriggerOverwriteParamId_(u32 param_id) const
 {
-    constexpr s32 OVERWRITE_PARAM_IDS[19] {0, -1, -1, -1, -1 -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13};
-
-    if (idx - 5 < 19)
-        return OVERWRITE_PARAM_IDS[(s32)idx - 5];
-
-    return -1;
+    auto id_type {static_cast<ELinkAssetParamId>(param_id)};
+    switch (id_type) {
+    case ELinkAssetParamId::Delay:
+        return 0;
+    case ELinkAssetParamId::BoneName:
+        return 1;
+    case ELinkAssetParamId::Scale:
+        return 2;
+    case ELinkAssetParamId::PositionX:
+        return 3;
+    case ELinkAssetParamId::PositionY:
+        return 4;
+    case ELinkAssetParamId::PositionZ:
+        return 5;
+    case ELinkAssetParamId::RotationX:
+        return 6;
+    case ELinkAssetParamId::RotationY:
+        return 7;
+    case ELinkAssetParamId::RotationZ:
+        return 8;
+    case ELinkAssetParamId::ColorRed:
+        return 9;
+    case ELinkAssetParamId::ColorGreen:
+        return 10;
+    case ELinkAssetParamId::ColorBlue:
+        return 11;
+    case ELinkAssetParamId::Alpha:
+        return 12;
+    case ELinkAssetParamId::EmissionRate:
+        return 13;
+    default:
+        return -1;
+    }
 }
 
 sead::BitFlag32 ResourceAccessorELink::getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const
 {
-    return this->_getResParamValueInt_("getAssetBitFlag_", asset_ctb, 28, 0);
+    return getValueInt_("getAssetBitFlag_", asset_ctb, s32(ELinkAssetParamId::BitFlag), 0);
 }
 
 bool ResourceAccessorELink::isBoneNameOverwritten(u32 idx) const
 {
-    return this->isParamOverwritten(idx, 11);
+    return isParamOverwritten(idx, s32(ELinkAssetParamId::BoneName));
 }
 }  // namespace xlink2

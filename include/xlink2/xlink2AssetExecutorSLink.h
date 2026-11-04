@@ -13,7 +13,7 @@ public:
 
     u32 calc() override;
     void* emitSound();
-    
+
     void _updateParam_();
     void updateParam_();
 
@@ -29,7 +29,7 @@ public:
     f32 getPlayingTime() const;
 
     bool activateImpl_() override;
-    
+
     void _updateParamFirst();
     void updateParamFirst();
 

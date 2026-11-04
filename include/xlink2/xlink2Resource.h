@@ -54,7 +54,10 @@ struct ResParam {
     u32 rawValue;
 
     s32 getValue() const { return sead::BitUtil::bitCast<s32>(rawValue & 0xffffff); }
-    ValueReferenceType getRefType() const { return static_cast<ValueReferenceType>(rawValue >> 0x18); }
+    ValueReferenceType getRefType() const
+    {
+        return static_cast<ValueReferenceType>(rawValue >> 0x18);
+    }
 };
 static_assert(sizeof(ResParam) == 0x4, "xlink2::ResParam size mismatch");
 
@@ -195,7 +198,8 @@ struct ResContainerParam {
 static_assert(sizeof(ResContainerParam) == 0xC, "xlink2::ResContainerParam size mismatch");
 
 struct ResSequenceContainerParam : public ResContainerParam {};
-static_assert(sizeof(ResSequenceContainerParam) == 0xC, "xlink2::ResSequenceContainerParam size mismatch");
+static_assert(sizeof(ResSequenceContainerParam) == 0xC,
+              "xlink2::ResSequenceContainerParam size mismatch");
 
 struct ResSwitchContainerParam : public ResContainerParam {
     u32 watchPropertyNamePos;
@@ -203,7 +207,8 @@ struct ResSwitchContainerParam : public ResContainerParam {
     s16 localPropertyNameIdx;
     bool isGlobal;
 };
-static_assert(sizeof(ResSwitchContainerParam) == 0x18, "xlink2::ResSwitchContainerParam size mismatch");
+static_assert(sizeof(ResSwitchContainerParam) == 0x18,
+              "xlink2::ResSwitchContainerParam size mismatch");
 
 struct ResCondition {
     ContainerType parentContainerType;

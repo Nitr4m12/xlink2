@@ -21,12 +21,12 @@ public:
 
     void setActionSlot(u32 total_action_slots, const char** slot_names);
     s32 searchActionSlotPos(const char*) const;
-    
+
     void createPropertyDefinitionTable(u32);
     void createPropertyDefinitionTable(u32, const PropertyDefinition**);
     void setPropertyDefinition(u32, const PropertyDefinition*);
     u32 searchPropertyIndex(const char* name) const;
-    
+
     void changeEditorResource(EditorResourceParam*, sead::Heap*);
     void rollbackToRomResource();
 
@@ -35,7 +35,7 @@ public:
     void killAll();
 
     UserInstance* getLeaderInstance() const;
-    
+
     f32 getMinSortKey() const;
     UserInstance* getMinSortKeyInstance();
     void updateSortKey();
@@ -49,7 +49,10 @@ public:
     UserResource* getUserResource() const { return mpUserResource; }
 
     u16 getNumLocalProp() const { return mNumLocalProp; }
-    PropertyDefinition* getPropertyDefinition(u32 idx) const { return mpPropertyDefinitionTable[idx]; }
+    PropertyDefinition* getPropertyDefinition(u32 idx) const
+    {
+        return mpPropertyDefinitionTable[idx];
+    }
 
     const sead::OffsetList<UserInstance>& getUserInstanceList() const { return mUserInstanceList; }
 
@@ -57,17 +60,17 @@ public:
 
     void addInstance(UserInstance* instance) { mUserInstanceList.pushBack(instance); }
     void removeInstance(UserInstance* instance) { mUserInstanceList.erase(instance); }
-    
+
     bool isHeapEqual(sead::Heap* heap) const { return mpHeap == heap; }
 
     s16 getNumActionSlot() { return mNumActionSlot; }
-    
+
     const char** getActionSlotNameTable() { return mActionSlotNameTable; }
     const char* getActionSlotName(s32 idx) { return mActionSlotNameTable[idx]; }
 
 private:
     friend System;
-    
+
     sead::ListNode mListNode {};
     const char* mUserName {};
     UserResource* mpUserResource {};

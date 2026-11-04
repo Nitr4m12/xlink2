@@ -5,13 +5,16 @@
 #include "xlink2/xlink2Resource.h"
 
 namespace xlink2 {
+
 struct ModelTriggerConnection;
 class UserInstance;
+
 class TriggerCtrl {
 public:
-    TriggerCtrl(UserInstance* user_instance, 
-                sead::Buffer<ModelTriggerConnection>* mtc_buffer)
-        : mUserInstance(user_instance), mConnectionBuffer(mtc_buffer) {}
+    TriggerCtrl(UserInstance* user_instance, sead::Buffer<ModelTriggerConnection>* mtc_buffer)
+        : mUserInstance(user_instance), mConnectionBuffer(mtc_buffer)
+    {
+    }
 
     virtual void calc() = 0;
     virtual ~TriggerCtrl() = default;

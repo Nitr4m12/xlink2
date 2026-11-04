@@ -17,5 +17,6 @@ struct UserResourceParamSLink : public UserResourceParam {
     u32 numArrangeGroupParam {0};
     ArrangeGroupParam* arrangeGroupParams {};
 };
-static_assert(sizeof(UserResourceParamSLink) == 0xe0, "'xlink2::UserResourceParamSLink' size mismatch");
+static_assert(sizeof(UserResourceParamSLink) == 0xe0,
+              "'xlink2::UserResourceParamSLink' size mismatch");
 }  // namespace xlink2

@@ -11,6 +11,8 @@ class Event;
 class Handle {
 public:
     Handle() = default;
+    Handle(void* resource, s32 create_id) : mpResource {resource}, mCreateId {create_id} {}
+
     Handle(Handle&) = delete;
 
     Handle(UserInstance* user_instance, const char* asset_key_name)
@@ -41,7 +43,7 @@ public:
     void setResource(void* resource) { mpResource = resource; }
     void setCreateId(s32 create_id) { mCreateId = create_id; }
 
-private:
+protected:
     void* mpResource = nullptr;
     s32 mCreateId = 0;
 };

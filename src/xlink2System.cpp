@@ -1,7 +1,7 @@
 #include "xlink2/xlink2System.h"
 
-#include <math/seadMathCalcCommon.h>
 #include <gfx/seadPrimitiveRenderer.h>
+#include <math/seadMathCalcCommon.h>
 #include <prim/seadScopedLock.h>
 
 #include "xlink2/xlink2AssetExecutor.h"
@@ -11,8 +11,6 @@
 #include "xlink2/xlink2HoldMgr.h"
 #include "xlink2/xlink2IUser.h"
 #include "xlink2/xlink2ResourceBuffer.h"
-#include "xlink2/xlink2User.h"
-#include "xlink2/xlink2UserInstance.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
 
@@ -78,44 +76,46 @@ void System::initSystem_(sead::Heap* heap, sead::Heap* primary_heap, u32 max_num
 
 void System::calc()
 {
-    if (mIsCallEnabled) {
-        if (getDebugOperationParam().getDebugUserFlag().isOn(0b100000000000010011101111)) {
-            {
-                auto lock {sead::makeScopedLock(*getModuleLockObj())};
-                for (auto& user : mUserList)
-                    user.updateSortKey();
-            }
-        }
-        {
-            auto lock {sead::makeScopedLock(*getModuleLockObj())};
-            for (auto& user : mGlobalPropertyTriggerUserList)
-                for (auto& user_instance : user.getUserInstanceList())
-                    user_instance.updateGlobalPropertyTriggerCtrl();
-            
-        }
+    if (!mIsCallEnabled)
+        return;
 
-        if (mErrorMgr != nullptr)
-            mErrorMgr->calc();
-
-        if (mHoldMgr != nullptr)
-            mHoldMgr->calc();
-
-        ++mTick;
+    if (getDebugOperationParam().getDebugUserFlag().isOn(0b100000000000010011101111)) {
+        auto lock {sead::makeScopedLock(*getModuleLockObj())};
+        for (auto& user : mUserList)
+            user.updateSortKey();
     }
+
+    {
+        auto lock {sead::makeScopedLock(*getModuleLockObj())};
+        for (auto& user : mGlobalPropertyTriggerUserList)
+            for (auto& user_instance : user.getUserInstanceList())
+                user_instance.updateGlobalPropertyTriggerCtrl();
+    }
+
+    if (mErrorMgr != nullptr)
+        mErrorMgr->calc();
+
+    if (mHoldMgr != nullptr)
+        mHoldMgr->calc();
+
+    ++mTick;
 }
 
 User* System::searchUser(const char* user_name, sead::Heap* heap, u32 idx) const
 {
     {
         auto lock {sead::makeScopedLock(*getModuleLockObj())};
-        if (mUserList.size() != 0)
-            for (auto& user : mUserList) {
-                if ((user.isHeapEqual(heap) || user.isHeapEqual(mUserCreateHeap)) && 
-                    user.get8() == idx && strcmp(user.getUserName(), user_name) == 0) {
-                    return &user;
-                }
+        if (mUserList.size() == 0)
+            return nullptr;
+
+        for (auto& user : mUserList) {
+            if ((user.isHeapEqual(heap) || user.isHeapEqual(mUserCreateHeap)) &&
+                user.get8() == idx && strcmp(user.getUserName(), user_name) == 0) {
+                return &user;
             }
+        }
     }
+
     return nullptr;
 }
 
@@ -134,66 +134,69 @@ s32 System::searchUserIgnoreHeap(const char* user_name, User** user_ptrs, s32 id
     return user_idx;
 }
 
-void System::drawInformation([[maybe_unused]] sead::DrawContext* ctx, 
+void System::drawInformation([[maybe_unused]] sead::DrawContext* ctx,
                              [[maybe_unused]] sead::TextWriter* text_writer) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::drawInformation3D([[maybe_unused]] sead::DrawContext* ctx, 
-                               [[maybe_unused]] const sead::Camera& camera, 
-                               [[maybe_unused]] const sead::Projection& projection, 
-                               [[maybe_unused]] const sead::Viewport& viewport, 
+void System::drawInformation3D([[maybe_unused]] sead::DrawContext* ctx,
+                               [[maybe_unused]] const sead::Camera& camera,
+                               [[maybe_unused]] const sead::Projection& projection,
+                               [[maybe_unused]] const sead::Viewport& viewport,
                                [[maybe_unused]] f32 f1) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::makeDebugStringGlobalProperty(sead::BufferedSafeString* dump_str, const sead::SafeString& filter) const
+void System::makeDebugStringGlobalProperty(sead::BufferedSafeString* dump_str,
+                                           const sead::SafeString& filter) const
 {
-    if (dump_str != nullptr) {
-        if (filter.isEmpty())
-            dump_str->appendWithFormat("-- Global Property --\n");
-        else
-            dump_str->appendWithFormat("-- Global Property (filter [%s]) --\n", filter.cstr());
+    if (dump_str == nullptr)
+        return;
 
-        if (mNumGlobalProperty != 0) {
-            for (u32 i {0}; i < mNumGlobalProperty; ++i) {
-                const PropertyDefinition* global_prop_define {mGlobalPropertyDefinitions[i]};
+    if (filter.isEmpty())
+        dump_str->appendWithFormat("-- Global Property --\n");
+    else
+        dump_str->appendWithFormat("-- Global Property (filter [%s]) --\n", filter.cstr());
 
-                if (global_prop_define != nullptr) {
-                    PropertyValueType* values {mGlobalPropertyValues};
-                    const char* property_name {global_prop_define->getPropertyName()->cstr()};
+    for (u32 i {0}; i < mNumGlobalProperty; ++i) {
+        const PropertyDefinition* global_prop_define {mGlobalPropertyDefinitions[i]};
+        if (global_prop_define == nullptr)
+            continue;
 
-                    if (*property_name != '\0') {
-                        if (!filter.isEmpty()) {
-                            sead::FixedSafeString<64> property_string {property_name};
-                            if (!property_string.include(filter.cstr())) 
-                                continue;
-                        }
+        PropertyValueType* values {mGlobalPropertyValues};
+        const char* property_name {global_prop_define->getPropertyName()->cstr()};
 
-                        switch (global_prop_define->getType()) {
-                            case PropertyType::Enum: {
-                                const char* value_name {static_cast<const EnumPropertyDefinition*>(global_prop_define)->searchEntryKeyByValue(values[i].valueInt)};
-                                dump_str->appendWithFormat("[%s] %s (%d)\n", property_name, value_name, values[i].valueInt);
-                                break;
-                            }
-                            case PropertyType::S32: {
-                                const char* empty {values[i].valueInt < 0 ? "" : " "};
-                                dump_str->appendWithFormat("[%s] %s%d\n", property_name, empty, values[i].valueInt);
-                                break;
-                            }
-                            case PropertyType::F32: {
-                                const char* empty {values[i].valueFloat < 0.0f ? "" : " "};
-                                dump_str->appendWithFormat("[%s] %s%f\n", property_name, empty, values[i].valueFloat);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+        if (*property_name == '\0')
+            continue;
+
+        if (!filter.isEmpty()) {
+            sead::FixedSafeString<64> property_string {property_name};
+            if (!property_string.include(filter.cstr()))
+                continue;
+        }
+
+        switch (global_prop_define->getType()) {
+        case PropertyType::Enum: {
+            auto* enum_prop_define {static_cast<const EnumPropertyDefinition*>(global_prop_define)};
+            const char* value_name {enum_prop_define->searchEntryKeyByValue(values[i].valueInt)};
+            dump_str->appendWithFormat("[%s] %s (%d)\n", property_name, value_name,
+                                       values[i].valueInt);
+            break;
+        }
+        case PropertyType::S32: {
+            const char* empty {values[i].valueInt < 0 ? "" : " "};
+            dump_str->appendWithFormat("[%s] %s%d\n", property_name, empty, values[i].valueInt);
+            break;
+        }
+        case PropertyType::F32: {
+            const char* empty {values[i].valueFloat < 0.0f ? "" : " "};
+            dump_str->appendWithFormat("[%s] %s%f\n", property_name, empty, values[i].valueFloat);
+            break;
+        }
         }
     }
 }
@@ -204,7 +207,7 @@ s32 System::loadResource(void* bin)
     return mResourceBuffer->load(bin, this);
 }
 
-ResUserHeader* System::getResUserHeader(const char* user_name) 
+ResUserHeader* System::getResUserHeader(const char* user_name)
 {
     return mResourceBuffer->searchResUserHeader(user_name);
 }
@@ -237,18 +240,17 @@ void System::unregistUserForGlobalPropertyTrigger_(User* user)
 
 void System::allocGlobalProperty(u32 num_property, sead::Heap* heap)
 {
-    auto* prop_define = new (heap) const PropertyDefinition*[num_property];
-    mGlobalPropertyDefinitions = prop_define;
-    if (num_property != 0) {
-        for (s32 i {0}; i < num_property; ++i) {
-            mGlobalPropertyDefinitions[i] = nullptr;
-        } 
-    }
+    mGlobalPropertyDefinitions = new (heap) const PropertyDefinition*[num_property];
+    for (s32 i {0}; i < num_property; ++i)
+        mGlobalPropertyDefinitions[i] = nullptr;
+
     mGlobalPropertyValues = new (heap) PropertyValueType[num_property];
     mNumGlobalProperty = num_property;
 }
 
-void System::createGlobalPropertyDefinitionTable(u32 num_property, const PropertyDefinition** buffer, sead::Heap* heap)
+void System::createGlobalPropertyDefinitionTable(u32 num_property,
+                                                 const PropertyDefinition** buffer,
+                                                 sead::Heap* heap)
 {
     allocGlobalProperty(num_property, heap);
     for (s32 i {0}; i != num_property; ++i)
@@ -263,35 +265,45 @@ void System::createGlobalPropertyDefinitionTable(u32 num_property, const Propert
 
 void System::setGlobalPropertyDefinition(u32 prop_idx, const PropertyDefinition* prop_define)
 {
-    if (prop_define != nullptr && mNumGlobalProperty != 0 && prop_idx < mNumGlobalProperty) {
-        for (u32 i {0}; i < mNumGlobalProperty; ++i) {
-            if (mGlobalPropertyDefinitions[i] != nullptr) {
-                auto* new_prop_name {prop_define->getPropertyName()};
-                if (mGlobalPropertyDefinitions[i]->getPropertyName()->isEqual(*new_prop_name)) {
-                    new_prop_name->cstr();
-                    return;
-                }
-            }
+    if (prop_define == nullptr)
+        return;
+
+    if (mNumGlobalProperty == 0)
+        return;
+
+    if (prop_idx >= mNumGlobalProperty)
+        return;
+
+    for (u32 i {0}; i < mNumGlobalProperty; ++i) {
+        if (mGlobalPropertyDefinitions[i] == nullptr)
+            continue;
+
+        auto* new_prop_name {prop_define->getPropertyName()};
+        if (mGlobalPropertyDefinitions[i]->getPropertyName()->isEqual(*new_prop_name)) {
+            new_prop_name->cstr();
+            return;
         }
-        mGlobalPropertyDefinitions[prop_idx] = prop_define;
-        switch (prop_define->getType()) {
-            case PropertyType::Enum:
-            case PropertyType::S32:
-                mGlobalPropertyValues[prop_idx].valueInt = 0;
-                break;
-            case PropertyType::F32:
-                mGlobalPropertyValues[prop_idx].valueFloat = 0.0;
-                break;
-        }
+    }
+
+    mGlobalPropertyDefinitions[prop_idx] = prop_define;
+    switch (prop_define->getType()) {
+    case PropertyType::Enum:
+    case PropertyType::S32:
+        mGlobalPropertyValues[prop_idx].valueInt = 0;
+        break;
+    case PropertyType::F32:
+        mGlobalPropertyValues[prop_idx].valueFloat = 0.0;
+        break;
     }
 }
 
-void System::fixGlobalPropertyDefinition() 
+void System::fixGlobalPropertyDefinition()
 {
     mResourceBuffer->applyGlobalPropertyDefinition(this);
-    if (mEditorBuffer != nullptr) {
+
+    if (mEditorBuffer != nullptr)
         mEditorBuffer->applyGlobalPropertyDefinition();
-    }
+
     mIsGlobalPropFixed = true;
 }
 
@@ -299,53 +311,75 @@ void System::freeGlobalProperty()
 {
     delete[] mGlobalPropertyDefinitions;
     delete[] mGlobalPropertyValues;
-    mNumGlobalProperty = 0; 
+    mNumGlobalProperty = 0;
 }
 
-void System::addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...) {}
+void System::addError([[maybe_unused]] Error::Type error_type, [[maybe_unused]] const User* user,
+                      [[maybe_unused]] const char* fmt, ...)
+{
+}
 
 void System::setGlobalPropertyValue(u32 prop_idx, s32 value)
 {
-    if (isCallEnabled() && 
-        mGlobalPropertyValues != nullptr && 
-        prop_idx < mNumGlobalProperty && 
-        mGlobalPropertyDefinitions[prop_idx]->getType() != PropertyType::F32 &&
-        mGlobalPropertyValues[prop_idx].valueInt != value) {
-            mGlobalPropertyValues[prop_idx].valueInt = value;
-            mGlobalPropertyBitfield.setBit(prop_idx);
-        }
+    if (!isCallEnabled())
+        return;
+
+    if (mGlobalPropertyValues == nullptr)
+        return;
+
+    if (prop_idx >= mNumGlobalProperty)
+        return;
+
+    if (mGlobalPropertyDefinitions[prop_idx]->getType() == PropertyType::F32)
+        return;
+
+    if (mGlobalPropertyValues[prop_idx].valueInt == value)
+        return;
+
+    mGlobalPropertyValues[prop_idx].valueInt = value;
+    mGlobalPropertyBitfield.setBit(static_cast<s32>(prop_idx));
 }
 
 void System::setGlobalPropertyValue(u32 prop_idx, f32 value)
 {
-    if (isCallEnabled() && 
-        mGlobalPropertyValues != nullptr && 
-        prop_idx < mNumGlobalProperty && 
-        mGlobalPropertyDefinitions[prop_idx]->getType() == PropertyType::F32 &&
-        mGlobalPropertyValues[prop_idx].valueFloat != value) {
-            mGlobalPropertyValues[prop_idx].valueFloat = value;
-            mGlobalPropertyBitfield.setBit(prop_idx);
-        }
+    if (!isCallEnabled())
+        return;
+
+    if (mGlobalPropertyValues == nullptr)
+        return;
+
+    if (prop_idx >= mNumGlobalProperty)
+        return;
+
+    if (mGlobalPropertyDefinitions[prop_idx]->getType() != PropertyType::F32)
+        return;
+
+    if (mGlobalPropertyValues[prop_idx].valueFloat == value)
+        return;
+
+    mGlobalPropertyValues[prop_idx].valueFloat = value;
+    mGlobalPropertyBitfield.setBit(static_cast<s32>(prop_idx));
 }
 
 s32 System::searchGlobalPropertyIndex(const char* prop_name) const
 {
     for (u32 i {0}; i < mNumGlobalProperty; ++i) {
-        if (mGlobalPropertyDefinitions[i] != nullptr) {
-            auto* global_prop_name {mGlobalPropertyDefinitions[i]->getPropertyName()};
-            if (strcmp(prop_name, global_prop_name->cstr()) == 0)
-                return i;
-        }
+        if (mGlobalPropertyDefinitions[i] == nullptr)
+            continue;
+
+        auto* global_prop_name {mGlobalPropertyDefinitions[i]->getPropertyName()};
+        if (strcmp(prop_name, global_prop_name->cstr()) == 0)
+            return static_cast<s32>(i);
     }
 
     return -1;
 }
 
-s32 System::incrementEventCreateId_() 
+s32 System::incrementEventCreateId_()
 {
     s32 event_id {mEventCreateId};
     mEventCreateId = mEventCreateId != -1 ? mEventCreateId + 1 : 1;
-    
+
     return event_id;
 }
 
@@ -360,7 +394,7 @@ Event* System::allocEvent()
             return event;
         }
     }
-    
+
     return nullptr;
 }
 
@@ -392,9 +426,8 @@ void System::updateUserForGlobalPropertyTrigger(User* user)
 {
     if (user->getUserResource()->hasGlobalPropertyTrigger())
         registUserForGlobalPropertyTrigger(user);
-    else 
+    else
         unregistUserForGlobalPropertyTrigger_(user);
-
 }
 
 const ParamDefineTable* System::getParamDefineTable() const
@@ -406,32 +439,33 @@ const ParamDefineTable* System::getParamDefineTable(ResMode res_mode) const
 {
     if (res_mode != ResMode::Editor)
         return mResourceBuffer->getParamDefineTable();
-    
+
     if (mEditorBuffer != nullptr)
         return mEditorBuffer->getParamDefineTable();
 
     return nullptr;
 }
 
-User* System::searchUserOrCreate_(const UserInstance::CreateArg& instance_arg, sead::Heap* heap, u32 idx)
+User* System::searchUserOrCreate_(const UserInstance::CreateArg& instance_arg, sead::Heap* heap,
+                                  u32 idx)
 {
     const char* user_name {instance_arg.userName};
     User* user {searchUser(user_name, heap, idx)};
 
     if (user == nullptr) {
         if (mUserCreateHeap != nullptr) {
-            if (mUserCreateHeap->getFreeSize() / 1024  < 5)
+            if (mUserCreateHeap->getFreeSize() / 1024 < 5)
                 return nullptr;
 
             heap = mUserCreateHeap;
         }
 
-        user = new(heap) User(user_name, heap, this, idx);
+        user = new (heap) User(user_name, heap, this, idx);
         mUserList.pushBack(user);
-        
+
         const char** action_slot_name_table {nullptr};
         if (instance_arg.actionSlotNames != nullptr && instance_arg.numActionSlot > 0) {
-            action_slot_name_table = new(heap) const char*[instance_arg.numActionSlot];
+            action_slot_name_table = new (heap) const char*[instance_arg.numActionSlot];
             for (s32 i {0}; i < instance_arg.numActionSlot; ++i)
                 action_slot_name_table[i] = instance_arg.actionSlotNames[i];
             user->setActionSlot(instance_arg.numActionSlot, action_slot_name_table);
@@ -446,52 +480,55 @@ User* System::searchUserOrCreate_(const UserInstance::CreateArg& instance_arg, s
     return user;
 }
 
-void System::drawInformationInstance3D_(UserInstance* user_instance, sead::DrawContext*, sead::TextWriter*) const
+void System::drawInformationInstance3D_(UserInstance* user_instance,
+                                        [[maybe_unused]] sead::DrawContext* draw_context,
+                                        [[maybe_unused]] sead::TextWriter* text_writer) const
 {
     user_instance->getIUser()->getDebugDrawCamera();
     user_instance->getIUser()->getDebugDrawProjection();
 }
 
-void System::drawInformationInstance3D_([[maybe_unused]] UserInstance* user_instance, 
-                                        [[maybe_unused]] sead::DrawContext*, 
-                                        [[maybe_unused]] sead::TextWriter*,
-                                        [[maybe_unused]] const sead::Camera&, 
-                                        [[maybe_unused]] const sead::Projection&,
-                                        [[maybe_unused]] const sead::Viewport&) const 
+void System::drawInformationInstance3D_([[maybe_unused]] UserInstance* user_instance,
+                                        [[maybe_unused]] sead::DrawContext* draw_context,
+                                        [[maybe_unused]] sead::TextWriter* text_writer,
+                                        [[maybe_unused]] const sead::Camera& camera,
+                                        [[maybe_unused]] const sead::Projection& projection,
+                                        [[maybe_unused]] const sead::Viewport& viewport) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::drawText3D_([[maybe_unused]] const sead::Matrix34f&, 
-                         [[maybe_unused]] const sead::Vector2f&, 
-                         [[maybe_unused]] const sead::SafeString&,
-                         [[maybe_unused]] const sead::SafeString&, 
-                         [[maybe_unused]] sead::TextWriter*, 
-                         [[maybe_unused]] IUser*) const 
+void System::drawText3D_([[maybe_unused]] const sead::Matrix34f& matrix34,
+                         [[maybe_unused]] const sead::Vector2f& vector2,
+                         [[maybe_unused]] const sead::SafeString& str1,
+                         [[maybe_unused]] const sead::SafeString& str2,
+                         [[maybe_unused]] sead::TextWriter* text_writer,
+                         [[maybe_unused]] IUser* iuser) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void System::drawText3D_([[maybe_unused]] const sead::Matrix34f&, 
-                         [[maybe_unused]] const sead::Vector2f&, 
-                         [[maybe_unused]] const sead::SafeString&,
-                         [[maybe_unused]] const sead::SafeString&, 
-                         [[maybe_unused]] sead::TextWriter*, 
-                         [[maybe_unused]] const sead::Camera&,
-                         [[maybe_unused]] const sead::Projection&, 
-                         [[maybe_unused]] const sead::Viewport&) const 
+void System::drawText3D_([[maybe_unused]] const sead::Matrix34f& matrix34,
+                         [[maybe_unused]] const sead::Vector2f& vector2,
+                         [[maybe_unused]] const sead::SafeString& str1,
+                         [[maybe_unused]] const sead::SafeString& str2,
+                         [[maybe_unused]] sead::TextWriter* text_writer,
+                         [[maybe_unused]] const sead::Camera& camera,
+                         [[maybe_unused]] const sead::Projection& projection,
+                         [[maybe_unused]] const sead::Viewport& viewport) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-bool System::isDrawTargetInstance_(UserInstance* target_instance) const 
+bool System::isDrawTargetInstance_(UserInstance* target_instance) const
 {
-    if (mDrawInstance != nullptr)
-        return mDrawInstance == target_instance;
-    return target_instance->getSortKey() <= mUserSortKey;
+    if (mDrawInstance == nullptr)
+        return target_instance->getSortKey() <= mUserSortKey;
+
+    return mDrawInstance == target_instance;
 }
 
 void System::clearError([[maybe_unused]] const User* user)
@@ -505,7 +542,8 @@ void* System::getAnyone()
     return nullptr;
 }
 
-void System::updateContainerCount([[maybe_unused]] ContainerType type, [[maybe_unused]] s32) 
+void System::updateContainerCount([[maybe_unused]] ContainerType type,
+                                  [[maybe_unused]] s32 container_idx)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -514,9 +552,15 @@ void System::updateContainerCount([[maybe_unused]] ContainerType type, [[maybe_u
 void System::freeAssetExecutor(AssetExecutor* asset_executor)
 {
     asset_executor->onDestroy_();
-    // TODO: revisit this function to see if this check can be made simpler
-    if ((asset_executor->getContainerType() & -2) != ContainerType_Sequence)
+
+    switch (asset_executor->getContainerType()) {
+    case ContainerType_Sequence:
+    case ContainerType_Asset:
+        break;
+    default:
         asset_executor->fadeBySystem();
+        break;
+    }
 
     asset_executor->setAssetCallTable(nullptr);
     asset_executor->setContainerType(ContainerType_Switch);
@@ -599,7 +643,7 @@ void System::dumpUsers() const
     }
 }
 
-void System::requestSendPickedUserName(const sead::SafeString& /*unused*/)
+void System::requestSendPickedUserName([[maybe_unused]] const sead::SafeString& user_name)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -635,11 +679,11 @@ void System::postDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer
 #endif
 }
 
-void System::drawInformationEmitter_([[maybe_unused]] UserInstance* user_instance, 
-                                     [[maybe_unused]] sead::DrawContext* draw_context, 
-                                     [[maybe_unused]] sead::TextWriter* text_writer, 
-                                     [[maybe_unused]] const sead::Camera& camera, 
-                                     [[maybe_unused]] const sead::Projection& projection, 
+void System::drawInformationEmitter_([[maybe_unused]] UserInstance* user_instance,
+                                     [[maybe_unused]] sead::DrawContext* draw_context,
+                                     [[maybe_unused]] sead::TextWriter* text_writer,
+                                     [[maybe_unused]] const sead::Camera& camera,
+                                     [[maybe_unused]] const sead::Projection& projection,
                                      [[maybe_unused]] const sead::Viewport& viewport) const
 {
 #ifdef SEAD_DEBUG

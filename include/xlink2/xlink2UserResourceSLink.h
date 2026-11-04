@@ -32,6 +32,11 @@ public:
 
     const ResourceAccessorSLink& getResourceAccessor() const { return mAccessor; }
 
+    const UserResourceParamSLink* getParamSLinkWithSetupCheck() const
+    {
+        return static_cast<const UserResourceParamSLink*>(getParamWithSetupCheck());
+    }
+
 private:
     ResourceAccessorSLink mAccessor;
 };

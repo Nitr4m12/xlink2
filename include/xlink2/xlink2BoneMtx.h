@@ -5,6 +5,7 @@
 namespace xlink2 {
 struct BoneMtx {
     BoneMtx() = default;
+    BoneMtx(const sead::Matrix34f* mtx, u8 value0) : rawMtx {mtx}, _0 {value0} {}
 
     void reset()
     {
@@ -14,7 +15,11 @@ struct BoneMtx {
 
     const sead::Matrix34f* getMatrix34fRawPtr() const { return rawMtx; }
 
-    void setRawMtx(const sead::Matrix34f* mtx, u8 unknown) { rawMtx = mtx; _0 = unknown; }
+    void setRawMtx(const sead::Matrix34f* mtx, u8 unknown)
+    {
+        rawMtx = mtx;
+        _0 = unknown;
+    }
     bool isNullMtxPtr() { return rawMtx == nullptr; }
 
     const sead::Matrix34f* rawMtx {&sead::Matrix34f::ident};

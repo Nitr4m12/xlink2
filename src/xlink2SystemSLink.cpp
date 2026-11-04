@@ -1,4 +1,5 @@
 #include "xlink2/xlink2SystemSLink.h"
+
 #include "xlink2/xlink2UserResourceSLink.h"
 
 namespace xlink2 {
@@ -16,27 +17,25 @@ SystemSLink::~SystemSLink()
     }
 }
 
-UserInstanceSLink* SystemSLink::createUserInstance(const UserInstanceSLink::CreateArgSLink& arg, 
+UserInstanceSLink* SystemSLink::createUserInstance(const UserInstanceSLink::CreateArgSLink& arg,
                                                    sead::Heap* heap, u32 i1)
 {
-    {
-        auto lock {sead::makeScopedLock(*sLockProxy)};
-        User* user {searchUserOrCreate_(arg, heap, i1)};
-        if (user != nullptr) {
-            auto* user_instance = new(heap) UserInstanceSLink(arg, this, user, heap);
-            user->addInstance(user_instance);
-            return user_instance;
-        }
-    }
-    return nullptr;
+    auto lock {sead::makeScopedLock(*sLockProxy)};
+    User* user {searchUserOrCreate_(arg, heap, i1)};
+    if (user == nullptr)
+        return nullptr;
+
+    auto* user_instance = new (heap) UserInstanceSLink(arg, this, user, heap);
+    user->addInstance(user_instance);
+    return user_instance;
 }
 
 UserResource* SystemSLink::createUserResource(User* user, sead::Heap* heap)
 {
-    return new(heap) UserResourceSLink(user, heap);
+    return new (heap) UserResourceSLink(user, heap);
 }
 
-u32 SystemSLink::getResourceVersion() const 
+u32 SystemSLink::getResourceVersion() const
 {
     return 28;
 }
@@ -46,12 +45,12 @@ sead::SafeString* SystemSLink::getModuleName() const
     return &sModuleNameSLink;
 }
 
-u32 SystemSLink::getUserParamNum() const 
+u32 SystemSLink::getUserParamNum() const
 {
     return 8;
 }
 
-bool SystemSLink::isEnableUserAssetInfoReadable() 
+bool SystemSLink::isEnableUserAssetInfoReadable()
 {
     return false;
 }
@@ -74,7 +73,8 @@ void SystemSLink::genMessage([[maybe_unused]] sead::hostio::Context* ctx)
 #endif
 }
 
-void SystemSLink::listenPropertyEvent([[maybe_unused]] const sead::hostio::PropertyEvent* property_event)
+void SystemSLink::listenPropertyEvent(
+    [[maybe_unused]] const sead::hostio::PropertyEvent* property_event)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -87,10 +87,10 @@ sead::SafeString* SystemSLink::getORIconString()
 
 Event* SystemSLink::getEventFromPool_(u32 idx) const
 {
-    if (idx < mMaxNumEventPool)
-        return &mpEventPool[idx];
+    if (idx >= mMaxNumEventPool)
+        return nullptr;
 
-    return nullptr;
+    return &mpEventPool[idx];
 }
 
 void SystemSLink::drawInformationSystemDetail_([[maybe_unused]] sead::TextWriter* text_writer) const
@@ -105,18 +105,18 @@ void SystemSLink::drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_
 #endif
 }
 
-void SystemSLink::drawInformationEmitter_([[maybe_unused]] UserInstance* user_instance, 
-                                          [[maybe_unused]] sead::DrawContext* draw_context, 
-                                          [[maybe_unused]] sead::TextWriter* text_writer, 
-                                          [[maybe_unused]] const sead::Camera& camera, 
-                                          [[maybe_unused]] const sead::Projection& projection, 
+void SystemSLink::drawInformationEmitter_([[maybe_unused]] UserInstance* user_instance,
+                                          [[maybe_unused]] sead::DrawContext* draw_context,
+                                          [[maybe_unused]] sead::TextWriter* text_writer,
+                                          [[maybe_unused]] const sead::Camera& camera,
+                                          [[maybe_unused]] const sead::Projection& projection,
                                           [[maybe_unused]] const sead::Viewport& viewport) const
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-ILockProxy* SystemSLink::getModuleLockObj() const 
+ILockProxy* SystemSLink::getModuleLockObj() const
 {
     return sLockProxy;
 }

@@ -7,8 +7,7 @@
 namespace xlink2 {
 EditorBuffer::~EditorBuffer() = default;
 
-EditorBuffer::EditorBuffer(System* system, sead::Heap* heap)
-    : mSystem(system), mHeap(heap)
+EditorBuffer::EditorBuffer(System* system, sead::Heap* heap) : mSystem(system), mHeap(heap)
 {
     auto* param_define_table = new (heap, 8) ParamDefineTable;
     param_define_table->reset();
@@ -30,7 +29,7 @@ void EditorBuffer::destroy()
     }
 
     delete[] mParamDefineBuffer;
-    delete mParamDefineTable; 
+    delete mParamDefineTable;
 }
 
 u8* EditorBuffer::allocReceiveBuffer(u32 buffer_size)

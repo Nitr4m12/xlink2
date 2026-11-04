@@ -7,5 +7,6 @@ namespace xlink2 {
 struct UserResourceParamELink : public UserResourceParam {
     sead::Buffer<SolvedAssetParamELink> solvedAssetParamBuffer;
 };
-static_assert(sizeof(UserResourceParamELink) == 0xc0, "'xlink2::UserResourceParamELink' size mismatch");
+static_assert(sizeof(UserResourceParamELink) == 0xc0,
+              "'xlink2::UserResourceParamELink' size mismatch");
 }  // namespace xlink2

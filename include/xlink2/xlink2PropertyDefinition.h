@@ -9,7 +9,9 @@ class PropertyDefinition {
 public:
     PropertyDefinition() = default;
     PropertyDefinition(const char* name, PropertyType type, u8 unk)
-        : mPropertyName(name), mType(type), _0(unk) {}
+        : mPropertyName(name), mType(type), _0(unk)
+    {
+    }
 
     virtual ~PropertyDefinition() = default;
 
@@ -26,7 +28,7 @@ static_assert(sizeof(PropertyDefinition) == 0x68, "xlink2::PropertyDefinition si
 class F32PropertyDefinition : public PropertyDefinition {
 public:
     ~F32PropertyDefinition() override;
-    
+
 private:
     f32 mMinValue;
     f32 mMaxValue;
@@ -36,7 +38,7 @@ static_assert(sizeof(F32PropertyDefinition) == 0x70, "xlink2::F32PropertyDefinit
 class S32PropertyDefinition : public PropertyDefinition {
 public:
     ~S32PropertyDefinition() override;
-    
+
 private:
     s32 mMinValue;
     s32 mMaxValue;

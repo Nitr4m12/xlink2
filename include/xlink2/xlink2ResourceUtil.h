@@ -13,7 +13,6 @@ public:
 
     static TriggerType getActionTriggerType(const ResActionTrigger& action_trigger)
     {
-        
         if (action_trigger.flag.isOnBit(2))
             return TriggerType::Property;
 

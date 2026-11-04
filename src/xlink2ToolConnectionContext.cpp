@@ -11,4 +11,4 @@ void ToolConnectionContext::addLabel(const char* label)
     mLabel[len] = '\0';
     mLabel = mLabel + len + 1;
 }
-}
+}  // namespace xlink2

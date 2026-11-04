@@ -1,7 +1,7 @@
 #pragma once
 
-#include <prim/seadSafeString.h>
 #include <container/seadListImpl.h>
+#include <prim/seadSafeString.h>
 
 #include "xlink2/xlink2CommonResourceParam.h"
 

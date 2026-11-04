@@ -34,9 +34,9 @@ public:
         sead::BitFlag32 flag2;
         u8 _0xf0;
         void* _0xf8;
-
     };
-    static_assert(sizeof(DelayEmitParam) == 0x100, "'xlink2::EventELink::DelayEmitParam' size mismatch");
+    static_assert(sizeof(DelayEmitParam) == 0x100,
+                  "'xlink2::EventELink::DelayEmitParam' size mismatch");
 
     void callEventCreateCallback_() override;
     void callEventDestroyCallback_() override;
@@ -54,7 +54,10 @@ public:
     void emitParticle(sead::Vector3f&);
     AssetExecutorELink* getAliveAssetExecutor() const;
 
-    UserInstanceELink* getUserInstanceELink() const { return static_cast<UserInstanceELink*>(mpUserInstance); }
+    UserInstanceELink* getUserInstanceELink() const
+    {
+        return static_cast<UserInstanceELink*>(mpUserInstance);
+    }
 
 private:
     DelayEmitParam mDelayEmitParam;

@@ -97,10 +97,11 @@ s32 EventELink::getMtxSetType()
         auto& resource_accessor = getUserInstanceELink()->getResourceAccessor();
         return resource_accessor.getMtxSetType(*mAliveAssetExecutors.begin()->getAssetCallTable());
     }
-    
+
     if (!mFadeBySystemAssetExecutors.isEmpty()) {
         auto& resource_accessor = getUserInstanceELink()->getResourceAccessor();
-        return resource_accessor.getMtxSetType(*mFadeBySystemAssetExecutors.begin()->getAssetCallTable());
+        return resource_accessor.getMtxSetType(
+            *mFadeBySystemAssetExecutors.begin()->getAssetCallTable());
     }
 
     return 0;
@@ -139,9 +140,12 @@ AssetExecutorELink* EventELink::getAliveAssetExecutor() const
     if (mAliveAssetExecutors.size() == 1)
         return static_cast<AssetExecutorELink*>(&*mAliveAssetExecutors.begin());
 
-    if (mAliveAssetExecutors.size() > 1)
-        SystemELink::instance()->addError(Error::Type::EventHasMultipleAsset, mpUserInstance->getUser(), "getAliveAssetExecutor failed");
+    if (mAliveAssetExecutors.size() > 1) {
+        SystemELink::instance()->addError(Error::Type::EventHasMultipleAsset,
+                                          mpUserInstance->getUser(),
+                                          "getAliveAssetExecutor failed");
+    }
 
     return nullptr;
 }
-} // namespace xlink2
+}  // namespace xlink2

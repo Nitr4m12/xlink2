@@ -46,12 +46,9 @@ public:
         sead::Vector3f* _18;
     };
 
-    enum class ParamType : u8 {
-        Normal,
-        Editor
-    };
+    enum class ParamType : u8 { Normal, Editor };
 
-    UserInstance(const CreateArg&, [[maybe_unused]] System*, User*, sead::Heap*);
+    UserInstance(const CreateArg&, System*, User*, sead::Heap*);
     void destroy();
 
     bool checkAndErrorCallInCalc(const char* /*unused*/, ...) const;
@@ -121,7 +118,7 @@ public:
     void makeDebugStringUserInformation(sead::BufferedSafeString*) const;
     void makeDebugStringAction(sead::BufferedSafeString*, const sead::SafeString&) const;
     void makeDebugStringLocalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;
-    void setDebugLogFlag([[maybe_unused]] sead::BitFlag32);
+    void setDebugLogFlag(sead::BitFlag32);
 
     void setRootMtx(const sead::Matrix34f* root_mtx);
     void setRootPos(const sead::Vector3f* root_pos);
@@ -150,11 +147,11 @@ public:
     virtual void onReset_();
     virtual void onDestroy_() = 0;
     virtual UserInstanceParam* allocInstanceParam_(sead::Heap*) = 0;
-    virtual void freeInstanceParam_(UserInstanceParam*, [[maybe_unused]] ResMode);
-    virtual void onSetupInstanceParam_([[maybe_unused]] ResMode, [[maybe_unused]] sead::Heap*);
+    virtual void freeInstanceParam_(UserInstanceParam*, ResMode);
+    virtual void onSetupInstanceParam_(ResMode, sead::Heap*);
     virtual void initModelAssetConnection_(ResMode, const ParamDefineTable*, sead::Heap*) = 0;
-    virtual bool doEventActivatingCallback_([[maybe_unused]] const Locator&);
-    virtual void doEventActivatedCallback_([[maybe_unused]] const Locator&, [[maybe_unused]] Event*);
+    virtual bool doEventActivatingCallback_(const Locator&);
+    virtual void doEventActivatedCallback_(const Locator&, Event*);
 
     User* getUser() const { return mUser; }
     UserResource* getUserResource() const { return mUser->getUserResource(); }
@@ -188,7 +185,7 @@ protected:
     IUser* mIUser {};
     BoneMtx mRootMtx {};
     const sead::Vector3f* mRootPos {};
-    const sead::Vector3f* mScale {}; // Just a guess
+    const sead::Vector3f* mScale {};  // Just a guess
     f32 mSortKey {INFINITY};
     sead::BitFlag64 mValueChangedBitfield;
     PropertyValueType* mPropertyValueArray {};

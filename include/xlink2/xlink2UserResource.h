@@ -5,8 +5,8 @@
 
 #include "xlink2/xlink2Locator.h"
 #include "xlink2/xlink2ResMode.h"
-#include "xlink2/xlink2UserResourceParam.h"
 #include "xlink2/xlink2User.h"
+#include "xlink2/xlink2UserResourceParam.h"
 
 namespace xlink2 {
 class ParamDefineTable;
@@ -25,7 +25,7 @@ public:
                              const ParamDefineTable*, sead::Heap*);
 
     const ResUserHeader* getUserHeader() const;
-    
+
     bool searchAssetCallTableByName(Locator*, const char*) const;
     ResAssetCallTable* searchAssetCallTableByName(const char*) const;
     ResAssetCallTable* doBinarySearchAsset_(const char*, [[maybe_unused]] TriggerType) const;
@@ -48,25 +48,29 @@ public:
     static bool doBinarySearchToNameArray_(s32*, const char*, u32*, u32);
 
     static void solveNeedObserveFlag_(UserResourceParam*);
-    static bool solveNeedObserveFlagImpl_(u32, ResAssetCallTable*, UserResourceParam*, ResUserHeader*);
-    
+    static bool solveNeedObserveFlagImpl_(u32, ResAssetCallTable*, UserResourceParam*,
+                                          ResUserHeader*);
+
     ResAssetCallTable* searchAssetAllResource(const char*) const;
-    
+
     bool hasGlobalPropertyTrigger() const;
 
     sead::DateTime* getEditorSetupTime() const;
     void checkAndAddErrorMultipleKeyByTrigger(const ResAssetCallTable&, TriggerType);
-    
+
     bool searchAssetCallTableByGuid(Locator*, s32) const;
 
     virtual void onSetupResourceParam_(UserResourceParam*, const ParamDefineTable*, sead::Heap*);
 
     UserResourceParam* getParam() const { return mParams[static_cast<s32>(mResMode)]; }
     UserResourceParam* getParam(ResMode mode) const { return mParams[static_cast<s32>(mode)]; }
-    UserResourceParam* getParamWithSetupCheck() const { return getParam() != nullptr && getParam()->isSetup ? getParam() : nullptr; }
-    
+    UserResourceParam* getParamWithSetupCheck() const
+    {
+        return getParam() != nullptr && getParam()->isSetup ? getParam() : nullptr;
+    }
+
     sead::SafeArray<UserResourceParam*, 2> getParamBuffer() const { return mParams; }
-    
+
     ResMode getResMode() const { return mResMode; }
     User* getUser() const { return mUser; }
 

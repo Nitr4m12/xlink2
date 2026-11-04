@@ -35,7 +35,7 @@ public:
     UserResource* createUserResource(User*, sead::Heap*) override;
 
     void allocHandle(sead::Heap* heap) override;
-    AssetExecutor* allocAssetExecutor(Event* event) override;
+    AssetExecutorELink* allocAssetExecutor(Event* event) override;
 
     u32 getResourceVersion() const override;
     sead::SafeString* getModuleName() const override;
@@ -44,19 +44,19 @@ public:
     void genMessage(sead::hostio::Context* ctx) override;
     void listenPropertyEvent(const sead::hostio::PropertyEvent* property_event) override;
 #else
-    void genMessage([[maybe_unused]] sead::hostio::Context* ctx);
-    void listenPropertyEvent([[maybe_unused]] const sead::hostio::PropertyEvent* property_event);
+    void genMessage(sead::hostio::Context* ctx);
+    void listenPropertyEvent(const sead::hostio::PropertyEvent* property_event);
 #endif
 
     const sead::SafeString* getORIconString();
 
-    Event* getEventFromPool_(u32 idx) const override;
+    EventELink* getEventFromPool_(u32 idx) const override;
 
-    void preDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const override;
-    void postDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const override;
+    void preDrawInformation_(sead::TextWriter* text_writer) const override;
+    void postDrawInformation_(sead::TextWriter* text_writer) const override;
 
-    void drawInformationSystemDetail_([[maybe_unused]] sead::TextWriter* text_writer) const override;
-    void drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_writer) const override;
+    void drawInformationSystemDetail_(sead::TextWriter* text_writer) const override;
+    void drawInformationEvent_(sead::TextWriter* text_writer) const override;
 
     void makeDebugAssetInformationString(s32, sead::BufferedSafeString*, sead::BufferedSafeString&,
                                          const sead::SafeString&, Event*, AssetExecutorELink*,

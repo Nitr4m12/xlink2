@@ -6,8 +6,7 @@
 #include "xlink2/xlink2TriggerCtrl.h"
 
 namespace xlink2 {
-class PropertyTriggerCtrl : TriggerCtrl {
-    
+class PropertyTriggerCtrl : public TriggerCtrl {
 public:
     PropertyTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*, s32, bool,
                         const ResProperty*, ResMode);

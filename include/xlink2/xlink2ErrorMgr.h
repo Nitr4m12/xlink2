@@ -18,7 +18,8 @@ public:
     explicit ErrorMgr(const System*);
     ~ErrorMgr() = default;
 
-    void add([[maybe_unused]] Error::Type, [[maybe_unused]] const User*, [[maybe_unused]] const char*);
+    void add([[maybe_unused]] Error::Type, [[maybe_unused]] const User*,
+             [[maybe_unused]] const char*);
     void clear([[maybe_unused]] const User*);
     void clearAll();
     void calc();

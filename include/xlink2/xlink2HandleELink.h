@@ -6,7 +6,7 @@
 #include "xlink2/xlink2UserInstanceELink.h"
 
 namespace xlink2 {
-class HandleELink : public Handle /*, nn::vfx::Handle*/{
+class HandleELink : public Handle /*, nn::vfx::Handle*/ {
 public:
     using Handle::Handle;
 

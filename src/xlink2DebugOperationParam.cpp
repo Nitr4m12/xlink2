@@ -20,4 +20,4 @@ DebugOperationParam::DebugOperationParam()
     mBreakTargetOnly = false;
     mDebugUserFlag.set(0x70000);
 }
-}
+}  // namespace xlink2

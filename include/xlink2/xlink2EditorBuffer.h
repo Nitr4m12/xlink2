@@ -24,13 +24,13 @@ public:
     ParamDefineTable* getParamDefineTable() const { return mParamDefineTable; }
 
 private:
-    System* mSystem{nullptr};
-    sead::Heap* mHeap{nullptr};
+    System* mSystem {nullptr};
+    sead::Heap* mHeap {nullptr};
     sead::OffsetList<xlink2::EditorResourceParam> mParams;
-    u8* mReceiveBuffer{nullptr};
-    u32 mReceiveBufferSize{0};
+    u8* mReceiveBuffer {nullptr};
+    u32 mReceiveBufferSize {0};
     sead::FixedSafeString<64> _6;
-    ParamDefineTable* mParamDefineTable{nullptr};
-    u8* mParamDefineBuffer{nullptr};
+    ParamDefineTable* mParamDefineTable {nullptr};
+    u8* mParamDefineBuffer {nullptr};
 };
 }  // namespace xlink2

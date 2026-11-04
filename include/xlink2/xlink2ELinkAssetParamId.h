@@ -1,14 +1,12 @@
 #pragma once
 
-#include <basis/seadNew.h>
-
 namespace xlink2 {
-enum class ELinkAssetParamId : u32 {
+enum class ELinkAssetParamId {
     AssetName,
     RuntimeAssetName,
     Eset,
     GroupName,
-    GrouId,
+    GroupId,
     Delay,
     Duration,
     Clip,
@@ -34,4 +32,4 @@ enum class ELinkAssetParamId : u32 {
     LifeScale,
     BitFlag,
 };
-} // namespace xlink2
+}  // namespace xlink2

@@ -10,7 +10,8 @@ struct RomResourceParam : CommonResourceParam {
     u32 numUser {0};
     bool isInitialized {false};
 
-    void reset() {
+    void reset()
+    {
         CommonResourceParam::reset();
         pResHeader = nullptr;
         nameHashTable = nullptr;

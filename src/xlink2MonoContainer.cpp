@@ -84,9 +84,9 @@ bool MonoContainer::initialize(Event* event, const ResAssetCallTable& asset_ctb)
     AssetExecutor* child_executor {system->allocAssetExecutor(event)};
 
     mpChild = reinterpret_cast<ContainerBase*>(child_executor);
-    
+
     if (child_executor == nullptr) {
-        user_instance->printLogEmitFailed(*mpEvent, "alloc AssetExecutor[%s] failed", 
+        user_instance->printLogEmitFailed(*mpEvent, "alloc AssetExecutor[%s] failed",
                                           solveOffset<const char>(asset_ctb.keyNamePos));
         return false;
     }
@@ -94,9 +94,10 @@ bool MonoContainer::initialize(Event* event, const ResAssetCallTable& asset_ctb)
     auto& accessor {user_instance->getUserResource()->getAccessor()};
     f32 duration {accessor.getDuration(asset_ctb, user_instance)};
     if (duration > 0.0f) {
-        f32 delay {accessor.getDelayWithOverwrite(asset_ctb, 
-                                                  reinterpret_cast<u64>(event->getOverwriteParam()), 
-                                                  user_instance)};
+        f32 delay {
+            accessor.getDelayWithOverwrite(
+                asset_ctb, reinterpret_cast<u64>(event->getOverwriteParam()), user_instance),
+        };
         duration += delay;
     }
     else {
@@ -117,15 +118,15 @@ bool MonoContainer::start()
         child_executor->setUserInstance(mpEvent->getUserInstance());
         child_executor->setAssetCallTable(asset_ctb);
 
-        child_executor->setOverwriteParam(child_event->getOverwriteParam(), child_event->getBoneMtx());
+        child_executor->setOverwriteParam(child_event->getOverwriteParam(),
+                                          child_event->getBoneMtx());
 
         if (!child_event->getAliveAssetExecutors().isNodeLinked(child_executor))
             child_event->getAliveAssetExecutors().pushBack(child_executor);
-    
+
         return child_executor->activateImpl_();
     }
 
     return false;
-    
 }
-} // namespace xlink2
+}  // namespace xlink2

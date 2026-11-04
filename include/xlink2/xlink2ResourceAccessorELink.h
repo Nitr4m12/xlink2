@@ -5,24 +5,19 @@
 namespace xlink2 {
 class ResourceAccessorELink : public ResourceAccessor {
 public:
-    enum class ClipType {
-        None,
-        Kill,
-        NeedObserve,
-        Unknown
-    };
+    enum class ClipType { None, Kill, NeedObserve, Unknown };
 
     ~ResourceAccessorELink() override = default;
 
     bool isBlankAsset(const ResAssetCallTable& asset_ctb) const override;
 
     const char* getAssetName(const ResAssetCallTable& asset_ctb) const;
-    
+
     s16 getEsetVal(const ResAssetCallTable& asset_ctb) const;
-    
+
     const char* getGroupName(const ResAssetCallTable& asset_ctb) const;
     s8 getGroupId(const ResAssetCallTable& asset_ctb) const;
-    
+
     ClipType getClipType(const ResAssetCallTable& asset_ctb) const;
 
     bool isAutoOneTimeFade(const ResAssetCallTable& asset_ctb) const override;
@@ -36,7 +31,8 @@ public:
     bool isUseOneEmitter(const ResAssetCallTable& asset_ctb) const;
 
     f32 getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    f32 getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const override;
+    f32 getDuration(const ResAssetCallTable& asset_ctb,
+                    const UserInstance* user_instance) const override;
 
     const char* getBoneName(const ResAssetCallTable& asset_ctb) const override;
 
@@ -55,9 +51,12 @@ public:
     f32 getColorBlue(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     f32 getAlpha(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
 
-    f32 getEmissionRate(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    f32 getEmissionScale(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    f32 getEmissionInterval(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getEmissionRate(const ResAssetCallTable& asset_ctb,
+                        const UserInstance* user_instance) const;
+    f32 getEmissionScale(const ResAssetCallTable& asset_ctb,
+                         const UserInstance* user_instance) const;
+    f32 getEmissionInterval(const ResAssetCallTable& asset_ctb,
+                            const UserInstance* user_instance) const;
 
     f32 getDirectionalVel(const ResAssetCallTable& asset_ctb, const UserInstance*) const;
 
@@ -84,28 +83,41 @@ public:
 
     f32 getOverwriteEmissionRate(u32 idx, const UserInstance* user_instance) const;
 
-    f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const override;
+    f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                              const UserInstance* user_instance) const override;
 
     const char* getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx) const;
 
-    f32 getScaleWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getScaleWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                              const UserInstance* user_instance) const;
 
-    f32 getPositionXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getPositionYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getPositionZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getPositionXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                  const UserInstance* user_instance) const;
+    f32 getPositionYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                  const UserInstance* user_instance) const;
+    f32 getPositionZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                  const UserInstance* user_instance) const;
 
-    f32 getRotationXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getRotationYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getRotationZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getRotationXWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                  const UserInstance* user_instance) const;
+    f32 getRotationYWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                  const UserInstance* user_instance) const;
+    f32 getRotationZWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                  const UserInstance* user_instance) const;
 
-    f32 getColorRedWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getColorGreenWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getColorBlueWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
-    f32 getAlphaWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getColorRedWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                 const UserInstance* user_instance) const;
+    f32 getColorGreenWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                   const UserInstance* user_instance) const;
+    f32 getColorBlueWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                  const UserInstance* user_instance) const;
+    f32 getAlphaWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                              const UserInstance* user_instance) const;
 
-    f32 getEmissionRateWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx, const UserInstance* user_instance) const;
+    f32 getEmissionRateWithOverwrite(const ResAssetCallTable& asset_ctb, u32 idx,
+                                     const UserInstance* user_instance) const;
 
-    s32 getTriggerOverwriteParamId_(u32 idx) const override;
+    s32 getTriggerOverwriteParamId_(u32 param_id) const override;
 
     sead::BitFlag32 getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const override;
 

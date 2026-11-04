@@ -1,10 +1,10 @@
 #pragma once
 
-#include <prim/seadBitFlag.h>
 #include <math/seadMathCalcCommon.h>
+#include <prim/seadBitFlag.h>
 
-#include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2ParamDefineTable.h"
+#include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2System.h"
 #include "xlink2/xlink2UserInstance.h"
 
@@ -15,7 +15,7 @@ class ResourceAccessor {
 public:
     // Only matches SLink and ELink accessors destructors if marked default on header
     virtual ~ResourceAccessor() = default;
-    
+
     virtual bool isBlankAsset(const ResAssetCallTable&) const = 0;
     virtual const char* getBoneName(const ResAssetCallTable&) const = 0;
     virtual bool isBoneNameOverwritten(u32) const = 0;
@@ -56,7 +56,7 @@ public:
 
     s32 getResParamValueInt_(const ResParam&) const;
     s32 getCustomParamValueInt(u32, const ResAssetCallTable&) const;
-    
+
     f32 getCustomParamValueFloat(u32, const ResAssetCallTable&, const UserInstance*) const;
     f32 getResParamValueFloat_(const ResParam&, const UserInstance*) const;
 
@@ -131,60 +131,70 @@ public:
     void setSystem(System* system) { mpSystem = system; }
 
 protected:
-    const char* _getResParamValueString_(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, const char* fallback) const
+    // Helper functions to prevent code duplication where possible
+    const char* getValueString_(const char* func_name, const ResAssetCallTable& asset_ctb,
+                                s32 param_idx, const char* fallback) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return fallback;
 
-        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
-        if (asset_param != nullptr)
-            return getResParamValueString_(*asset_param);
+        const ResParam* asset_param {
+            getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+        if (asset_param == nullptr)
+            return mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(param_idx);
 
-        return mpSystem->getParamDefineTable()->getAssetParamDefaultValueString(param_idx);
+        return getResParamValueString_(*asset_param);
     }
 
-    s32 _getResParamValueInt_(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx, s32 fallback) const
+    s32 getValueInt_(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx,
+                     s32 fallback) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return fallback;
-    
-        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
-        if (asset_param != nullptr)
-            return getResParamValueInt_(*asset_param);
 
-        return mpSystem->getParamDefineTable()->getAssetParamDefaultValueInt(param_idx);
+        const ResParam* asset_param {
+            getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+        if (asset_param == nullptr)
+            return mpSystem->getParamDefineTable()->getAssetParamDefaultValueInt(param_idx);
+
+        return getResParamValueInt_(*asset_param);
     }
 
-    f32 _getResParamValueFloat_(const char* func_name, const ResAssetCallTable& asset_ctb, 
-                              s32 param_idx, f32 fallback, const UserInstance* user_instance) const
+    f32 getValueFloat_(const char* func_name, const ResAssetCallTable& asset_ctb, s32 param_idx,
+                       f32 fallback, const UserInstance* user_instance) const
     {
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return fallback;
-    
-        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
-        if (asset_param != nullptr)
-            return getResParamValueFloat_(*asset_param, user_instance);
-        
-        return mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
+
+        const ResParam* asset_param {
+            getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+        if (asset_param == nullptr)
+            return mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
+
+        return getResParamValueFloat_(*asset_param, user_instance);
     }
-    
-    f32 _getResParamValueFloatWithLowerLimit_(const char* func_name, const ResAssetCallTable& asset_ctb, 
-                                       s32 param_idx, f32 fallback, const UserInstance* user_instance) const
+
+    f32 getValueFloatWithLowerLimit_(const char* func_name, const ResAssetCallTable& asset_ctb,
+                                     s32 param_idx, f32 fallback,
+                                     const UserInstance* user_instance) const
     {
         f32 param_value {fallback};
         if (!checkAndErrorIsAsset_(asset_ctb, func_name))
             return param_value;
-        
-        const ResParam* asset_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
+
+        const ResParam* asset_param {
+            getResParamFromAssetParamPos(asset_ctb.paramStartPos, param_idx)};
         if (asset_param != nullptr)
             param_value = getResParamValueFloat_(*asset_param, user_instance);
         else
-            param_value = mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
+            param_value =
+                mpSystem->getParamDefineTable()->getAssetParamDefaultValueFloat(param_idx);
 
         return param_value < 0.0f ? 0.0f : param_value;
     }
 
-    f32 _getResOverwriteParamValueFloatWithLimit_(u32 idx, u32 define_idx, const UserInstance* user_instance) const
+    f32 getOverwriteValueFloatWithLimit_(u32 idx, u32 define_idx,
+                                         const UserInstance* user_instance) const
     {
         f32 param_value {getResOverwriteParamValueFloat_(idx, define_idx, user_instance)};
         return param_value < 0.0f ? 0.0f : param_value;
@@ -195,7 +205,7 @@ protected:
     System* mpSystem;
 };
 
-class ResourceAccessor2 : public ResourceAccessor {
+class ResourceAccessor2 {
 public:
     ResourceAccessor2(const UserInstance*, const ResAssetCallTable&, s32, u64);
 

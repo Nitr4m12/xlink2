@@ -29,7 +29,6 @@ public:
 
     void genMessage(sead::hostio::Context*);
 
-
 private:
     System* mSystem;
     sead::CriticalSection mCriticalSection;

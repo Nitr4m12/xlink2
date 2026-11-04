@@ -38,9 +38,11 @@ public:
 
     void onSetupInstanceParam_(ResMode res_mode, sead::Heap* heap) override;
 
-    void initModelAssetConnection_(ResMode res_mode, const ParamDefineTable* pdt, sead::Heap* heap) override;
+    void initModelAssetConnection_(ResMode res_mode, const ParamDefineTable* pdt,
+                                   sead::Heap* heap) override;
 
-    void makeDebugStringEvent(sead::BufferedSafeString* event_name, const sead::SafeString& filter_name) const override;
+    void makeDebugStringEvent(sead::BufferedSafeString* event_name,
+                              const sead::SafeString& filter_name) const override;
 
     u32 getDefaultGroup() const override;
 

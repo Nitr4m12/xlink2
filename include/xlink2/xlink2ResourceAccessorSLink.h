@@ -5,7 +5,7 @@
 #include "xlink2/xlink2ResourceAccessor.h"
 
 namespace aal {
-SEAD_ENUM(FadeCurveType, Linear, Square, Sqrt, Sin);
+SEAD_ENUM(FadeCurveType, Linear, Square, Sqrt, Sin)
 }
 
 namespace xlink2 {
@@ -42,9 +42,11 @@ public:
     f32 getFadeInTime(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
     aal::FadeCurveType getFadeCurveType(const ResAssetCallTable& asset_ctb) const;
     f32 getDelay(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    f32 getDuration(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const override;
+    f32 getDuration(const ResAssetCallTable& asset_ctb,
+                    const UserInstance* user_instance) const override;
     f32 getPriority(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
-    f32 getDopplerFactor(const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const;
+    f32 getDopplerFactor(const ResAssetCallTable& asset_ctb,
+                         const UserInstance* user_instance) const;
     const char* getBoneName(const ResAssetCallTable& asset_ctb) const override;
     const char* getDistanceParamSetName(const ResAssetCallTable& asset_ctb) const;
 
@@ -57,16 +59,24 @@ public:
     f32 getOverwritePriority(u32 overwrite_param_pos, const UserInstance* user_instance) const;
     const char* getOverwriteBoneName(u32 overwrite_param_pos) const override;
 
-    f32 getVolumeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const;
-    f32 getPitchWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const;
-    f32 getLpfWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const;
-    f32 getStopFrameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const;
-    f32 getFadeInTimeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const;
-    f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const override;
-    f32 getPriorityWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos, const UserInstance* user_instance) const;
-    const char* getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos) const;
+    f32 getVolumeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos,
+                               const UserInstance* user_instance) const;
+    f32 getPitchWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos,
+                              const UserInstance* user_instance) const;
+    f32 getLpfWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos,
+                            const UserInstance* user_instance) const;
+    f32 getStopFrameWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos,
+                                  const UserInstance* user_instance) const;
+    f32 getFadeInTimeWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos,
+                                   const UserInstance* user_instance) const;
+    f32 getDelayWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos,
+                              const UserInstance* user_instance) const override;
+    f32 getPriorityWithOverwrite(const ResAssetCallTable& asset_ctb, u32 overwrite_param_pos,
+                                 const UserInstance* user_instance) const;
+    const char* getBoneNameWithOverwrite(const ResAssetCallTable& asset_ctb,
+                                         u32 overwrite_param_pos) const;
 
-    s32 getTriggerOverwriteParamId_(u32 idx) const override;
+    s32 getTriggerOverwriteParamId_(u32 param_id) const override;
 
     sead::BitFlag32 getAssetBitFlag_(const ResAssetCallTable& asset_ctb) const override;
 

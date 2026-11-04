@@ -23,7 +23,7 @@ enum ContainerType {
     ContainerType_Random2,
     ContainerType_Blend,
     ContainerType_Sequence,
-    ContainerType_Asset
+    ContainerType_Asset,
 };
 
 enum class MtxSetType {
@@ -37,7 +37,7 @@ enum class ParamValueType : u32 {
     Enum = 3,
     String = 4,
     Arrange = 5,
-    Invalid = 0xFFFFFFFF
+    Invalid = 0xFFFFFFFF,
 };
 
 enum class PropertyType : u32 {
@@ -46,20 +46,14 @@ enum class PropertyType : u32 {
     F32,
 };
 
-enum class TriggerType : s32 {
-    Action = 0,
-    Property = 1,
-    Always = 2,
-    None = 3,
-    Invalid = -1
-};
+enum class TriggerType : s32 { Action = 0, Property = 1, Always = 2, None = 3, Invalid = -1 };
 
 enum class ValueReferenceType {
-    Direct,                           
-    String,                           
-    Curve,                            
-    Random,                           
-    ArrangeGroup,                      
+    Direct,
+    String,
+    Curve,
+    Random,
+    ArrangeGroup,
     Bitflag,
     Random2Pow,
     Random3Pow,
@@ -81,4 +75,4 @@ struct PropertyValueType {
         s32 valueInt;
     };
 };
-}
+}  // namespace xlink2

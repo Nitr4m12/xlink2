@@ -28,7 +28,7 @@ void Event::initialize(u32 create_id)
 
 void Event::initializeImpl_() {}
 
-void Event::finalize() 
+void Event::finalize()
 {
     doFinalize_();
     destroyAllContainerAndAssetExecutor_();
@@ -37,7 +37,7 @@ void Event::finalize()
 
 void Event::doFinalize_() {}
 
-void Event::destroyAllContainerAndAssetExecutor_() 
+void Event::destroyAllContainerAndAssetExecutor_()
 {
     if (mpRootContainer != nullptr)
         mpRootContainer->destroy();
@@ -51,7 +51,7 @@ void Event::destroyAllContainerAndAssetExecutor_()
 void Event::callEventCreateCallback_() {}
 void Event::callEventDestroyCallback_() {}
 
-void Event::reEmit(const ResAssetCallTable* asset_ctb) 
+void Event::reEmit(const ResAssetCallTable* asset_ctb)
 {
     mBitFlag.set(0b110100);
     kill();
@@ -59,9 +59,9 @@ void Event::reEmit(const ResAssetCallTable* asset_ctb)
 
     destroyAllContainerAndAssetExecutor_();
     createRootContainer(mpUserInstance, *asset_ctb);
-}   
+}
 
-void Event::kill() 
+void Event::kill()
 {
     mBitFlag.set(0b110000);
     if (mpUserInstance != nullptr) {
@@ -77,23 +77,24 @@ void Event::kill()
     }
 }
 
-void Event::killOneTimeEvent() 
+void Event::killOneTimeEvent()
 {
-    if (mpUserInstance != nullptr) {
-        System* sys {mpUserInstance->getUser()->getSystem()};
-        {
-            auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
-            if (mpRootContainer != nullptr)
-                mpRootContainer->killOneTimeEvent();
+    if (mpUserInstance == nullptr)
+        return;
 
-            for (auto& executor : mFadeBySystemAssetExecutors)
-                if (!executor.isLoopEvent())    
-                    executor.kill();
-        }
+    System* sys {mpUserInstance->getUser()->getSystem()};
+    {
+        auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
+        if (mpRootContainer != nullptr)
+            mpRootContainer->killOneTimeEvent();
+
+        for (auto& executor : mFadeBySystemAssetExecutors)
+            if (!executor.isLoopEvent())
+                executor.kill();
     }
 }
 
-bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallTable& asset_ctb) 
+bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallTable& asset_ctb)
 {
     mpUserInstance = user_instance;
     mpAssetCallTable = &asset_ctb;
@@ -116,17 +117,16 @@ bool Event::createRootContainer(UserInstance* user_instance, const ResAssetCallT
 
 bool Event::calc()
 {
-
     if (mBitFlag.isOnBit(6)) {
         if (mBitFlag.isOffBit(4))
             reEmit(mpAssetCallTable);
 
         mBitFlag.resetBit(6);
-    }  
+    }
 
     fixDelayParam_();
 
-    bool container_done {true};    
+    bool container_done {true};
     if (mpRootContainer != nullptr) {
         container_done = mpRootContainer->calc();
         if (container_done) {
@@ -155,12 +155,12 @@ s32 Event::getAliveAssetNum() const
     int asset_num {0};
     for (auto& executor : mAliveAssetExecutors)
         if (executor.isAssetValid())
-            ++asset_num; 
+            ++asset_num;
 
     return asset_num;
 }
 
-s32 Event::getFadeBySystemListAssetNum() const 
+s32 Event::getFadeBySystemListAssetNum() const
 {
     int asset_num {0};
     for (auto& executor : mFadeBySystemAssetExecutors)
@@ -170,7 +170,8 @@ s32 Event::getFadeBySystemListAssetNum() const
     return asset_num;
 }
 
-void Event::setOverwriteParam(TriggerType trigger_type, ResTriggerOverwriteParam* param, BoneMtx bone_mtx)
+void Event::setOverwriteParam(TriggerType trigger_type, ResTriggerOverwriteParam* param,
+                              BoneMtx bone_mtx)
 {
     mTriggerType = trigger_type;
     mpTriggerOverwriteParam = param;
@@ -183,27 +184,29 @@ void Event::setOverwriteParam(TriggerType trigger_type, ResTriggerOverwriteParam
         executor.resetOverwriteParam(mpTriggerOverwriteParam, mBoneMtx);
 }
 
-void Event::fade(s32 param_int) 
+void Event::fade(s32 param_int)
 {
     mBitFlag.setBit(4);
-    if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
-        System* sys = {mpUserInstance->getUser()->getSystem()};
-        {
-            auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
-            mpRootContainer->fade(param_int);    
-        }
+    if (mpUserInstance == nullptr || mpRootContainer == nullptr)
+        return;
+
+    System* sys = {mpUserInstance->getUser()->getSystem()};
+    {
+        auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
+        mpRootContainer->fade(param_int);
     }
 }
 
-void Event::fadeBySystem() 
+void Event::fadeBySystem()
 {
     mBitFlag.setBit(4);
-    if (mpUserInstance != nullptr && mpRootContainer != nullptr) {
-        System* sys = {mpUserInstance->getUser()->getSystem()};
-        {
-            auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
-            mpRootContainer->fadeBySystem();    
-        }
+    if (mpUserInstance == nullptr || mpRootContainer == nullptr)
+        return;
+
+    System* sys = {mpUserInstance->getUser()->getSystem()};
+    {
+        auto lock {sead::makeScopedLock(*sys->getModuleLockObj())};
+        mpRootContainer->fadeBySystem();
     }
 }
 

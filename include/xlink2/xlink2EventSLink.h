@@ -15,7 +15,7 @@ public:
     ~EventSLink() override = default;
 
     void initializeImpl_() override;
-    
+
     bool getPos(sead::Vector3f*) const;
     const sead::Vector3f& getVelocity() const;
 

@@ -1,4 +1,4 @@
-#include <xlink2/xlink2UserResourceSLink.h>
+#include "xlink2/xlink2UserResourceSLink.h"
 
 namespace xlink2 {
 UserResourceSLink::UserResourceSLink(User* user, [[maybe_unused]] sead::Heap* heap)
@@ -21,7 +21,7 @@ const ResParam* UserResourceSLink::getUserParam() const
 
 UserResourceParamSLink* UserResourceSLink::allocResourceParam_(sead::Heap* heap)
 {
-    auto* param {new(heap) UserResourceParamSLink};
+    auto* param {new (heap) UserResourceParamSLink};
     param->accessor = &mAccessor;
     return param;
 }
@@ -45,8 +45,8 @@ ResourceAccessorSLink* UserResourceSLink::getAccessorPtr()
     return &mAccessor;
 }
 
-SystemSLink* UserResourceSLink::getSystem() const 
+SystemSLink* UserResourceSLink::getSystem() const
 {
     return SystemSLink::instance();
 }
-} // namespace xlink2
+}  // namespace xlink2

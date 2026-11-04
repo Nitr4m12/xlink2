@@ -12,7 +12,7 @@ public:
     void* searchOneEmitterInstanceHandle(const char*);
 
     s32 createOneEmitterInstanceImpl(const char*, u8);
-    
+
     void releaseOneEmitterInstance(const char*);
 
     OneEmitterInstance* getOneEmitterInstance(OneEmitterInstanceHandle);

@@ -4,7 +4,7 @@
 #include "xlink2/xlink2SystemSLink.h"
 
 namespace xlink2 {
-void EventSLink::initializeImpl_() 
+void EventSLink::initializeImpl_()
 {
     mBitFlag2.makeAllZero();
     mVolumeScale = 1.0;
@@ -41,8 +41,11 @@ AssetExecutorSLink* EventSLink::getAliveAssetExecutor() const
     if (mAliveAssetExecutors.size() == 1)
         return static_cast<AssetExecutorSLink*>(&*mAliveAssetExecutors.begin());
 
-    if (mAliveAssetExecutors.size() > 1)
-        SystemSLink::instance()->addError(Error::Type::EventHasMultipleAsset, mpUserInstance->getUser(), "getAliveAssetExecutor failed");
+    if (mAliveAssetExecutors.size() > 1) {
+        SystemSLink::instance()->addError(Error::Type::EventHasMultipleAsset,
+                                          mpUserInstance->getUser(),
+                                          "getAliveAssetExecutor failed");
+    }
 
     return nullptr;
 }
@@ -52,9 +55,10 @@ s32 EventSLink::getAliveAssetExecutor(sead::PtrArray<AssetExecutorSLink>* execut
     s32 num_alive_executor {0};
     for (auto& executor : mAliveAssetExecutors) {
         if (executor_ptr_array->isFull()) {
-            SystemSLink::instance()->addError(Error::Type::ListToGetterIsFull, mpUserInstance->getUser(), 
-                                              "getAliveAssetExecutor(maxSize=%d) failed", executor_ptr_array->capacity());
-            return num_alive_executor;
+            SystemSLink::instance()->addError(
+                Error::Type::ListToGetterIsFull, mpUserInstance->getUser(),
+                "getAliveAssetExecutor(maxSize=%d) failed", executor_ptr_array->capacity());
+            break;
         }
 
         if (executor.isAssetValid()) {
@@ -74,11 +78,10 @@ s32 EventSLink::getSoundHandle(sead::PtrArray<aal::Handle>* handle_ptrs) const
         auto& executor_slink {static_cast<AssetExecutorSLink&>(executor)};
 
         if (handle_ptrs->isFull()) {
-            SystemSLink::instance()->addError(Error::Type::ListToGetterIsFull, 
-                                              mpUserInstance->getUser(), 
-                                              "getSoundHandle(maxSize=%d) failed", 
-                                              handle_ptrs->capacity());
-            return num_handle;
+            SystemSLink::instance()->addError(
+                Error::Type::ListToGetterIsFull, mpUserInstance->getUser(),
+                "getSoundHandle(maxSize=%d) failed", handle_ptrs->capacity());
+            break;
         }
 
         if (executor.isAssetValid()) {
@@ -88,4 +91,4 @@ s32 EventSLink::getSoundHandle(sead::PtrArray<aal::Handle>* handle_ptrs) const
     }
     return num_handle;
 }
-} // namespace xlink2
+}  // namespace xlink2

@@ -8,8 +8,7 @@
 namespace xlink2 {
 class ActionTriggerCtrl : TriggerCtrl {
 public:
-    ActionTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*,
-                      const ResActionSlot*);
+    ActionTriggerCtrl(UserInstance*, sead::Buffer<ModelTriggerConnection>*, const ResActionSlot*);
 
     void reset();
     void calc() override;
@@ -24,7 +23,7 @@ public:
     void stopAction();
     void changeActionImpl_(const ResAction*, s32, const UserResource*);
     void changeAction(s32 action_idx, s32 p2);
-    
+
     s32 getCurrentResActionIdx() const;
     void changeActionImpl_old_(const ResAction*, s32, const UserResource*);
     void restartAction(const char*, s32);

@@ -7,8 +7,7 @@ namespace xlink2 {
 class Locator {
 public:
     Locator() : mpAssetCallTable(nullptr) {}
-    explicit Locator(const ResAssetCallTable& asset_ctb)
-        : mpAssetCallTable(&asset_ctb) {}
+    explicit Locator(const ResAssetCallTable& asset_ctb) : mpAssetCallTable(&asset_ctb) {}
     ~Locator() = default;
 
     static u32 sDataLoadedCount;
@@ -26,7 +25,10 @@ public:
     static void updateDataLoadedCount();
 
     const ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
-    void setAssetCallTable(const ResAssetCallTable* asset_call_table) { mpAssetCallTable = asset_call_table; }
+    void setAssetCallTable(const ResAssetCallTable* asset_call_table)
+    {
+        mpAssetCallTable = asset_call_table;
+    }
 
     bool get1() const { return _1; }
     void set1(u8 new_value) { _1 = new_value; }

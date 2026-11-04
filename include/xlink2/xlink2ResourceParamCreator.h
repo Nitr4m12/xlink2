@@ -30,72 +30,87 @@ public:
 
         u32 getNumResParam() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numResParam : pEditorHeader->numResParam;
+            return pResourceHeader != nullptr ? pResourceHeader->numResParam :
+                                                pEditorHeader->numResParam;
         }
 
         u32 getNumResAssetParam() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numResAssetParam : pEditorHeader->numResAssetParam;
+            return pResourceHeader != nullptr ? pResourceHeader->numResAssetParam :
+                                                pEditorHeader->numResAssetParam;
         }
 
         u32 getNumResTriggerOverwriteParam() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numResTriggerOverwriteParam : pEditorHeader->numResTriggerOverwriteParam;
+            return pResourceHeader != nullptr ? pResourceHeader->numResTriggerOverwriteParam :
+                                                pEditorHeader->numResTriggerOverwriteParam;
         }
 
         u32 getNumLocalPropertyNameRefTable() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numLocalPropertyNameRefTable : pEditorHeader->numLocalPropertyNameRefTable;
+            return pResourceHeader != nullptr ? pResourceHeader->numLocalPropertyNameRefTable :
+                                                pEditorHeader->numLocalPropertyNameRefTable;
         }
 
         u32 getNumLocalPropertyEnumNameRefTable() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numLocalPropertyEnumNameRefTable : pEditorHeader->numLocalPropertyEnumNameRefTable;
+            return pResourceHeader != nullptr ? pResourceHeader->numLocalPropertyEnumNameRefTable :
+                                                pEditorHeader->numLocalPropertyEnumNameRefTable;
         }
 
         u32 getNumDirectValueTable() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numDirectValueTable : pEditorHeader->numDirectValueTable;
+            return pResourceHeader != nullptr ? pResourceHeader->numDirectValueTable :
+                                                pEditorHeader->numDirectValueTable;
         }
 
         u32 getNumRandomTable() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numRandomTable : pEditorHeader->numRandomTable;
+            return pResourceHeader != nullptr ? pResourceHeader->numRandomTable :
+                                                pEditorHeader->numRandomTable;
         }
 
         u32 getNumCurveTable() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numCurveTable : pEditorHeader->numCurveTable;
+            return pResourceHeader != nullptr ? pResourceHeader->numCurveTable :
+                                                pEditorHeader->numCurveTable;
         }
 
         u32 getNumCurvePointTable() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->numCurvePointTable : pEditorHeader->numCurvePointTable;
+            return pResourceHeader != nullptr ? pResourceHeader->numCurvePointTable :
+                                                pEditorHeader->numCurvePointTable;
         }
 
         u32 getTriggerOverwriteParamTablePos() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos : pEditorHeader->triggerOverwriteParamTablePos;
+            return pResourceHeader != nullptr ? pResourceHeader->triggerOverwriteParamTablePos :
+                                                pEditorHeader->triggerOverwriteParamTablePos;
         }
 
         u32 getLocalPropertyNameRefTablePos() const
         {
-            return (pResourceHeader != nullptr ? pResourceHeader->localPropertyNameRefTablePos : pEditorHeader->localPropertyNameRefTablePos) + binStart;
+            return (pResourceHeader != nullptr ? pResourceHeader->localPropertyNameRefTablePos :
+                                                 pEditorHeader->localPropertyNameRefTablePos) +
+                   binStart;
         }
 
         u32 getExRegionPos() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->exRegionPos : pEditorHeader->exDataRegionPos;
+            return pResourceHeader != nullptr ? pResourceHeader->exRegionPos :
+                                                pEditorHeader->exDataRegionPos;
         }
 
         u32 getConditionTablePos() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->conditionTablePos : pEditorHeader->conditionTablePos;
+            return pResourceHeader != nullptr ? pResourceHeader->conditionTablePos :
+                                                pEditorHeader->conditionTablePos;
         }
 
         u32 getNameTablePos() const
         {
-            return pResourceHeader != nullptr ? pResourceHeader->nameTablePos : pEditorHeader->nameTablePos;
+            return pResourceHeader != nullptr ? pResourceHeader->nameTablePos :
+                                                pEditorHeader->nameTablePos;
         }
     };
 
@@ -110,7 +125,8 @@ public:
     static void solveUserBin_(ResUserHeader*, CommonResourceParam*, const ParamDefineTable*);
     static void solveAboutGlobalProperty(RomResourceParam*, const ParamDefineTable*, System*);
 
-    static void createParamAndSolveResource(EditorResourceParam*, const sead::SafeString&, u8*, u32, const ParamDefineTable*, System*);
+    static void createParamAndSolveResource(EditorResourceParam*, const sead::SafeString&, u8*, u32,
+                                            const ParamDefineTable*, System*);
     static void dumpEditorResource_(EditorResourceParam*, const BinAccessor*,
                                     const ParamDefineTable*, sead::Heap*);
     static void solveAboutGlobalProperty(EditorResourceParam*, const ParamDefineTable*, System*);
@@ -129,47 +145,64 @@ public:
                                         [[maybe_unused]] bool, sead::BufferedSafeString*);
 
 private:
-    static void solveActionTriggerTable(ResActionTrigger* action_trigger_table, ResAssetCallTable* asset_ctb,
-                                        const ResUserHeader* user_header, CommonResourceParam* common_res_param)
+    static void solveActionTriggerTable(ResActionTrigger* action_trigger_table,
+                                        ResAssetCallTable* asset_ctb,
+                                        const ResUserHeader* user_header,
+                                        CommonResourceParam* common_res_param)
     {
         for (u32 i {0}; i < user_header->numResActionTrigger; ++i) {
             ResActionTrigger* action_trigger {&action_trigger_table[i]};
             action_trigger->assetCtbPos += reinterpret_cast<u64>(asset_ctb);
-            action_trigger->overwriteParamPos = action_trigger->overwriteParamPos != -1
-                                              ? action_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos
-                                              : 0;
+            action_trigger->overwriteParamPos =
+                action_trigger->overwriteParamPos != -1 ?
+                    action_trigger->overwriteParamPos +
+                        common_res_param->triggerOverwriteParamTablePos :
+                    0;
 
             if (ActionTriggerCtrl::getActionTriggerType_(*action_trigger) == TriggerType::None)
                 action_trigger->startFrame += common_res_param->nameTablePos;
         }
     }
 
-    static void solvePropertyTriggerTable(ResPropertyTrigger* property_trigger_table, ResAssetCallTable* asset_ctb,
-                                          const ResUserHeader* user_header, CommonResourceParam* common_res_param)
+    static void solvePropertyTriggerTable(ResPropertyTrigger* property_trigger_table,
+                                          ResAssetCallTable* asset_ctb,
+                                          const ResUserHeader* user_header,
+                                          CommonResourceParam* common_res_param)
     {
         for (u32 i {0}; i < user_header->numResPropertyTrigger; ++i) {
             ResPropertyTrigger* property_trigger {&property_trigger_table[i]};
             property_trigger->assetCtbPos += reinterpret_cast<u64>(asset_ctb);
-            property_trigger->condition = property_trigger->condition != -1
-                                        ? property_trigger->condition + common_res_param->conditionTablePos
-                                        : 0;
-            property_trigger->overwriteParamPos = property_trigger->overwriteParamPos != -1
-                                                ? property_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos
-                                                : 0;
+            property_trigger->condition =
+                property_trigger->condition != -1 ?
+                    property_trigger->condition + common_res_param->conditionTablePos :
+                    0;
+            property_trigger->overwriteParamPos =
+                property_trigger->overwriteParamPos != -1 ?
+                    property_trigger->overwriteParamPos +
+                        common_res_param->triggerOverwriteParamTablePos :
+                    0;
         }
     }
 
-    static void solveAlwaysTriggerTable(ResAlwaysTrigger* always_trigger_table, ResAssetCallTable* asset_ctb,
-                                        const ResUserHeader* user_header, CommonResourceParam* common_res_param)
+    static void solveAlwaysTriggerTable(ResAlwaysTrigger* always_trigger_table,
+                                        ResAssetCallTable* asset_ctb,
+                                        const ResUserHeader* user_header,
+                                        CommonResourceParam* common_res_param)
     {
         for (u32 i {0}; i < user_header->numResAlwaysTrigger; ++i) {
             ResAlwaysTrigger* always_trigger {&always_trigger_table[i]};
             always_trigger->assetCtbPos += reinterpret_cast<u64>(*&asset_ctb);
-            always_trigger->overwriteParamPos = always_trigger->overwriteParamPos != -1 ? always_trigger->overwriteParamPos + common_res_param->triggerOverwriteParamTablePos : 0;
+            always_trigger->overwriteParamPos =
+                always_trigger->overwriteParamPos != -1 ?
+                    always_trigger->overwriteParamPos +
+                        common_res_param->triggerOverwriteParamTablePos :
+                    0;
         }
     }
 
-    static void solveSwitchConditionAboutGlobalProperty(u32 condition_pos, const EnumPropertyDefinition* enum_prop_define)
+    static void
+    solveSwitchConditionAboutGlobalProperty(u32 condition_pos,
+                                            const EnumPropertyDefinition* enum_prop_define)
     {
         if (condition_pos != 0) {
             auto* condition {solveOffset<ResSwitchCondition>(condition_pos)};
@@ -180,7 +213,6 @@ private:
                 condition->isSolved = true;
             }
         }
-
     }
 };
 }  // namespace xlink2

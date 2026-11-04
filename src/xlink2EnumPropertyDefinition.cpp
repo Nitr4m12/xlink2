@@ -1,7 +1,8 @@
 #include "xlink2/xlink2EnumPropertyDefinition.h"
 
 namespace xlink2 {
-EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, sead::Heap* heap, bool)
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, sead::Heap* heap,
+                                               [[maybe_unused]] bool _b1)
     : PropertyDefinition(name, PropertyType::Enum, 0)
 {
     mCurrentIdx = 0;
@@ -10,8 +11,9 @@ EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries
     mEntryBuffer = buffer;
 }
 
-EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, bool b1, sead::Heap* heap, ...)
-    : EnumPropertyDefinition(name, num_entries, heap, b1)
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, bool _b1,
+                                               sead::Heap* heap, ...)
+    : EnumPropertyDefinition(name, num_entries, heap, _b1)
 {
     va_list args;
     va_start(args, heap);
@@ -25,15 +27,15 @@ EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries
     va_end(args);
 }
 
-
-EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries, const char** key_buffer, bool b1, sead::Heap* heap)
-    : EnumPropertyDefinition(name, num_entries, heap, b1)
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, s32 num_entries,
+                                               const char** key_buffer, bool _b1, sead::Heap* heap)
+    : EnumPropertyDefinition(name, num_entries, heap, _b1)
 {
     setEntries_(num_entries, key_buffer);
 }
 
-EnumPropertyDefinition::EnumPropertyDefinition(const char* name, bool)
-    : PropertyDefinition(name, PropertyType::Enum, 0) 
+EnumPropertyDefinition::EnumPropertyDefinition(const char* name, [[maybe_unused]] bool _b1)
+    : PropertyDefinition(name, PropertyType::Enum, 0)
 {
     mCurrentIdx = 0;
     mNumEntry = 0;
@@ -70,7 +72,6 @@ void EnumPropertyDefinition::entry(s32 value, const char* key)
     mEntryBuffer[mCurrentIdx].key = key;
     mEntryBuffer[mCurrentIdx].value = value;
     ++mCurrentIdx;
-
 }
 
 s32 EnumPropertyDefinition::getEntryKeyLength(u32 entry_idx) const
@@ -111,4 +112,4 @@ void EnumPropertyDefinition::setEntryBuf_(s32 buffer_size, Entry* buffer)
     mNumEntry = buffer_size;
     mEntryBuffer = buffer;
 }
-} // namespace xlink2
+}  // namespace xlink2

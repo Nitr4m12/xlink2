@@ -6,7 +6,7 @@ namespace xlink2 {
 class MonoContainer : public ContainerBase {
 public:
     ~MonoContainer() override;
-    
+
     bool calc() override;
 
     bool killOneTimeEvent() override;

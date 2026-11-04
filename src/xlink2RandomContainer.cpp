@@ -6,7 +6,7 @@
 namespace xlink2 {
 RandomContainer::~RandomContainer() = default;
 
-// WIP
+// NON_MATCHING
 bool RandomContainer::calc()
 {
     auto* child {mpChild};
@@ -48,9 +48,11 @@ bool RandomContainer::start()
         for (s32 j {child_start_idx}; condition; ++j) {
             ResAssetCallTable* asset_ctb_item {user_resource->getAssetCallTableItem(j)};
             if (asset_ctb_item->conditionPos != 0) {
-                auto* condition_param {solveOffset<ResRandomCondition>(asset_ctb_item->conditionPos)};
+                auto* condition_param {
+                    solveOffset<ResRandomCondition>(asset_ctb_item->conditionPos),
+                };
                 weight += condition_param->weight;
-            
+
                 if (random_f32 < weight)
                     return createChildContainer(*asset_ctb_item, user_instance, nullptr) != nullptr;
             }
@@ -62,4 +64,4 @@ bool RandomContainer::start()
 }
 
 RandomContainer2::~RandomContainer2() = default;
-} // namespace xlink2
+}  // namespace xlink2

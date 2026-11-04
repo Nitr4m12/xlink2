@@ -29,18 +29,21 @@ public:
 
     ContainerBase* createChildContainer_(const ResAssetCallTable&, ContainerBase*);
 
-    // Doesn't seem to exist, but similar logic is used throughout containers, so it's here as a helper
-    ContainerBase* createChildContainer(const ResAssetCallTable& asset_ctb, UserInstance* user_instance, ContainerBase* child) 
+    // Doesn't seem to exist, but similar logic is used throughout containers, so it's here as a
+    // helper
+    ContainerBase* createChildContainer(const ResAssetCallTable& asset_ctb,
+                                        UserInstance* user_instance, ContainerBase* child)
     {
         Event* event {mpEvent};
 
         const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable).cstr()};
         const char* key_name {solveOffset<char>(mpAssetCallTable->keyNamePos)};
-        
+
         const char* container_child_name {user_instance->getContainerTypeName(asset_ctb).cstr()};
         const char* key_name_child {solveOffset<char>(asset_ctb.keyNamePos)};
 
-        user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s]", container_name, key_name, container_child_name, key_name_child);
+        user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s]", container_name, key_name,
+                                               container_child_name, key_name_child);
 
         return createChildContainer_(asset_ctb, child);
     }
@@ -48,13 +51,13 @@ public:
     ContainerBase* getNext() { return mpNext; }
     void setNext(ContainerBase* next) { mpNext = next; }
 
-    ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
+    const ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
 
-    bool assetFinished() 
+    bool assetFinished()
     {
         if (mAssetDuration > 0)
             --mAssetDuration;
-    
+
         if (mAssetDuration != 0)
             return !start();
 
@@ -62,7 +65,7 @@ public:
     }
 
 protected:
-    ResAssetCallTable* mpAssetCallTable;
+    const ResAssetCallTable* mpAssetCallTable;
     Event* mpEvent;
     ContainerBase* mpChild;
     ContainerBase* mpNext;

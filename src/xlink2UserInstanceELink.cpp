@@ -2,18 +2,20 @@
 
 #include <prim/seadScopedLock.h>
 
-#include <xlink2/xlink2UserResourceELink.h>
-#include <xlink2/xlink2UserInstanceParam.h>
-#include <xlink2/xlink2ILockProxy.h>
 #include <xlink2/xlink2HandleELink.h>
 #include <xlink2/xlink2HoldMgr.h>
+#include <xlink2/xlink2ILockProxy.h>
 #include <xlink2/xlink2SystemELink.h>
 #include <xlink2/xlink2UserInstance.h>
+#include <xlink2/xlink2UserInstanceParam.h>
+#include <xlink2/xlink2UserResourceELink.h>
 
 namespace xlink2 {
-UserInstanceELink::UserInstanceELink(const UserInstance::CreateArg& arg, System* system, 
-                                     User* user, sead::Heap* heap)
-    : UserInstance(arg, system, user, heap) {}
+UserInstanceELink::UserInstanceELink(const UserInstance::CreateArg& arg, System* system, User* user,
+                                     sead::Heap* heap)
+    : UserInstance(arg, system, user, heap)
+{
+}
 
 UserInstanceELink::~UserInstanceELink() = default;
 
@@ -59,12 +61,12 @@ void UserInstanceELink::fadeIfLoopEffect()
     mTriggerCtrlMgr.reset();
 }
 
-const ResourceAccessorELink& UserInstanceELink::getResourceAccessor() const 
+const ResourceAccessorELink& UserInstanceELink::getResourceAccessor() const
 {
     return getResourceELink()->getResourceAccessor();
 }
 
-UserResourceELink* UserInstanceELink::getResourceELink() const 
+UserResourceELink* UserInstanceELink::getResourceELink() const
 {
     return static_cast<UserResourceELink*>(mUser->getUserResource());
 }
@@ -88,10 +90,10 @@ void UserInstanceELink::onDestroy_() {}
 
 UserInstanceParam* UserInstanceELink::allocInstanceParam_(sead::Heap* heap)
 {
-    return new(heap) UserInstanceParam;
+    return new (heap) UserInstanceParam;
 }
 
-void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode) 
+void UserInstanceELink::freeInstanceParam_(UserInstanceParam* param, ResMode mode)
 {
     if (param != nullptr) {
         UserInstance::freeInstanceParam_(param, mode);

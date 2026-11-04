@@ -1,4 +1,5 @@
 #include "xlink2/xlink2SwitchContainer.h"
+
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2UserResource.h"
 
@@ -15,7 +16,7 @@ bool SwitchContainer::calc()
         bool bit_3_on {mpEvent->getBitFlag().isOnBit(3)};
         check1 = need_observe && !bit_3_on;
 
-        // if goes here, not sure on the order of checks, so it's left out for now
+        // if statement goes here, not sure on the order of checks, so it's left out for now
         {
             auto* asset_ctb {getConditionMatchChildCallTable_()};
             if (mpChild != nullptr) {
@@ -23,7 +24,7 @@ bool SwitchContainer::calc()
                     mpChild->fadeBySystem();
                     mpChild->destroy();
                     mpChild = nullptr;
-                    
+
                     if (asset_ctb != nullptr)
                         createChildContainer_(*asset_ctb, nullptr);
                 }
@@ -32,7 +33,6 @@ bool SwitchContainer::calc()
                 createChildContainer_(*asset_ctb, nullptr);
             }
         }
-
     }
 
     bool check2 {true};
@@ -52,21 +52,21 @@ bool SwitchContainer::calc()
 
 bool SwitchContainer::start_(const ResAssetCallTable* asset_ctb)
 {
-    if (asset_ctb == nullptr) {
-        UserInstance* user_instance {mpEvent->getUserInstance()};
-        auto& accessor {user_instance->getUserResource()->getAccessor()};
-        bool need_observe {accessor.isNeedObserve(*mpAssetCallTable)};
-        u32 bit_flag {mpEvent->getBitFlag().getDirect()};
-        if (!need_observe || bit_flag & 8) {
-            const char* key_name {solveOffset<const char>(mpAssetCallTable->keyNamePos)};
-            user_instance->printLogEmitFailed(*mpEvent, "switch container[%s] doesn't select child", key_name);
-            return false;
-        }
-        
-        return true;
+    if (asset_ctb != nullptr)
+        return createChildContainer_(*asset_ctb, nullptr) != nullptr;
+
+    UserInstance* user_instance {mpEvent->getUserInstance()};
+    auto& accessor {user_instance->getUserResource()->getAccessor()};
+    bool need_observe {accessor.isNeedObserve(*mpAssetCallTable)};
+    u32 bit_flag {mpEvent->getBitFlag().getDirect()};
+    if (!need_observe || bit_flag & 8) {
+        const char* key_name {solveOffset<const char>(mpAssetCallTable->keyNamePos)};
+        user_instance->printLogEmitFailed(*mpEvent, "switch container[%s] doesn't select child",
+                                            key_name);
+        return false;
     }
 
-    return createChildContainer_(*asset_ctb, nullptr) != nullptr;
+    return true;
 }
 
 bool SwitchContainer::start()
@@ -77,6 +77,6 @@ bool SwitchContainer::start()
 void SwitchContainer::printChildSelect_([[maybe_unused]] const ResAssetCallTable* asset_ctb) const
 {
 #ifdef SEAD_DEBUG
-#endif 
+#endif
 }
-} // namespace xlink2
+}  // namespace xlink2

@@ -1,7 +1,8 @@
+#include "xlink2/xlink2ResourceAccessor.h"
+
 #include <cstdarg>
 #include <math/seadMathCalcCommon.h>
 
-#include "xlink2/xlink2ResourceAccessor.h"
 #include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserResource.h"
 #include "xlink2/xlink2Util.h"
@@ -68,29 +69,29 @@ const char* ResourceAccessor::getKeyName(const ResAssetCallTable& asset_ctb) con
 ContainerType ResourceAccessor::getCallTableType(const ResAssetCallTable& asset_ctb) const
 {
     auto* container_param {getContainer(asset_ctb)};
-    if (container_param != nullptr) {
-        switch (container_param->type) {
-        case 0:
-            return ContainerType_Switch;
+    if (container_param == nullptr)
+        return ContainerType_Asset;
 
-        case 1:
-            return ContainerType_Random;
+    switch (container_param->type) {
+    case 0:
+        return ContainerType_Switch;
 
-        case 2:
-            return ContainerType_Random2;
+    case 1:
+        return ContainerType_Random;
 
-        case 3:
-            return ContainerType_Blend;
+    case 2:
+        return ContainerType_Random2;
 
-        case 4:
-            return ContainerType_Sequence;
-            
-        default:
-            setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
-        }
+    case 3:
+        return ContainerType_Blend;
+
+    case 4:
+        return ContainerType_Sequence;
+
+    default:
+        setError_("[%s] invalid container type(=%d)", getKeyName(asset_ctb), container_param->type);
+        return ContainerType_Asset;
     }
-
-    return ContainerType_Asset;
 }
 
 const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable& asset_ctb) const
@@ -104,11 +105,14 @@ const ResContainerParam* ResourceAccessor::getContainer(const ResAssetCallTable&
 // TODO: Figure out this struct
 struct {
     u32 _0 {0x8004ef};
-    sead::SafeString sContainerNames[6] {"Switch", "Random", "Random2", "Blend", "Sequence", "Asset"};
+    sead::SafeString sContainerNames[6] {
+        "Switch", "Random", "Random2", "Blend", "Sequence", "Asset",
+    };
 } containerArray {};
 
 // NON_MATCHING: swapped registers
-const sead::SafeString& ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const 
+const sead::SafeString&
+ResourceAccessor::getCallTableTypeName(const ResAssetCallTable& asset_ctb) const
 {
     auto container_type {getCallTableType(asset_ctb)};
     switch (container_type) {
@@ -129,7 +133,6 @@ const sead::SafeString& ResourceAccessor::getCallTableTypeName(const ResAssetCal
 
     default:
         return containerArray.sContainerNames[5];
-        
     }
 }
 
@@ -142,103 +145,117 @@ const char* ResourceAccessor::getCustomParamValueString(u32 idx,
                                                         const ResAssetCallTable& asset_ctb) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    u32 id = param_define_table->getNumCustomParam() + idx;
+    u32 id {param_define_table->getNumCustomParam() + idx};
 
-    if (id < param_define_table->getNumAssetParam()) {
-        if (param_define_table->getAssetParamType(id) == ParamValueType::String) {
-            if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx)) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueString_(*res_param) : param_define_table->getAssetParamDefaultValueString(id);
-            }
-            return "";
-        }
-        System* system = mpSystem;
-        User* user {};
-        if (mpUserResource != nullptr)
-            user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not string type", idx);
-    }
-    else {
-        System* system = mpSystem;
+    if (id >= param_define_table->getNumAssetParam()) {
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
 
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", idx);
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", idx);
+        return "";
     }
 
-    return "";
+    if (param_define_table->getAssetParamType(id) != ParamValueType::String) {
+        System* system {mpSystem};
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not string type",
+                         idx);
+        return "";
+    }
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%d)", idx))
+        return "";
+
+    auto* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, id)};
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueString(id);
+
+    return getResParamValueString_(*res_param);
 }
 
 const ResParam* ResourceAccessor::getResParamFromAssetParamPos(u32 param_start_pos, u32 idx) const
 {
-    auto* mask = solveOffset<sead::BitFlag64>(param_start_pos);
-    if (mask->isOnBit(idx)) {
-        s32 param_idx {mask->countRightOnBit(idx) - 1};
-        return &reinterpret_cast<ResParam*>(mask + 1)[param_idx];
-    }
+    auto* ptr {solveOffset<uint8_t>(param_start_pos)};
+    auto* mask {reinterpret_cast<const sead::BitFlag64*>(ptr)};
+    if (!mask->isOnBit(idx))
+        return nullptr;
 
-    return nullptr;
+    ptr += sizeof(sead::BitFlag64);
+    auto* params {reinterpret_cast<const ResParam*>(ptr)};
+
+    s32 param_idx {mask->countRightOnBit(idx) - 1};
+    return &params[param_idx];
 }
 
-bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_ctb,
-                                             const char* fmt, ...) const
+bool ResourceAccessor::checkAndErrorIsAsset_(const ResAssetCallTable& asset_ctb, const char* fmt,
+                                             ...) const
 {
-    if (asset_ctb.flag & 1) {
-        va_list args;
-        va_start(args, fmt);
-        sead::FixedSafeString<256> msg;
-        msg.formatV(fmt, args);
-        va_end(args);
-        User* user {nullptr};
-        System* sys {mpSystem};
-        if (mpUserResource != nullptr)
-            user = mpUserResource->getUser();
+    if (asset_ctb.flag.isOffBit(0))
+        return true;
 
-        sys->addError(Error::Type::ResourceAccessFailed, user, "%s: [%s] is container", msg.getBuffer(), getKeyName(asset_ctb));
-        return false;
-    }
-    return true;
+    va_list args;
+    va_start(args, fmt);
+    sead::FixedSafeString<256> msg;
+    msg.formatV(fmt, args);
+    va_end(args);
+    User* user {nullptr};
+    System* sys {mpSystem};
+    if (mpUserResource != nullptr)
+        user = mpUserResource->getUser();
+
+    sys->addError(Error::Type::ResourceAccessFailed, user, "%s: [%s] is container", msg.getBuffer(),
+                  getKeyName(asset_ctb));
+    return false;
 }
 
 const char* ResourceAccessor::getResParamValueString_(const ResParam& param) const
 {
-    UserResourceParam* user_param = mpUserResource->getParam();
-    u64 value_string_pos =
-        user_param->pCommonResourceParam->nameTablePos + (param.getValue());
+    UserResourceParam* user_param {mpUserResource->getParam()};
+    u64 value_string_pos {user_param->pCommonResourceParam->nameTablePos + param.getValue()};
     return solveOffset<char>(value_string_pos);
 }
 
 bool ResourceAccessor::getCustomParamValueBool(u32 idx, const ResAssetCallTable& asset_ctb) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    u32 id = idx + param_define_table->getNumCustomParam();
 
-    if (id < param_define_table->getNumAssetParam()) {
-        ParamValueType param_type {param_define_table->getAssetParamType(id)};
-        if (param_type == ParamValueType::Bool) {
-            bool is_asset {checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueBool(%d)", idx)};
-            if (is_asset) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueInt_(*res_param) : param_define_table->getAssetParamDefaultValueInt(id);
-            }
-            return false;
-        }
-        System* system = mpSystem;
+    u32 id {idx + param_define_table->getNumCustomParam()};
+    if (id >= param_define_table->getNumAssetParam()) {
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not int type", idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", idx);
+        return false;
     }
-    else {
-        System* system = mpSystem;
+
+    ParamValueType param_type {param_define_table->getAssetParamType(id)};
+    if (param_type != ParamValueType::Bool) {
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", idx);
+        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not int type",
+                         idx);
+
+        return false;
     }
-    
-    return false;
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueBool(%d)", idx))
+        return false;
+
+    auto* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, id)};
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueInt(id);
+
+    return getResParamValueInt_(*res_param);
 }
 
 s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
@@ -250,76 +267,92 @@ s32 ResourceAccessor::getResParamValueInt_(const ResParam& param) const
 s32 ResourceAccessor::getCustomParamValueInt(u32 idx, const ResAssetCallTable& asset_ctb) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    u32 id = idx + param_define_table->getNumCustomParam();
 
-    if (id < param_define_table->getNumAssetParam()) {
-        ParamValueType param_type {param_define_table->getAssetParamType(id)};
-        if (param_type == ParamValueType::UInt32) {
-            bool is_asset {checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueInt(%d)", idx)};
-            if (is_asset) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueInt_(*res_param) : param_define_table->getAssetParamDefaultValueInt(id);
-            }
-            return false;
-        }
-        System* system = mpSystem;
+    u32 id {idx + param_define_table->getNumCustomParam()};
+    if (id >= param_define_table->getNumAssetParam()) {
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not int type", idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", idx);
+        return false;
     }
-    else {
-        System* system = mpSystem;
+
+    ParamValueType param_type {param_define_table->getAssetParamType(id)};
+    if (param_type != ParamValueType::UInt32) {
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not int type",
+                         idx);
+        return false;
     }
-    
-    return false;
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueInt(%d)", idx))
+        return false;
+
+    auto* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, id)};
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueInt(id);
+
+    return getResParamValueInt_(*res_param);
 }
 
-f32 ResourceAccessor::getCustomParamValueFloat(u32 idx, const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessor::getCustomParamValueFloat(u32 idx, const ResAssetCallTable& asset_ctb,
+                                               const UserInstance* user_instance) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    u32 id = idx + param_define_table->getNumCustomParam();
 
-    if (id < param_define_table->getNumAssetParam()) {
-        ParamValueType param_type {param_define_table->getAssetParamType(id)};
-        if (param_type == ParamValueType::Float) {
-            bool is_asset {checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueFloat(%d)", idx)};
-            if (is_asset) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueFloat_(*res_param, user_instance) : param_define_table->getAssetParamDefaultValueFloat(id);
-            }
-            return 0.0f;
-        }
-        System* system = mpSystem;
+    u32 id {idx + param_define_table->getNumCustomParam()};
+    if (id >= param_define_table->getNumAssetParam()) {
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not float type", idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", idx);
+        return 0.0f;
     }
-    else {
-        System* system = mpSystem;
+
+    ParamValueType param_type {param_define_table->getAssetParamType(id)};
+    if (param_type != ParamValueType::Float) {
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user, " idx=%d is not float type",
+                         idx);
+        return 0.0f;
     }
-    
-    return 0.0f;
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueFloat(%d)", idx))
+        return 0.0f;
+
+    auto* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, id)};
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueFloat(id);
+
+    return getResParamValueFloat_(*res_param, user_instance);
 }
 
 // NON-MATCHING: missing instructions
-f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param, const UserInstance* user_instance) const
+f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param,
+                                             const UserInstance* user_instance) const
 {
     switch (res_param.getRefType()) {
     case ValueReferenceType::Direct:
         return static_cast<f32>(getResParamValueInt_(res_param));
-    
+
     case ValueReferenceType::Curve: {
-        ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
+        ResCurveCallTable* curve_ctb {
+            mpUserResource->getParam()->pCommonResourceParam->curveCallTable,
+        };
         if (&curve_ctb[res_param.getValue()] != nullptr)
             return getCurveValue(curve_ctb[res_param.getValue()], user_instance);
         break;
@@ -410,143 +443,156 @@ f32 ResourceAccessor::getResParamValueFloat_(const ResParam& res_param, const Us
     return 0.0f;
 }
 
-const char* ResourceAccessor::getCustomParamValueString(const char* name, const ResAssetCallTable& asset_ctb) const
+const char* ResourceAccessor::getCustomParamValueString(const char* name,
+                                                        const ResAssetCallTable& asset_ctb) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
+    s32 id {param_define_table->searchAssetParamIdxFromCustomParamName(name)};
     if (id < 0) {
-        System* system = mpSystem;
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found", name);
-    }
-    else {
-        if (param_define_table->getAssetParamType(id) != ParamValueType::String) {
-            System* system = mpSystem;
-            User* user {};
-            if (mpUserResource != nullptr)
-                user = mpUserResource->getUser();
 
-            system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not string type", name);
-        }
-        else {
-            if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%s)", name)) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueString_(*res_param) : param_define_table->getAssetParamDefaultValueString(id);
-            }
-            return "";
-        }
-
+        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found",
+                         name);
+        return nullptr;
     }
 
-    return nullptr;
+    if (param_define_table->getAssetParamType(id) != ParamValueType::String) {
+        System* system {mpSystem};
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         " param[%s] is not string type", name);
+        return nullptr;
+    }
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueString(%s)", name))
+        return "";
+
+    auto* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, id)};
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueString(id);
+
+    return getResParamValueString_(*res_param);
 }
 
-bool ResourceAccessor::getCustomParamValueBool(const char* name, const ResAssetCallTable& asset_ctb) const
+bool ResourceAccessor::getCustomParamValueBool(const char* name,
+                                               const ResAssetCallTable& asset_ctb) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
+    s32 id {param_define_table->searchAssetParamIdxFromCustomParamName(name)};
     if (id < 0) {
-        System* system = mpSystem;
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
 
-        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found", name);
-    }
-    else {
-        if (param_define_table->getAssetParamType(id) != ParamValueType::Bool) {
-            System* system = mpSystem;
-            User* user {};
-            if (mpUserResource != nullptr)
-                user = mpUserResource->getUser();
-
-            system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not int type", name);
-        }
-        else {
-            if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueBool(%s)", name)) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueInt_(*res_param) : param_define_table->getAssetParamDefaultValueInt(id);
-            }
-            return false;
-        }
-
+        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found",
+                         name);
+        return false;
     }
 
-    return false;
+    if (param_define_table->getAssetParamType(id) != ParamValueType::Bool) {
+        System* system {mpSystem};
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+
+        system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not int type",
+                         name);
+        return false;
+    }
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueBool(%s)", name))
+        return false;
+
+    auto* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, id)};
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueInt(id);
+
+    return getResParamValueInt_(*res_param);
 }
 
-s32 ResourceAccessor::getCustomParamValueInt(const char* name, const ResAssetCallTable& asset_ctb) const
+s32 ResourceAccessor::getCustomParamValueInt(const char* name,
+                                             const ResAssetCallTable& asset_ctb) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
+    s32 id {param_define_table->searchAssetParamIdxFromCustomParamName(name)};
     if (id < 0) {
-        System* system = mpSystem;
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
 
-        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found", name);
-    }
-    else {
-        if (param_define_table->getAssetParamType(id) != ParamValueType::UInt32) {
-            System* system = mpSystem;
-            User* user {};
-            if (mpUserResource != nullptr)
-                user = mpUserResource->getUser();
-
-            system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not int type", name);
-        }
-        else {
-            if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueInt(%s)", name)) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueInt_(*res_param) : param_define_table->getAssetParamDefaultValueInt(id);
-            }
-            return 0;
-        }
-
+        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found",
+                         name);
+        return 0;
     }
 
-    return 0;
+    if (param_define_table->getAssetParamType(id) != ParamValueType::UInt32) {
+        System* system {mpSystem};
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+
+        system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not int type",
+                         name);
+        return 0;
+    }
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueInt(%s)", name))
+        return 0;
+
+    auto* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, id)};
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueInt(id);
+
+    return getResParamValueInt_(*res_param);
 }
 
-f32 ResourceAccessor::getCustomParamValueFloat(const char* name, const ResAssetCallTable& asset_ctb, const UserInstance* user_instance) const
+f32 ResourceAccessor::getCustomParamValueFloat(const char* name, const ResAssetCallTable& asset_ctb,
+                                               const UserInstance* user_instance) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
 
+    s32 id {param_define_table->searchAssetParamIdxFromCustomParamName(name)};
     if (id < 0) {
-        System* system = mpSystem;
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
 
-        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found", name);
-    }
-    else {
-        if (param_define_table->getAssetParamType(id) != ParamValueType::Float) {
-            System* system = mpSystem;
-            User* user {};
-            if (mpUserResource != nullptr)
-                user = mpUserResource->getUser();
-
-            system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not float type", name);
-        }
-        else {
-            if (checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueFloat(%s)", name)) {
-                auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
-                return res_param != nullptr ? getResParamValueFloat_(*res_param, user_instance) : param_define_table->getAssetParamDefaultValueFloat(id);
-            }
-            return 0.0f;
-        }
-
+        system->addError(Error::Type::CustomParamAccessFailed, user, "param[%s] is not found",
+                         name);
+        return 0.0f;
     }
 
-    return 0.0f;
+    if (param_define_table->getAssetParamType(id) != ParamValueType::Float) {
+        System* system {mpSystem};
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+
+        system->addError(Error::Type::CustomParamAccessFailed, user, " param[%s] is not float type",
+                         name);
+        return 0.0f;
+    }
+
+    if (!checkAndErrorIsAsset_(asset_ctb, "getCustomParamValueFloat(%s)", name))
+        return 0.0f;
+
+    auto* res_param = getResParamFromAssetParamPos(asset_ctb.paramStartPos, id);
+    if (res_param == nullptr)
+        return param_define_table->getAssetParamDefaultValueFloat(id);
+
+    return getResParamValueFloat_(*res_param, user_instance);
 }
 
 bool ResourceAccessor::isCustomParamString(u32 custom_param_idx) const
@@ -555,11 +601,13 @@ bool ResourceAccessor::isCustomParamString(u32 custom_param_idx) const
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
     if (id >= param_define_table->getNumAssetParam()) {
-        System* system = mpSystem;
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", custom_param_idx);
         return false;
     }
 
@@ -569,11 +617,11 @@ bool ResourceAccessor::isCustomParamString(u32 custom_param_idx) const
 bool ResourceAccessor::isCustomParamString(const char* name) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
+    s32 id {param_define_table->searchAssetParamIdxFromCustomParamName(name)};
 
     if (id < 0)
         return false;
-    
+
     return param_define_table->getAssetParamType(id) == ParamValueType::String;
 }
 
@@ -582,39 +630,43 @@ bool ResourceAccessor::isCustomParamBool(u32 custom_param_idx) const
     auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
-    if (id < param_define_table->getNumAssetParam())
-        return param_define_table->getAssetParamType(id) == ParamValueType::Bool;
-    
-    System* system = mpSystem;
-    User* user {};
-    if (mpUserResource != nullptr)
-        user = mpUserResource->getUser();
-    system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
-    return false;
+    if (id >= param_define_table->getNumAssetParam()) {
+        System* system {mpSystem};
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", custom_param_idx);
+        return false;
+    }
+
+    return param_define_table->getAssetParamType(id) == ParamValueType::Bool;
 }
 
 bool ResourceAccessor::isCustomParamBool(const char* name) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
+    s32 id {param_define_table->searchAssetParamIdxFromCustomParamName(name)};
 
     if (id < 0)
         return false;
-    
+
     return param_define_table->getAssetParamType(id) == ParamValueType::Bool;
 }
 
 bool ResourceAccessor::isCustomParamInt(u32 custom_param_idx) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
+    u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
     if (id >= param_define_table->getNumAssetParam()) {
-        System* system = mpSystem;
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", custom_param_idx);
         return false;
     }
 
@@ -628,7 +680,7 @@ bool ResourceAccessor::isCustomParamInt(const char* name) const
 
     if (id < 0)
         return false;
-    
+
     return param_define_table->getAssetParamType(id) == ParamValueType::UInt32;
 }
 
@@ -638,11 +690,13 @@ bool ResourceAccessor::isCustomParamFloat(u32 custom_param_idx) const
     u32 id {param_define_table->getNumCustomParam() + custom_param_idx};
 
     if (id >= param_define_table->getNumAssetParam()) {
-        System* system = mpSystem;
+        System* system {mpSystem};
         User* user {};
         if (mpUserResource != nullptr)
             user = mpUserResource->getUser();
-        system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", custom_param_idx);
+
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", custom_param_idx);
         return false;
     }
 
@@ -652,32 +706,36 @@ bool ResourceAccessor::isCustomParamFloat(u32 custom_param_idx) const
 bool ResourceAccessor::isCustomParamFloat(const char* name) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    s32 id = param_define_table->searchAssetParamIdxFromCustomParamName(name);
+    s32 id {param_define_table->searchAssetParamIdxFromCustomParamName(name)};
 
     if (id < 0)
         return false;
-    
+
     return param_define_table->getAssetParamType(id) == ParamValueType::Float;
 }
 
-bool ResourceAccessor::isCustomParamValueUsingCurve(u32 idx, const ResAssetCallTable& asset_ctb) const
+bool ResourceAccessor::isCustomParamValueUsingCurve(u32 idx,
+                                                    const ResAssetCallTable& asset_ctb) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
     u32 id {param_define_table->getNumCustomParam() + idx};
 
-    if (id < param_define_table->getNumAssetParam())
-        return isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, id);
-    
-    System* system = mpSystem;
-    User* user {};
-    if (mpUserResource != nullptr)
-        user = mpUserResource->getUser();
-    system->addError(Error::Type::CustomParamAccessFailed, user, "customParamIdx[%d] is not found", idx);
+    if (id >= param_define_table->getNumAssetParam()) {
+        System* system {mpSystem};
+        User* user {};
+        if (mpUserResource != nullptr)
+            user = mpUserResource->getUser();
 
-    return false;
+        system->addError(Error::Type::CustomParamAccessFailed, user,
+                         "customParamIdx[%d] is not found", idx);
+        return false;
+    }
+
+    return isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, id);
 }
 
-bool ResourceAccessor::isParamTypeEqual(ValueReferenceType ref_type, const ResAssetCallTable& asset_ctb, u32 idx) const
+bool ResourceAccessor::isParamTypeEqual(ValueReferenceType ref_type,
+                                        const ResAssetCallTable& asset_ctb, u32 idx) const
 {
     return ref_type == getParamType(asset_ctb, idx);
 }
@@ -695,8 +753,16 @@ const char* ResourceAccessor::getUserCustomParamValueString(s32 idx) const
     return value_str;
 }
 
-bool ResourceAccessor::isOutOfRangeUserCustom_(u32 /*unused*/) const { return false; }
-bool ResourceAccessor::isMismatchTypeUserCustom_(u32 /*unused*/, ParamValueType /*unused*/, const char* /*unused*/) const { return false; }
+bool ResourceAccessor::isOutOfRangeUserCustom_([[maybe_unused]] u32 _i1) const
+{
+    return false;
+}
+bool ResourceAccessor::isMismatchTypeUserCustom_([[maybe_unused]] u32 _i1,
+                                                 [[maybe_unused]] ParamValueType value_type,
+                                                 [[maybe_unused]] const char* name) const
+{
+    return false;
+}
 
 bool ResourceAccessor::getUserCustomParamValueBool(s32 idx) const
 {
@@ -706,10 +772,13 @@ bool ResourceAccessor::getUserCustomParamValueBool(s32 idx) const
 s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
+    u32 user_param_idx {idx + param_define_table->getNumCustomUserParam()};
 
-    s32 param_value {mpUserResource->getParam()->userBinParam.userParamArray[num_custom_user_param + idx].getValue()};
-    s32 direct_value {mpUserResource->getParam()->pCommonResourceParam->directValueTable[param_value]};
+    const auto& bin_param {mpUserResource->getParam()->userBinParam};
+    s32 param_value {bin_param.userParamArray[user_param_idx].getValue()};
+
+    auto* common_res_param {mpUserResource->getParam()->pCommonResourceParam};
+    s32 direct_value {common_res_param->directValueTable[param_value]};
 
     return direct_value;
 }
@@ -717,9 +786,10 @@ s32 ResourceAccessor::getUserCustomParamValueInt(s32 idx) const
 f32 ResourceAccessor::getUserCustomParamValueFloat(s32 idx, const UserInstance* user_instance) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
-    u32 num_custom_user_param {param_define_table->getNumCustomUserParam()};
+    u32 user_param_idx {idx + param_define_table->getNumCustomUserParam()};
 
-    return getResParamValueFloat_(mpUserResource->getParam()->userBinParam.userParamArray[num_custom_user_param + idx], user_instance);
+    const auto& bin_param {mpUserResource->getParam()->userBinParam};
+    return getResParamValueFloat_(bin_param.userParamArray[user_param_idx], user_instance);
 }
 
 const char* ResourceAccessor::getUserCustomParamValueString(const char* name) const
@@ -735,8 +805,17 @@ const char* ResourceAccessor::getUserCustomParamValueString(const char* name) co
     return value_str;
 }
 
-bool ResourceAccessor::isOutOfRangeUserCustom_(const char* /*unused*/) const { return false; }
-bool ResourceAccessor::isMismatchTypeUserCustom_(const char* /*unused*/, ParamValueType /*unused*/, const char* /*unused*/) const { return false; }
+bool ResourceAccessor::isOutOfRangeUserCustom_([[maybe_unused]] const char* name) const
+{
+    return false;
+}
+
+bool ResourceAccessor::isMismatchTypeUserCustom_([[maybe_unused]] const char* name,
+                                                 [[maybe_unused]] ParamValueType value_type,
+                                                 [[maybe_unused]] const char* _s1) const
+{
+    return false;
+}
 
 bool ResourceAccessor::getUserCustomParamValueBool(const char* name) const
 {
@@ -748,73 +827,86 @@ s32 ResourceAccessor::getUserCustomParamValueInt(const char* name) const
     auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
-    s32 param_value {mpUserResource->getParam()->userBinParam.userParamArray[idx].getValue()};
-    s32 direct_value {mpUserResource->getParam()->pCommonResourceParam->directValueTable[param_value]};
+    const auto& bin_param {mpUserResource->getParam()->userBinParam};
+    s32 param_value {bin_param.userParamArray[idx].getValue()};
+
+    auto* common_res_param {mpUserResource->getParam()->pCommonResourceParam};
+    s32 direct_value {common_res_param->directValueTable[param_value]};
 
     return direct_value;
 }
 
-f32 ResourceAccessor::getUserCustomParamValueFloat(const char* name, const UserInstance* user_instance) const
+f32 ResourceAccessor::getUserCustomParamValueFloat(const char* name,
+                                                   const UserInstance* user_instance) const
 {
     auto* param_define_table {mpSystem->getParamDefineTable()};
     s32 idx {param_define_table->searchUserParamIdxFromCustomParamName(name)};
 
-    return getResParamValueFloat_(mpUserResource->getParam()->userBinParam.userParamArray[idx], user_instance);
+    const auto& bin_param {mpUserResource->getParam()->userBinParam};
+    return getResParamValueFloat_(bin_param.userParamArray[idx], user_instance);
 }
 
 bool ResourceAccessor::isLoopAsset(const ResAssetCallTable& asset_ctb) const
 {
-    if (mpUserResource != nullptr) {
-        auto* user_resource_param {mpUserResource->getParam()};
-        s64 ctb_idx {&asset_ctb - user_resource_param->userBinParam.pResAssetCallTable};
-        return user_resource_param->callTableParamBuffer[ctb_idx].bitFlag.isOnBit(0);
-    }
-    
-    return false;
+    if (mpUserResource == nullptr)
+        return false;
+
+    auto* user_resource_param {mpUserResource->getParam()};
+    s64 ctb_idx {&asset_ctb - user_resource_param->userBinParam.pResAssetCallTable};
+    return user_resource_param->callTableParamBuffer[ctb_idx].bitFlag.isOnBit(0);
 }
 
 bool ResourceAccessor::isNeedObserve(const ResAssetCallTable& asset_ctb) const
 {
-    if (mpUserResource != nullptr) {
-        auto* user_resource_param {mpUserResource->getParam()};
-        s64 ctb_idx {&asset_ctb - user_resource_param->userBinParam.pResAssetCallTable};
-        return user_resource_param->callTableParamBuffer[ctb_idx].bitFlag.isOnBit(1);
-    }
-    
-    return false;
+    if (mpUserResource == nullptr)
+        return false;
+
+    auto* user_resource_param {mpUserResource->getParam()};
+    s64 ctb_idx {&asset_ctb - user_resource_param->userBinParam.pResAssetCallTable};
+    return user_resource_param->callTableParamBuffer[ctb_idx].bitFlag.isOnBit(1);
 }
 
 ValueReferenceType ResourceAccessor::getParamType(const ResAssetCallTable& asset_ctb, u32 idx) const
 {
-    if (checkAndErrorIsAsset_(asset_ctb, "")) {
-        const ResParam* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, idx)};
-        if (res_param == nullptr) {
-            ParamValueType value_type {mpSystem->getParamDefineTable()->getAssetParamType(idx)};
-            if (value_type == ParamValueType::String)
-                return ValueReferenceType::String;
-            
-            return value_type == ParamValueType::Arrange ? ValueReferenceType::ArrangeGroup : ValueReferenceType::Direct;
-        }
+    if (!checkAndErrorIsAsset_(asset_ctb, ""))
+        return ValueReferenceType::Direct;
 
+    const ResParam* res_param {getResParamFromAssetParamPos(asset_ctb.paramStartPos, idx)};
+    if (res_param != nullptr)
         return res_param->getRefType();
-    }
 
-    return ValueReferenceType::Direct;
+    ParamValueType value_type {mpSystem->getParamDefineTable()->getAssetParamType(idx)};
+    switch (value_type) {
+    case ParamValueType::String:
+        return ValueReferenceType::String;
+    case ParamValueType::Arrange:
+        return ValueReferenceType::ArrangeGroup;
+    default:
+        return ValueReferenceType::Direct;
+    }
 }
 
-// NON-MATCHING: swapped registers
-const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallTable& asset_ctb, u32 idx) const
+// NON_MATCHING: swapped registers
+const ResCurveCallTable* ResourceAccessor::getCurveCallTable(const ResAssetCallTable& asset_ctb,
+                                                             u32 idx) const
 {
-    if (checkAndErrorIsAsset_(asset_ctb, "") && isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, idx)) {
-        if (mpUserResource != nullptr) {
-            const ResParam* param {solveOffset<const ResParam>(asset_ctb.paramStartPos)};
-            ResCurveCallTable* curve_ctb {mpUserResource->getParam()->pCommonResourceParam->curveCallTable};
-            if (curve_ctb != nullptr)
-                return &curve_ctb[param[idx].getValue()];
-        }
-    }
+    if (!checkAndErrorIsAsset_(asset_ctb, ""))
+        return nullptr;
 
-    return nullptr;
+    if (!isParamTypeEqual(ValueReferenceType::Curve, asset_ctb, idx))
+        return nullptr;
+
+    if (mpUserResource == nullptr)
+        return nullptr;
+
+    const ResParam* param {solveOffset<const ResParam>(asset_ctb.paramStartPos)};
+    auto* common_res_param {mpUserResource->getParam()->pCommonResourceParam};
+    ResCurveCallTable* curve_ctb {common_res_param->curveCallTable};
+    if (curve_ctb == nullptr)
+        return nullptr;
+
+    s32 curve_idx {param[idx].getValue()};
+    return &curve_ctb[curve_idx];
 }
 
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 exp) const
@@ -826,13 +918,15 @@ f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb, f32 e
     random_f32 = sead::MathCalcCommon<f32>::abs(random_f32 - 1.0f);
 
     f32 power_range {sead::MathCalcCommon<f32>::pow(random_f32, exp) * range};
-    f32 result = {random_ctb.minValue + range + (random_value >= 0.0f ? power_range : -power_range)};
+    f32 result = {
+        random_ctb.minValue + range + (random_value >= 0.0f ? power_range : -power_range),
+    };
     return result;
 }
 
 f32 ResourceAccessor::getRandomValue(const ResRandomCallTable& random_ctb) const
 {
-   return mpSystem->getRandom()->getF32Range(random_ctb.minValue, random_ctb.maxValue);
+    return mpSystem->getRandom()->getF32Range(random_ctb.minValue, random_ctb.maxValue);
 }
 
 f32 ResourceAccessor::getRandomValueWeightMin(const ResRandomCallTable& random_ctb, f32 exp) const
@@ -844,7 +938,7 @@ f32 ResourceAccessor::getRandomValueWeightMin(const ResRandomCallTable& random_c
     return random_ctb.minValue + random_value;
 }
 
-// NON-MATCHING: swapped register
+// NON-MATCHING: swapped registers
 f32 ResourceAccessor::getRandomValueWeightMax(const ResRandomCallTable& random_ctb, f32 exp) const
 {
     f32 range {sead::MathCalcCommon<f32>::abs(random_ctb.maxValue - random_ctb.minValue)};
@@ -856,30 +950,34 @@ f32 ResourceAccessor::getRandomValueWeightMax(const ResRandomCallTable& random_c
 
 s32 ResourceAccessor::getContainerChildNum(const ResAssetCallTable& asset_ctb) const
 {
-    if (!asset_ctb.flag.isOnBit(0)) 
+    if (!asset_ctb.flag.isOnBit(0))
         return 0;
-    
+
     auto* container_param {solveOffset<ResContainerParam>(asset_ctb.paramStartPos)};
     if (container_param != nullptr)
         return getContainerChildNum(*container_param);
 
-    mpSystem->addError(Error::Type::ResourceAccessFailed, mpUserResource->getUser(), "getContainer error");
+    mpSystem->addError(Error::Type::ResourceAccessFailed, mpUserResource->getUser(),
+                       "getContainer error");
     return 0;
 }
 
 s32 ResourceAccessor::getContainerChildNum(const ResContainerParam& container_param) const
 {
-   
-    if (container_param.childrenStartIndex >= 0 && container_param.childrenEndIndex >= 0 && 
-        container_param.childrenEndIndex >= container_param.childrenStartIndex)
-            return (1 - container_param.childrenStartIndex) + container_param.childrenEndIndex;
+    if (container_param.childrenStartIndex < 0 || container_param.childrenEndIndex < 0 ||
+        container_param.childrenEndIndex < container_param.childrenStartIndex) {
+        setError_("invalid children num (start=%d, end=%d)", container_param.childrenStartIndex,
+                  container_param.childrenEndIndex);
 
-    setError_("invalid children num (start=%d, end=%d)", container_param.childrenStartIndex, container_param.childrenEndIndex);
+        return 0;
+    }
 
-    return 0;
+    return (1 - container_param.childrenStartIndex) + container_param.childrenEndIndex;
 }
 
-const ResAssetCallTable* ResourceAccessor::getContainerChildCallTable(const ResContainerParam& container_param, u32 idx) const
+const ResAssetCallTable*
+ResourceAccessor::getContainerChildCallTable(const ResContainerParam& container_param,
+                                             u32 idx) const
 {
     return getCallTable(container_param.childrenStartIndex + idx);
 }
@@ -887,16 +985,19 @@ const ResAssetCallTable* ResourceAccessor::getContainerChildCallTable(const ResC
 bool ResourceAccessor::isParamOverwritten(u32 param_pos, u32 trigger_idx) const
 {
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_idx)};
+    if (overwrite_id < 0)
+        return false;
 
-    if (param_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite {solveOffset<ResTriggerOverwriteParam>(param_pos)};
-        return overwrite->mask.isOnBit(overwrite_id);
-    }
+    if (param_pos == 0)
+        return false;
 
-    return false;
+    auto* overwrite_param {solveOffset<ResTriggerOverwriteParam>(param_pos)};
+    return overwrite_param->mask.isOnBit(overwrite_id);
 }
 
-bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type, const ResTriggerOverwriteParam& overwrite_param, u32 trigger_param_idx) const
+bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type,
+                                                 const ResTriggerOverwriteParam& overwrite_param,
+                                                 u32 trigger_param_idx) const
 {
     u32 overwrite_param_pos = reinterpret_cast<u64>(&overwrite_param);
     const ResParam* res_param {};
@@ -904,69 +1005,80 @@ bool ResourceAccessor::isOverwriteParamTypeEqual(ValueReferenceType type, const 
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
 
     if (overwrite_param_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite = solveOffset<ResTriggerOverwriteParam>(overwrite_param_pos);
+        auto* overwrite {solveOffset<ResTriggerOverwriteParam>(overwrite_param_pos)};
         if (overwrite->mask.isOnBit(overwrite_id)) {
-            s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
+            s32 param_idx {overwrite->mask.countRightOnBit(overwrite_id) - 1};
             res_param = &overwrite->params[param_idx];
         }
     }
 
-    if (res_param != nullptr)
-        return res_param->getRefType() == type;
-    
-    return false;
+    if (res_param == nullptr)
+        return false;
+
+    return res_param->getRefType() == type;
 }
 
-const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_start_pos, u32 trigger_param_idx) const
+const ResParam* ResourceAccessor::getResParamFromOverwriteParamPos_(u32 param_start_pos,
+                                                                    u32 trigger_param_idx) const
 {
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
+    const ResParam* res_param {};
 
     if (param_start_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite = solveOffset<ResTriggerOverwriteParam>(param_start_pos);
-        if (overwrite->mask.isOnBit(overwrite_id)) {
-            s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
-            return &reinterpret_cast<ResParam*>(&overwrite->mask + 1)[param_idx];
+        uint8_t* ptr {solveOffset<uint8_t>(param_start_pos)};
+        auto* mask {reinterpret_cast<sead::BitFlag32*>(ptr)};
+        if (mask->isOnBit(overwrite_id)) {
+            s32 param_idx {mask->countRightOnBit(overwrite_id) - 1};
+            ptr += sizeof(sead::BitFlag32);
+            ptr += param_idx * sizeof(ResParam);
+            res_param = reinterpret_cast<ResParam*>(ptr);
         }
     }
 
-    return nullptr;
+    return res_param;
 }
 
-const ResRandomCallTable* ResourceAccessor::getResRandomCallTable_(const ResParam& res_param) const 
+const ResRandomCallTable* ResourceAccessor::getResRandomCallTable_(const ResParam& res_param) const
 {
-    ResRandomCallTable* random_ctb {mpUserResource->getParam()->pCommonResourceParam->randomCallTable};
-    if (random_ctb != nullptr)
-        return &random_ctb[res_param.getValue()];
+    auto* common_res_param {mpUserResource->getParam()->pCommonResourceParam};
+    ResRandomCallTable* random_ctb {common_res_param->randomCallTable};
+    if (random_ctb == nullptr)
+        return nullptr;
 
-    return nullptr;
+    s32 table_idx {res_param.getValue()};
+    return &random_ctb[table_idx];
 }
 
-f32 ResourceAccessor::getResOverwriteParamValueFloat_(u32 param_start_pos, u32 trigger_param_idx, const UserInstance* user_instance) const
+f32 ResourceAccessor::getResOverwriteParamValueFloat_(u32 param_start_pos, u32 trigger_param_idx,
+                                                      const UserInstance* user_instance) const
 {
-    const ResParam* res_param {getResParamFromOverwriteParamPos_(param_start_pos, trigger_param_idx)};
-    if (res_param != nullptr)
-        return getResParamValueFloat_(*res_param, user_instance);
+    const ResParam* res_param {
+        getResParamFromOverwriteParamPos_(param_start_pos, trigger_param_idx),
+    };
+    if (res_param == nullptr)
+        return 0.0f;
 
-    return 0.0f;
+    return getResParamValueFloat_(*res_param, user_instance);
 }
 
-const char* ResourceAccessor::getResOverwriteParamValueString_(u32 param_start_pos, u32 trigger_param_idx) const
+const char* ResourceAccessor::getResOverwriteParamValueString_(u32 param_start_pos,
+                                                               u32 trigger_param_idx) const
 {
     const ResParam* res_param {};
 
     s32 overwrite_id {getTriggerOverwriteParamId_(trigger_param_idx)};
 
     if (param_start_pos != 0 && overwrite_id >= 0) {
-        auto* overwrite = solveOffset<ResTriggerOverwriteParam>(param_start_pos);
+        auto* overwrite {solveOffset<ResTriggerOverwriteParam>(param_start_pos)};
         if (overwrite->mask.isOnBit(overwrite_id)) {
-            s32 param_idx = overwrite->mask.countRightOnBit(overwrite_id) - 1;
+            s32 param_idx {overwrite->mask.countRightOnBit(overwrite_id) - 1};
             res_param = &overwrite->params[param_idx];
         }
     }
 
-    if (res_param != nullptr)
-        return getResParamValueString_(*res_param);
+    if (res_param == nullptr)
+        return "";
 
-    return "";
+    return getResParamValueString_(*res_param);
 }
 }  // namespace xlink2

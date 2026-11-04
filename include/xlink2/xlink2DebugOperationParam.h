@@ -1,8 +1,8 @@
 #pragma once
 
-#include <prim/seadSafeString.h>
-#include <prim/seadBitFlag.h>
 #include <math/seadVector.h>
+#include <prim/seadBitFlag.h>
+#include <prim/seadSafeString.h>
 
 namespace xlink2 {
 class DebugOperationParam {
@@ -14,7 +14,10 @@ public:
     bool getPrintFlagCheck() const { return mPrintFlag & 1; }
 
     const sead::FixedSafeString<64>& getDebugStringAction() const { return mDebugStringAction; }
-    const sead::FixedSafeString<64>& getDebugStringLocalProperty() const { return mDebugLocalStringProperty; }
+    const sead::FixedSafeString<64>& getDebugStringLocalProperty() const
+    {
+        return mDebugLocalStringProperty;
+    }
     const sead::FixedSafeString<128>& getDebugStringEvent() const { return mDebugStringEvent; }
 
 private:
@@ -34,7 +37,6 @@ private:
     bool mBreakWhenEmit;
     bool mBreakTargetOnly;
     sead::FixedSafeString<128> mDebugKeyName;
-
 };
 static_assert(sizeof(DebugOperationParam) == 0x358, "xlink2::DebugOperationParam size mismatch");
-} // namespace xlink2
+}  // namespace xlink2

@@ -48,8 +48,8 @@ public:
     ContainerType getContainerType() const { return mContainerType; }
     void setContainerType(ContainerType new_type) { mContainerType = new_type; }
 
-    ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
-    void setAssetCallTable(ResAssetCallTable* asset_ctb) { mpAssetCallTable = asset_ctb; }
+    const ResAssetCallTable* getAssetCallTable() const { return mpAssetCallTable; }
+    void setAssetCallTable(const ResAssetCallTable* asset_ctb) { mpAssetCallTable = asset_ctb; }
 
     void set34(f32 new_val) { mOverwriteDelay = new_val; }
 
@@ -71,14 +71,14 @@ public:
 protected:
     friend Event;
 
-    sead::ListNode mListNode {};
-    Event* mpEvent{};
-    UserInstance* mpUserInstance{};
-    ResAssetCallTable* mpAssetCallTable{};
-    ContainerType mContainerType{ContainerType_Switch};
-    f32 mOverwriteDelay{};
-    ResTriggerOverwriteParam* mpTriggerOverwriteParam{};
-    BoneMtx mBoneMtx;
+    sead::ListNode mListNode;
+    Event* mpEvent {};
+    UserInstance* mpUserInstance {};
+    const ResAssetCallTable* mpAssetCallTable {};
+    ContainerType mContainerType {ContainerType_Switch};
+    f32 mOverwriteDelay {};
+    ResTriggerOverwriteParam* mpTriggerOverwriteParam {};
+    BoneMtx mBoneMtx {nullptr, 1};
 };
 static_assert(sizeof(AssetExecutor) == 0x50, "Wrong size for 'xlink2::AssetExecutor'");
 }  // namespace xlink2

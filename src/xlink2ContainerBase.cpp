@@ -19,7 +19,7 @@ ContainerBase::~ContainerBase() = default;
 
 bool ContainerBase::initialize(Event* event, const ResAssetCallTable& asset_call_table)
 {
-    mpAssetCallTable = &(ResAssetCallTable&)asset_call_table;
+    mpAssetCallTable = &asset_call_table;
     mpEvent = event;
     event->getUserInstance()->getUser()->getUserResource()->getAccessor();
     mAssetDuration = asset_call_table.duration;
@@ -85,12 +85,12 @@ bool ContainerBase::killOneTimeEvent()
 ContainerBase* ContainerBase::createChildContainer_(const ResAssetCallTable& asset_call_table,
                                                     ContainerBase* container)
 {
-    auto* child_container{ContainerCreator::CreateContainer(mpEvent, asset_call_table)};
+    auto* child_container {ContainerCreator::CreateContainer(mpEvent, asset_call_table)};
 
     if (!child_container)
         return nullptr;
 
-    bool started{child_container->start()};
+    bool started {child_container->start()};
     if (!started) {
         child_container->destroy();
         child_container = nullptr;

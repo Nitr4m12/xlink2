@@ -9,7 +9,9 @@ AssetExecutorSLink::~AssetExecutorSLink() = default;
 
 void AssetExecutorSLink::updateParam_()
 {
-    auto* accessor {static_cast<UserResourceSLink*>(getUserInstance()->getUserResource())->getAccessorPtr()};
+    auto* accessor {
+        static_cast<UserResourceSLink*>(getUserInstance()->getUserResource())->getAccessorPtr(),
+    };
     u32 overwrite_param_pos = reinterpret_cast<u64>(mpTriggerOverwriteParam);
     if (mParamFlag.isOnBit(0)) {
         if (accessor->isParamOverwritten(overwrite_param_pos, 3))
@@ -46,7 +48,7 @@ void AssetExecutorSLink::updateParam_()
     applyParam_(false);
 }
 
-bool AssetExecutorSLink::isLoopEvent() const 
+bool AssetExecutorSLink::isLoopEvent() const
 {
     if (!mpAssetCallTable)
         return false;
@@ -55,7 +57,7 @@ bool AssetExecutorSLink::isLoopEvent() const
     return res_accessor->isLoopAsset(*mpAssetCallTable);
 }
 
-void AssetExecutorSLink::requestReEmit(bool check) 
+void AssetExecutorSLink::requestReEmit(bool check)
 {
     if (check)
         mBitFlag.setBit(0);
@@ -63,12 +65,12 @@ void AssetExecutorSLink::requestReEmit(bool check)
         mBitFlag.resetBit(0);
 }
 
-bool AssetExecutorSLink::isRequestReEmit() const 
+bool AssetExecutorSLink::isRequestReEmit() const
 {
     return mBitFlag.isOnBit(0);
 }
 
-void AssetExecutorSLink::onFinalize_() 
+void AssetExecutorSLink::onFinalize_()
 {
     mpModelAssetConnection = nullptr;
 }

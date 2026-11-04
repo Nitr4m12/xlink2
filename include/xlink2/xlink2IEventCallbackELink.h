@@ -4,9 +4,9 @@
 #include <prim/seadSafeString.h>
 
 #include "xlink2/xlink2AssetExecutorELink.h"
+#include "xlink2/xlink2EventELink.h"
 #include "xlink2/xlink2Resource.h"
 #include "xlink2/xlink2UserInstanceELink.h"
-#include "xlink2/xlink2EventELink.h"
 
 namespace sead::ptcl {
 class EmitterSet;
@@ -32,17 +32,16 @@ public:
     virtual void eventActivated(const EventArg&);
 
     virtual u32 effectPreEmit(const EventArg&);
-    
+
     virtual void effectEmited(const EventArg&);
     virtual void eventDeleted(const EventArg&);
     virtual void colorApplied(const EventArg&);
     virtual void eventCalced(const EventArg&);
 
     virtual void replaceResEset(ResEset*, const ResAssetCallTable&, const ResourceAccessorELink&,
-                                const char *);
+                                const char*);
 
     virtual void drawDebugInformation(sead::TextWriter*);
     virtual void drawEsetDebugInformation(sead::BufferedSafeString*, sead::ptcl::EmitterSet*);
-
 };
 }  // namespace xlink2

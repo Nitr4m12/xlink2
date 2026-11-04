@@ -14,4 +14,4 @@ public:
     }
 };
 static_assert(sizeof(HandleSLink) == 0x10, "xlink2::HandleSLink size mismatch");
-}
+}  // namespace xlink2

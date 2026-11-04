@@ -35,7 +35,7 @@ public:
     void changeAction(s32, s32, s32);
     void setActionFrame(s32, s32);
     void stopAction(s32);
-    
+
     bool isCurrentActionNeedToObserve(s32) const;
     s32 getCurrentResActionIdx(s32) const;
 

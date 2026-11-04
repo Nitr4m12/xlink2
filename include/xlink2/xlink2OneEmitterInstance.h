@@ -8,7 +8,7 @@ class Handle;
 class OneEmitterInstance {
 public:
     virtual ~OneEmitterInstance();
-    
+
     void* initialize(const char*, u8);
 
     void emitParticle(const sead::Vector3f&, const sead::Vector4f&, const sead::Vector2f&);

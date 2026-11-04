@@ -8,7 +8,7 @@ namespace xlink2 {
 class EnumPropertyDefinition : public PropertyDefinition {
 public:
     struct Entry {
-        const char* key {}; 
+        const char* key {};
         s32 value {-1};
     };
 
@@ -34,21 +34,18 @@ private:
     s32 mNumEntry;
     Entry* mEntryBuffer;
 };
-static_assert(sizeof(EnumPropertyDefinition) == 0x78, "xlink2::EnumPropertyDefinition size mismatch");
+static_assert(sizeof(EnumPropertyDefinition) == 0x78,
+              "xlink2::EnumPropertyDefinition size mismatch");
 
 template <s32 N>
 class FixedEnumPropertyDefinition : public EnumPropertyDefinition {
 public:
-    FixedEnumPropertyDefinition(const char* name, bool b1)
-        : EnumPropertyDefinition(name, b1) 
+    FixedEnumPropertyDefinition(const char* name, bool b1) : EnumPropertyDefinition(name, b1)
     {
         setEntryBuf_(N, mEntries);
     }
 
-    ~FixedEnumPropertyDefinition() override
-    {
-        setEntryBuf_(0, nullptr);
-    }
+    ~FixedEnumPropertyDefinition() override { setEntryBuf_(0, nullptr); }
 
 private:
     Entry mEntries[N];

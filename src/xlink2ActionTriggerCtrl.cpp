@@ -1,7 +1,8 @@
-#include <cstring>
-#include <codec/seadHashCRC32.h>
-
 #include "xlink2/xlink2ActionTriggerCtrl.h"
+
+#include <codec/seadHashCRC32.h>
+#include <cstring>
+
 #include "xlink2/xlink2Event.h"
 #include "xlink2/xlink2ModelTriggerConnection.h"
 #include "xlink2/xlink2ResourceUtil.h"
@@ -26,7 +27,7 @@ ActionTriggerCtrl::ActionTriggerCtrl(UserInstance* user_instance,
 
 ActionTriggerCtrl::~ActionTriggerCtrl() = default;
 
-void ActionTriggerCtrl::reset() 
+void ActionTriggerCtrl::reset()
 {
     mpAction = nullptr;
     mNameHash = 0;
@@ -36,85 +37,96 @@ void ActionTriggerCtrl::reset()
 }
 
 // NON-MATCHING
-void ActionTriggerCtrl::calc() 
+void ActionTriggerCtrl::calc()
 {
     if (mpAction != nullptr) {
         UserResourceParam* user_resource_param {getUserResource()->getParamWithSetupCheck()};
-        if (user_resource_param != nullptr) {
-            if (mActionFrame > mEndActionFrame) {
-                mEndActionFrame = -1;
+        if (user_resource_param == nullptr)
+            return;
+
+        if (mActionFrame < mEndActionFrame)
+            mEndActionFrame = -1;
+
+        user_resource_param = getUserResource()->getParam();
+        ResActionTrigger* action_trigger_table {
+            user_resource_param->userBinParam.pResActionTriggerTable,
+        };
+        for (s32 i {mpAction->triggerStartIdx}; i <= mpAction->triggerEndIdx; ++i) {
+            ModelTriggerConnection* mtc {mConnectionBuffer->get(i)};
+            s32 j {1};
+            if (!action_trigger_table[i].flag.isOn(12)) {
+                j = 3;
+                if (!action_trigger_table[i].flag.isOn(16))
+                    j = 0;
             }
 
-            user_resource_param = getUserResource()->getParam();
-            ResActionTrigger* action_trigger_table {user_resource_param->userBinParam.pResActionTriggerTable};
-            for (s32 i {mpAction->triggerStartIdx}; i <= mpAction->triggerEndIdx; ++i) {
-                ModelTriggerConnection* mtc {mConnectionBuffer->get(i)};
-                s32 j {1};
-                if (!(action_trigger_table[i].flag & 12)) {
-                    j = 3;
-                    if (!(action_trigger_table[i].flag & 16))
-                        j = 0;
-                }
+            const ResourceAccessor& accessor {getUserResource()->getAccessor()};
+            auto* asset_ctb {
+                solveOffset<ResAssetCallTable>(action_trigger_table[i].assetCtbPos),
+            };
 
-                const ResourceAccessor& accessor {getUserResource()->getAccessor()};
-                auto* asset_ctb {solveOffset<ResAssetCallTable>(action_trigger_table[i].assetCtbPos)};
+            bool need_observe {accessor.isNeedObserve(*asset_ctb)};
+            if (j != 0 && !need_observe)
+                continue;
 
-                bool need_observe {accessor.isNeedObserve(*asset_ctb)};
-                if (j == 0 || need_observe) {
-                    if (mActionFrame > mEndActionFrame && action_trigger_table[i].flag.isOffBit(0) && mtc->isActive) {
-                        fadeByTrigger_(i);
-                    }
-                    
-                    if (need_observe) {
-                        if (action_trigger_table[i].startFrame >= mActionFrame && 
-                            action_trigger_table[i].endFrame < mActionFrame && 
-                            (mtc->handle.getEvent() == nullptr || mtc->handle.getEvent()->getCreateId() != mtc->handle.getCreateId())) {
-                            emitByTrigger_(i);
-                        }
-                    }
-                    else if (action_trigger_table[i].startFrame <= mEndActionFrame &&
-                             action_trigger_table[i].startFrame <= mActionFrame && 
-                             action_trigger_table[i].endFrame > mActionFrame) {
-                            emitByTrigger_(i);
-                    }
+            if (mActionFrame < mEndActionFrame && action_trigger_table[i].flag.isOffBit(0) &&
+                mtc->isActive) {
+                fadeByTrigger_(i);
+            }
 
-                    if (mEndActionFrame < action_trigger_table[i].endFrame && mActionFrame >= action_trigger_table[i].endFrame)
-                        fadeByTrigger_(i);
+            if (need_observe) {
+                if (mActionFrame >= action_trigger_table[i].startFrame &&
+                    mActionFrame < action_trigger_table[i].endFrame &&
+                    (mtc->handle.getEvent() == nullptr ||
+                     mtc->handle.getEvent()->getCreateId() != mtc->handle.getCreateId())) {
+                    emitByTrigger_(i);
                 }
             }
+            else if (mEndActionFrame < action_trigger_table[i].startFrame &&
+                     mActionFrame >= action_trigger_table[i].startFrame &&
+                     mActionFrame < action_trigger_table[i].endFrame) {
+                emitByTrigger_(i);
+            }
+
+            if (mEndActionFrame < action_trigger_table[i].endFrame &&
+                mActionFrame >= action_trigger_table[i].endFrame)
+                fadeByTrigger_(i);
         }
     }
 
     mEndActionFrame = mActionFrame;
 }
 
-TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& action_trigger) 
+TriggerType ActionTriggerCtrl::getActionTriggerType_(const ResActionTrigger& action_trigger)
 {
     return ResourceUtil::getActionTriggerType(action_trigger);
 }
 
-void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx) 
+void ActionTriggerCtrl::emitByTrigger_(s32 action_trigger_idx)
 {
-    ResActionTrigger* action_trigger {getUserResource()->getActionTriggerTableItem(action_trigger_idx)};
+    ResActionTrigger* action_trigger {
+        getUserResource()->getActionTriggerTableItem(action_trigger_idx),
+    };
 
-    if (!action_trigger->flag.isOn(1) || !getModelTriggerConnection_(action_trigger_idx)->isActive) {
-        s32 ow_param_pos {action_trigger->overwriteParamPos};
-        ResAssetCallTable* asset_ctb {solveOffset<ResAssetCallTable>(action_trigger->assetCtbPos)};
-        emitByTriggerImpl_(TriggerType::Action, action_trigger_idx, ow_param_pos, asset_ctb);
-        getModelTriggerConnection_(action_trigger_idx)->isActive = true;
-    }
+    if (action_trigger->flag.isOnBit(0) && getModelTriggerConnection_(action_trigger_idx)->isActive)
+        return;
+
+    s32 ow_param_pos {action_trigger->overwriteParamPos};
+    ResAssetCallTable* asset_ctb {solveOffset<ResAssetCallTable>(action_trigger->assetCtbPos)};
+    emitByTriggerImpl_(TriggerType::Action, action_trigger_idx, ow_param_pos, asset_ctb);
+    getModelTriggerConnection_(action_trigger_idx)->isActive = true;
 }
 
-void ActionTriggerCtrl::notifyActive() 
+void ActionTriggerCtrl::notifyActive()
 {
-    if (mpAction != nullptr) {
-        for (int i {mpAction->triggerStartIdx}; i <= mpAction->triggerEndIdx; i++) {
-            getModelTriggerConnection_(i)->isActive = false;
-        }
-    }
+    if (mpAction == nullptr)
+        return;
+
+    for (int i {mpAction->triggerStartIdx}; i <= mpAction->triggerEndIdx; i++)
+        getModelTriggerConnection_(i)->isActive = false;
 }
 
-void ActionTriggerCtrl::changeAction(const char* name, s32 p2) 
+void ActionTriggerCtrl::changeAction(const char* name, s32 p2)
 {
     ResAction* action {searchResAction_(mActionSlot, name, nullptr)};
     if (action == nullptr)
@@ -125,11 +137,12 @@ void ActionTriggerCtrl::changeAction(const char* name, s32 p2)
     mNameHash = sead::HashCRC32::calcStringHash(name);
 }
 
-ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot, const char* name, s32* idx)  const
+ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot, const char* name,
+                                               s32* idx) const
 {
     if (action_slot->actionStartIdx < 0)
         return nullptr;
-    
+
     UserResourceParam* user_res_param = getUserResource()->getParam();
 
     ResAction* action_table = user_res_param->userBinParam.pResActionTable;
@@ -143,13 +156,13 @@ ResAction* ActionTriggerCtrl::searchResAction_(const ResActionSlot* action_slot,
     return nullptr;
 }
 
-void ActionTriggerCtrl::stopAction() 
+void ActionTriggerCtrl::stopAction()
 {
     if (mpAction == nullptr)
         return;
 
     UserResourceParam* user_res_param {getUserResource()->getParam()};
-    
+
     ResActionTrigger* action_trigger_table {user_res_param->userBinParam.pResActionTriggerTable};
     for (s32 i {mpAction->triggerStartIdx}; i <= mpAction->triggerEndIdx; ++i) {
         fadeByTrigger_(i);
@@ -160,40 +173,45 @@ void ActionTriggerCtrl::stopAction()
     mIsActive = false;
 }
 
-void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2) 
+void ActionTriggerCtrl::changeAction(s32 action_idx, s32 p2)
 {
     UserResource* user_resource {getUserResource()};
     UserResourceParam* user_resource_param {user_resource->getParam()};
-   
-    if (-1 < action_idx && action_idx < static_cast<s32>(user_resource_param->userBinParam.pResUserHeader->numResAction)) { 
-        ResAction* res_action = &user_resource_param->userBinParam.pResActionTable[action_idx];
-        if (mpAction != res_action) {
-            changeActionImpl_(res_action, p2, user_resource);
-        }
+
+    s32 num_res_action {
+        static_cast<s32>(user_resource_param->userBinParam.pResUserHeader->numResAction),
+    };
+
+    if (action_idx < 0 || num_res_action <= action_idx) {
+        stopAction();
         return;
     }
-    stopAction();
+
+    ResAction* res_action = &user_resource_param->userBinParam.pResActionTable[action_idx];
+    if (mpAction != res_action)
+        changeActionImpl_(res_action, p2, user_resource);
 }
 
-s32 ActionTriggerCtrl::getCurrentResActionIdx() const 
+s32 ActionTriggerCtrl::getCurrentResActionIdx() const
 {
-    if (mpAction != nullptr) {
-        UserResourceParam* param {getUserResource()->getParam()};
-        return mpAction - param->userBinParam.pResActionTable;
-    }
+    if (mpAction == nullptr)
+        return -1;
 
-    return -1;
+    UserResourceParam* param {getUserResource()->getParam()};
+    return static_cast<s32>(mpAction - param->userBinParam.pResActionTable);
 }
 
-void ActionTriggerCtrl::restartAction(const char* name, s32 idx) 
+void ActionTriggerCtrl::restartAction(const char* name, s32 idx)
 {
-    if (mActionSlot != nullptr) {
-        ResAction* action {searchResAction_(mActionSlot, name, nullptr)};
-        if (action) {
-            mpAction = action;
-            mActionFrame = idx;
-            mEndActionFrame = idx;
-        }
-    }
+    if (mActionSlot == nullptr)
+        return;
+
+    ResAction* action {searchResAction_(mActionSlot, name, nullptr)};
+    if (action == nullptr)
+        return;
+
+    mpAction = action;
+    mActionFrame = idx;
+    mEndActionFrame = idx;
 }
 }  // namespace xlink2

@@ -1,39 +1,42 @@
 #include "xlink2/xlink2SystemELink.h"
+
 #include "xlink2/xlink2AssetExecutorELink.h"
 #include "xlink2/xlink2UserResourceELink.h"
 
 namespace xlink2 {
-UserInstanceELink* SystemELink::createUserInstance(const UserInstance::CreateArg& arg, sead::Heap* heap, u32 i1)
+UserInstanceELink* SystemELink::createUserInstance(const UserInstance::CreateArg& arg,
+                                                   sead::Heap* heap, u32 _i1)
 {
-    {
-        auto lock {sead::makeScopedLock(*sLockProxy)};
-        User* user {searchUserOrCreate_(arg, heap, i1)};
-        if (user != nullptr) {
-            auto* user_instance = new(heap) UserInstanceELink(arg, this, user, heap);
-            user->addInstance(user_instance);
-            return user_instance;
-        }
-    }
-    return nullptr;
+    auto lock {sead::makeScopedLock(*sLockProxy)};
+    User* user {searchUserOrCreate_(arg, heap, _i1)};
+    if (user == nullptr)
+        return nullptr;
+
+    auto* user_instance = new (heap) UserInstanceELink(arg, this, user, heap);
+    user->addInstance(user_instance);
+    return user_instance;
 }
 
 UserResource* SystemELink::createUserResource(User* user, sead::Heap* heap)
 {
-    return new(heap) UserResourceELink(user, heap);
+    return new (heap) UserResourceELink(user, heap);
 }
 
-// NON-MATCHING
-AssetExecutor* SystemELink::allocAssetExecutor(Event* event)
+// NON-MATCHING: constructor of AssetExecutorELink seems to not inline properly
+AssetExecutorELink* SystemELink::allocAssetExecutor(Event* event)
 {
-    auto* executor {static_cast<AssetExecutorELink*>(mAssetExecutorHeap->alloc(sizeof(AssetExecutorELink)))};
-    if (executor != nullptr) {
-        return executor;
+
+    void* alloc_mem {mAssetExecutorHeap->alloc(sizeof(AssetExecutorELink))};
+    if (alloc_mem == nullptr) {
+        addError(Error::Type::OutOfMemory, event->getUserInstance()->getUser(),
+                "SystemELink::allocAssetExecutor failed.");
+        return nullptr;
     }
-    addError(Error::Type::OutOfMemory, event->getUserInstance()->getUser(), "SystemELink::allocAssetExecutor failed.");
-    return nullptr;
+
+    return new (alloc_mem) AssetExecutorELink(event);
 }
 
-u32 SystemELink::getResourceVersion() const 
+u32 SystemELink::getResourceVersion() const
 {
     return 30;
 }
@@ -49,7 +52,8 @@ void SystemELink::genMessage([[maybe_unused]] sead::hostio::Context* ctx)
 #endif
 }
 
-void SystemELink::listenPropertyEvent([[maybe_unused]] const sead::hostio::PropertyEvent* property_event)
+void SystemELink::listenPropertyEvent(
+    [[maybe_unused]] const sead::hostio::PropertyEvent* property_event)
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -60,12 +64,12 @@ const sead::SafeString* SystemELink::getORIconString()
     return &sORIconStringELink;
 }
 
-Event* SystemELink::getEventFromPool_(u32 idx) const
+EventELink* SystemELink::getEventFromPool_(u32 idx) const
 {
-    if (idx < mMaxNumEventPool)
-        return &mpEventPool[idx];
+    if (idx >= mMaxNumEventPool)
+        return nullptr;
 
-    return nullptr;
+    return &mpEventPool[idx];
 }
 
 void SystemELink::preDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const
@@ -92,11 +96,13 @@ void SystemELink::drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_
 #endif
 }
 
-u32 SystemELink::getUserParamNum() const {
+u32 SystemELink::getUserParamNum() const
+{
     return 0;
 }
 
-ILockProxy* SystemELink::getModuleLockObj() const {
+ILockProxy* SystemELink::getModuleLockObj() const
+{
     return sLockProxy;
 }
 

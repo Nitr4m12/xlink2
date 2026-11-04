@@ -1,7 +1,7 @@
 #pragma once
 
-#include <container/seadSafeArray.h>
 #include <container/seadOffsetList.h>
+#include <container/seadSafeArray.h>
 
 #include "xlink2/xlink2BoneMtx.h"
 #include "xlink2/xlink2Resource.h"
@@ -36,7 +36,8 @@ public:
     s32 getAliveAssetNum() const;
     s32 getFadeBySystemListAssetNum() const;
 
-    void setOverwriteParam(TriggerType trigger_type, ResTriggerOverwriteParam* param, BoneMtx bone_mtx);
+    void setOverwriteParam(TriggerType trigger_type, ResTriggerOverwriteParam* param,
+                           BoneMtx bone_mtx);
 
     void fade(s32 param_int);
     void killOneTimeEvent();
@@ -61,17 +62,26 @@ public:
     void setFlagBit(s32 bit) { mBitFlag.setBit(bit); }
 
     sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() { return mAliveAssetExecutors; }
-    const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() const { return mAliveAssetExecutors; }
-    
-    sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() { return mFadeBySystemAssetExecutors; }
-    const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() const { return mFadeBySystemAssetExecutors; }
+    const sead::OffsetList<AssetExecutor>& getAliveAssetExecutors() const
+    {
+        return mAliveAssetExecutors;
+    }
+
+    sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors()
+    {
+        return mFadeBySystemAssetExecutors;
+    }
+    const sead::OffsetList<AssetExecutor>& getFadeBySystemExecutors() const
+    {
+        return mFadeBySystemAssetExecutors;
+    }
 
 protected:
     friend UserInstance;
 
-    sead::BitFlag32 mBitFlag{0};
+    sead::BitFlag32 mBitFlag {0};
     sead::ListNode mListNode;
-    u32 mCreateId{0};
+    u32 mCreateId {0};
     UserInstance* mpUserInstance;
     const ResAssetCallTable* mpAssetCallTable;
     TriggerType mTriggerType;
@@ -82,6 +92,6 @@ protected:
     sead::OffsetList<AssetExecutor> mAliveAssetExecutors;
     sead::OffsetList<AssetExecutor> mFadeBySystemAssetExecutors;
     float _0x90;
-    u8 mGroupId{0xff};
+    u8 mGroupId {0xff};
 };
 }  // namespace xlink2

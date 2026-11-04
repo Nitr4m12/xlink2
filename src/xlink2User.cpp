@@ -1,9 +1,9 @@
+#include "xlink2/xlink2User.h"
+
 #include <math/seadMathCalcCommon.h>
 
-#include "xlink2/xlink2User.h"
 #include "xlink2/xlink2PropertyDefinition.h"
 #include "xlink2/xlink2UserResource.h"
-#include "xlink2/xlink2UserInstance.h"
 
 namespace xlink2 {
 User::User(const char* user_name, sead::Heap* heap, System* system, u32 i1)
@@ -11,8 +11,8 @@ User::User(const char* user_name, sead::Heap* heap, System* system, u32 i1)
 {
     mUserInstanceList.initOffset(offsetof(UserInstance, mListNode));
     if (system->getMutexSize() > 0) {
-        s32 buffer_size = static_cast<s32>(std::strlen(user_name));
-        char* user_name_buffer {new(heap) char[buffer_size + 1]};
+        s32 buffer_size {static_cast<s32>(std::strlen(user_name))};
+        char* user_name_buffer {new (heap) char[buffer_size + 1]};
         std::strncpy(user_name_buffer, user_name, buffer_size);
         user_name_buffer[buffer_size] = sead::SafeString::cNullChar;
 
@@ -44,7 +44,7 @@ User::~User()
         delete mUserName;
 }
 
-System* User::getSystem() const 
+System* User::getSystem() const
 {
     return mpUserResource->getSystem();
 }
@@ -54,7 +54,6 @@ s32 User::calcNumActiveInstance() const
     s32 num_active_instance {0};
     for (auto& user_instance : mUserInstanceList)
         num_active_instance += user_instance.getBitFlag().isOffBit(1);
-    
 
     return num_active_instance;
 }
@@ -68,12 +67,10 @@ void User::setActionSlot(u32 total_action_slots, const char** slot_names)
 
 s32 User::searchActionSlotPos(const char* name) const
 {
-    if (mNumActionSlot > 0) {
-        for (s32 i {0}; i < mNumActionSlot; ++i) {
-            const char* action_slot_name {mActionSlotNameTable[i]}; 
-            if (strcmp(action_slot_name, name) == 0)
-                return i & -1;
-        }
+    for (s32 i {0}; i < mNumActionSlot; ++i) {
+        const char* action_slot_name {mActionSlotNameTable[i]};
+        if (strcmp(action_slot_name, name) == 0)
+            return i & -1;
     }
 
     return -1;
@@ -81,38 +78,39 @@ s32 User::searchActionSlotPos(const char* name) const
 
 void User::createPropertyDefinitionTable(u32 num_property)
 {
-    if (num_property != 0) {
-        mpPropertyDefinitionTable = new(mpHeap) PropertyDefinition*[num_property];
-        for (s32 i {0}; i < num_property; ++i)
-            mpPropertyDefinitionTable[i] = nullptr;
-        mNumLocalProp = num_property;
-    }
+    if (num_property == 0)
+        return;
+
+    mpPropertyDefinitionTable = new (mpHeap) PropertyDefinition*[num_property];
+    for (s32 i {0}; i < num_property; ++i)
+        mpPropertyDefinitionTable[i] = nullptr;
+    mNumLocalProp = num_property;
 }
 
-void User::createPropertyDefinitionTable(u32 num_property, const PropertyDefinition** prop_define_table)
+void User::createPropertyDefinitionTable(u32 num_property,
+                                         const PropertyDefinition** prop_define_table)
 {
     createPropertyDefinitionTable(num_property);
     for (s32 i {0}; i < num_property; ++i)
         setPropertyDefinition(i, prop_define_table[i]);
 }
 
-u32 User::searchPropertyIndex(const char* name) const 
+u32 User::searchPropertyIndex(const char* name) const
 {
-    if (mNumLocalProp != 0) {
-        for (u32 i{0}; i < mNumLocalProp; ++i) {
-            PropertyDefinition* property_definition = mpPropertyDefinitionTable[i];
-            if (property_definition != nullptr) {
-                const sead::FixedSafeString<64>* prop_name = property_definition->getPropertyName();
-                if (strcmp(name, prop_name->cstr()) == 0)
-                    return i;
-            }
-        }
+    for (u32 i {0}; i < mNumLocalProp; ++i) {
+        PropertyDefinition* property_definition = mpPropertyDefinitionTable[i];
+        if (property_definition == nullptr)
+            continue;
+
+        const sead::FixedSafeString<64>* prop_name {property_definition->getPropertyName()};
+        if (strcmp(name, prop_name->cstr()) == 0)
+            return i;
     }
 
     return -1;
 }
 
-void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* heap) 
+void User::changeEditorResource(EditorResourceParam* editor_param, sead::Heap* heap)
 {
     mpUserResource->setupEditorResourceParam(editor_param, heap);
     mpUserResource->setResMode(ResMode::Editor);
@@ -129,19 +127,19 @@ void User::rollbackToRomResource()
         user_instance.changeInstanceParam(ResMode::Rom);
 }
 
-void User::saveEvent() 
+void User::saveEvent()
 {
     for (auto& user_instance : mUserInstanceList)
         user_instance.saveEvent();
 }
 
-void User::loadEventAndTriggerRestart() 
+void User::loadEventAndTriggerRestart()
 {
     for (auto& user_instance : mUserInstanceList)
         user_instance.loadEventAndTriggerRestart();
 }
 
-void User::killAll() 
+void User::killAll()
 {
     for (auto& user_instance : mUserInstanceList)
         user_instance.killAll();
@@ -178,7 +176,7 @@ UserInstance* User::getMinSortKeyInstance()
     return min_sort_key_instance;
 }
 
-void User::updateSortKey() 
+void User::updateSortKey()
 {
     for (auto& user_instance : mUserInstanceList)
         user_instance.updateSortKey();
@@ -186,7 +184,7 @@ void User::updateSortKey()
 
 void User::setDebugDisable([[maybe_unused]] bool debug_disable) {}
 
-void User::beginOtameshi() 
+void User::beginOtameshi()
 {
     for (auto& user_instance : mUserInstanceList) {
         user_instance.fadeOrKillOtameshi(true);
@@ -195,7 +193,7 @@ void User::beginOtameshi()
 }
 
 // NON-MATCHING: getMinSortKeyInstance not inlining properly
-bool User::requestOtameshi() 
+bool User::requestOtameshi()
 {
     updateSortKey();
     return getMinSortKeyInstance() != nullptr;

@@ -1,6 +1,6 @@
-#include <prim/seadPtrUtil.h>
-
 #include "xlink2/xlink2TriggerCtrlMgr.h"
+
+#include <prim/seadPtrUtil.h>
 
 #include "xlink2/xlink2ActionTriggerCtrl.h"
 #include "xlink2/xlink2AlwaysTriggerCtrl.h"
@@ -31,7 +31,7 @@ void TriggerCtrlMgr::freeCtrlParam_(TriggerCtrlParam* param)
     param->_0x0.freeBuffer();
     param->_0x10.freeBuffer();
     param->_0x20.freeBuffer();
-    
+
     for (s32 i {0}; i < param->actionTriggerCtrlBuffer.size(); ++i) {
         if (param->actionTriggerCtrlBuffer[i] != nullptr) {
             delete param->actionTriggerCtrlBuffer[i];
@@ -39,7 +39,7 @@ void TriggerCtrlMgr::freeCtrlParam_(TriggerCtrlParam* param)
         }
     }
     param->actionTriggerCtrlBuffer.freeBuffer();
-    
+
     for (s32 i {0}; i < param->localPropertyTriggerCtrlBuffer.size(); ++i) {
         if (param->localPropertyTriggerCtrlBuffer[i] != nullptr) {
             delete param->localPropertyTriggerCtrlBuffer[i];
@@ -60,11 +60,10 @@ void TriggerCtrlMgr::freeCtrlParam_(TriggerCtrlParam* param)
         delete param->alwaysTriggerCtrl;
         param->alwaysTriggerCtrl = nullptr;
     }
-    
-    param->allTriggerCtrls.freeBuffer();
-    
-    delete param;
 
+    param->allTriggerCtrls.freeBuffer();
+
+    delete param;
 }
 
 void TriggerCtrlMgr::calc()
@@ -100,7 +99,8 @@ void TriggerCtrlMgr::reset()
 
 const UserInstance* TriggerCtrlMgr::getUserInstance_() const
 {
-    return static_cast<UserInstance*>(sead::PtrUtil::addOffset(this, -offsetof(UserInstance, mTriggerCtrlMgr)));
+    return static_cast<UserInstance*>(
+        sead::PtrUtil::addOffset(this, -offsetof(UserInstance, mTriggerCtrlMgr)));
 }
 
 void TriggerCtrlMgr::postChangeResource() {}
@@ -109,12 +109,13 @@ void TriggerCtrlMgr::changeAction(const char* name, s32 p2, s32 action_trigger_i
 {
     s32 action_slot_num {getUserInstance_()->getUser()->getNumActionSlot()};
     if (getUserInstance_()->isDebugLogEnable(((DebugLogFlag)4))) {
-        if (action_trigger_idx > -1 && action_trigger_idx < action_slot_num && getUserInstance_()->getUser()->getActionSlotNameTable() == nullptr) {
+        if (action_trigger_idx > -1 && action_trigger_idx < action_slot_num &&
+            getUserInstance_()->getUser()->getActionSlotNameTable() == nullptr) {
             getUserInstance_()->getIUser()->getActionSlotName(action_trigger_idx);
         }
         getUserInstance_()->getUser()->getSystem();
     }
-    
+
     if (action_trigger_idx >= 0 && action_trigger_idx < action_slot_num) {
         TriggerCtrlParam* param {getParam()};
         if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
@@ -132,129 +133,173 @@ void TriggerCtrlMgr::updateActionNeedToCalcFlag_(s32 action_trigger_idx)
     auto* param {getParam()};
     s32 action_idx {param->actionTriggerCtrlBuffer[action_trigger_idx]->getCurrentResActionIdx()};
 
-    if (action_idx >= 0) {
-        auto* user_resource_param {getUserInstance_()->getUserResource()->getParam()};
-        bool action_need_to_calc {user_resource_param->actionNeedToCalcBuffer[action_idx]};
-
-        if (action_need_to_calc)
-            mActionNeedToCalcFlag.setBit(action_trigger_idx);
-        else
-            mActionNeedToCalcFlag.resetBit(action_trigger_idx);
-    }
-    else {
+    if (action_idx < 0) {
         mActionNeedToCalcFlag.resetBit(action_trigger_idx);
+        return;
     }
+
+    auto* user_resource_param {getUserInstance_()->getUserResource()->getParam()};
+    bool action_need_to_calc {user_resource_param->actionNeedToCalcBuffer[action_idx]};
+
+    if (action_need_to_calc)
+        mActionNeedToCalcFlag.setBit(action_trigger_idx);
+    else
+        mActionNeedToCalcFlag.resetBit(action_trigger_idx);
 }
 
 void TriggerCtrlMgr::changeAction(s32 p1, s32 p2, s32 action_trigger_idx)
 {
-    if (action_trigger_idx >= 0 && action_trigger_idx < getUserInstance_()->getUser()->getNumActionSlot()) {
-        TriggerCtrlParam* param {getParam()};
-        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
-            auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
-            if (action_trigger_ctrl != nullptr) {
-                action_trigger_ctrl->changeAction(p1, p2);
-                updateActionNeedToCalcFlag_(action_trigger_idx);
-            }
-        }
-    }
+    if (action_trigger_idx < 0)
+        return;
+
+    if (action_trigger_idx >= getUserInstance_()->getUser()->getNumActionSlot())
+        return;
+
+    TriggerCtrlParam* param {getParam()};
+    if (param == nullptr)
+        return;
+
+    if (!param->actionTriggerCtrlBuffer.isBufferReady())
+        return;
+
+    auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+    if (action_trigger_ctrl == nullptr)
+        return;
+
+    action_trigger_ctrl->changeAction(p1, p2);
+    updateActionNeedToCalcFlag_(action_trigger_idx);
 }
 
 void TriggerCtrlMgr::setActionFrame(s32 frame, s32 action_trigger_idx)
 {
     const UserInstance* user_instance {getUserInstance_()};
 
-    if (action_trigger_idx >= 0 && user_instance->getUser()->getNumActionSlot() > action_trigger_idx) {
-        TriggerCtrlParam* param {getParam()};
-        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
-            ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
-            if (action_trigger_ctrl != nullptr)
-                action_trigger_ctrl->setActionFrame(frame);
-        }
-    }
+    if (action_trigger_idx < 0)
+        return;
+
+    if (user_instance->getUser()->getNumActionSlot() <= action_trigger_idx)
+        return;
+
+    TriggerCtrlParam* param {getParam()};
+    if (param == nullptr)
+        return;
+
+    if (!param->actionTriggerCtrlBuffer.isBufferReady())
+        return;
+
+    ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+    if (action_trigger_ctrl != nullptr)
+        action_trigger_ctrl->setActionFrame(frame);
 }
 
 void TriggerCtrlMgr::stopAction(s32 action_trigger_idx)
 {
-    if (action_trigger_idx > -1 && action_trigger_idx < getUserInstance_()->getUser()->getNumActionSlot()) {
-        TriggerCtrlParam* param {getParam()};
-        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
-            auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
-            if (action_trigger_ctrl != nullptr) {
-                action_trigger_ctrl->stopAction();
-                updateActionNeedToCalcFlag_(action_trigger_idx);
-            }
-        }
-    }
+    if (action_trigger_idx < 0)
+        return;
+
+    if (action_trigger_idx >= getUserInstance_()->getUser()->getNumActionSlot())
+        return;
+
+    TriggerCtrlParam* param {getParam()};
+    if (param == nullptr)
+        return;
+
+    if (!param->actionTriggerCtrlBuffer.isBufferReady())
+        return;
+
+    auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+    if (action_trigger_ctrl == nullptr)
+        return;
+
+    action_trigger_ctrl->stopAction();
+    updateActionNeedToCalcFlag_(action_trigger_idx);
 }
 
 // NON-MATCHING
 bool TriggerCtrlMgr::isCurrentActionNeedToObserve(s32 action_trigger_idx) const
 {
-    bool need_to_observe {false};
-    if (action_trigger_idx > -1 && action_trigger_idx < getUserInstance_()->getUser()->getNumActionSlot()) {
-        auto* param {getParam()};
-        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
-            auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
-            if (action_trigger_ctrl != nullptr)
-                need_to_observe = action_trigger_ctrl->isActive();
-        }
-    }
+    if (action_trigger_idx < 0)
+        return false;
 
-    return need_to_observe;
+    if (action_trigger_idx >= getUserInstance_()->getUser()->getNumActionSlot())
+        return false;
+
+    auto* param {getParam()};
+    if (param == nullptr)
+        return false;
+
+    if (!param->actionTriggerCtrlBuffer.isBufferReady())
+        return false;
+
+    auto* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+    if (action_trigger_ctrl == nullptr)
+        return false;
+
+    return action_trigger_ctrl->isActive();
 }
 
 s32 TriggerCtrlMgr::getCurrentResActionIdx(s32 action_trigger_idx) const
 {
-    if (action_trigger_idx >= 0 && getUserInstance_()->getUser()->getNumActionSlot() > action_trigger_idx) {
-        TriggerCtrlParam* param {getParam()};
-        if (param != nullptr && param->actionTriggerCtrlBuffer.isBufferReady()) {
-            ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
-            if (action_trigger_ctrl != nullptr)
-                return action_trigger_ctrl->getCurrentResActionIdx();
-        }
-    }
-    return -1;
+    if (action_trigger_idx < 0)
+        return -1;
+
+    if (getUserInstance_()->getUser()->getNumActionSlot() <= action_trigger_idx)
+        return -1;
+
+    TriggerCtrlParam* param {getParam()};
+    if (param == nullptr)
+        return -1;
+
+    if (!param->actionTriggerCtrlBuffer.isBufferReady())
+        return -1;
+
+    ActionTriggerCtrl* action_trigger_ctrl {param->actionTriggerCtrlBuffer[action_trigger_idx]};
+    if (action_trigger_ctrl == nullptr)
+        return -1;
+
+    return action_trigger_ctrl->getCurrentResActionIdx();
 }
 
 // NON-MATCHING: instruction missing
 void TriggerCtrlMgr::notifyActive()
 {
-    if (getParam() != nullptr) {
-        s16 action_slot_num {getUserInstance_()->getUser()->getNumActionSlot()};
-        for (s32 i {0}; i < action_slot_num; ++i) {
-            ActionTriggerCtrl* action_trigger_ctrl {getParam()->actionTriggerCtrlBuffer[i]};
-            if (action_trigger_ctrl != nullptr)
-                action_trigger_ctrl->notifyActive();
-        }
+    if (getParam() == nullptr)
+        return;
 
-        if (getParam()->alwaysTriggerCtrl != nullptr)
-            getParam()->alwaysTriggerCtrl->notifyActive();
+    s16 action_slot_num {getUserInstance_()->getUser()->getNumActionSlot()};
+    for (s32 i {0}; i < action_slot_num; ++i) {
+        ActionTriggerCtrl* action_trigger_ctrl {getParam()->actionTriggerCtrlBuffer[i]};
+        if (action_trigger_ctrl != nullptr)
+            action_trigger_ctrl->notifyActive();
     }
+
+    if (getParam()->alwaysTriggerCtrl != nullptr)
+        getParam()->alwaysTriggerCtrl->notifyActive();
 }
 
-s32 TriggerCtrlMgr::getCurrentActionFrame([[maybe_unused]] s32 action_idx) const 
+s32 TriggerCtrlMgr::getCurrentActionFrame([[maybe_unused]] s32 action_idx) const
 {
     return -1;
 }
 
-const char* TriggerCtrlMgr::getCurrentActionName([[maybe_unused]] s32 action_idx) const 
+const char* TriggerCtrlMgr::getCurrentActionName([[maybe_unused]] s32 action_idx) const
 {
     return nullptr;
 }
 
 void TriggerCtrlMgr::resetAllModelTriggerConnection()
 {
-    if (getParam() != nullptr) {
-        for (s32 i {0}; i < getParam()->_0x0.size(); ++i)
-            getParam()->_0x0[i].isActive = false;
+    if (getParam() == nullptr)
+        return;
 
-        for (s32 i {0}; i < getParam()->_0x10.size(); ++i)
-            getParam()->_0x10[i].isActive = false;
+    for (s32 i {0}; i < getParam()->_0x0.size(); ++i)
+        getParam()->_0x0[i].isActive = false;
 
-        for (s32 i {0}; i < getParam()->_0x20.size(); ++i)
-            getParam()->_0x20[i].isActive = false;
-    }
+    for (s32 i {0}; i < getParam()->_0x10.size(); ++i)
+        getParam()->_0x10[i].isActive = false;
+
+    for (s32 i {0}; i < getParam()->_0x20.size(); ++i)
+        getParam()->_0x20[i].isActive = false;
 }
 
 }  // namespace xlink2

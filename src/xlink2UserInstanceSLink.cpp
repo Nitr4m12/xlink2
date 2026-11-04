@@ -8,13 +8,19 @@
 
 namespace xlink2 {
 UserInstanceSLink::CreateArgSLink::CreateArgSLink(const char* name, IUser* iuser)
-    : UserInstance::CreateArg(name, iuser) {}
+    : UserInstance::CreateArg(name, iuser)
+{
+}
 
 UserInstanceSLink::CreateArgSLink::CreateArgSLink(const UserInstance::CreateArg& other)
-    : UserInstance::CreateArg(other) {}
+    : UserInstance::CreateArg(other)
+{
+}
 
 UserInstanceSLink::CreateArgSLink::CreateArgSLink(const CreateArgSLink& other)
-    : UserInstance::CreateArg(other), _0x40(other._0x40), _0x48(other._0x48) {}
+    : UserInstance::CreateArg(other), _0x40(other._0x40), _0x48(other._0x48)
+{
+}
 
 UserInstanceSLink::AssetLimiter::AssetLimiter(s32 num_param, sead::Heap* heap)
 {
@@ -32,7 +38,8 @@ void UserInstanceSLink::AssetLimiter::clear()
         mParamBuffer[i].assetExecutorPtrs.clear();
 }
 
-void UserInstanceSLink::AssetLimiter::initialize(s32 param_idx, const char* group_name, const ArrangeGroupParam& group_param)
+void UserInstanceSLink::AssetLimiter::initialize(s32 param_idx, const char* group_name,
+                                                 const ArrangeGroupParam& group_param)
 {
     mParamBuffer[param_idx].groupName = group_name;
     mParamBuffer[param_idx].limitType = group_param.limitType;
@@ -93,7 +100,6 @@ void UserInstanceSLink::stopAllEvent(s32 fade_param)
     }
 }
 
-
 void UserInstanceSLink::fadeIfLoopSound()
 {
     {
@@ -105,19 +111,19 @@ void UserInstanceSLink::fadeIfLoopSound()
     mTriggerCtrlMgr.reset();
 }
 
-const ResourceAccessorSLink& UserInstanceSLink::getResourceAccessor() const 
+const ResourceAccessorSLink& UserInstanceSLink::getResourceAccessor() const
 {
     return getResourceSLink()->getResourceAccessor();
 }
 
-UserResourceSLink* UserInstanceSLink::getResourceSLink() const 
+UserResourceSLink* UserInstanceSLink::getResourceSLink() const
 {
     return static_cast<UserResourceSLink*>(mUser->getUserResource());
 }
 
 UserInstanceParamSLink* UserInstanceSLink::allocInstanceParam_(sead::Heap* heap)
 {
-    return new(heap) UserInstanceParamSLink;
+    return new (heap) UserInstanceParamSLink;
 }
 
 bool UserInstanceSLink::doEventActivatingCallback_(const Locator& locator)

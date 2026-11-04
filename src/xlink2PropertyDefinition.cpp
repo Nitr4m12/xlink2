@@ -4,4 +4,4 @@ namespace xlink2 {
 F32PropertyDefinition::~F32PropertyDefinition() = default;
 
 S32PropertyDefinition::~S32PropertyDefinition() = default;
-}
+}  // namespace xlink2

@@ -21,8 +21,8 @@ bool BlendContainer::initialize(Event* event, const ResAssetCallTable& asset_cal
     return true;
 }
 
-// WIP
-bool BlendContainer::callAllChildContainer_() 
+// NON_MATCHING
+bool BlendContainer::callAllChildContainer_()
 {
     UserInstance* user_instance {mpEvent->getUserInstance()};
     ResContainerParam* param {ResourceUtil::getResContainerParam(*mpAssetCallTable)};
@@ -34,17 +34,22 @@ bool BlendContainer::callAllChildContainer_()
 
     bool condition {param->childrenEndIndex > param->childrenStartIndex};
     for (s32 i {param->childrenStartIndex}, j {0}; condition; ++i, ++j) {
-        ResAssetCallTable* asset_ctb_item {user_instance->getUser()->getUserResource()->getAssetCallTableItem(i)};
-        
+        ResAssetCallTable* asset_ctb_item {
+            user_instance->getUser()->getUserResource()->getAssetCallTableItem(i),
+        };
+
         Event* event {mpEvent};
 
         const char* container_name {user_instance->getContainerTypeName(*mpAssetCallTable).cstr()};
         const char* key_name {solveOffset<char>(mpAssetCallTable->keyNamePos)};
-        
-        const char* container_name_child {user_instance->getContainerTypeName(*asset_ctb_item).cstr()};
+
+        const char* container_name_child {
+            user_instance->getContainerTypeName(*asset_ctb_item).cstr(),
+        };
         const char* key_name_child {solveOffset<char>(asset_ctb_item->keyNamePos)};
 
-        user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name, key_name, container_name_child, key_name_child, j);
+        user_instance->printLogContainerSelect(*event, "%s[%s] -> %s[%s] (idx=%d)", container_name,
+                                               key_name, container_name_child, key_name_child, j);
 
         ContainerBase* child_container {createChildContainer_(*asset_ctb_item, tmp_base)};
         if (child_container != nullptr)
@@ -58,7 +63,7 @@ bool BlendContainer::callAllChildContainer_()
     return ret_val;
 }
 
-// WIP
+// NON_MATCHING
 bool BlendContainer::calc()
 {
     BlendContainer* next {static_cast<BlendContainer*>(mpChild)};

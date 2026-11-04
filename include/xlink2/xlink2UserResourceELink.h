@@ -18,7 +18,8 @@ public:
     SolvedAssetParamELink* getSolvedAssetParameterELink(const ResAssetCallTable&) const;
 
     void solveResourceForChangeEset();
-    void solveAssetParam_(UserResourceParamELink*, const ParamDefineTable*, PtclResourceAccessorELink*);
+    void solveAssetParam_(UserResourceParamELink*, const ParamDefineTable*,
+                          PtclResourceAccessorELink*);
 
     UserResourceParamELink* allocResourceParam_(sead::Heap*) override;
     void freeResourceParam_(UserResourceParam*) override;

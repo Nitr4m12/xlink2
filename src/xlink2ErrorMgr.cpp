@@ -3,32 +3,29 @@
 namespace xlink2 {
 // NON-MATCHING: reason unknown, probably an error in the
 // structure
-ErrorMgr::ErrorMgr(const System* system)
-    : mSystem(system)
+ErrorMgr::ErrorMgr(const System* system) : mSystem(system)
 {
     _4[0] = 1;
     for (s32 i {1}; i < 42; ++i)
         _4[i] = 2;
 }
 
-void ErrorMgr::add([[maybe_unused]] Error::Type type, 
-                   [[maybe_unused]] const User* user, 
-                   [[maybe_unused]] const char* msg) 
+void ErrorMgr::add([[maybe_unused]] Error::Type type, [[maybe_unused]] const User* user,
+                   [[maybe_unused]] const char* msg)
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void ErrorMgr::clear([[maybe_unused]] const User* user) 
+void ErrorMgr::clear([[maybe_unused]] const User* user)
 {
 #ifdef SEAD_DEBUG
 #endif
 }
 
-void ErrorMgr::clearAll() 
+void ErrorMgr::clearAll()
 {
-    if (mIsNotThrown) 
-    {
+    if (mIsNotThrown) {
         mCriticalSection.lock();
         for (s32 i {0}; i < 32; ++i)
             mErrorEntries[i].type = Error::Type::None;
@@ -36,7 +33,7 @@ void ErrorMgr::clearAll()
     }
 }
 
-void ErrorMgr::calc() 
+void ErrorMgr::calc()
 {
 #ifdef SEAD_DEBUG
 #endif
@@ -46,4 +43,4 @@ bool* ErrorMgr::getIsDebugBreakEnablePtr()
 {
     return &mIsDebugBreakEnable;
 }
-} // namespace xlink2
+}  // namespace xlink2

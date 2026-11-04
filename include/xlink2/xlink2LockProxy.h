@@ -16,6 +16,7 @@ private:
     T mLock;
 };
 
-static_assert(sizeof(LockProxy<sead::SpinLock>) == 0x18, "xlink2::LockProxy<sead::SpinLock> size mismatch");
+static_assert(sizeof(LockProxy<sead::SpinLock>) == 0x18,
+              "xlink2::LockProxy<sead::SpinLock> size mismatch");
 
 }  // namespace xlink2

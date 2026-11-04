@@ -6,7 +6,7 @@
 namespace aal {
 class Emitter;
 class IAssetInfoReadable;
-}
+}  // namespace aal
 
 namespace xlink2 {
 class AssetExecutorSLink;
@@ -22,7 +22,7 @@ public:
         CreateArgSLink(const char*, IUser*);
         explicit CreateArgSLink(const UserInstance::CreateArg&);
         CreateArgSLink(const CreateArgSLink&);
-        
+
     private:
         s8 _0x40 {0};
         void* _0x48 {nullptr};
@@ -37,7 +37,8 @@ public:
             s32 limitThreshold {-1};
             bool _0xa0 {true};
         };
-        static_assert(sizeof(AssetLimiterParam) == 0xa8, "xlink2::UserInstanceSLink::AssetLimiter::AssetLimiterParam size mismatch");
+        static_assert(sizeof(AssetLimiterParam) == 0xa8,
+                      "xlink2::UserInstanceSLink::AssetLimiter::AssetLimiterParam size mismatch");
 
         virtual ~AssetLimiter();
         AssetLimiter(s32, sead::Heap*);

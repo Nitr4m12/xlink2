@@ -11,4 +11,4 @@ public:
 
     BoneMtx mRootMtx {nullptr, 1};
 };
-}
+}  // namespace xlink2

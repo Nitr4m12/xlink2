@@ -14,7 +14,7 @@ public:
     ~AlwaysTriggerCtrl() override;
 
 private:
-    bool mIsActive{true};
+    bool mIsActive {true};
 };
 static_assert(sizeof(AlwaysTriggerCtrl) == 0x20, "Wrong size for 'xlink2::AlwaysTriggerCtrl'");
 

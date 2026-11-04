@@ -13,7 +13,8 @@ class UserInstanceELink;
 
 class AssetExecutorELink : public AssetExecutor {
 public:
-    explicit AssetExecutorELink(Event* event) { mpEvent = event; }
+    AssetExecutorELink() = default;
+    explicit AssetExecutorELink(Event* event) : AssetExecutor(event) {}
 
     ~AssetExecutorELink() override;
 
@@ -69,14 +70,17 @@ public:
 
     void onFinalize_() override;
 
-    UserInstanceELink* getUserInstanceELink() { return static_cast<UserInstanceELink*>(mpUserInstance); }
+    UserInstanceELink* getUserInstanceELink()
+    {
+        return static_cast<UserInstanceELink*>(mpUserInstance);
+    }
     EventELink* getEventELink() { return static_cast<EventELink*>(mpEvent); }
 
 private:
     sead::BitFlag8 mBitFlag;
-    u32 mDelay{};
-    bool _0x58{};
-    HandleELink mHandle{};
+    u32 mDelay {0};
+    bool _0x58 {false};
+    HandleELink mHandle {nullptr, -1};
     sead::BitFlag16 mPositionFlag;
     sead::BitFlag16 mRotationFlag;
     sead::Vector3f mPosition;

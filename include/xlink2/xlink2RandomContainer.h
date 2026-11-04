@@ -13,7 +13,7 @@ public:
 
 class RandomContainer2 : public RandomContainer {
 public:
-    using CallbackFunc = xlink2::ContainerBase*(*)(UserInstance*, ResAssetCallTable*); 
+    using CallbackFunc = xlink2::ContainerBase* (*)(UserInstance*, ResAssetCallTable*);
 
     static CallbackFunc sRandomContainerCallbackFunc;
 

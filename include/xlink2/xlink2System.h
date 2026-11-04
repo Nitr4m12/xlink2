@@ -8,8 +8,8 @@
 #include <heap/seadHeap.h>
 #include <hostio/seadHostIONode.h>
 
-#include "xlink2/xlink2ErrorMgr.h"
 #include "xlink2/xlink2DebugOperationParam.h"
+#include "xlink2/xlink2ErrorMgr.h"
 #include "xlink2/xlink2ILockProxy.h"
 #include "xlink2/xlink2ResMode.h"
 #include "xlink2/xlink2Resource.h"
@@ -18,7 +18,7 @@
 namespace sead {
 class PrimitiveRenderer;
 class PrimitiveDrawer;
-}
+}  // namespace sead
 
 namespace xlink2 {
 class AssetExecutor;
@@ -48,11 +48,11 @@ public:
         void begin(const sead::Camera&, const sead::Projection&);
 
         void setModelMatrix(const sead::Matrix34f&);
-        
+
         void drawAxis(const sead::Vector3f&, f32);
 
         void end();
-        
+
     private:
         sead::PrimitiveRenderer* mpPrimitiveRenderer;
         sead::PrimitiveDrawer* mpPrimitiveDrawer;
@@ -70,14 +70,11 @@ public:
     User* searchUser(const char*, sead::Heap*, u32) const;
     s32 searchUserIgnoreHeap(const char*, User**, s32) const;
 
-    virtual void drawInformation([[maybe_unused]] sead::DrawContext* ctx, 
-                                 [[maybe_unused]] sead::TextWriter* text_writer) const;
+    virtual void drawInformation(sead::DrawContext* ctx, sead::TextWriter* text_writer) const;
 
-    virtual void drawInformation3D([[maybe_unused]] sead::DrawContext* ctx, 
-                                   [[maybe_unused]] const sead::Camera& camera, 
-                                   [[maybe_unused]] const sead::Projection& projection, 
-                                   [[maybe_unused]] const sead::Viewport& viewport, 
-                                   [[maybe_unused]] f32 f1) const;
+    virtual void drawInformation3D(sead::DrawContext* ctx, const sead::Camera& camera,
+                                   const sead::Projection& projection,
+                                   const sead::Viewport& viewport, f32 f1) const;
 
     void makeDebugStringGlobalProperty(sead::BufferedSafeString*, const sead::SafeString&) const;
 
@@ -96,7 +93,7 @@ public:
     void fixGlobalPropertyDefinition();
     void freeGlobalProperty();
 
-    void addError(Error::Type /*unused*/, const User* /*unused*/, const char* /*unused*/, ...);
+    void addError(Error::Type, const User*, const char*, ...);
 
     void setGlobalPropertyValue(u32, s32);
     void setGlobalPropertyValue(u32, f32);
@@ -117,28 +114,16 @@ public:
 
     void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*) const;
 
-    void drawInformationInstance3D_([[maybe_unused]] UserInstance*, 
-                                    [[maybe_unused]] sead::DrawContext*, 
-                                    [[maybe_unused]] sead::TextWriter*,
-                                    [[maybe_unused]] const sead::Camera&, 
-                                    [[maybe_unused]] const sead::Projection&,
-                                    [[maybe_unused]] const sead::Viewport&) const;
+    void drawInformationInstance3D_(UserInstance*, sead::DrawContext*, sead::TextWriter*,
+                                    const sead::Camera&, const sead::Projection&,
+                                    const sead::Viewport&) const;
 
-    void drawText3D_([[maybe_unused]] const sead::Matrix34f&, 
-                     [[maybe_unused]] const sead::Vector2f&, 
-                     [[maybe_unused]] const sead::SafeString&,
-                     [[maybe_unused]] const sead::SafeString&, 
-                     [[maybe_unused]] sead::TextWriter*, 
-                     [[maybe_unused]] IUser*) const;
+    void drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
+                     const sead::SafeString&, sead::TextWriter*, IUser*) const;
 
-    void drawText3D_([[maybe_unused]] const sead::Matrix34f&, 
-                     [[maybe_unused]] const sead::Vector2f&, 
-                     [[maybe_unused]] const sead::SafeString&,
-                     [[maybe_unused]] const sead::SafeString&, 
-                     [[maybe_unused]] sead::TextWriter*, 
-                     [[maybe_unused]] const sead::Camera&,
-                     [[maybe_unused]] const sead::Projection&, 
-                     [[maybe_unused]] const sead::Viewport&) const;
+    void drawText3D_(const sead::Matrix34f&, const sead::Vector2f&, const sead::SafeString&,
+                     const sead::SafeString&, sead::TextWriter*, const sead::Camera&,
+                     const sead::Projection&, const sead::Viewport&) const;
 
     void writeBlinkText_(const sead::SafeString&, sead::TextWriter*) const;
     void writeLines_(const sead::SafeString&, sead::TextWriter*) const;
@@ -147,11 +132,11 @@ public:
     void updateDebugDrawUserList_() const;
     f32 calcDebugDrawSortKeyThreshold_() const;
 
-    void clearError([[maybe_unused]] const User*);
+    void clearError(const User*);
 
     void* getAnyone();
 
-    void updateContainerCount([[maybe_unused]] ContainerType, [[maybe_unused]] s32);
+    void updateContainerCount(ContainerType, s32);
 
     void freeAssetExecutor(AssetExecutor*);
 
@@ -167,7 +152,7 @@ public:
     void dumpActiveEvents() const;
     void dumpUsers() const;
 
-    void requestSendPickedUserName(const sead::SafeString& /*unused*/);
+    void requestSendPickedUserName(const sead::SafeString&);
 
     void resetOtameshiRequest();
 
@@ -190,10 +175,16 @@ public:
 
     HoldMgr* getHoldMgr() const { return mHoldMgr; }
 
-    const PropertyDefinition* getPropertyDefinition(u32 idx) const { return mGlobalPropertyDefinitions[idx]; }
+    const PropertyDefinition* getPropertyDefinition(u32 idx) const
+    {
+        return mGlobalPropertyDefinitions[idx];
+    }
     PropertyValueType getPropertyValue(u32 idx) const { return mGlobalPropertyValues[idx]; }
 
-    const DebugOperationParam& getDebugOperationParam() { return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor; }
+    const DebugOperationParam& getDebugOperationParam()
+    {
+        return mIsOperationOREnabled ? mDebugOperationParamOR : mDebugOperationParamEditor;
+    }
 
     virtual UserResource* createUserResource(User* user, sead::Heap* heap) = 0;
     virtual void allocHandle(sead::Heap* heap) = 0;
@@ -207,16 +198,13 @@ public:
 
     virtual Event* getEventFromPool_(u32 idx) const = 0;
 
-    virtual void preDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const;
-    virtual void postDrawInformation_([[maybe_unused]] sead::TextWriter* text_writer) const;
-    virtual void drawInformationSystemDetail_([[maybe_unused]] sead::TextWriter* text_writer) const = 0;
-    virtual void drawInformationEvent_([[maybe_unused]] sead::TextWriter* text_writer) const = 0;
-    virtual void drawInformationEmitter_([[maybe_unused]] UserInstance*, 
-                                         [[maybe_unused]] sead::DrawContext*, 
-                                         [[maybe_unused]] sead::TextWriter*, 
-                                         [[maybe_unused]] const sead::Camera&, 
-                                         [[maybe_unused]] const sead::Projection&,
-                                         [[maybe_unused]] const sead::Viewport&) const;
+    virtual void preDrawInformation_(sead::TextWriter* text_writer) const;
+    virtual void postDrawInformation_(sead::TextWriter* text_writer) const;
+    virtual void drawInformationSystemDetail_(sead::TextWriter* text_writer) const = 0;
+    virtual void drawInformationEvent_(sead::TextWriter* text_writer) const = 0;
+    virtual void drawInformationEmitter_(UserInstance*, sead::DrawContext*, sead::TextWriter*,
+                                         const sead::Camera&, const sead::Projection&,
+                                         const sead::Viewport&) const;
 
 protected:
     ResourceBuffer* mResourceBuffer {};
